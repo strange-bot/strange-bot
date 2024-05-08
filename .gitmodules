@@ -1,0 +1,119 @@
+[submodule "plugins/core"]
+	path = plugins/core
+	url = https://github.com/strange-bot/plugin-core.git
+	branch = main
+
+[submodule "plugins/anime"]
+	path = plugins/anime
+	url = https://github.com/strange-bot/plugin-anime.git
+	branch = main
+
+[submodule "plugins/automod"]
+	path = plugins/automod
+	url = https://github.com/strange-bot/plugin-automod.git
+	branch = main
+
+[submodule "plugins/autorole"]
+	path = plugins/autorole
+	url = https://github.com/strange-bot/plugin-autorole.git
+	branch = main
+
+[submodule "plugins/counter"]
+	path = plugins/counter
+	url = https://github.com/strange-bot/plugin-counter.git
+	branch = main
+
+[submodule "plugins/economy"]
+	path = plugins/economy
+	url = https://github.com/strange-bot/plugin-economy.git
+	branch = main
+
+[submodule "plugins/fun"]
+	path = plugins/fun
+	url = https://github.com/strange-bot/plugin-fun.git
+	branch = main
+
+[submodule "plugins/giveaways"]
+	path = plugins/giveaways
+	url = https://github.com/strange-bot/plugin-giveaways.git
+	branch = main
+
+[submodule "plugins/greeting"]
+	path = plugins/greeting
+	url = https://github.com/strange-bot/plugin-greeting.git
+	branch = main
+
+[submodule "plugins/guild-logger"]
+	path = plugins/guild-logger
+	url = https://github.com/strange-bot/plugin-guild-logger.git
+	branch = main
+
+[submodule "plugins/image"]
+	path = plugins/image
+	url = https://github.com/strange-bot/plugin-image.git
+	branch = main
+
+[submodule "plugins/information"]
+	path = plugins/information
+	url = https://github.com/strange-bot/plugin-information.git
+	branch = main
+
+[submodule "plugins/invites"]
+	path = plugins/invites
+	url = https://github.com/strange-bot/plugin-invites.git
+	branch = main
+
+[submodule "plugins/moderation"]
+	path = plugins/moderation
+	url = https://github.com/strange-bot/plugin-moderation.git
+	branch = main
+
+[submodule "plugins/music"]
+	path = plugins/music
+	url = https://github.com/strange-bot/plugin-music.git
+	branch = main
+
+[submodule "plugins/owner"]
+	path = plugins/owner
+	url = https://github.com/strange-bot/plugin-owner.git
+	branch = main
+
+[submodule "plugins/presence"]
+	path = plugins/presence
+	url = https://github.com/strange-bot/plugin-presence.git
+	branch = main
+
+[submodule "plugins/reaction-roles"]
+	path = plugins/reaction-roles
+	url = https://github.com/strange-bot/plugin-reaction-roles.git
+	branch = main
+
+[submodule "plugins/social"]
+	path = plugins/social
+	url = https://github.com/strange-bot/plugin-social.git
+	branch = main
+
+[submodule "plugins/stats"]
+	path = plugins/stats
+	url = https://github.com/strange-bot/plugin-stats.git
+	branch = main
+
+[submodule "plugins/suggestion"]
+	path = plugins/suggestion
+	url = https://github.com/strange-bot/plugin-suggestion.git
+	branch = main
+
+[submodule "plugins/ticket"]
+	path = plugins/ticket
+	url = https://github.com/strange-bot/plugin-ticket.git
+	branch = main
+
+[submodule "plugins/translation"]
+	path = plugins/translation
+	url = https://github.com/strange-bot/plugin-translation.git
+	branch = main
+
+[submodule "plugins/utility"]
+	path = plugins/utility
+	url = https://github.com/strange-bot/plugin-utility.git
+	branch = main

@@ -1,0 +1,38 @@
+{
+    "SIDEBAR": {
+        "DASHBOARD": "Dashboard",
+        "HOME": "Home",
+        "PLUGINS": "Plugins",
+        "TIP_DOCUMENTATION": "Documentation",
+        "TIP_GITHUB": "GitHub Repository"
+    },
+
+    "NAV": {
+        "SETTINGS": "Settings",
+        "LOGOUT": "Logout",
+        "TIP_DARK_MODE": "Toggle Dark Mode",
+        "SR_USER_MENU": "Open User Menu"
+    },
+
+    "SELECTOR": {
+        "BTN_MANAGE": "Manage",
+        "BTN_INVITE": "Invite"
+    },
+
+    "HOME": {
+        "MEMBERS": "Members",
+        "ROLES": "Roles",
+        "TXT_CHANNELS": "Text Channels",
+        "VC_CHANNELS": "Voice Channels",
+        "SUB_PLUGINS": "Plugins",
+        "LABEL_PREFIX": "Prefix",
+        "LABEL_SLASH": "Slash",
+
+        "BTN_PLUGIN_ACTIVE": "Active",
+        "BTN_PLUGIN_ENABLE": "Enable",
+
+        "PLUGIN_ENABLE_CONFIRM": "Are you sure you want to enable this plugin?",
+        "PLUGIN_CONFIRM_YES": "Yes, I'm sure",
+        "PLUGIN_CONFIRM_NO": "No, cancel"
+    }
+}

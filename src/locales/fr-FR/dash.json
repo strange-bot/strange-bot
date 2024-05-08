@@ -1,0 +1,38 @@
+{
+    "SIDEBAR": {
+        "DASHBOARD": "Tableau de bord",
+        "HOME": "Maison",
+        "PLUGINS": "Plugins",
+        "TIP_DOCUMENTATION": "Documentation",
+        "TIP_GITHUB": "Dépôt GitHub"
+    },
+
+    "NAV": {
+        "SETTINGS": "Paramètres",
+        "LOGOUT": "Déconnexion",
+        "TIP_DARK_MODE": "Activer le mode sombre",
+        "SR_USER_MENU": "Ouvrir le menu utilisateur"
+    },
+
+    "SELECTOR": {
+        "BTN_MANAGE": "Gérer",
+        "BTN_INVITE": "Inviter"
+    },
+
+    "HOME": {
+        "MEMBERS": "Membres",
+        "ROLES": "Rôles",
+        "TXT_CHANNELS": "Canaux de texte",
+        "VC_CHANNELS": "Canaux vocaux",
+        "SUB_PLUGINS": "Plugins",
+        "LABEL_PREFIX": "Préfixe",
+        "LABEL_SLASH": "Barre oblique",
+
+        "BTN_PLUGIN_ACTIVE": "Actif",
+        "BTN_PLUGIN_ENABLE": "Activer",
+
+        "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
+        "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
+        "PLUGIN_CONFIRM_NO": "Non, annuler"
+    }
+}
