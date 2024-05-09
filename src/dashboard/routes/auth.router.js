@@ -93,6 +93,7 @@ router.get("/callback", async (req, res) => {
 
 // Logout
 router.get("/logout", async function (req, res) {
+    if (!req.user || !req.user.infos) return res.redirect(BASE_URL);
     const userId = req.user.infos.id;
     req.session.destroy(async (err) => {
         if (err) {

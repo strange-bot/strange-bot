@@ -31,7 +31,7 @@ const Model = mongoose.model("dashboard", Schema);
 
 module.exports = {
     get: async (userId) => {
-        if (cache.contains(userId)) return cache.get(userId);
+        if (cache.has(userId)) return cache.get(userId);
 
         let data = await Model.findById(userId);
         if (!data) {
@@ -40,7 +40,7 @@ module.exports = {
             });
         }
 
-        cache.add(userId, data);
+        cache.set(userId, data);
         return data;
     },
 };
