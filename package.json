@@ -15,8 +15,9 @@
     ],
     "scripts": {
         "start": "npm run build:webpack && node .",
-        "init:modules": "git submodule update --init --recursive",
-        "update:modules": "git submodule foreach git checkout main && git submodule foreach git pull origin main",
+        "git:pull": "git pull origin main",
+        "git:modules:init": "git submodule update --init --recursive",
+        "git:modules:update": "git submodule foreach git pull origin main",
         "build:webpack": "webpack --mode=production",
         "build:css": "tailwindcss build -i src/dashboard/src/style.css -o src/dashboard/public/app.css",
         "dev": "npm-run-all --parallel dev:*",
