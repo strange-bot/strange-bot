@@ -1,6 +1,8 @@
 const { PermissionsBitField } = require("discord.js");
 const DBModel = require("../../schemas/Dashboard");
 
+const OWNER_IDS = process.env.OWNER_IDS.split(",").map((id) => id.trim());
+
 /**
  * @param {import('discord.js').Client} client
  */
@@ -31,6 +33,7 @@ module.exports = (client) => {
             // Populate user data
             const user = await client.users.fetch(req.session.user.infos.id);
             user.email = req.session.user.infos.email;
+            user.isOwner = OWNER_IDS.includes(user.id);
             req.user = {
                 infos: user,
                 guilds: req.session.user.guilds,

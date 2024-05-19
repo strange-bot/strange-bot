@@ -24,7 +24,7 @@ module.exports.CheckAuth = async (req, res, next) => {
  * @param {import('express').NextFunction} next
  */
 module.exports.CheckAdmin = async (req, res, next) => {
-    if (!req.client.coreConfig.get("OWNER_IDS").includes(req.session.user.infos.id)) {
+    if (!req.user.infos.isOwner) {
         return res.redirect("/dashboard");
     }
 

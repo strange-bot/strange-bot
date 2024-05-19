@@ -100,7 +100,7 @@
               </p>
             </div>
             <ul class="py-1" role="none">
-              <% if (coreConfig.get("OWNER_IDS").includes(user.infos.id)) { %>
+              <% if (user.infos.isOwner) { %>
               <li>
                 <a
                   href="/admin"

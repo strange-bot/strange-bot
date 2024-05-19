@@ -81,8 +81,13 @@ type SessionUser = {
 };
 
 type RequestUser = {
-    infos: import("discord.js").User;
+    infos: ExtendedUser;
     guilds: ExtendedPartialGuild[];
+};
+
+type ExtendedUser = import("discord.js").User & {
+    email: string;
+    isOwner: boolean;
 };
 
 type ExtendedPartialGuild = import("discord-oauth2").PartialGuild & {
