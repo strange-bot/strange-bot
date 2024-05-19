@@ -1,6 +1,6 @@
 const express = require("express");
 const DiscordOauth2 = require("discord-oauth2");
-const DBModel = require("../schemas/Dashboard");
+const DBModel = require("../../schemas/Dashboard");
 const { encrypt } = require("../utils");
 
 const router = express.Router();

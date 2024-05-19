@@ -8,7 +8,7 @@ module.exports = {
         app: path.resolve(__dirname, "src/dashboard/src/index.js"),
     },
     output: {
-        filename: "[name].bundle.js",
+        filename: "js/[name].bundle.js",
         path: path.resolve(__dirname, "src/dashboard/public/"),
     },
     module: {
@@ -23,7 +23,9 @@ module.exports = {
         extensions: ["", ".js", ".jsx", ".css"],
     },
     plugins: [
-        new MiniCssExtractPlugin(),
+        new MiniCssExtractPlugin({
+            filename: "css/[name].bundle.css",
+        }),
         new SourceMapDevToolPlugin({
             filename: "[file].map",
         }),

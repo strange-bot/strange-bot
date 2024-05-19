@@ -1,0 +1,69 @@
+<form method="post">
+  <section class="px-4">
+    <div class="flex items-center justify-between rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-white">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Bot Homepage</h2>
+        <p class="text-sm text-gray-500">Set the HTML content, custom CSS, and JavaScript for the bot homepage.</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button
+          type="submit"
+          class="mr-1 rounded-md border border-green-100 bg-green-100 px-2.5 py-1.5 text-xs font-medium text-green-800 dark:border-green-500 dark:bg-gray-700 dark:text-green-400">
+          Save
+        </button>
+        <a
+          href="<%= process.env.BASE_URL %>"
+          target="_blank"
+          class="mr-1 rounded-md border border-blue-100 bg-blue-100 px-2.5 py-1.5 text-xs font-medium text-blue-800 dark:border-blue-500 dark:bg-gray-700 dark:text-blue-400">
+          Preview
+          <i>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              class="ml-1 inline-block h-3 w-3 fill-current">
+              <path
+                d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z" />
+            </svg>
+          </i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-6 px-4 pt-6">
+    <label for="html-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white"
+      >HTML Content</label
+    >
+    <textarea
+      id="html-editor"
+      name="html"
+      rows="10"
+      class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none">
+<%- html -%>
+    </textarea>
+  </section>
+
+  <section class="mb-6 px-4 pt-6">
+    <label for="css-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white">Custom CSS</label>
+    <textarea
+      id="css-editor"
+      name="css"
+      rows="10"
+      class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none">
+<%- css -%>
+    </textarea>
+  </section>
+
+  <section class="mb-6 px-4 pt-6">
+    <label for="js-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white"
+      >Custom JavaScript</label
+    >
+    <textarea
+      id="js-editor"
+      name="js"
+      rows="10"
+      class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none">
+<%- js -%>
+    </textarea>
+  </section>
+</form>

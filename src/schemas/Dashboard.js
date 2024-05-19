@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const config = require("../../config");
+const config = require("../../plugins/core/config");
 
 const cache = new Map();
 
@@ -11,7 +11,7 @@ const ReqString = {
 const Schema = new mongoose.Schema(
     {
         _id: ReqString,
-        locale: { type: String, default: config.LOCALE.DEFAULT },
+        locale: { type: String, default: config.get("LOCALE").DEFAULT },
         logged_in: { type: Boolean, default: false },
         tokens: {
             access_token: String,

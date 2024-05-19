@@ -40,6 +40,7 @@
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.18.0",
         "i18next": "^23.11.3",
+        "isomorphic-dompurify": "^2.9.0",
         "mongoose": "^7.6.11",
         "strange-sdk": "github:strange-bot/strange-sdk"
     },

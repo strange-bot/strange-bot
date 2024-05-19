@@ -14,7 +14,4 @@ yarn.lock
 *.tar.gz
 
 # Dashboard build
-src/dashboard/public/app.bundle.js
-src/dashboard/public/app.bundle.js.map
-src/dashboard/public/app.css
-src/dashboard/public/app.css.map
+src/dashboard/**/*.bundle.*

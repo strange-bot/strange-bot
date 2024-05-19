@@ -30,7 +30,6 @@ class BotClient extends Client {
             restRequestTimeout: 20000,
         });
 
-        this.baseConfig = require("../config");
         this.languages = require("../locales/languages-meta.json");
 
         // Command Collections
@@ -54,8 +53,15 @@ class BotClient extends Client {
         this.wait = require("util").promisify(setTimeout);
     }
 
+    /**
+     * @returns {import("../../plugins/core/config")}
+     */
+    get coreConfig() {
+        return this.pluginManager.getConfig("core");
+    }
+
     get defaultLanguage() {
-        return this.config.LOCALE.DEFAULT;
+        return this.coreConfig.get("LOCALE").DEFAULT;
     }
 
     async loadTranslations() {
@@ -141,7 +147,7 @@ class BotClient extends Client {
         const toRegister = [];
 
         // filter slash commands
-        if (this.config.INTERACTIONS.SLASH) {
+        if (this.coreConfig.get("INTERACTIONS").SLASH) {
             this.slashCommands
                 .map((cmd) => ({
                     name: cmd.name,
@@ -170,7 +176,7 @@ class BotClient extends Client {
         }
 
         // filter contexts
-        if (this.config.INTERACTIONS.CONTEXT) {
+        if (this.coreConfig.get("INTERACTIONS").CONTEXT) {
             this.contextMenus
                 .map((ctx) => ({
                     name: ctx.name,

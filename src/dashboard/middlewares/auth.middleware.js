@@ -4,7 +4,7 @@
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
  */
-module.exports = async (req, res, next) => {
+module.exports.CheckAuth = async (req, res, next) => {
     if (!req.session.user) {
         const redirectURL =
             req.originalUrl.includes("login") || req.originalUrl === "/"
@@ -14,5 +14,19 @@ module.exports = async (req, res, next) => {
         req.client.dashboardStates[state] = redirectURL;
         return res.redirect(`/auth/login?state=${state}`);
     }
+    return next();
+};
+
+/**
+ * Middleware to check if the user is logged in
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+module.exports.CheckAdmin = async (req, res, next) => {
+    if (!req.client.coreConfig.get("OWNER_IDS").includes(req.session.user.infos.id)) {
+        return res.redirect("/dashboard");
+    }
+
     return next();
 };

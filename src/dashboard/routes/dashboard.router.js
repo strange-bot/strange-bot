@@ -6,21 +6,20 @@ const router = express.Router();
 const pluginMiddleware = require("../middlewares/plugin.middleware");
 
 // Controllers
-const indexController = require("../controllers/index.controller");
-const homeController = require("../controllers/home.controller");
+const dashboardController = require("../controllers/dashboard.controller");
 
-router.get("/", indexController);
-router.get("/:serverId", homeController.get);
-router.post("/:serverId", homeController.post);
+router.get("/", dashboardController.getSelector);
+router.get("/:serverId", dashboardController.getPlugins);
+router.post("/:serverId", dashboardController.postPlugins);
 
 PluginManager.plugins.forEach((plugin) => {
-    if (plugin.dashboard.enabled) {
+    if (plugin.dashboard.enabled && plugin.dashboard.settingsRouter) {
         router.use(
             `/:serverId/${plugin.name}`,
             (req, res, next) => {
                 pluginMiddleware(req, res, next, plugin);
             },
-            plugin.dashboard.router,
+            plugin.dashboard.settingsRouter,
         );
     }
 });

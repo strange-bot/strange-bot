@@ -1,17 +1,23 @@
 {
     "SIDEBAR": {
         "DASHBOARD": "Dashboard",
+        "LANDING": "Landing Page",
         "HOME": "Home",
         "PLUGINS": "Plugins",
+        "PLUGIN_CONFIGS": "Plugin Config",
         "TIP_DOCUMENTATION": "Documentation",
         "TIP_GITHUB": "GitHub Repository"
     },
 
     "NAV": {
-        "SETTINGS": "Settings",
+        "ADMIN": "Admin Page",
         "LOGOUT": "Logout",
         "TIP_DARK_MODE": "Toggle Dark Mode",
         "SR_USER_MENU": "Open User Menu"
+    },
+
+    "BREADCRUMB": {
+        "ADMIN": "Admin"
     },
 
     "SELECTOR": {

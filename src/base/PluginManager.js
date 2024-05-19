@@ -1,7 +1,8 @@
-const { readdirSync, statSync } = require("node:fs");
+const { readdirSync, statSync, existsSync } = require("node:fs");
 const { join } = require("node:path");
-const { Plugin } = require("strange-sdk");
+const { Plugin, Config } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
+const ConfigModel = require("../schemas/Config");
 
 class PluginManager {
     /**
@@ -10,12 +11,17 @@ class PluginManager {
     static #settingsRegistry = {};
 
     /**
-     * @type {import('./Plugin')[]}
+     * @type {Object.<string, Config>}
+     */
+    static #configRegistry = {};
+
+    /**
+     * @type {Plugin[]}
      */
     static #plugins = [];
 
     /**
-     * @type {Map<string, import('./Plugin')>}
+     * @type {Map<string, Plugin>}
      */
     static #pluginMap = new Map();
 
@@ -42,25 +48,49 @@ class PluginManager {
     }
 
     /**
+     * @param {string} pluginName
+     * @returns {Plugin} The plugin object for the given plugin.
+     */
+    static getPlugin(pluginName) {
+        return PluginManager.#pluginMap.get(pluginName);
+    }
+
+    /**
+     * @param {string} pluginName
+     * @returns {Config} The config object for the given plugin.
+     */
+    static getConfig(pluginName) {
+        return PluginManager.#configRegistry[pluginName];
+    }
+
+    /**
      * Loads all plugins in the given directory.
      * @param {import('discord.js').Client} client
      * @param {string} directory The directory to load plugins from.
-     * @param {string[]} activePlugins The list of plugins to load.
      */
-    static loadPlugins(client, directory, activePlugins) {
-        if (!activePlugins.includes("core")) {
-            activePlugins.push("core");
+    static async loadPlugins(client, directory) {
+        // Load core plugin first
+        const corePluginPath = join(directory, "core");
+        try {
+            await PluginManager.#loadPlugin(client, corePluginPath);
+        } catch (error) {
+            Logger.error(`Error loading plugin ${corePluginPath}:`, error);
+            process.exit(1);
         }
 
+        const activePlugins = this.getConfig("core").get("PLUGINS");
         const plugins = readdirSync(directory).filter(
-            (f) => statSync(join(directory, f)).isDirectory() && activePlugins.includes(f),
+            (f) =>
+                statSync(join(directory, f)).isDirectory() &&
+                f !== "core" &&
+                activePlugins.includes(f),
         );
 
         // Load all plugins
         for (const plugin of plugins) {
             const pluginPath = join(directory, plugin);
             try {
-                PluginManager.#loadPlugin(client, pluginPath);
+                await PluginManager.#loadPlugin(client, pluginPath);
             } catch (error) {
                 Logger.error(`Error loading plugin ${pluginPath}:`, error);
             }
@@ -83,7 +113,21 @@ class PluginManager {
      * @param {import('discord.js').Client} client
      * @param {string} pluginDir
      */
-    static #loadPlugin(client, pluginDir) {
+    static async #loadPlugin(client, pluginDir) {
+        // Load config first
+        const configPath = join(pluginDir, "config.js");
+        if (existsSync(configPath)) {
+            const config = require(configPath);
+            if (!(config instanceof Config)) {
+                throw new Error(
+                    "Not a valid config (Does it export an instance of the Config class?)",
+                );
+            }
+
+            if (process.env.LOCAL_CONFIG !== "1") await config.loadFromDb(ConfigModel);
+            PluginManager.#configRegistry[config.pluginName] = config;
+        }
+
         const plugin = require(pluginDir);
 
         if (!(plugin instanceof Plugin)) {

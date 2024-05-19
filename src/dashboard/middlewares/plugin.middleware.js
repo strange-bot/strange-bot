@@ -1,11 +1,9 @@
-const config = require("../../config");
-
 /**
  * Middleware to check if the user is logged in
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
- * @param {import('../../base/Plugin')} plugin
+ * @param {import('strange-sdk').Plugin} plugin
  */
 module.exports = async (req, res, next, plugin) => {
     const guild = req.client.guilds.cache.get(req.params.serverId);
@@ -31,22 +29,22 @@ module.exports = async (req, res, next, plugin) => {
         plugin.name.charAt(0).toUpperCase() +
         plugin.name.slice(1) +
         " | " +
-        config.DASHBOARD.LOGO_NAME;
+        req.client.coreConfig.get("DASHBOARD").LOGO_NAME;
 
-    req.renderData = {
-        slug: "plugins/" + plugin.name,
-        guild,
-        user: req.user,
-        plugin,
-        plugins: req.client.pluginManager.plugins.filter((p) => p.dashboard.enabled),
-        config,
-        settings,
-        tr: req.translate,
+    res.locals.tr = req.translate;
+    res.locals.coreConfig = req.client.coreConfig;
+    res.locals.guild = guild;
+    res.locals.user = req.user;
+    res.locals.plugins = req.client.pluginManager.plugins.filter(
+        (p) => !p.ownerOnly && p.dashboard.enabled && p.dashboard.settingsRouter,
+    );
+    res.locals.plugin = plugin;
+    res.locals.settings = settings;
 
-        title,
-        layout: "layouts/dashboard",
-        breadcrumb: true,
-    };
+    res.locals.title = title;
+    res.locals.slug = `/plugins/${plugin.name}`;
+    res.locals.layout = "layouts/dashboard";
+    res.locals.breadcrumb = true;
 
     return next();
 };

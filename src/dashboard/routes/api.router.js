@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const DBModel = require("../schemas/Dashboard");
+const DBModel = require("../../schemas/Dashboard");
 
 router.post("/language", async (req, res) => {
     const lang = req.body.language_code;

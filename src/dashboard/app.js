@@ -20,7 +20,7 @@ module.exports = async (client, connection) => {
     app.set("port", process.env.SERVER_PORT || 3000);
 
     // Middlewares
-    const CheckAuth = require("./middlewares/auth.middleware");
+    const { CheckAuth, CheckAdmin } = require("./middlewares/auth.middleware");
     const Context = require("./middlewares/context.middleware");
 
     app.use(express.json());
@@ -47,11 +47,15 @@ module.exports = async (client, connection) => {
     app.use(Context(client));
 
     // Routers
+    const landingRouter = require("./routes/landing.router");
     const authRouter = require("./routes/auth.router");
+    const adminRouter = require("./routes/admin.router");
     const dashboardRouter = require("./routes/dashboard.router");
     const apiRouter = require("./routes/api.router");
 
+    app.use("/", landingRouter);
     app.use("/auth", authRouter);
+    app.use("/admin", CheckAdmin, adminRouter);
     app.use("/dashboard", CheckAuth, dashboardRouter);
     app.use("/api", CheckAuth, apiRouter);
 

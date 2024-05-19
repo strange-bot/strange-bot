@@ -31,7 +31,7 @@ const PluginManager = require("./base/PluginManager");
 
     // Initialize plugins
     const pluginsDir = path.join(__dirname, "..", "plugins");
-    PluginManager.loadPlugins(client, pluginsDir, client.baseConfig.PLUGINS);
+    await PluginManager.loadPlugins(client, pluginsDir);
 
     // Initialize settings
     await require("./base/Settings").init(client);
@@ -49,7 +49,7 @@ const PluginManager = require("./base/PluginManager");
     });
 
     // Launch the dashboard
-    if (client.baseConfig.DASHBOARD.ENABLED) {
+    if (client.coreConfig.get("DASHBOARD").ENABLED) {
         await require("./dashboard/app")(client, connection);
     }
 

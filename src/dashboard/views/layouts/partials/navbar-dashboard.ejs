@@ -31,9 +31,9 @@
           </svg>
         </button>
         <a href="/dashboard" class="ml-2 flex md:mr-24">
-          <img src="/images/logo.svg" class="mr-3 h-8" alt="Strange Logo" />
+          <img src="<%= coreConfig.get("DASHBOARD").LOGO_URL %>" class="mr-3 h-8" alt="Strange Logo" />
           <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl"
-            ><%= config.DASHBOARD.LOGO_NAME %></span
+            ><%= coreConfig.get("DASHBOARD").LOGO_NAME %></span
           >
         </a>
       </div>
@@ -100,14 +100,16 @@
               </p>
             </div>
             <ul class="py-1" role="none">
+              <% if (coreConfig.get("OWNER_IDS").includes(user.infos.id)) { %>
               <li>
                 <a
-                  href="#"
+                  href="/admin"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
-                  ><%= tr('dash:NAV.SETTINGS') %></a
+                  ><%= tr('dash:NAV.ADMIN') %></a
                 >
               </li>
+              <% } %>
               <li>
                 <a
                   href="/auth/logout"

@@ -1,5 +1,5 @@
 const { PermissionsBitField } = require("discord.js");
-const DBModel = require("../schemas/Dashboard");
+const DBModel = require("../../schemas/Dashboard");
 
 /**
  * @param {import('discord.js').Client} client
@@ -8,7 +8,7 @@ module.exports = (client) => {
     /**
      * Middleware to populate the request object with the user's context
      * @param {import('express').Request} req
-     * @param {import('express').Response} res
+     * @param {import('express').Response} _res
      * @param {import('express').NextFunction} next
      */
     return async (req, _res, next) => {

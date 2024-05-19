@@ -1,34 +1,17 @@
-const PluginManager = require("../../base/PluginManager");
 const Settings = require("../../base/Settings");
-const config = require("../../config");
 
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-exports.get = async function (req, res) {
-    const guild = req.client.guilds.cache.get(req.params.serverId);
-    if (!guild || !req.user.guilds.find((g) => g.id === req.params.serverId)) {
-        return res.status(404).send("Not found");
-    }
-
-    const plugins = PluginManager.plugins.filter((p) => p.dashboard.enabled);
-    const enabledPlugins = new Set();
-    for (const [name, info] of Object.entries(Settings.get(guild).plugins)) {
-        if (info.enabled) enabledPlugins.add(name);
-    }
-
-    res.render("home", {
-        slug: "home",
-        config,
-        user: req.user,
-        guild,
-        plugins,
-        enabledPlugins,
+module.exports.getSelector = async function (req, res) {
+    res.render("selector", {
+        coreConfig: req.client.coreConfig,
         tr: req.translate,
+        user: req.user,
 
-        layout: "layouts/dashboard",
-        title: `${guild.name} | ${config.DASHBOARD.LOGO_NAME}`,
+        title: `Server Selector | ${req.client.coreConfig.get("DASHBOARD").LOGO_NAME}`,
+        slug: "selector",
         breadcrumb: true,
     });
 };
@@ -37,7 +20,43 @@ exports.get = async function (req, res) {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-exports.post = async function (req, res) {
+exports.getPlugins = async function (req, res) {
+    const guild = req.client.guilds.cache.get(req.params.serverId);
+    if (!guild || !req.user.guilds.find((g) => g.id === req.params.serverId)) {
+        return res.status(404).send("Not found");
+    }
+
+    const availablePlugins = req.client.pluginManager.plugins.filter((p) => !p.ownerOnly);
+    const enabledPlugins = new Set();
+    for (const [name, info] of Object.entries(Settings.get(guild).plugins)) {
+        if (info.enabled) enabledPlugins.add(name);
+    }
+
+    const coreConfig = req.client.coreConfig;
+
+    res.render("home", {
+        coreConfig,
+        tr: req.translate,
+        user: req.user,
+
+        guild,
+        plugins: req.client.pluginManager.plugins.filter(
+            (p) => !p.ownerOnly && p.dashboard.enabled && p.dashboard.settingsRouter,
+        ),
+        availablePlugins,
+        enabledPlugins,
+
+        title: `${guild.name} | ${coreConfig.get("DASHBOARD").LOGO_NAME}`,
+        slug: "home",
+        breadcrumb: true,
+    });
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+exports.postPlugins = async function (req, res) {
     const guild = req.client.guilds.cache.get(req.params.serverId);
     if (!guild || !req.user.guilds.find((g) => g.id === req.params.serverId)) {
         return res.status(404).send("Not found");
