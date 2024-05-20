@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "start": "npm run build:webpack && node .",
-        "git:pull": "git reset --hard && git clean -fd && git pull origin main",
+        "git:pull": "git reset --hard && git pull origin main",
         "git:modules:init": "git submodule update --init --recursive",
         "git:modules:update": "git submodule update --recursive --remote --force",
         "build:webpack": "webpack --mode=production",
