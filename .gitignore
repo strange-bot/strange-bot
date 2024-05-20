@@ -6,8 +6,6 @@ logs/
 # Files
 .DS_Store
 .env
-package-lock.json
-yarn.lock
 
 # Extensions
 *.log

@@ -59,7 +59,8 @@ module.exports.post = async function (req, res) {
         // Sanitize the HTML content
         const sanitizedHtml = sanitize(html, {
             WHOLE_DOCUMENT: true,
-            ADD_TAGS: ["script", "link"],
+            ADD_TAGS: ["script", "link", "meta"],
+            ADD_ATTR: ["charset", "name", "content"],
         });
 
         // Sanitize the CSS and JS content (as plain text, basic sanitization)
