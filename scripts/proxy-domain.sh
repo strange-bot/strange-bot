@@ -63,13 +63,17 @@ EOF
 
 echo "Nginx configuration file created: $NGINX_SITES_AVAILABLE_DIR/$DOMAIN.conf"
 
-# Enable the site by creating a symbolic link to sites-enabled
-sudo ln -s "$NGINX_SITES_AVAILABLE_DIR/$DOMAIN.conf" "$NGINX_SITES_ENABLED_DIR/$DOMAIN.conf"
-if [ $? -ne 0 ]; then
-    echo "Failed to enable site."
-    rollback
+# Enable the site by creating a symbolic link to sites-enabled if it doesn't already exist
+if [ ! -e "$NGINX_SITES_ENABLED_DIR/$DOMAIN.conf" ]; then
+    sudo ln -s "$NGINX_SITES_AVAILABLE_DIR/$DOMAIN.conf" "$NGINX_SITES_ENABLED_DIR/$DOMAIN.conf"
+    if [ $? -ne 0 ]; then
+        echo "Failed to enable site."
+        rollback
+    else
+        echo "Site enabled successfully."
+    fi
 else
-    echo "Site enabled successfully."
+    echo "Symbolic link already exists in $NGINX_SITES_ENABLED_DIR. Skipping creation."
 fi
 
 # Obtain SSL/TLS certificate using Certbot
