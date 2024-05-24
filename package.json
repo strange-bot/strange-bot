@@ -39,15 +39,15 @@
         "express": "^4.19.2",
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.18.0",
-        "i18next": "^23.11.3",
-        "isomorphic-dompurify": "^2.9.0",
-        "mongoose": "^7.6.11",
+        "i18next": "^23.11.5",
+        "isomorphic-dompurify": "^2.11.0",
+        "mongoose": "^7.6.12",
         "strange-sdk": "github:strange-bot/strange-sdk"
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.8",
         "erlpack": "^0.1.4",
-        "utf-8-validate": "^6.0.3",
+        "utf-8-validate": "^6.0.4",
         "zlib-sync": "^0.1.9"
     },
     "devDependencies": {
@@ -61,7 +61,7 @@
         "flowbite": "^2.1.1",
         "mini-css-extract-plugin": "^2.9.0",
         "node": "^18.20.2",
-        "nodemon": "^3.0.3",
+        "nodemon": "^3.1.0",
         "npm-run-all": "^4.1.5",
         "postcss": "^8.4.38",
         "postcss-loader": "^7.3.4",

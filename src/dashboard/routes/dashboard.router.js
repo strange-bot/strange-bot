@@ -12,16 +12,30 @@ router.get("/", dashboardController.getSelector);
 router.get("/:serverId", dashboardController.getPlugins);
 router.post("/:serverId", dashboardController.postPlugins);
 
-PluginManager.plugins.forEach((plugin) => {
-    if (plugin.dashboard.enabled && plugin.dashboard.settingsRouter) {
+// Default GET, POST router for plugins with dashboard
+const defaultRouter = () => {
+    const router = express.Router();
+    router.get("/", (_req, res) => {
+        res.render("default_plugin");
+    });
+
+    router.post("/", (_req, res) => {
+        return res.status(400).send("Not implemented");
+    });
+
+    return router;
+};
+
+PluginManager.plugins
+    .filter((p) => !p.ownerOnly)
+    .forEach((plugin) => {
         router.use(
             `/:serverId/${plugin.name}`,
             (req, res, next) => {
                 pluginMiddleware(req, res, next, plugin);
             },
-            plugin.dashboard.settingsRouter,
+            plugin.dashboard.settingsRouter || defaultRouter(),
         );
-    }
-});
+    });
 
 module.exports = router;

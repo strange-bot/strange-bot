@@ -17,6 +17,7 @@
     "NO": "Non",
 
     "DASH": {
+        "SAVE": "Sauvegarder",
         "UPDATE": "Mise à jour",
         "UPDATE_ALL": "Tout mettre à jour",
         "ENABLE": "Activer",

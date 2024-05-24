@@ -26,7 +26,6 @@ exports.getPlugins = async function (req, res) {
         return res.status(404).send("Not found");
     }
 
-    const availablePlugins = req.client.pluginManager.plugins.filter((p) => !p.ownerOnly);
     const enabledPlugins = new Set();
     for (const [name, info] of Object.entries(Settings.get(guild).plugins)) {
         if (info.enabled) enabledPlugins.add(name);
@@ -40,10 +39,7 @@ exports.getPlugins = async function (req, res) {
         user: req.user,
 
         guild,
-        plugins: req.client.pluginManager.plugins.filter(
-            (p) => !p.ownerOnly && p.dashboard.enabled && p.dashboard.settingsRouter,
-        ),
-        availablePlugins,
+        plugins: req.client.pluginManager.plugins.filter((p) => !p.ownerOnly),
         enabledPlugins,
 
         title: `${guild.name} | ${coreConfig.get("DASHBOARD").LOGO_NAME}`,

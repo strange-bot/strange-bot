@@ -1,8 +1,10 @@
 {
     "SIDEBAR": {
         "DASHBOARD": "Tableau de bord",
+        "LANDING": "Page d'accueil",
         "HOME": "Maison",
         "PLUGINS": "Plugins",
+        "PLUGIN_CONFIGS": "Configuration du plugin",
         "TIP_DOCUMENTATION": "Documentation",
         "TIP_GITHUB": "Dépôt GitHub"
     },
@@ -12,6 +14,16 @@
         "LOGOUT": "Déconnexion",
         "TIP_DARK_MODE": "Activer le mode sombre",
         "SR_USER_MENU": "Ouvrir le menu utilisateur"
+    },
+
+    "BREADCRUMB": {
+        "ADMIN": "Administrateur"
+    },
+
+    "TABS": {
+        "SETTINGS": "Paramètres",
+        "PREFIX": "Commandes de préfixe",
+        "SLASH": "Commandes barre oblique"
     },
 
     "SELECTOR": {
@@ -34,5 +46,7 @@
         "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
         "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
         "PLUGIN_CONFIRM_NO": "Non, annuler"
-    }
+    },
+
+    "NO_SETTINGS": "Ce plugin n'a aucun paramètre."
 }

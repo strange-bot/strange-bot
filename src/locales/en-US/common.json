@@ -17,6 +17,7 @@
     "NO": "No",
 
     "DASH": {
+        "SAVE": "Save",
         "UPDATE": "Update",
         "UPDATE_ALL": "Update All",
         "ENABLE": "Enable",
