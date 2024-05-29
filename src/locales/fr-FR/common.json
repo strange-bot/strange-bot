@@ -16,6 +16,9 @@
     "YES": "Oui",
     "NO": "Non",
 
+    "ENABLED": "Activé",
+    "DISABLED": "Désactivé",
+
     "DASH": {
         "SAVE": "Sauvegarder",
         "UPDATE": "Mise à jour",

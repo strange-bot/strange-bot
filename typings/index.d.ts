@@ -5,11 +5,11 @@ declare global {
         interface Client {
             public languages: Array<Object>;
 
-            public prefixCommands: import('discord.js').Collection<string, CommandType>;
-            public slashCommands: import('discord.js').Collection<string, CommandType>;
-            public contextMenus: import('discord.js').Collection<string, ContextType>;
+            public prefixCommands: import('discord.js').Collection<string, import('strange-sdk').CommandType>;
+            public slashCommands: import('discord.js').Collection<string, import('strange-sdk').CommandType>;
+            public contextMenus: import('discord.js').Collection<string, import('strange-sdk').ContextType>;
 
-            public logger: typeof import('src/utils/Logger');
+            public logger: typeof import('strange-sdk/utils').Logger;
             public pluginManager : typeof import('src/base/PluginManager');
             public settings: typeof import('src/base/Settings');
 

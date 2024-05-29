@@ -106,6 +106,9 @@ class PluginManager {
 
         PluginManager.#loadPluginsInTopologicalOrder();
         Logger.success(`Loaded ${PluginManager.#plugins.length} plugins`);
+        if (process.env.LOCAL_CONFIG === "1") {
+            Logger.warn("Local config mode is enabled");
+        }
     }
 
     /**

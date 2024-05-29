@@ -33,8 +33,17 @@ class BotClient extends Client {
         this.languages = require("../locales/languages-meta.json");
 
         // Command Collections
+        /**
+         * @type {Collection<string, import("strange-sdk").CommandType>}
+         */
         this.prefixCommands = new Collection();
+        /**
+         * @type {Collection<string, import("strange-sdk").CommandType>}
+         */
         this.slashCommands = new Collection();
+        /**
+         * @type {Collection<string, import("strange-sdk").ContextType>}
+         */
         this.contextMenus = new Collection();
 
         // Logger
@@ -185,13 +194,8 @@ class BotClient extends Client {
                 .forEach((c) => toRegister.push(c));
         }
 
-        // Register GLobally
-        if (!guildId) {
-            await this.application.commands.set(toRegister);
-        }
-
         // Register for a specific guild
-        else if (guildId && typeof guildId === "string") {
+        if (guildId && typeof guildId === "string") {
             const guild = this.guilds.cache.get(guildId);
             if (!guild) {
                 this.logger.error(
@@ -207,10 +211,6 @@ class BotClient extends Client {
         else {
             throw new Error("Did you provide a valid guildId to register interactions");
         }
-
-        this.logger.success(
-            `Successfully registered interactions ${guildId ? `in ${guildId}` : "globally"}`,
-        );
     }
 
     /**
