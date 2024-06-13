@@ -24,7 +24,9 @@
         "dev:bot": "nodemon .",
         "dev:webpack": "webpack --mode=development --watch",
         "format": "prettier --write 'src/**/*.js' 'plugins/**/*.{js,json}'",
-        "validate": "node scripts/validate-env.js"
+        "validate": "node scripts/validate-env.js",
+        "sync:config": "node scripts/sync-config.js",
+        "sync:locales": "node scripts/sync-locales.js"
     },
     "homepage": "",
     "repository": {},
@@ -32,16 +34,17 @@
     "dependencies": {
         "connect-mongo": "^5.1.0",
         "cryptr": "^6.3.0",
+        "deepmerge": "^4.3.1",
         "discord-oauth2": "^2.12.1",
-        "discord.js": "^14.15.2",
+        "discord.js": "^14.15.3",
         "dotenv": "^16.4.5",
         "ejs": "^3.1.10",
         "express": "^4.19.2",
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.18.0",
         "i18next": "^23.11.5",
-        "isomorphic-dompurify": "^2.11.0",
-        "mongoose": "^7.6.12",
+        "isomorphic-dompurify": "^2.12.0",
+        "mongoose": "^7.6.13",
         "strange-sdk": "github:strange-bot/strange-sdk"
     },
     "optionalDependencies": {
@@ -52,7 +55,7 @@
     },
     "devDependencies": {
         "@saiteja-madha/prettier-config": "^1.1.0",
-        "apexcharts": "^3.49.0",
+        "apexcharts": "^3.49.1",
         "autoprefixer": "^10.4.19",
         "css-loader": "^6.11.0",
         "css-minimizer-webpack-plugin": "^5.0.1",
@@ -60,16 +63,16 @@
         "eslint-plugin-jsdoc": "^46.10.1",
         "flowbite": "^2.1.1",
         "mini-css-extract-plugin": "^2.9.0",
-        "node": "^18.20.2",
-        "nodemon": "^3.1.0",
+        "node": "^18.20.3",
+        "nodemon": "^3.1.3",
         "npm-run-all": "^4.1.5",
         "postcss": "^8.4.38",
         "postcss-loader": "^7.3.4",
         "prettier": "3.2.5",
         "style-loader": "^3.3.4",
-        "tailwindcss": "^3.4.3",
+        "tailwindcss": "^3.4.4",
         "tar": "^6.2.1",
-        "webpack": "^5.91.0",
+        "webpack": "^5.92.0",
         "webpack-cli": "^5.1.4"
     },
     "keywords": [

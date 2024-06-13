@@ -23,11 +23,11 @@ const client = new BotClient();
 const PluginManager = require("./base/PluginManager");
 
 (async () => {
-    // Load translations
-    await client.loadTranslations();
-
     // Initialize the database
     const connection = await require("./utils/db").init();
+
+    // Load translations
+    await client.loadTranslations();
 
     // Initialize plugins
     const pluginsDir = path.join(__dirname, "..", "plugins");

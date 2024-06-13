@@ -2,20 +2,20 @@
   <section class="px-4">
     <div class="flex items-center justify-between rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-white">
       <div>
-        <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Bot Homepage</h2>
-        <p class="text-sm text-gray-500">Set the HTML content, custom CSS, and JavaScript for the bot homepage.</p>
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr("dash:LANDING_PAGE.TITLE") %></h2>
+        <p class="text-sm text-gray-500"><%= tr("dash:LANDING_PAGE.DESCRIPTION") %></p>
       </div>
       <div class="flex items-center space-x-4">
         <button
           type="submit"
           class="mr-1 rounded-md border border-green-100 bg-green-100 px-2.5 py-1.5 text-xs font-medium text-green-800 dark:border-green-500 dark:bg-gray-700 dark:text-green-400">
-          Save
+          <%= tr("dash:LANDING_PAGE.SAVE_BTN") %>
         </button>
         <a
           href="<%= process.env.BASE_URL %>"
           target="_blank"
           class="mr-1 rounded-md border border-blue-100 bg-blue-100 px-2.5 py-1.5 text-xs font-medium text-blue-800 dark:border-blue-500 dark:bg-gray-700 dark:text-blue-400">
-          Preview
+          <%= tr("dash:LANDING_PAGE.PREVIEW_BTN") %>
           <i>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@
 
   <section class="mb-6 px-4 pt-6">
     <label for="html-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white"
-      >HTML Content</label
+      ><%= tr("dash:LANDING_PAGE.HTML_LABEL") %></label
     >
     <textarea
       id="html-editor"
@@ -44,7 +44,9 @@
   </section>
 
   <section class="mb-6 px-4 pt-6">
-    <label for="css-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white">Custom CSS</label>
+    <label for="css-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white"
+      ><%= tr("dash:LANDING_PAGE.CSS_LABEL") %></label
+    >
     <textarea
       id="css-editor"
       name="css"
@@ -56,7 +58,7 @@
 
   <section class="mb-6 px-4 pt-6">
     <label for="js-editor" class="mb-3 block px-4 text-sm font-medium text-gray-700 dark:text-white"
-      >Custom JavaScript</label
+      ><%= tr("dash:LANDING_PAGE.JS_LABEL") %></label
     >
     <textarea
       id="js-editor"

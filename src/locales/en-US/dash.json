@@ -2,6 +2,7 @@
     "SIDEBAR": {
         "DASHBOARD": "Dashboard",
         "LANDING": "Landing Page",
+        "LOCALES": "Localization",
         "HOME": "Home",
         "PLUGINS": "Plugins",
         "PLUGIN_CONFIGS": "Plugin Config",
@@ -46,6 +47,23 @@
         "PLUGIN_ENABLE_CONFIRM": "Are you sure you want to enable this plugin?",
         "PLUGIN_CONFIRM_YES": "Yes, I'm sure",
         "PLUGIN_CONFIRM_NO": "No, cancel"
+    },
+
+    "LANDING_PAGE": {
+        "TITLE": "Bot Landing Page",
+        "DESCRIPTION": "Set the HTML content, custom CSS, and JavaScript for the bot homepage.",
+        "SAVE_BTN": "Save",
+        "PREVIEW_BTN": "Preview",
+        "HTML_LABEL": "HTML Content",
+        "CSS_LABEL": "Custom CSS",
+        "JS_LABEL": "Custom JavaScript"
+    },
+
+    "LOCALES_PAGE": {
+        "TITLE": "Localizations",
+        "DESCRIPTION": "Manage localization keys for different plugins and languages.",
+        "PLUGIN_SELECT": "Select Plugin",
+        "LOCALE_SELECT": "Select Language"
     },
 
     "NO_SETTINGS": "This plugin does not have any settings."

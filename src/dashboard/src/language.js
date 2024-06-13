@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 function changeLanguage(languageCode) {
     console.log("Language code: ", languageCode);
 
@@ -24,7 +26,7 @@ function changeLanguage(languageCode) {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    languageElems = document.querySelectorAll("#language-dropdown a");
+    let languageElems = document.querySelectorAll("#language-dropdown a");
 
     for (let option of languageElems) {
         const languageCode = option.getAttribute("href").substring(1); // Extract language code

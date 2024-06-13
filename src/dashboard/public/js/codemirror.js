@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 // Check if CodeMirror is available
 if (typeof CodeMirror !== "undefined") {
     var theme = "default"; // default to light theme

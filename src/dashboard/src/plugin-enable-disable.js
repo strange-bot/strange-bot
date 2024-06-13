@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 // Enable or disable the plugin based on the toggle
 const pluginToggle = document.getElementById("plugin-toggle");
 

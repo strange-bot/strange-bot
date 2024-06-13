@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 const sidebar = document.getElementById("sidebar");
 
 if (sidebar) {

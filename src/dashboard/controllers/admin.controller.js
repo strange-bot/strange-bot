@@ -1,6 +1,9 @@
 const { sanitize } = require("isomorphic-dompurify");
 const fs = require("node:fs");
 const path = require("node:path");
+const { flattenObject } = require("../utils");
+const { updateResourceBundle } = require("../../utils/i18n");
+const i18next = require("i18next");
 
 /**
  * @param {import('express').Request} req
@@ -43,7 +46,7 @@ module.exports.get = async function (req, res) {
             "https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js",
             "https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js",
             "https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js",
-            "js/codemirror.js",
+            "/js/codemirror.js",
         ],
     });
 };
@@ -88,4 +91,76 @@ module.exports.post = async function (req, res) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+module.exports.getLocalizationBundle = async function (req, res) {
+    const availableLanguages = req.client.languages.map((l) => l.name);
+    const resourceBundle = {};
+    for (const plugin of req.client.pluginManager.plugins) {
+        const pluginName = plugin.name;
+        for (const language of availableLanguages) {
+            const bundle = i18next.getResourceBundle(language, pluginName) || {};
+            resourceBundle[pluginName] = resourceBundle[pluginName] || {};
+            resourceBundle[pluginName][language] = flattenObject(bundle);
+        }
+    }
+    return res.json(resourceBundle);
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+module.exports.updateLocalizationBundle = async function (req, res) {
+    const { plugin, language, keys } = req.body;
+
+    // Validate request keys
+    const existingResource = i18next.getResourceBundle(language, plugin) || {};
+    const existingKeys = Object.keys(flattenObject(existingResource));
+    const newKeys = Object.keys(keys);
+
+    if (existingKeys.length !== newKeys.length || !newKeys.every((k) => existingKeys.includes(k))) {
+        return res.status(400).json({
+            success: false,
+            message: "Oops! Some keys are missing or invalid",
+        });
+    }
+
+    await updateResourceBundle(plugin, language, keys);
+    res.json({ success: true, message: "Localization keys updated successfully" });
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+module.exports.getLocales = async function (req, res) {
+    const coreConfig = req.client.coreConfig;
+    const plugins = req.client.pluginManager.plugins.filter(
+        (p) => p.dashboard.enabled && p.dashboard.adminRouter !== undefined,
+    );
+
+    res.render("locales", {
+        coreConfig,
+        tr: req.translate,
+        user: req.user,
+
+        layout: "layouts/admin",
+        title: `Localization | ${coreConfig.get("DASHBOARD").LOGO_NAME}`,
+        slug: "locales",
+        breadcrumb: true,
+        plugins,
+
+        availablePlugins: req.client.pluginManager.plugins.map((p) => p.name),
+        availableLanguages: req.client.languages.map((l) => ({
+            name: l.nativeName,
+            value: l.name,
+        })),
+
+        scripts: ["/js/plugin-localization.js"],
+    });
 };

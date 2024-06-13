@@ -2,6 +2,7 @@
     "SIDEBAR": {
         "DASHBOARD": "Tableau de bord",
         "LANDING": "Page d'accueil",
+        "LOCALES": "Localisation",
         "HOME": "Maison",
         "PLUGINS": "Plugins",
         "PLUGIN_CONFIGS": "Configuration du plugin",
@@ -46,6 +47,23 @@
         "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
         "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
         "PLUGIN_CONFIRM_NO": "Non, annuler"
+    },
+
+    "LANDING_PAGE": {
+        "TITLE": "Page de destination du bot",
+        "DESCRIPTION": "Définissez le contenu HTML, le CSS personnalisé et le JavaScript pour la page d'accueil du bot.",
+        "SAVE_BTN": "Enregistrer",
+        "PREVIEW_BTN": "Aperçu",
+        "HTML_LABEL": "Contenu HTML",
+        "CSS_LABEL": "CSS personnalisé",
+        "JS_LABEL": "JavaScript personnalisé"
+    },
+
+    "LOCALES_PAGE": {
+        "TITLE": "Localisations",
+        "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
+        "PLUGIN_SELECT": "Sélectionner un plugin",
+        "LOCALE_SELECT": "Sélectionner une langue"
     },
 
     "NO_SETTINGS": "Ce plugin n'a aucun paramètre."
