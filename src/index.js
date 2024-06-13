@@ -43,7 +43,6 @@ const PluginManager = require("./base/PluginManager");
     // Load all plugin events
     PluginManager.listeningEvents.forEach((event) => {
         client.on(event, (...args) => {
-            client.logger.debug(`Event: ${event}`, args);
             PluginManager.emit(event, ...args);
         });
     });
