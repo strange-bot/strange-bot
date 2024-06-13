@@ -1,7 +1,7 @@
 const { PermissionsBitField } = require("discord.js");
 const DBModel = require("../../schemas/Dashboard");
 
-const OWNER_IDS = process.env.OWNER_IDS.split(",").map((id) => id.trim());
+const OWNER_IDS = process.env.OWNER_IDS?.split(",").map((id) => id.trim());
 
 /**
  * @param {import('discord.js').Client} client

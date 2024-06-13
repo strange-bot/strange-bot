@@ -5,7 +5,10 @@ const path = require("node:path");
 const mongoose = require("mongoose");
 const deepmerge = require("deepmerge");
 const ConfigModel = require("../src/schemas/Config");
+const { Logger } = require("strange-sdk/utils");
 const { Config } = require("strange-sdk");
+
+Logger.init();
 
 async function syncConfig() {
     // Get the list of directories in the plugins directory
@@ -56,5 +59,8 @@ mongoose.connect(process.env.MONGO_CONNECTION).then(() => {
         .catch((err) => {
             console.error(err);
             mongoose.disconnect();
+        })
+        .finally(() => {
+            process.exit(0);
         });
 });
