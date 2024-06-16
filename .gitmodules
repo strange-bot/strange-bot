@@ -13,11 +13,6 @@
 	url = https://github.com/strange-bot/plugin-automod.git
 	branch = main
 
-[submodule "plugins/autorole"]
-	path = plugins/autorole
-	url = https://github.com/strange-bot/plugin-autorole.git
-	branch = main
-
 [submodule "plugins/counter"]
 	path = plugins/counter
 	url = https://github.com/strange-bot/plugin-counter.git
