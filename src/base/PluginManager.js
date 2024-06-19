@@ -78,12 +78,8 @@ class PluginManager {
             process.exit(1);
         }
 
-        const activePlugins = this.getConfig("core").get("PLUGINS");
         const plugins = readdirSync(directory).filter(
-            (f) =>
-                statSync(join(directory, f)).isDirectory() &&
-                f !== "core" &&
-                activePlugins.includes(f),
+            (f) => statSync(join(directory, f)).isDirectory() && f !== "core",
         );
 
         // Load all plugins

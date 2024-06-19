@@ -112,3 +112,8 @@
 	path = plugins/utility
 	url = https://github.com/strange-bot/plugin-utility.git
 	branch = main
+
+[submodule "plugins/youtube-alerts"]
+	path = plugins/youtube-alerts
+	url = https://github.com/strange-bot/plugin-youtube-alerts
+	branch = main
