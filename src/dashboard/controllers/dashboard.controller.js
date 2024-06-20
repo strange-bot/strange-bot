@@ -7,6 +7,7 @@ const Settings = require("../../base/Settings");
 module.exports.getSelector = async function (req, res) {
     res.render("selector", {
         coreConfig: req.client.coreConfig,
+        locale: req.locale,
         tr: req.translate,
         user: req.user,
 
@@ -35,6 +36,7 @@ exports.getPlugins = async function (req, res) {
 
     res.render("home", {
         coreConfig,
+        locale: req.locale,
         tr: req.translate,
         user: req.user,
 

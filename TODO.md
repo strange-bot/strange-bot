@@ -1,0 +1,1 @@
+-   remove "PLUGINS" from config

@@ -86,6 +86,7 @@ module.exports = async (req, res, next, plugin) => {
         " | " +
         req.client.coreConfig.get("DASHBOARD").LOGO_NAME;
 
+    res.locals.locale = req.locale;
     res.locals.tr = req.translate;
     res.locals.coreSettings = coreSettings;
     res.locals.coreConfig = req.client.coreConfig;
