@@ -41,13 +41,8 @@
       <% plugins.forEach(plugin => { %>
       <div class="relative flex items-stretch rounded bg-gray-100 p-6 dark:bg-gray-800">
         <!-- Image -->
-        <div class="flex w-1/3 items-center justify-center">
-          <svg class="h-16 w-16 text-gray-400 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fill-rule="evenodd"
-              d="M2 6a2 2 0 012-2h6.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V14a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-              clip-rule="evenodd"></path>
-          </svg>
+        <div class="mr-4 flex w-1/3 items-center justify-center">
+          <i class="fa-solid fa-puzzle-piece h-16 w-16 text-gray-400 dark:text-gray-600"></i>
         </div>
 
         <!-- Details -->
@@ -75,16 +70,7 @@
           <a
             href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
             class="mb-2 inline-flex items-center rounded-lg border border-blue-700 px-3 py-2 text-center text-xs font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="text-blue me-2 h-3 w-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 512 512">
-              <path
-                d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z" />
-            </svg>
+            <i class="fa-regular fa-circle-check text-blue me-2 h-3 w-3"></i>
             <%= tr('dash:HOME.BTN_PLUGIN_ACTIVE') %>
           </a>
 
@@ -93,16 +79,7 @@
             data-modal-target="modal-<%= plugin.name %>"
             data-modal-toggle="modal-<%= plugin.name %>"
             class="mb-2 inline-flex items-center rounded-lg border border-green-700 px-3 py-2 text-center text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="text-green me-2 h-3 w-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 448 512">
-              <path
-                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
-            </svg>
+            <i class="fa-solid fa-plus text-green me-2 h-3 w-3"></i>
             <%= tr('dash:HOME.BTN_PLUGIN_ENABLE') %>
           </button>
           <% } %>
@@ -124,30 +101,11 @@
         type="button"
         class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
         data-modal-hide="modal-<%= plugin.name %>">
-        <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-        </svg>
+        <i class="fa-solid fa-xmark h-4 w-4"></i>
         <span class="sr-only">Close modal</span>
       </button>
       <div class="p-4 text-center md:p-5">
-        <svg
-          class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 20 20">
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
+        <i class="fa-regular fa-circle-exclamation mb-3 h-12 w-12 dark:text-gray-200"></i>
         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
           <%= tr('dash:HOME.PLUGIN_ENABLE_CONFIRM') %>
         </h3>

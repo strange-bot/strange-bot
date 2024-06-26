@@ -8,12 +8,11 @@ if (sidebar) {
         activeItem?.scrollIntoView({ behavior: "smooth" });
     };
 
-    const toggleSidebarMobile = (
-        sidebar,
-        sidebarBackdrop,
-        toggleSidebarMobileHamburger,
-        toggleSidebarMobileClose,
-    ) => {
+    const toggleSidebarMobile = (sidebar, sidebarBackdrop) => {
+        const toggleSidebarMobileHamburger = document.getElementById(
+            "toggleSidebarMobileHamburger",
+        );
+        const toggleSidebarMobileClose = document.getElementById("toggleSidebarMobileClose");
         sidebar.classList.toggle("hidden");
         sidebarBackdrop.classList.toggle("hidden");
         toggleSidebarMobileHamburger.classList.toggle("hidden");
@@ -22,34 +21,12 @@ if (sidebar) {
 
     const toggleSidebarMobileEl = document.getElementById("toggleSidebarMobile");
     const sidebarBackdrop = document.getElementById("sidebarBackdrop");
-    const toggleSidebarMobileHamburger = document.getElementById("toggleSidebarMobileHamburger");
-    const toggleSidebarMobileClose = document.getElementById("toggleSidebarMobileClose");
-    const toggleSidebarMobileSearch = document.getElementById("toggleSidebarMobileSearch");
-
-    toggleSidebarMobileSearch.addEventListener("click", () => {
-        toggleSidebarMobile(
-            sidebar,
-            sidebarBackdrop,
-            toggleSidebarMobileHamburger,
-            toggleSidebarMobileClose,
-        );
-    });
 
     toggleSidebarMobileEl.addEventListener("click", () => {
-        toggleSidebarMobile(
-            sidebar,
-            sidebarBackdrop,
-            toggleSidebarMobileHamburger,
-            toggleSidebarMobileClose,
-        );
+        toggleSidebarMobile(sidebar, sidebarBackdrop);
     });
 
     sidebarBackdrop.addEventListener("click", () => {
-        toggleSidebarMobile(
-            sidebar,
-            sidebarBackdrop,
-            toggleSidebarMobileHamburger,
-            toggleSidebarMobileClose,
-        );
+        toggleSidebarMobile(sidebar, sidebarBackdrop);
     });
 }

@@ -1,6 +1,7 @@
 {
     "SIDEBAR": {
         "DASHBOARD": "Tableau de bord",
+        "SELECTOR": "Sélecteur",
         "LANDING": "Page d'accueil",
         "LOCALES": "Localisation",
         "HOME": "Maison",

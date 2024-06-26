@@ -1,6 +1,7 @@
 {
     "SIDEBAR": {
         "DASHBOARD": "Dashboard",
+        "SELECTOR": "Selector",
         "LANDING": "Landing Page",
         "LOCALES": "Localization",
         "HOME": "Home",
