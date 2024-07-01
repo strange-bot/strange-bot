@@ -44,7 +44,7 @@
         "i18next": "^23.11.5",
         "isomorphic-dompurify": "^2.12.0",
         "mongoose": "^7.7.0",
-        "strange-sdk": "github:strange-bot/strange-sdk"
+        "strange-sdk": "github:strange-bot/strange-sdk#96e88b1cebcdffd832fcabae55c06b92fa66fd7b"
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.8",
