@@ -18,10 +18,16 @@
 
           <section class="px-4 pt-6">
             <div class="flex items-center justify-between rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-white">
-              <div>
-                <h2 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr(`${plugin.name}:TITLE`) %></h2>
-                <p class="text-sm text-gray-500"><%= tr(`${plugin.name}:DESCRIPTION`) %></p>
+              <div class="flex items-center">
+                <div class="icon-container bg-gray-300 dark:bg-gray-700 rounded-full h-12 w-12 flex items-center justify-center">
+                  <i class="<%= plugin.icon %> text-gray-800 dark:text-white text-xl"></i>
+                </div>
+                <div class="ml-3">
+                  <h2 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr(`${plugin.name}:TITLE`) %></h2>
+                  <p class="text-sm text-gray-500"><%= tr(`${plugin.name}:DESCRIPTION`) %></p>
+                </div>
               </div>
+
               <div>
                 <% if (plugin.name !== "core") { %>
                 <label class="relative flex cursor-pointer items-center">
