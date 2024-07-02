@@ -205,6 +205,7 @@ class BotClient extends Client {
                 return;
             }
             await guild.commands.set(toRegister);
+            this.logger.debug(`Registered interactions in guild ${guild.name}`);
         }
 
         // Throw an error
