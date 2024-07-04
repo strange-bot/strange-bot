@@ -5,6 +5,6 @@
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "strange-sdk": "workspace:^"
+        "strange-sdk": "*"
     }
 }

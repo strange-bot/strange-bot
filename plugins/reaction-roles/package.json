@@ -6,6 +6,6 @@
     "license": "ISC",
     "dependencies": {
         "mongoose": "^7.6.11",
-        "strange-sdk": "workspace:^"
+        "strange-sdk": "*"
     }
 }

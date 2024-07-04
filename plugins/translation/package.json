@@ -9,6 +9,6 @@
         "country-emoji-languages": "^1.0.0",
         "iso-639-1": "^2.1.15",
         "mongoose": "^7.6.11",
-        "strange-sdk": "workspace:^"
+        "strange-sdk": "*"
     }
 }

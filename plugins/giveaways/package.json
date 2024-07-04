@@ -8,6 +8,6 @@
         "discord-giveaways": "^6.0.1",
         "enhanced-ms": "^2.3.0",
         "mongoose": "^7.6.11",
-        "strange-sdk": "workspace:^"
+        "strange-sdk": "*"
     }
 }

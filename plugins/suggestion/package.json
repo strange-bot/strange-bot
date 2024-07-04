@@ -7,6 +7,6 @@
     "dependencies": {
         "common-tags": "1.8.2",
         "mongoose": "^7.6.11",
-        "strange-sdk": "workspace:^"
+        "strange-sdk": "*"
     }
 }

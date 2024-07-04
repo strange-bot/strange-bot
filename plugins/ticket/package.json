@@ -7,6 +7,6 @@
     "dependencies": {
         "mongoose": "^7.6.11",
         "short-unique-id": "^5.0.3",
-        "strange-sdk": "workspace:^"
+        "strange-sdk": "*"
     }
 }
