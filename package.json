@@ -11,7 +11,8 @@
     },
     "private": true,
     "workspaces": [
-        "plugins/*"
+        "plugins/*",
+        "packages/*"
     ],
     "scripts": {
         "start": "npm run build:webpack && node .",
@@ -20,7 +21,7 @@
         "build:webpack": "webpack --mode=production",
         "build:css": "tailwindcss build -i src/dashboard/src/style.css -o src/dashboard/public/app.css",
         "dev": "npm-run-all --parallel dev:*",
-        "dev:bot": "nodemon .",
+        "dev:bot": "nodemon --ignore src/dashboard/public/js/landing.js .",
         "dev:webpack": "webpack --mode=development --watch",
         "format": "prettier --write 'src/**/*.js' 'plugins/**/*.{js,json}'",
         "validate": "node scripts/validate-env.js",
@@ -44,7 +45,7 @@
         "i18next": "^23.11.5",
         "isomorphic-dompurify": "^2.12.0",
         "mongoose": "^7.7.0",
-        "strange-sdk": "github:strange-bot/strange-sdk#96e88b1cebcdffd832fcabae55c06b92fa66fd7b"
+        "strange-sdk": "workspace:^"
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.8",

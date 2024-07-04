@@ -8,6 +8,6 @@
         "common-tags": "^1.8.2",
         "fixedsize-map": "^1.1.0",
         "mongoose": "^7.6.11",
-        "strange-sdk": "github:strange-bot/strange-sdk"
+        "strange-sdk": "workspace:^"
     }
 }
