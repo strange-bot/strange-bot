@@ -13,6 +13,9 @@ class Settings {
             "guild",
             new mongoose.Schema({
                 _id: String,
+                guild_name: { type: String, required: true },
+                joined_at: { type: Date, required: true },
+                left_at: Date,
                 plugins: PluginManager.allSettings,
             }),
         );
@@ -30,6 +33,8 @@ class Settings {
         if (cached) return cached;
         const doc = new Settings.Model({
             _id: guild.id,
+            guild_name: guild.name,
+            joined_at: guild.joinedAt,
         });
 
         Settings.cache.set(doc._id, doc);
