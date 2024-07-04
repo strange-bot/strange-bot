@@ -1,0 +1,78 @@
+{
+    "TITLE": "Économie",
+    "DESCRIPTION": "Gérez l'économie de votre serveur avec ce plugin.",
+
+    "DASH": {
+        "SETTINGS_TITLE": "Paramètres",
+        "CURRENCY_TITLE": "Devise",
+        "CURRENCY_DESC": "Définissez l'emoji/caractère qui représente la devise de votre serveur.",
+        "DAILY_TITLE": "Pièces quotidiennes",
+        "DAILY_DESC": "Définissez le nombre de pièces qu'un joueur peut réclamer quotidiennement.",
+        "MIN_BEG_TITLE": "Montant minimum de début",
+        "MIN_BEG_DESC": "Définissez le montant minimum de pièces qu'un joueur peut mendier.",
+        "MAX_BEG_TITLE": "Montant maximum de demande",
+        "MAX_BEG_DESC": "Définissez le montant maximum de pièces qu'un joueur peut mendier.",
+        "DEFAULTS": "Paramètres par défaut du serveur",
+        "BEG_INTERVAL": "Intervalle de mendicité",
+        "BEG_INTERVAL_DESC": "Définissez l'intervalle pendant lequel un joueur peut mendier des pièces (en heures)."
+    },
+
+    "BANK": {
+        "DESCRIPTION": "Accès aux opérations bancaires",
+        "BALANCE_DESC": "vérifiez votre solde",
+        "BALANCE_USER": "nom de l'utilisateur",
+        "DEPOSIT_DESC": "déposez des pièces dans votre compte bancaire",
+        "DEPOSIT_COINS": "nombre de pièces à déposer",
+        "WITHDRAW_DESC": "retirez des pièces de votre compte bancaire",
+        "WITHDRAW_COINS": "nombre de pièces à retirer",
+        "TRANSFER_DESC": "transférez des pièces à un autre utilisateur",
+        "TRANSFER_USER": "nom de l'utilisateur auquel transférer des pièces",
+        "TRANSFER_COINS": "nombre de pièces à transférer",
+
+        "INVALID_DEPOSIT": "Fournissez un nombre valide de pièces que vous souhaitez déposer",
+        "INSUFFICIENT_WALLET": "Vous n'avez que {{coins}}{{currency}} pièces dans votre portefeuille",
+
+        "INVALID_WITHDRAW": "Fournissez un nombre valide de pièces que vous souhaitez retirer",
+        "INSUFFICIENT_BANK": "Vous n'avez que {{coins}}{{currency}} pièces dans votre banque",
+
+        "INVALID_TRANSFER": "Fournissez un utilisateur et des pièces valides à transférer",
+        "INVALID_TRANSFER_USER": "Fournissez un utilisateur valide pour transférer des pièces",
+        "INVALID_TRANSFER_AMOUNT": "Fournissez un montant valide de pièces à transférer",
+        "TRANSFER_BOTS": "Vous ne pouvez pas transférer de pièces aux bots",
+        "TRANSFER_SELF": "Vous ne pouvez pas vous transférer de pièces",
+        "TRANSFER_INSUFFICIENT": "Solde bancaire insuffisant ! Vous n'avez que {{coins}}{{currency}} dans votre compte bancaire",
+        "TRANSFER_DEPOSIT": "Vous devez déposer vos pièces en banque avant de pouvoir transférer",
+        "TRANSFER_SUCCESS": "Vous avez transféré avec succès {{coins}}{{currency}} à {{target}}",
+
+        "WALLET": "Portefeuille",
+        "BANK": "Banque",
+        "NET": "Valeur nette",
+        "NEW_BALANCE": "Nouveau solde",
+        "UPDATED_BALANCE": "Solde mis à jour"
+    },
+
+    "BEG": {
+        "DESCRIPTION": "Demander de l'argent à quelqu'un",
+        "SUCCESS": "**{{random}}** vous a donné **{{amount}}** {{devise}}\n**Solde mis à jour:** **{{coins}}** {{devise}}"
+    },
+
+    "DAILY": {
+        "DESCRIPTION": "Recevez un bonus quotidien",
+        "ALREADY_CLAIMED": "Vous pouvez à nouveau exécuter cette commande dans `{{time}}`",
+        "CLAIMED": "Vous avez reçu {{daily}}{{devise}} en guise de récompense quotidienne\n**Solde mis à jour:** {{coins}}{{devise}}"
+    },
+
+    "GAMBLE": {
+        "DESCRIPTION": "Tentez votre chance en jouant",
+        "COINS_DESC": "Quantité de pièces à parier",
+        "INVALID_AMOUNT": "Le montant de la mise doit être un nombre valide",
+        "INVALID_AMOUNT_NEGATIVE": "Le montant de la mise ne peut pas être négatif",
+        "INVALID_AMOUNT_MIN": "Le montant de la mise ne peut pas être inférieur à {{min}}",
+        "INSUFFICIENT_COINS": "Vous n'avez pas suffisamment de pièces pour jouer!\n**Solde de pièces:** {{coins}}{{devise}}",
+
+        "GAMBLE_TITLE": "Montant misé",
+        "MULTIPLIER": "Multiplicateur",
+        "GAMBLE_WIN": "Vous avez gagné : {{amount}}{{devise}}\nSolde du portefeuille mis à jour : {{coins}}{{devise}}",
+        "GAMBLE_LOSE": "Vous avez perdu : {{amount}}{{devise}}\nSolde du portefeuille mis à jour : {{coins}}{{devise}}"
+    }
+}

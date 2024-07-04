@@ -1,0 +1,82 @@
+<form method="post">
+  <!-- START: Card Body -->
+  <div class="mb-3">
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+
+      <!-- START: Column 1 (Modlog) -->
+      <div>
+        <div class="mb-2">
+          <label for="log_channel" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("moderation:DASH.CH_TITLE") %></label>
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("moderation:DASH.CH_DESC") %>
+          </div>
+        </div>
+        <select name="log_channel" id="log_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected value><%= tr("common:DASH.CHANNEL_SELECT") %></option>
+          <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
+            <option value="<%= ch.id %>" <%= settings.modlog_channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <!-- END: Column 1 -->
+
+      <!-- START: Column 2 (Max Warnings) -->
+      <div>
+        <div class="mb-2">
+          <label for="maxwarn_count" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("moderation:DASH.MAXWARN_TITLE") %></label>
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("moderation:DASH.MAXWARN_DESC") %>
+          </div>
+        </div>
+        <input
+          type="number"
+          min="0"
+          max="100"
+          name="maxwarn_count"
+          id="maxwarn_count"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= settings.max_warn.limit %>"
+          required
+        />
+      </div>
+      <!-- END: Column 2 -->
+
+      <!-- START: Column 3 (Max Warn Action) -->
+      <div>
+        <div class="mb-2">
+          <label for="maxwarn_action" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("moderation:DASH.MAXWARN_ACTION_TITLE") %></label>
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("moderation:DASH.MAXWARN_ACTION_DESC") %>
+          </div>
+        </div>
+        <select name="maxwarn_action" id="maxwarn_action" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected="selected"><%= settings.max_warn.action %></option>
+          <% if(settings.max_warn.action !== "TIMEOUT") { %>
+          <option>TIMEOUT</option>
+          <% } %> <% if(settings.max_warn.action !== "KICK") { %>
+          <option>KICK</option>
+          <% } %> <% if(settings.max_warn.action !== "BAN") { %>
+          <option>BAN</option>
+          <% } %>
+      </select>
+      </div>
+      <!-- END: Column 3 -->
+
+    </div>
+  </div>
+  <!-- END: Card Body -->
+
+  <!-- START: Card Footer -->
+  <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+    <div></div>
+    <div class="flex-shrink-0">
+      <button
+        type="submit"
+        name="settings"
+        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <%= tr("common:DASH.UPDATE") %>
+      </button>
+    </div>
+  </div>
+  <!-- END: Card Footer -->
+</form>

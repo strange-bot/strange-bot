@@ -1,0 +1,51 @@
+{
+    "TITLE": "Fun",
+    "DESCRIPTION": "Commandes amusantes",
+
+    "ANIMAL": {
+        "DESCRIPTION": "Affiche une image aléatoire d'un animal",
+        "NAME_DESC": "animal dont obtenir une image",
+        "INVALID_ANIMAL": "Animal sélectionné invalide. Animaux disponibles:\n{{animaux}}"
+    },
+
+    "FACTS": {
+        "DESCRIPTION": "Affiche un fait aléatoire sur un animal",
+        "ANIMAL_DESC": "Affiche un fait aléatoire sur un animal spécifique",
+        "INVALID_ANIMAL": "Animal sélectionné invalide. Animaux disponibles:\n{{animaux}}"
+    },
+
+    "FLIP": {
+        "DESCRIPTION": "Lance une pièce ou inverse un message",
+        "SUB_COIN_DESC": "Lance une pièce pour obtenir face ou pile",
+        "SUB_MSG_DESC": "Inverse le message donné",
+        "SUB_MSG_INPUT": "texte à inverser",
+
+        "TOSS_HEAD": "FACE",
+        "TOSS_TAIL": "PILE",
+        "TOSS_START": "{{user}}, a lancé une pièce",
+        "TOSS_AIR": "La pièce est en l'air",
+        "TOSS_WIN": "Gagne",
+        "MISSING_TEXT": "Vous devez fournir un message à inverser"
+    },
+
+    "MEME": {
+        "DESCRIPTION": "Obtenez un mème aléatoire",
+        "CATEGORY_DESC": "la catégorie du mème",
+        "FETCH_FAIL": "Échec de la récupération du mème. Réessayez !",
+        "NO_MATCH": "Aucun mème trouvé correspondant à {{choice}}"
+    },
+
+    "SNAKE": {
+        "DESCRIPTION": "Joue au jeu du serpent sur Discord",
+        "START_GAME": "**Début du jeu du serpent**",
+        "GAME_TITLE": "Jeu du serpent",
+        "GAME_OVER_TITLE": "Partie terminée"
+    },
+
+    "TOGETHER": {
+        "DESCRIPTION": "Discord ensemble",
+        "TYPE_DESC": "le type d'activité",
+        "NO_VOICE_CHANNEL": "Vous devez être dans un salon vocal pour utiliser cette commande.",
+        "INVALID_GAME": "Jeu invalide.\nJeux valides : {{games}}"
+    }
+}

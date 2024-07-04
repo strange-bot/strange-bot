@@ -1,0 +1,22 @@
+{
+    "TITLE": "Youtube Alerts",
+    "DESCRIPTION": "Get alerts when a new video is uploaded to a channel",
+
+    "CHANNELS_LIST": "Channels List",
+    "ADD_NEW_BTN": "Add Channel",
+    "ADD_NEW_TITLE": "Add New Channel",
+    "CH_NAME": "Channel Name",
+    "CH_ID": "Channel ID/URL",
+    "CH_ID_DESC": "The ID or URL of the channel you want to get alerts from",
+    "DISCORD_CH": "Discord Channel",
+    "DISCORD_CH_DESC": "The channel you want to send alerts to",
+    "ADD_DISCORD_CH_PLACEHOLDER": "Select a channel",
+    "ACTION": "Action",
+    "TEST_BTN": "Test",
+    "DELETE_BTN": "Delete",
+    "ADD_BTN": "Add",
+    "CLOSE_BTN": "Close",
+    "DELETE_CONFIRMATION": "Are you sure you want to delete this channel?",
+    "DELETE_CONFIRM_YES": "Yes, delete",
+    "DELETE_CONFIRM_NO": "No, cancel"
+}

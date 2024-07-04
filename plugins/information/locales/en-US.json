@@ -1,0 +1,120 @@
+{
+    "TITLE": "Information",
+    "DESCRIPTION": "Information commands",
+
+    "BOT": {
+        "DESCRIPTION": "bot related commands",
+        "SUB_INVITE_DESC": "get bot's invite",
+        "SUB_STATS_DESC": "get bot's statistics",
+        "SUB_UPTIME_DESC": "get bot's uptime",
+
+        "INVITE_EMBED_TITLE": "Invite",
+        "INVITE_EMBED_DESC": "Hey there! Thanks for considering to invite me\nUse the button below to navigate where you want",
+        "INVITE_BTN_LABEL": "Invite Link",
+        "INVITE_BTN_SUPPORT": "Support Server",
+        "INVITE_BTN_DASHBOARD": "Dashboard",
+        "INVITE_DM_SENT": "Check your DM for my information! :envelope_with_arrow:",
+        "INVITE_DM_FAILED": "I cannot send you my information! Is your DM open?",
+
+        "STATS_EMBED_TITLE": "Bot Information",
+        "STATS_GUILD_COUNT": "Total guilds: {{count}}",
+        "STATS_USER_COUNT": "Total users: {{count}}",
+        "STATS_CHANNEL_COUNT": "Total channels: {{count}}",
+        "STATS_PING": "Websocket Ping: {{ping}}ms",
+        "STATS_CPU_INFO": "CPU Information",
+        "STATS_CPU_PLATFORM": "Platform",
+        "STATS_CPU_CORES": "Virtual Cores",
+        "STATS_CPU_USAGE": "Usage",
+        "STATS_BOT_RAM": "Bot's RAM",
+        "STATS_OVERALL_RAM": "Overall RAM",
+        "STATS_RAM_USED": "Used",
+        "STATS_RAM_FREE": "Available",
+        "STATS_RAM_TOTAL": "Total",
+        "STATS_NODE_VERSION": "Node Js version",
+        "STATS_UPTIME": "Uptime",
+        "STATS_BTN_INVITE": "Invite",
+        "STATS_BTN_SUPPORT": "Support Server",
+        "STATS_BTN_DASHBOARD": "Dashboard",
+
+        "UPTIME": "I have been online for {{time}}"
+    },
+
+    "INFO": {
+        "DESCRIPTION": "show various information",
+        "SUB_USER_DESC": "get user information",
+        "SUB_USER_NAME_DESC": "name of the user",
+        "SUB_CHANNEL_DESC": "get channel information",
+        "SUB_CHANNEL_NAME_DESC": "name of the channel",
+        "SUB_GUILD_DESC": "get guild information",
+        "SUB_BOT_DESC": "get bot information",
+        "SUB_AVATAR_DESC": "displays avatar information",
+        "SUB_AVATAR_NAME_DESC": "user to display avatar of",
+        "SUB_EMOJI_DESC": "displays emoji information",
+        "SUB_EMOJI_NAME_DESC": "name of the emoji",
+
+        "AVATAR_EMBED_TITLE": "Avatar of {{user}}",
+        "AVATAR_EMBED_LINKS": "Links",
+
+        "CHANNEL_EMBED_TITLE": "Channel Details",
+        "CHANNEL_ID": "ID",
+        "CHANNEL_NAME": "Name",
+        "CHANNEL_TYPE": "Type",
+        "CHANNEL_CATEGORY": "Category",
+        "CHANNEL_TOPIC": "Topic",
+        "CHANNEL_POSITION": "Position",
+        "CHANNEL_SLOWMODE": "Slowmode",
+        "CHANNEL_NSFW": "NSFW",
+        "CHANNEL_OWNER_ID": "Owner ID",
+        "CHANNEL_ARCHIVED": "Is Archived?",
+        "CHANNEL_LOCKED": "Is Locked?",
+        "CHANNEL_BITRATE": "Bitrate",
+        "CHANNEL_USER_LIMIT": "User Limit",
+        "CHANNEL_FULL": "Is Full?",
+
+        "EMOJI_NOT_VALID": "This is not a valid guild emoji",
+        "EMOJI_EMBED_TITLE": "Emoji Info",
+        "EMOJI_ID": "ID",
+        "EMOJI_NAME": "Name",
+        "EMOJI_ANIMATED": "Animated",
+
+        "GUILD_ID": "ID",
+        "GUILD_NAME": "Name",
+        "GUILD_OWNER": "Owner",
+        "GUILD_REGION": "Region",
+        "GUILD_EMBED_TITLE": "GUILD INFORMATION",
+        "GUILD_MEMBERS": "Server Members",
+        "GUILD_MEMBERS_VAL": "Members: {{users}}\nBots: {{bots}}",
+        "GUILD_ONLINE": "Online Stats",
+        "GUILD_ONLINE_VAL": "Members: {{onlineUsers}}\nBots: {{onlineBots}}",
+        "GUILD_CHANNELS": "Categories and channels",
+        "GUILD_CHANNELS_VAL": "Categories: {{categories}} | Text: {{textChannels}} | Voice: {{voiceChannels}} | Thread: {{threadChannels}}",
+        "GUILD_ROLES": "Roles",
+        "GUILD_VERIFICATION": "Verification",
+        "GUILD_BOOSTS": "Server Boosts",
+        "GUILD_CREATED": "Server Created",
+
+        "USER_EMBED_TITLE": "User information for {{user}}",
+        "USER_NAME": "User Tag",
+        "USER_ID": "ID",
+        "USER_JOINED": "Guild Joined",
+        "USER_CREATED": "Discord Registered",
+        "USER_ROLES": "Roles",
+        "USER_AVATAR": "Avatar-URL"
+    },
+
+    "LB": {
+        "DESCRIPTION": "display the leaderboard",
+        "SUB_TYPE_DESC": "type of leaderboard to display",
+        "NO_USERS": "No users in the leaderboard",
+
+        "INVALID_TYPE": "Invalid leaderboard type {{type}}.\nValid types are: {{validTypes}}",
+
+        "STATS_DISABLED": "Ranking is disabled for this server",
+        "STATS_LB_TITLE": "XP Leaderboard",
+
+        "INVITE_DISABLED": "Invite tracking is disabled for this server",
+        "INVITE_LB_TITLE": "Invite Leaderboard",
+
+        "REP_LB_TITLE": "Reputation Leaderboard"
+    }
+}

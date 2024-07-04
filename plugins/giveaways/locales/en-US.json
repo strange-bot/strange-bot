@@ -1,0 +1,161 @@
+{
+    "TITLE": "Giveaway Manager",
+    "DESCRIPTION": "Manage giveaways in your server",
+
+    "CMD_DESC": "giveaway commands",
+
+    "SUB_START_DESC": "start a giveaway",
+    "SUB_START_CHANNEL_DESC": "the channel to start the giveaway in",
+    "SUB_START_DURATION_DESC": "the duration of the giveaway. (e.g. 1d, 1h, 1m, 1s)",
+    "SUB_START_PRIZE_DESC": "the prize for the giveaway",
+    "SUB_START_WINNERS_DESC": "the number of winners for the giveaway",
+    "SUB_START_ROLES_DESC": "the roles that can enter the giveaway. (separate with a comma)",
+    "SUB_START_HOST_DESC": "the host of the giveaway",
+
+    "SUB_PAUSE_DESC": "pause a giveaway",
+    "SUB_PAUSE_MESSAGE_ID_DESC": "the message id of the giveaway",
+
+    "SUB_RESUME_DESC": "resume a giveaway",
+    "SUB_RESUME_MESSAGE_ID_DESC": "the message id of the giveaway",
+
+    "SUB_END_DESC": "end a giveaway",
+    "SUB_END_MESSAGE_ID_DESC": "the message id of the giveaway",
+
+    "SUB_REROLL_DESC": "reroll a giveaway",
+    "SUB_REROLL_MESSAGE_ID_DESC": "the message id of the giveaway",
+
+    "SUB_LIST_DESC": "list all giveaways",
+
+    "SUB_EDIT_NAME": "edit",
+    "SUB_EDIT_DESC": "edit a giveaway",
+    "SUB_EDIT_MESSAGE_ID_DESC": "the message id of the giveaway",
+    "SUB_EDIT_DURATION_DESC": "the number of minutes to add to the giveaway duration",
+    "SUB_EDIT_PRIZE_DESC": "the new prize for the giveaway",
+    "SUB_EDIT_WINNERS_DESC": "the new number of winners for the giveaway",
+
+    "INVALID_MESSAGE_ID": "You didn't provide a valid message id.",
+    "MEMBER_PERMS": "You need the `Manage Messages` permission to use this command.",
+    "NOT_FOUND": "I couldn't find a giveaway with that messageId: {{messageId}}",
+
+    "EDIT_BTN_LABEL": "Edit Giveaway",
+    "EDIT_BTN_CONTENT": "Please click the button below to edit the giveaway",
+    "EDIT_NO_RESPONSE": "No response received! Cancelling giveaway update.",
+    "EDIT_MODAL_TITLE": "Giveaway Update",
+    "EDIT_MODAL_DURATION": "Duration you like to add to the giveaway?",
+    "EDIT_MODAL_PRIZE": "New prize for the giveaway?",
+    "EDIT_MODAL_WINNERS": "New number of winners for the giveaway?",
+    "EDIT_CREATING": "Updating giveaway...",
+    "EDIT_INVALID_DURATION": "You didn't provide a valid duration. Giveaway update cancelled.",
+    "EDIT_INVALID_WINNERS": "You didn't provide a valid number of winners. Giveaway update cancelled.",
+    "EDIT_SUCCESS": "Success! Giveaway edited!",
+    "EDIT_ERROR": "An error occurred while trying to edit the giveaway.",
+
+    "ALREADY_ENDED": "That giveaway has already ended.",
+    "END_SUCCESS": "Success! Giveaway ended!",
+    "END_ERROR": "An error occurred while trying to end the giveaway.",
+
+    "NO_GIVEAWAYS": "There are no ongoing giveaways in this server.",
+    "LISTING_ERROR": "An error occurred while listing the giveaways.",
+
+    "ALREADY_PAUSED": "That giveaway is already paused.",
+    "PAUSE_SUCCESS": "Success! Giveaway paused!",
+    "PAUSE_ERROR": "An error occurred while trying to pause the giveaway.",
+
+    "STILL_RUNNING": "You cannot reroll a giveaway that is still running.",
+    "REROLL_SUCCESS": "Success! Giveaway rerolled!",
+    "REROLL_ERROR": "An error occurred while trying to reroll the giveaway.",
+
+    "ALREADY_RESUMED": "That giveaway is not paused.",
+    "RESUME_SUCCESS": "Success! Giveaway resumed!",
+    "RESUME_ERROR": "An error occurred while trying to resume the giveaway.",
+
+    "START_CHANNEL": "Incorrect usage! Please provide a channel to start the giveaway in.",
+    "START_INVALID_CHANNEL": "Oops! You did not mention a channel",
+    "START_BTN_LABEL": "Setup Giveaway",
+    "START_BTN_CONTENT": "Please click the button below to setup new giveaway",
+    "START_NO_RESPONSE": "Giveaway setup has been cancelled. You did not provide a valid response.",
+    "START_MODEL_TITLE": "Giveaway Setup",
+    "START_MODAL_DURATION": "What is the duration?",
+    "START_MODAL_PRIZE": "What is the prize?",
+    "START_MODAL_WINNERS": "How many winners?",
+    "START_MODAL_ROLES": "Role ID's that can enter the giveaway?",
+    "START_MODAL_HOST": "User Id of person hosting the giveaway?",
+    "START_CREATING": "Setting up giveaway...",
+    "START_CHANNEL_TYPE": "You can only setup a giveaway in a text channel.",
+    "START_CHANNEL_PERMS": "Oops I cannot start the giveaway!\nI need {{permissions}} in {{channel}}",
+    "START_INVALID_DURATION": "You didn't provide a valid duration. Giveaway setup has been cancelled.",
+    "START_INVALID_WINNERS": "You didn't provide a valid number of winners. Giveaway setup has been cancelled.",
+    "START_INVALID_HOST": "You didn't provide a valid user ID. Giveaway setup has been cancelled.",
+    "START_SUCCESS": "Success! Giveaway started in {{channel}}!",
+    "START_ERROR": "An error occurred while trying to start the giveaway.",
+
+    "MESSAGES": {
+        "giveaway": "🎉 **GIVEAWAY** 🎉",
+        "giveawayEnded": "🎉 **GIVEAWAY ENDED** 🎉",
+        "title": "{{prize}}",
+        "inviteToParticipate": "React with 🎁 to enter",
+        "winMessage": "Congratulations, {{winners}}! You won **{{prize}}**!\n{{messageURL}}",
+        "drawing": "Drawing: {{timestamp}}",
+        "dropMessage": "Be the first to react with 🎁 to win!",
+        "embedFooter": "{{winnerCount}} winner(s)",
+        "noWinner": "Giveaway cancelled, no valid participants.",
+        "winners": "Winner(s)",
+        "endedAt": "Ended at",
+        "hostedBy": "Hosted by: {{host}}"
+    },
+
+    "DASH": {
+        "SERVER_DEFAULTS": "Server Defaults",
+
+        "SETTINGS_TITLE": "Basic Settings",
+        "REACTION_TITLE": "Reaction Emoji",
+        "REACTION_DESC": "The emoji to react with to enter the giveaway",
+        "START_EMBED_TITLE": "Start Embed Color",
+        "START_EMBED_DESC": "The color of the embed when the giveaway starts",
+        "END_EMBED_TITLE": "End Embed Color",
+        "END_EMBED_DESC": "The color of the embed when the giveaway ends",
+
+        "LIST_TITLE": "Giveaways",
+        "LIST_DESC": "List of ongoing giveaways in this server",
+        "LIST_PRIZE": "Prize",
+        "LIST_ENDS_AT": "Ends In",
+        "LIST_WINNERS": "Winners",
+        "LIST_HOST": "Hosted By",
+        "LIST_CHANNEL": "Channel",
+        "LIST_ACTION": "Action",
+
+        "CREATE_NEW_BTN": "Create New Giveaway",
+        "CREATE_TITLE": "Create Giveaway",
+        "CREATE_CLOSE_BTN": "Close",
+        "CREATE_CHANNEL": "Giveaway Channel",
+        "CREATE_CHANNEL_DESC": "The channel to start the giveaway in",
+        "CREATE_CHANNEL_PLACEHOLDER": "Select a channel",
+        "CREATE_PRIZE": "Prize",
+        "CREATE_PRIZE_DESC": "The prize for the giveaway",
+        "CREATE_DURATION": "Duration",
+        "CREATE_DURATION_DESC": "The duration of the giveaway",
+        "CREATE_WINNERS": "Winners",
+        "CREATE_WINNERS_DESC": "The number of winners for the giveaway",
+        "CREATE_HOST": "Host",
+        "CREATE_HOST_DESC": "The host of the giveaway",
+        "CREATE_MEM_ROLE": "Participant Role",
+        "CREATE_MEM_ROLE_DESC": "The role that can enter the giveaway",
+        "CREATE_MEM_ROLE_PLACEHOLDER": "Select a role",
+        "CREATE_BTN": "Create Giveaway",
+
+        "PAUSE_BTN": "Pause",
+        "PAUSE_CONFIRMATION": "Are you sure you want to pause this giveaway?",
+        "PAUSE_CONFIRM_YES": "Yes, Pause",
+        "PAUSE_CONFIRM_NO": "No, Cancel",
+
+        "RESUME_BTN": "Resume",
+        "RESUME_CONFIRMATION": "Are you sure you want to resume this giveaway?",
+        "RESUME_CONFIRM_YES": "Yes, Resume",
+        "RESUME_CONFIRM_NO": "No, Cancel",
+
+        "END_BTN": "End",
+        "END_CONFIRMATION": "Are you sure you want to end this giveaway?",
+        "END_CONFIRM_YES": "Yes, End",
+        "END_CONFIRM_NO": "No, Cancel"
+    }
+}

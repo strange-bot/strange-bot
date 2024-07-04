@@ -1,0 +1,31 @@
+{
+    "TITLE": "Image",
+    "DESCRIPTION": "Image commands",
+
+    "FILTER_DESCRIPTION": "add filter to the provided image",
+    "FILTER_NAME": "the filter to apply",
+    "FILTER_USER": "the user to whose avatar the filter needs to applied",
+    "FILTER_LINK": "the image link to which the filter needs to applied",
+    "GEN_DESCRIPTION": "generates a meme for the provided image",
+    "GEN_NAME": "the meme to generate",
+    "GEN_USER": "the user to whose avatar the meme needs to generated",
+    "GEN_LINK": "the image link to which the meme needs to generated",
+    "OVERLAY_DESCRIPTION": "add overlay over the provided image",
+    "OVERLAY_NAME": "the overlay to apply",
+    "OVERLAY_USER": "the user to whose avatar the overlay needs to applied",
+    "OVERLAY_LINK": "the image link to which the overlay needs to applied",
+
+    "FILTER_FAIL": "Failed to apply image filter",
+    "GEN_FAIL": "Failed to generate image",
+    "OVERLAY_FAIL": "Failed to apply overlay",
+
+    "DASH": {
+        "CONFIG": "Configuration",
+        "EMBED": "Embed Color",
+        "EMBED_DESC": "Change the color of the embeds",
+        "API_URL": "Strange API URL",
+        "API_URL_DESC": "Change the URL of the Strange API",
+        "API_KEY": "Strange API Key",
+        "API_KEY_DESC": "Add your Strange API Key here"
+    }
+}

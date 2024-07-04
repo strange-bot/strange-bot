@@ -1,0 +1,237 @@
+{
+    "TITLE": "Modération",
+    "DESCRIPTION": "Gérez les paramètres de modération de votre serveur.",
+
+    "DASH": {
+        "SETTINGS_TITLE": "Paramètres",
+        "CH_TITLE": "Canal de journal",
+        "CH_DESC": "Le canal où toutes les actions de modération seront envoyées.",
+        "MAXWARN_TITLE": "Max Avertit",
+        "MAXWARN_DESC": "Le nombre maximum d'avertissements qu'un utilisateur peut recevoir avant que l'action ne soit entreprise.",
+        "MAXWARN_ACTION_TITLE": "Action d'avertissement maximale",
+        "MAXWARN_ACTION_DESC": "L'action à entreprendre lorsqu'un utilisateur atteint le nombre maximum d'avertissements."
+    },
+
+    "BAN": {
+        "DESCRIPTION": "bannit le membre spécifié",
+        "USER_DESC": "Le membre à bannir",
+        "REASON_DESC": "La raison du bannissement du membre",
+        "SUCCESS": "{{target}} a été banni du serveur !",
+        "BOT_PERM": "Je n'ai pas la permission de bannir {{target}}",
+        "MEMBER_PERM": "Vous n'avez pas la permission de bannir {{target}}",
+        "FAILED": "Impossible de bannir {{target}}"
+    },
+
+    "KICK": {
+        "DESCRIPTION": "expulse le membre spécifié",
+        "USER_DESC": "Le membre à expulser",
+        "REASON_DESC": "La raison de l'expulsion du membre",
+        "SUCCESS": "{{target}} a été expulsé du serveur !",
+        "BOT_PERM": "Je n'ai pas la permission d'expulser {{target}}",
+        "MEMBER_PERM": "Vous n'avez pas la permission d'expulser {{target}}",
+        "FAILED": "Impossible d'expulser {{target}}"
+    },
+
+    "MAXWARN": {
+        "DESCRIPTION": "définir la configuration du nombre maximal d'avertissements",
+        "SUB_LIMIT_DESC": "définir le nombre maximal d'avertissements qu'un membre peut recevoir avant de prendre une mesure",
+        "SUB_LIMIT_AMOUNT_DESC": "nombre maximal de frappes",
+        "SUB_ACTION_DESC": "définir l'action à effectuer après avoir reçu le nombre maximal d'avertissements",
+        "SUB_ACTION_ACTION_DESC": "action à effectuer",
+
+        "INVALID_LIMIT": "Limite invalide, le nombre maximal d'avertissements doit être un nombre valide supérieur à 0",
+        "INVALID_ACTION": "Action invalide, l'action peut être `Timeout`/`Kick`/`Ban`",
+        "LIMIT_SET": "Nombre maximal d'avertissements défini à {{limit}}",
+        "TIMEOUT_PERM": "Je n'ai pas la permission de mettre des membres en pause",
+        "KICK_PERM": "Je n'ai pas la permission d'expulser des membres",
+        "BAN_PERM": "Je n'ai pas la permission de bannir des membres",
+        "ACTION_SET": "Action Max Warn définie sur `{{action}}`"
+    },
+
+    "MODLOG": {
+        "DESCRIPTION": "activer ou désactiver les journaux de modération",
+        "CHANNEL_DESC": "canaux pour envoyer les journaux de mod",
+        "INVALID_CHANNEL": "Utilisation incorrecte de la commande ! Veuillez mentionner un canal.",
+        "ALREADY_DISABLED": "Les journaux de modération sont déjà désactivés",
+        "CHANNEL_PERMS": "Aïe ! Je ne peux pas envoyer de journaux à ce canal ? J'ai besoin des permissions `Écrire des Messages` et `Intégrer des Liens` dans ce canal",
+        "SUCCESS": "Les journaux de modération seront désormais envoyés à {{channel}}",
+        "DISABLED": "Les journaux de modération ont été désactivés"
+    },
+
+    "NICK": {
+        "DESCRIPTION": "commandes de surnom",
+        "SUB_SET_DESC": "définit le surnom du membre spécifié",
+        "SUB_SET_USER": "l'utilisateur pour lequel définir le surnom",
+        "SUB_SET_NAME": "le surnom à attribuer à l'utilisateur",
+        "SUB_RESET_DESC": "réinitialise le surnom d'un membre",
+        "SUB_RESET_USER": "l'utilisateur pour lequel réinitialiser le surnom",
+
+        "MISSING_NICK": "Vous devez fournir un surnom",
+        "BOT_PERM": "Oups ! Vous ne pouvez pas gérer le surnom de {{target}}",
+        "MEMBER_PERM": "Oups ! Vous ne pouvez pas gérer le surnom de {{target}}",
+
+        "SET_SUCCESS": "Le surnom de {{target}} a été défini avec succès sur {{nickname}}",
+        "SET_FAIL": "Échec de la définition du surnom de {{target}}. Avez-vous fourni un nom valide ?",
+
+        "RESET_SUCCESS": "Le surnom de {{target}} a été réinitialisé avec succès",
+        "RESET_FAIL": "Échec de la réinitialisation du surnom de {{target}}"
+    },
+
+    "PURGE": {
+        "DESCRIPTION": "commandes de purge",
+        "SUB_ALL_DESC": "supprime le nombre spécifié de messages",
+        "SUB_ATTACH_DESC": "supprime le nombre spécifié de messages contenant des pièces jointes",
+        "SUB_BOT_DESC": "supprime le nombre spécifié de messages envoyés par des bots",
+        "SUB_LINK_DESC": "supprime le nombre spécifié de messages contenant des liens",
+        "SUB_TOKEN_DESC": "supprime le nombre spécifié de messages contenant le jeton spécifié",
+        "SUB_TOKEN_TOKEN": "le jeton à rechercher",
+        "SUB_USER_DESC": "supprime le nombre spécifié de messages envoyés par un utilisateur",
+        "SUB_USER_USER": "l'utilisateur dont les messages seront supprimés",
+        "SUB_COMMON_CHANNEL": "Le canal pour effacer les messages",
+        "SUB_COMMON_AMOUNT": "nombre de messages à supprimer (Max 99)",
+
+        "INVALID_AMOUNT": "Le nombre de messages à supprimer doit être un nombre entre 1 et 99",
+        "TOO_MANY_MESSAGES": "Le nombre maximum de messages que je peux supprimer est de 99",
+
+        "SUCCESS": "Nettoyage réussi de {{amount}} messages dans {{channel}}",
+        "MEMBER_PERM": "Vous n'avez pas les permissions de Lire l'Historique des Messages & Gérer les Messages dans {{channel}}",
+        "BOT_PERM": "Je n'ai pas les permissions de Lire l'Historique des Messages & Gérer les Messages dans {{channel}}",
+        "NO_MESSAGES": "Aucun message à nettoyer trouvé",
+        "ERROR": "Erreur survenue ! Échec du nettoyage des messages"
+    },
+
+    "SOFTBAN": {
+        "DESCRIPTION": "bannit temporairement le membre spécifié. Expulse et supprime les messages",
+        "USER_DESC": "Le membre à bannir temporairement",
+        "REASON_DESC": "La raison du bannissement temporaire du membre",
+        "SUCCESS": "{{target}} a été banni temporairement du serveur !",
+        "BOT_PERM": "Je n'ai pas la permission de bannir temporairement {{target}}",
+        "MEMBER_PERM": "Vous n'avez pas la permission de bannir temporairement {{target}}",
+        "FAILED": "Échec du bannissement temporaire de {{target}}"
+    },
+
+    "TIMEOUT": {
+        "DESCRIPTION": "met en pause le membre spécifié",
+        "USER_DESC": "Le membre à mettre en pause",
+        "DURATION_DESC": "La durée de la pause",
+        "REASON_DESC": "La raison de la pause",
+        "INVALID_TIME": "Veuillez fournir une durée valide. Exemple : 1j/1h/1m/1s",
+        "SUCCESS": "{{target}} est en pause !",
+        "BOT_PERM": "Je n'ai pas la permission de bannir {{target}}",
+        "MEMBER_PERM": "Vous n'avez pas la permission de bannir {{target}}",
+        "ALREADY_TIMED_OUT": "{{target}} est déjà en pause",
+        "FAILED": "Échec de la mise en pause de {{target}}"
+    },
+
+    "UNBAN": {
+        "DESCRIPTION": "débannit le membre spécifié",
+        "NAME_DESC": "le nom du membre à débannir",
+        "REASON_DESC": "la raison du débannissement",
+        "MENU_CONTENT": "Veuillez sélectionner un utilisateur que vous souhaitez débannir",
+        "MENU_PLACEHOLDER": "Choisissez un utilisateur à débannir",
+        "SUCCESS": "{{target}} est débanni !",
+        "FAILED": "Échec du débannissement de {{target}}"
+    },
+
+    "UNTIMEOUT": {
+        "DESCRIPTION": "retirer le temps mort d'un membre",
+        "USER_DESC": "Le membre duquel retirer le temps mort",
+        "REASON_DESC": "La raison du retrait du temps mort",
+        "SUCCESS": "Le temps mort de {{target}} est retiré !",
+        "BOT_PERM": "Je n'ai pas la permission de retirer le temps mort de {{target}}",
+        "MEMBER_PERM": "Vous n'avez pas la permission de retirer le temps mort de {{target}}",
+        "NO_TIMEOUT": "Il n'y a pas de temps mort pour {{target}}",
+        "FAILED": "Échec du retrait du temps mort de {{target}}"
+    },
+
+    "VOICE": {
+        "DESCRIPTION": "commandes de modération vocale",
+        "SUB_MUTE_DESC": "mettre en sourdine la voix d'un membre",
+        "SUB_MUTE_USER": "l'utilisateur à mettre en sourdine",
+        "SUB_MUTE_REASON": "la raison de la mise en sourdine",
+        "SUB_UNMUTE_DESC": "rétablir la voix d'un membre",
+        "SUB_UNMUTE_USER": "l'utilisateur à rétablir",
+        "SUB_UNMUTE_REASON": "la raison du rétablissement",
+        "SUB_DEAFEN_DESC": "rendre un membre sourd dans les canaux vocaux",
+        "SUB_DEAFEN_USER": "l'utilisateur à rendre sourd",
+        "SUB_DEAFEN_REASON": "la raison de rendre sourd",
+        "SUB_UNDEAFEN_DESC": "rétablir l'ouïe d'un membre dans les canaux vocaux",
+        "SUB_UNDEAFEN_USER": "l'utilisateur à rétablir l'ouïe",
+        "SUB_UNDEAFEN_REASON": "la raison du rétablissement de l'ouïe",
+        "SUB_KICK_DESC": "expulser un membre des canaux vocaux",
+        "SUB_KICK_USER": "l'utilisateur à expulser",
+        "SUB_KICK_REASON": "la raison de l'expulsion",
+        "SUB_MOVE_DESC": "déplacer un membre vers un autre canal vocal",
+        "SUB_MOVE_USER": "l'utilisateur à déplacer",
+        "SUB_MOVE_CHANNEL": "le canal vers lequel déplacer l'utilisateur",
+        "SUB_MOVE_REASON": "la raison du déplacement",
+
+        "INVALID_CHANNEL_TYPE": "Type de canal invalide. Veuillez fournir un canal vocal valide",
+
+        "VMUTE_SUCCESS": "La voix de {{target}} est mise en sourdine sur ce serveur",
+        "VMUTE_MEMBER_PERM": "Vous n'avez pas la permission de mettre en sourdine la voix de {{target}}",
+        "VMUTE_BOT_PERM": "Je n'ai pas la permission de mettre en sourdine la voix de {{target}}",
+        "VMUTE_NO_VOICE": "{{target}} n'est dans aucun canal vocal",
+        "VMUTE_ALREADY_MUTED": "{{target}} est déjà en sourdine",
+        "VMUTE_ERROR": "Échec de la mise en sourdine de la voix de {{target}}",
+
+        "VUNMUTE_SUCCESS": "La voix de {{target}} est rétablie sur ce serveur",
+        "VUNMUTE_MEMBER_PERM": "Vous n'avez pas la permission de rétablir la voix de {{target}}",
+        "VUNMUTE_BOT_PERM": "Je n'ai pas la permission de rétablir la voix de {{target}}",
+        "VUNMUTE_NO_VOICE": "{{target}} n'est dans aucun canal vocal",
+        "VUNMUTE_NOT_MUTED": "{{target}} n'est pas en sourdine",
+        "VUNMUTE_ERROR": "Échec du rétablissement de la voix de {{target}}",
+
+        "DEAFEN_SUCCESS": "{{target}} est rendu sourd sur ce serveur",
+        "DEAFEN_MEMBER_PERM": "Vous n'avez pas la permission de rendre sourd {{target}}",
+        "DEAFEN_BOT_PERM": "Je n'ai pas la permission de rendre sourd {{target}}",
+        "DEAFEN_NO_VOICE": "{{target}} n'est dans aucun canal vocal",
+        "DEAFEN_ALREADY_DEAFENED": "{{target}} est déjà sourd",
+        "DEAFEN_ERROR": "Échec de la sourdine de {{target}}",
+
+        "UNDEAFEN_SUCCESS": "{{target}} est rétabli dans ce serveur",
+        "UNDEAFEN_MEMBER_PERM": "Vous n'avez pas la permission de rétablir l'ouïe de {{target}}",
+        "UNDEAFEN_BOT_PERM": "Je n'ai pas la permission de rétablir l'ouïe de {{target}}",
+        "UNDEAFEN_NO_VOICE": "{{target}} n'est dans aucun canal vocal",
+        "UNDEAFEN_NOT_DEAFENED": "{{target}} n'est pas sourd",
+        "UNDEAFEN_ERROR": "Échec du rétablissement de l'ouïe de {{target}}",
+
+        "KICK_SUCCESS": "{{target}} est déconnecté du canal vocal",
+        "KICK_MEMBER_PERM": "Vous n'avez pas la permission de déconnecter {{target}}",
+        "KICK_BOT_PERM": "Je n'ai pas la permission de déconnecter {{target}}",
+        "KICK_NO_VOICE": "{{target}} n'est dans aucun canal vocal",
+        "KICK_ERROR": "Échec de la déconnexion de {{target}} du canal vocal",
+
+        "MOVE_SUCCESS": "{{target}} est déplacé avec succès vers {{channel}}",
+        "MOVE_MEMBER_PERM": "Vous n'avez pas la permission de déplacer {{target}}",
+        "MOVE_BOT_PERM": "Je n'ai pas la permission de déplacer {{target}}",
+        "MOVE_NO_VOICE": "{{target}} n'est dans aucun canal vocal",
+        "MOVE_TARGET_PERM": "{{target}} n'a pas la permission de rejoindre {{channel}}",
+        "MOVE_ALREADY_IN_CHANNEL": "{{target}} est déjà dans {{channel}}",
+        "MOVE_ERROR": "Échec du déplacement de {{target}} vers {{channel}}"
+    },
+
+    "WARN": {
+        "DESCRIPTION": "avertit le membre spécifié",
+        "USER_DESC": "Le membre à avertir",
+        "REASON_DESC": "La raison de l'avertissement du membre",
+        "SUCCESS": "{{target}} est averti !",
+        "BOT_PERM": "Je n'ai pas la permission d'avertir {{target}}",
+        "MEMBER_PERM": "Vous n'avez pas la permission d'avertir {{target}}",
+        "FAILED": "Échec de l'avertissement de {{target}}"
+    },
+
+    "WARNINGS": {
+        "DESCRIPTION": "lister ou effacer les avertissements d'un utilisateur",
+        "SUB_LIST_DESC": "lister tous les avertissements pour un utilisateur",
+        "SUB_LIST_USER": "utilisateur pour lequel lister les avertissements",
+        "SUB_CLEAR_DESC": "effacer tous les avertissements pour un utilisateur",
+        "SUB_CLEAR_USER": "utilisateur pour lequel effacer les avertissements",
+
+        "NO_USER": "Aucun utilisateur fourni",
+        "NO_BOTS": "Les bots n'ont pas d'avertissements",
+        "NO_WARNINGS": "{{target}} n'a pas d'avertissements",
+        "WARNINGS_TITLE": "Avertissements pour {{target}}",
+        "WARN_CLEAR": "Tous les avertissements pour {{target}} ont été effacés"
+    }
+}

@@ -1,0 +1,237 @@
+{
+    "TITLE": "Moderation",
+    "DESCRIPTION": "Manage your server's moderation settings.",
+
+    "DASH": {
+        "SETTINGS_TITLE": "Settings",
+        "CH_TITLE": "Log Channel",
+        "CH_DESC": "The channel where all moderation actions will be sent.",
+        "MAXWARN_TITLE": "Max Warns",
+        "MAXWARN_DESC": "The maximum number of warnings a user can have before the action is taken.",
+        "MAXWARN_ACTION_TITLE": "Max Warn Action",
+        "MAXWARN_ACTION_DESC": "The action to take when a user reaches the maximum number of warnings."
+    },
+
+    "BAN": {
+        "DESCRIPTION": "bans the specified member",
+        "USER_DESC": "The member to ban",
+        "REASON_DESC": "The reason for banning the member",
+        "SUCCESS": "{{target}} has been banned from the server!",
+        "BOT_PERM": "I do not have permission to ban {{target}}",
+        "MEMBER_PERM": "You do not have permission to ban {{target}}",
+        "FAILED": "Failed to ban {{target}}"
+    },
+
+    "KICK": {
+        "DESCRIPTION": "kicks the specified member",
+        "USER_DESC": "The member to kick",
+        "REASON_DESC": "The reason for kicking the member",
+        "SUCCESS": "{{target}} has been kicked from the server!",
+        "BOT_PERM": "I do not have permission to kick {{target}}",
+        "MEMBER_PERM": "You do not have permission to kick {{target}}",
+        "FAILED": "Failed to kick {{target}}"
+    },
+
+    "MAXWARN": {
+        "DESCRIPTION": "set max warnings configuration",
+        "SUB_LIMIT_DESC": "set max warnings a member can receive before taking an action",
+        "SUB_LIMIT_AMOUNT_DESC": "max number of strikes",
+        "SUB_ACTION_DESC": "set action to performed after receiving maximum warnings",
+        "SUB_ACTION_ACTION_DESC": "action to perform",
+
+        "INVALID_LIMIT": "Invalid limit, Max Warnings must be a valid number greater than 0",
+        "INVALID_ACTION": "Invalid action, Action can be `Timeout`/`Kick`/`Ban`",
+        "LIMIT_SET": "Maximum warnings set to {{limit}}",
+        "TIMEOUT_PERM": "I do not permission to timeout members",
+        "KICK_PERM": "I do not have permission to kick members",
+        "BAN_PERM": "I do not have permission to ban members",
+        "ACTION_SET": "Max Warn Action set to `{{action}}`"
+    },
+
+    "MODLOG": {
+        "DESCRIPTION": "enable or disable moderation logs",
+        "CHANNEL_DESC": "channels to send mod logs",
+        "INVALID_CHANNEL": "Incorrect command usage! Please mention a channel.",
+        "ALREADY_DISABLED": "Moderation logs are already disabled",
+        "CHANNEL_PERMS": "Ugh! I cannot send logs to that channel? I need the `Write Messages` and `Embed Links` permissions in that channel",
+        "SUCCESS": "Moderation logs will now be sent to {{channel}}",
+        "DISABLED": "Moderation logs have been disabled"
+    },
+
+    "NICK": {
+        "DESCRIPTION": "nickname commands",
+        "SUB_SET_DESC": "sets the nickname of the specified member",
+        "SUB_SET_USER": "the user to set the nickname of",
+        "SUB_SET_NAME": "the nickname to set the user to",
+        "SUB_RESET_DESC": "reset a members nickname",
+        "SUB_RESET_USER": "the user to reset the nickname of",
+
+        "MISSING_NICK": "You must provide a nickname",
+        "BOT_PERM": "Oops! You cannot manage nickname of {{target}}",
+        "MEMBER_PERM": "Oops! You cannot manage nickname of {{target}}",
+
+        "SET_SUCCESS": "Successfully set the nickname of {{target}} to {{nickname}}",
+        "SET_FAIL": "Failed to set the nickname of {{target}}. Did you provide a valid name?",
+
+        "RESET_SUCCESS": "Successfully reset the nickname of {{target}}",
+        "RESET_FAIL": "Failed to reset the nickname of {{target}}"
+    },
+
+    "PURGE": {
+        "DESCRIPTION": "purge commands",
+        "SUB_ALL_DESC": "deletes the specified amount of messages",
+        "SUB_ATTACH_DESC": "deletes the specified amount of messages containing attachments",
+        "SUB_BOT_DESC": "deletes the specified amount of messages sent by bots",
+        "SUB_LINK_DESC": "deletes the specified amount of messages containing links",
+        "SUB_TOKEN_DESC": "deletes the specified amount of messages containing the specified token",
+        "SUB_TOKEN_TOKEN": "the token to search for",
+        "SUB_USER_DESC": "deletes the specified amount of messages sent by a user",
+        "SUB_USER_USER": "the user whose messages to delete",
+        "SUB_COMMON_CHANNEL": "The channel to clear messages in",
+        "SUB_COMMON_AMOUNT": "number of messages to be deleted (Max 99)",
+
+        "INVALID_AMOUNT": "The amount of messages to delete must be a number between 1 and 99",
+        "TOO_MANY_MESSAGES": "The max amount of messages that I can delete is 99",
+
+        "SUCCESS": "Successfully cleaned {{amount}} messages in {{channel}}",
+        "MEMBER_PERM": "You do not have permissions to Read Message History & Manage Messages in {{channel}}",
+        "BOT_PERM": "I do not have permissions to Read Message History & Manage Messages in {{channel}}",
+        "NO_MESSAGES": "Found no messages that can be cleaned",
+        "ERROR": "Error occurred! Failed to clean messages"
+    },
+
+    "SOFTBAN": {
+        "DESCRIPTION": "softban the specified member. Kicks and deletes messages",
+        "USER_DESC": "The member to soft-ban",
+        "REASON_DESC": "The reason for soft-banning the member",
+        "SUCCESS": "{{target}} has been soft-banned from the server!",
+        "BOT_PERM": "I do not have permission to soft-ban {{target}}",
+        "MEMBER_PERM": "You do not have permission to soft-ban {{target}}",
+        "FAILED": "Failed to soft-ban {{target}}"
+    },
+
+    "TIMEOUT": {
+        "DESCRIPTION": "timeouts the specified member",
+        "USER_DESC": "The member to timeout",
+        "DURATION_DESC": "The duration of the timeout",
+        "REASON_DESC": "The reason for the timeout",
+        "INVALID_TIME": "Please provide a valid duration. Example: 1d/1h/1m/1s",
+        "SUCCESS": "{{target}} is timed out!",
+        "BOT_PERM": "I do not have permission to ban {{target}}",
+        "MEMBER_PERM": "You do not have permission to ban {{target}}",
+        "ALREADY_TIMED_OUT": "{{target}} is already timed out",
+        "FAILED": "Failed to timed {{target}}"
+    },
+
+    "UNBAN": {
+        "DESCRIPTION": "unbans the specified member",
+        "NAME_DESC": "the name of the member to unban",
+        "REASON_DESC": "the reason for the un-ban",
+        "MENU_CONTENT": "Please select a user you wish to unban",
+        "MENU_PLACEHOLDER": "Choose a user to unban",
+        "SUCCESS": "{{target}} is un-banned!`",
+        "FAILED": "Failed to unban {{target}}"
+    },
+
+    "UNTIMEOUT": {
+        "DESCRIPTION": "remove timeout from a member",
+        "USER_DESC": "The member to remove timeout from",
+        "REASON_DESC": "The reason for removing timeout",
+        "SUCCESS": "Timeout of {{target}} is removed!",
+        "BOT_PERM": "I do not have permission to remove timeout of {{target}}",
+        "MEMBER_PERM": "You do not have permission to remove timeout of {{target}}",
+        "NO_TIMEOUT": "There is no timeout for {{target}}",
+        "FAILED": "Failed to remove timeout of {{target}}"
+    },
+
+    "VOICE": {
+        "DESCRIPTION": "voice moderation commands",
+        "SUB_MUTE_DESC": "mute a member's voice",
+        "SUB_MUTE_USER": "the user to mute",
+        "SUB_MUTE_REASON": "the reason for muting",
+        "SUB_UNMUTE_DESC": "unmute a member's voice",
+        "SUB_UNMUTE_USER": "the user to unmute",
+        "SUB_UNMUTE_REASON": "the reason for un-muting",
+        "SUB_DEAFEN_DESC": "deafen a member in voice channels",
+        "SUB_DEAFEN_USER": "the user to deafen",
+        "SUB_DEAFEN_REASON": "the reason for deafening",
+        "SUB_UNDEAFEN_DESC": "un-deafen a member in voice channels",
+        "SUB_UNDEAFEN_USER": "the user to undeafen",
+        "SUB_UNDEAFEN_REASON": "the reason for undeafening",
+        "SUB_KICK_DESC": "kick a member from voice channels",
+        "SUB_KICK_USER": "the user to kick",
+        "SUB_KICK_REASON": "the reason for kicking",
+        "SUB_MOVE_DESC": "move a member to another voice channel",
+        "SUB_MOVE_USER": "the user to move",
+        "SUB_MOVE_CHANNEL": "the channel to move the user to",
+        "SUB_MOVE_REASON": "the reason for moving",
+
+        "INVALID_CHANNEL_TYPE": "Invalid channel type. Please provide a valid voice channel",
+
+        "VMUTE_SUCCESS": "{{target}}'s voice is muted in this server",
+        "VMUTE_MEMBER_PERM": "You do not have permission to voice mute {{target}}",
+        "VMUTE_BOT_PERM": "I do not have permission to voice mute {{target}}",
+        "VMUTE_NO_VOICE": "{{target}} is not in any voice channel",
+        "VMUTE_ALREADY_MUTED": "{{target}} is already muted",
+        "VMUTE_ERROR": "Failed to voice mute {{target}}",
+
+        "VUNMUTE_SUCCESS": "{{target}}'s voice is un-muted in this server",
+        "VUNMUTE_MEMBER_PERM": "You do not have permission to voice unmute {{target}}",
+        "VUNMUTE_BOT_PERM": "I do not have permission to voice unmute {{target}}",
+        "VUNMUTE_NO_VOICE": "{{target}} is not in any voice channel",
+        "VUNMUTE_NOT_MUTED": "{{target}} is not voice muted",
+        "VUNMUTE_ERROR": "Failed to voice mute {{target}}",
+
+        "DEAFEN_SUCCESS": "{{target}} is deafened in this server",
+        "DEAFEN_MEMBER_PERM": "You do not have permission to deafen {{target}}",
+        "DEAFEN_BOT_PERM": "I do not have permission to deafen {{target}}",
+        "DEAFEN_NO_VOICE": "{{target}} is not in any voice channel",
+        "DEAFEN_ALREADY_DEAFENED": "{{target}} is already deafened",
+        "DEAFEN_ERROR": "Failed to deafen {{target}}",
+
+        "UNDEAFEN_SUCCESS": "{{target}} is deafened in this server",
+        "UNDEAFEN_MEMBER_PERM": "You do not have permission to deafen {{target}}",
+        "UNDEAFEN_BOT_PERM": "I do not have permission to deafen {{target}}",
+        "UNDEAFEN_NO_VOICE": "{{target}} is not in any voice channel",
+        "UNDEAFEN_NOT_DEAFENED": "{{target}} is not deafened",
+        "UNDEAFEN_ERROR": "Failed to deafen {{target}}",
+
+        "KICK_SUCCESS": "{{target}} is disconnected from the voice channel",
+        "KICK_MEMBER_PERM": "You do not have permission to deafen {{target}}",
+        "KICK_BOT_PERM": "I do not have permission to deafen {{target}}",
+        "KICK_NO_VOICE": "{{target}} is not in any voice channel",
+        "KICK_ERROR": "Failed to disconnect {{target}} from the voice channel",
+
+        "MOVE_SUCCESS": "{{target}} is successfully moved to {{channel}}",
+        "MOVE_MEMBER_PERM": "You do not have permission to move {{target}}",
+        "MOVE_BOT_PERM": "I do not have permission to move {{target}}",
+        "MOVE_NO_VOICE": "{{target}} is not in any voice channel",
+        "MOVE_TARGET_PERM": "{{target}} doesn't have permission to join {{channel}}",
+        "MOVE_ALREADY_IN_CHANNEL": "{{target}} is already in {{channel}}",
+        "MOVE_ERROR": "Failed to move {{target}} to {{channel}}"
+    },
+
+    "WARN": {
+        "DESCRIPTION": "warns the specified member",
+        "USER_DESC": "The member to warn",
+        "REASON_DESC": "The reason for warning the member",
+        "SUCCESS": "{{target}} is warned!",
+        "BOT_PERM": "I do not have permission to warn {{target}}",
+        "MEMBER_PERM": "You do not have permission to warn {{target}}",
+        "FAILED": "Failed to warn {{target}}"
+    },
+
+    "WARNINGS": {
+        "DESCRIPTION": "list or clear user warnings",
+        "SUB_LIST_DESC": "list all warnings for a user",
+        "SUB_LIST_USER": "user to list warnings for",
+        "SUB_CLEAR_DESC": "clear all warnings for a user",
+        "SUB_CLEAR_USER": "user to clear warnings for",
+
+        "NO_USER": "No user provided",
+        "NO_BOTS": "Bots do not have warnings",
+        "NO_WARNINGS": "{{target}} has no warnings",
+        "WARNINGS_TITLE": "Warnings for {{target}}",
+        "WARN_CLEAR": "All warnings for {{target}} have been cleared"
+    }
+}

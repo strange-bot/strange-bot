@@ -1,0 +1,22 @@
+{
+    "TITLE": "Alertes Youtube",
+    "DESCRIPTION": "Recevez des alertes lorsqu'une nouvelle vidéo est mise en ligne sur une chaîne",
+
+    "CHANNELS_LIST": "Liste des chaînes",
+    "ADD_NEW_BTN": "Ajouter une chaîne",
+    "ADD_NEW_TITLE": "Ajouter une nouvelle chaîne",
+    "CH_NAME": "Nom de la chaîne",
+    "CH_ID": "ID/URL de la chaîne",
+    "CH_ID_DESC": "L'ID ou l'URL du canal à partir duquel vous souhaitez recevoir des alertes",
+    "DISCORD_CH": "Chaîne Discord",
+    "DISCORD_CH_DESC": "La chaîne à laquelle vous souhaitez envoyer des alertes",
+    "ADD_DISCORD_CH_PLACEHOLDER": "Sélectionnez une chaîne",
+    "ACTION": "Action",
+    "TEST_BTN": "Tester",
+    "DELETE_BTN": "Supprimer",
+    "ADD_BTN": "Ajouter",
+    "CLOSE_BTN": "Fermer",
+    "DELETE_CONFIRMATION": "Êtes-vous sûr de vouloir supprimer cette chaîne ?",
+    "DELETE_CONFIRM_YES": "Oui, supprimer",
+    "DELETE_CONFIRM_NO": "Non, annuler"
+}

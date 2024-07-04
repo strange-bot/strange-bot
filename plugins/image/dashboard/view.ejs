@@ -1,0 +1,90 @@
+<section class="mb-6 px-4">
+  <div
+    class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2">
+    <!-- START: Card Header -->
+    <div class="mb-4 flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr("image:DASH.CONFIG") %></h3>
+    </div>
+    <!-- END: Card Header -->
+
+    <form method="post">
+      <!-- START: Card Body -->
+      <div class="mb-3">
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+          <!-- START: Column 1 -->
+          <div>
+            <div class="mb-2">
+              <label for="embed_color" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("image:DASH.EMBED") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400"><%= tr("image:DASH.EMBED_DESC") %></div>
+            </div>
+            <input
+              type="color"
+              name="embed_color"
+              id="embed_color"
+              class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              value="<%= config.EMBED_COLOR %>"
+              required />
+          </div>
+
+          <!-- START: Column 2 -->
+          <div>
+            <div class="mb-2">
+              <label for="api_url" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("image:DASH.API_URL") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("image:DASH.API_URL_DESC") %>
+              </div>
+            </div>
+            <input
+              type="url"
+              name="api_url"
+              id="api_url"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              value="<%= config.STRANGE_API_URL %>" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="grid gap-4 md:grid-cols-1 xl:grid-cols-1">
+          <!-- START: Column 1 -->
+          <div>
+            <div class="mb-2">
+              <label for="api_key" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("image:DASH.API_KEY") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("image:DASH.API_KEY_DESC") %>
+              </div>
+            </div>
+            <input
+              type="text"
+              name="api_key"
+              id="api_key"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              value="<%= config.STRANGE_API_KEY %>"
+              required />
+          </div>
+        </div>
+      </div>
+      <!-- END: Card Body -->
+
+      <!-- START: Card Footer -->
+      <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+        <div></div>
+        <div class="flex-shrink-0">
+          <button
+            type="submit"
+            name="config"
+            class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <%= tr("common:DASH.UPDATE_ALL") %>
+          </button>
+        </div>
+      </div>
+      <!-- END: Card Footer -->
+    </form>
+  </div>
+</section>

@@ -1,0 +1,162 @@
+{
+    "TITLE": "Music",
+    "DESCRIPTION": "Music commands",
+
+    "DASH": {
+        "CONFIG_TITLE": "Configuration",
+        "IDLE": "Idle Timeout",
+        "IDLE_DESC": "The time in seconds before the bot leaves the voice channel",
+        "SOURCE": "Source",
+        "SOURCE_DESC": "The source of the music player",
+        "CLIENT_ID": "Spotify Client ID",
+        "CLIENT_ID_DESC": "The client ID for the Spotify API",
+        "CLIENT_SECRET": "Spotify Client Secret",
+        "CLIENT_SECRET_DESC": "The client secret for the Spotify API",
+
+        "NODES_TITLE": "Lavalink Nodes",
+        "NODES_DESC": "The Lavalink nodes to connect to",
+        "ADD_NODE_BTN": "Add Node",
+        "NODE_HOST": "Host",
+        "NODE_HOST_DESC": "The host of the Lavalink node",
+        "NODE_PORT": "Port",
+        "NODE_PORT_DESC": "The port of the Lavalink node",
+        "NODE_PASS": "Password",
+        "NODE_PASS_DESC": "The password of the Lavalink node",
+        "NODE_ID": "Node ID",
+        "NODE_ID_DESC": "The ID of the Lavalink node",
+        "NODE_SECURE": "Is Secure?",
+        "NODE_SECURE_DESC": "Is the connection to node secure?",
+        "NODE_ACTION": "Action",
+        "NODE_ACTION_EDIT_BTN": "Edit",
+        "NODE_ACTION_DELETE_BTN": "Delete",
+
+        "ADD_NODE_TITLE": "Add Lavalink Node",
+        "ADD_NODE_CREATE_BTN": "Create Node",
+        "CLOSE_MODAL_BTN": "Close",
+        "DELETE_CONFIRM": "Are you sure you want to delete this lavalink node?",
+        "DELETE_CONFIRM_BTN": "Yes, Delete",
+        "DELETE_CANCEL_BTN": "No, Cancel"
+    },
+
+    "COMMON": {
+        "NO_MUSIC": "🚫 No music is being played!",
+        "NOT_IN_VC": "🚫 You need to join a voice channel first",
+        "NOT_SAME_VC": "🚫 You must be in the same voice channel as mine"
+    },
+
+    "VALIDATION": {
+        "NOT_PLAYING": "🚫 No music is being played!",
+        "NO_VOICE": "🚫 You need to be in my voice channel to use this command!",
+        "DIFF_CHANNEL": "🚫 You're not in the same voice channel."
+    },
+
+    "BASSBOOST": {
+        "DESCRIPTION": "set bassboost level",
+        "LEVEL_DESC": "The bassboost level to set",
+        "SUCCESS": "Set the bassboost level to {{level}}"
+    },
+
+    "LOOP": {
+        "DESCRIPTION": "loops the song or queue",
+        "TYPE_DESC": "The type of loop to set",
+        "TRACK_LOOP": "Loop mode is set to `track`",
+        "QUEUE_LOOP_ENABLED": "Queue loop is now enabled",
+        "QUEUE_LOOP_DISABLED": "Queue loop is now disabled"
+    },
+
+    "LYRIC": {
+        "DESCRIPTION": "find lyric of the song",
+        "QUERY_DESC": "Lyric to search for",
+        "MISSING_QUERY": "Invalid Lyric selected.",
+        "API_ERROR": "Oops! Failed to fetch lyrics. Please try again later."
+    },
+
+    "NP": {
+        "DESCRIPTION": "show's what track is currently being played",
+        "DURATION": "Song Duration",
+        "REQUESTED_BY": "Requested By"
+    },
+
+    "PAUSE": {
+        "DESCRIPTION": "pause the music player",
+        "ALREADY_PAUSED": "The music player is already paused.",
+        "PAUSED": "⏸️ Paused the music player."
+    },
+
+    "PLAY": {
+        "DESCRIPTION": "play a song from youtube",
+        "QUERY_DESC": "The song name/url you want to search for",
+        "SPOTIFY_DISABLED": "🚫 Spotify songs cannot be played. Please contact the bot owner",
+        "SEARCH_ERROR": "🚫 An error occurred while searching for the song",
+        "NO_MATCHES": "No results found matching {{query}}",
+        "QUEUE_TRACK_ADD": "Added Track to queue",
+        "QUEUE_PLAYLIST_ADD": "Added Playlist to queue",
+        "QUEUE_POS": "Position in queue",
+        "SONG_DUR": "Song Duration",
+        "PLAYLIST_DUR": "Playlist Duration",
+        "PLAYLIST_SONGS": "Enqueued"
+    },
+
+    "QUEUE": {
+        "DESCRIPTION": "displays the current music queue",
+        "PAGE_DESC": "the page of the queue to display",
+        "EMBED_TITLE": "Queue for {{guild}}",
+        "CURRENT": "Current",
+        "NO_TRACKS_IN_PAGE": "No songs in page {{page}}",
+        "NO_TRACKS": "No songs in the queue"
+    },
+
+    "RESUME": {
+        "DESCRIPTION": "resumes the music player",
+        "ALREADY_PLAYING": "The player is already resumed",
+        "RESUMED": "▶️ Resumed the music player"
+    },
+
+    "SEARCH": {
+        "DESCRIPTION": "search for matching songs on youtube",
+        "QUERY_DESC": "The search query",
+        "SEARCH_ERROR": "🚫 An error occurred while searching for the song",
+        "NO_MATCHES": "No results found matching {{query}}",
+        "QUEUE_TRACK_ADD": "Added Track to queue",
+        "QUEUE_PLAYLIST_ADD": "Added Playlist to queue",
+        "QUEUE_POS": "Position in queue",
+        "TRACK_DURATION": "Track Duration",
+        "PLAYLIST_DUR": "Playlist Duration",
+        "PLAYLIST_TRACKS": "Enqueued",
+        "PLACEHOLDER": "Choose search results",
+        "SEARCH_RESULTS": "Search Results",
+        "SEARCH_RESULTS_DESC": "Please select the songs you wish to add to the queue",
+        "SEARCH_ADDED": "🎶 Added {{count}} songs to queue"
+    },
+
+    "SEEK": {
+        "DESCRIPTION": "sets the playing track's position to the specified position",
+        "TIME_DESC": "the position to seek to",
+        "TOO_LONG": "The duration you provide exceeds the duration of the current track",
+        "SEEKED": "Seeked to {time}"
+    },
+
+    "SHUFFLE": {
+        "DESCRIPTION": "shuffle the queue",
+        "SHUFFLED": "🎶 Queue has been shuffled"
+    },
+
+    "SKIP": {
+        "DESCRIPTION": "skip the current song",
+        "NOTHING_TO_SKIP": "There is no song to skip.",
+        "SKIPPED": "⏯️ {{title}} was skipped."
+    },
+
+    "STOP": {
+        "DESCRIPTION": "stop the music player",
+        "STOPPED": "🎶 The music player is stopped and queue has been cleared"
+    },
+
+    "VOLUME": {
+        "DESCRIPTION": "set the music player volume",
+        "AMOUNT_DESC": "Enter a value to set [0 to 100]",
+        "CURRENT_VOLUME": "> The player volume is {{volume}}",
+        "INVALID_VOLUME": "you need to give me a volume between 1 and 100.",
+        "VOLUME_SET": "🎶 Music player volume is set to `{{volume}}`."
+    }
+}

@@ -1,0 +1,116 @@
+{
+    "TITLE": "Invites",
+    "DESCRIPTION": "Invite management for your server.",
+
+    "DASH": {
+        "RANKS_TITLE": "Ranks",
+        "RANKS_DESC": "View invite ranks of your server.",
+        "CREATE_MODAL_BTN": "Create New Rank",
+        "CREATE_TITLE": "Add New Invite Rank",
+        "ROLE_TITLE": "Role Name",
+        "ROLE_DESC": "The role that will be given to the user when they reach this rank.",
+        "ROLE_PLACEHOLDER": "Select a role...",
+        "INVITES_TITLE": "Invites",
+        "INVITES_DESC": "The amount of invites the user needs to reach this rank.",
+        "CREATE_BTN": "Save",
+        "ROLE_COL": "Role",
+        "INVITES_COL": "Invites",
+        "ACTION_COL": "Action",
+        "UPDATE_BTN": "Update",
+        "DELETE_BTN": "Delete"
+    },
+
+    "ADD": {
+        "DESCRIPTION": "add invites to a member",
+        "USER_DESC": "the user to give invites to",
+        "INVITES_DESC": "the number of invites to give",
+        "INVALID_USER": "Invalid syntax: You need to mention a target user",
+        "INVALID_AMOUNT": "Invalid amount of invites",
+        "BOT": "Oops! You cannot add invites to bots",
+        "EMBED_TITLE": "Added invites to {{user}}",
+        "EMBED_DESC": "{{user}} now has {{amount}} invites"
+    },
+
+    "CODES": {
+        "DESCRIPTION": "list all your invites codes in this guild",
+        "USER_DESC": "the user to get the invite codes for",
+        "NOT_FOUND": "`{{user}}` has no invites in this server",
+        "EMBED_TITLE": "Invite codes for {{user}}"
+    },
+
+    "IMPORT": {
+        "DESCRIPTION": "add existing guild invites to users",
+        "USER_DESC": "the user to import invites for",
+        "BOT": "Oops! You cannot import invites for bots",
+        "SUCCESS": "Successfully imported existing invites for {{user}}",
+        "SUCCESS_ALL": "Successfully imported existing invites for all users"
+    },
+
+    "INVITER": {
+        "DESCRIPTION": "shows inviter information",
+        "USER_DESC": "the user to get the inviter information for",
+        "DISABLED": "Invite tracking is disabled in this server",
+        "CANNOT_TRACK": "Cannot track how `{{user}}` joined",
+        "EMBED_TITLE": "Invite data for {{user}}",
+        "INVITER": "Inviter",
+        "DELETED": "Deleted User",
+        "INVITER_ID": "Inviter ID",
+        "INVITE_CODE": "Invite Code",
+        "INVITES": "Inviter Invites"
+    },
+
+    "INVITES": {
+        "DESCRIPTION": "shows number of invites in this server",
+        "USER_DESC": "the user to get the invites for",
+        "DISABLED": "Invite tracking is disabled in this server",
+
+        "EMBED_TITLE": "Invites for {{user}}",
+        "EMBED_DESC": "{{user}} has a total of {{invites}} invites",
+
+        "INVITES": "Total Invites",
+        "FAKE": "Fake Invites",
+        "LEFT": "Left Invites"
+    },
+
+    "RANK": {
+        "DESC": "configure invite ranks",
+        "ADD_DESC": "add a new invite rank",
+        "ADD_ROLE_DESC": "role to be given",
+        "ADD_INVITES_DESC": "number of invites required to obtain the role",
+        "REMOVE_DESC": "remove a previously configured invite rank",
+        "REMOVE_ROLE_DESC": "role with configured invite rank",
+
+        "INVALID_INVITES": "{{match}} is not a valid number",
+        "INVALID_ROLE": "No role found matching that name {{match}}",
+        "DISABLED": "Invite tracking is disabled in this server",
+        "BOT_ROLE": "I cannot assign bot roles to members",
+        "EVERYONE_ROLE": "I cannot assign `everyone` role to members",
+        "MISSING_PERM": "I am missing permissions to move members to that role. Is that role below my highest role?",
+        "PREVIOUS_FOUND": "Previous configuration found for this role. Overwriting data...",
+        "NOT_FOUND": "No previous invite rank is configured found for this role",
+        "SUCCESS": "Success! Configuration saved."
+    },
+
+    "RANKS": {
+        "DESCRIPTION": "shows the invite ranks configured on this guild",
+        "NO_RANKS": "No invite ranks configured in this server",
+        "EMBED_TITLE": "Invite Ranks"
+    },
+
+    "RESET": {
+        "DESCRIPTION": "clear a users added invites",
+        "USER_DESC": "the user to clear invites for",
+        "INVALID_USER": "Incorrect syntax. You must mention a target",
+        "SUCCESS": "Done! Invites cleared for `{{user}}`"
+    },
+
+    "TRACKER": {
+        "DESCRIPTION": "enable or disable invite tracking in the server",
+        "STATUS_DESC": "configuration status",
+        "INVALID_STATUS": "Invalid status! Please provide `on` or `off`",
+        "MISSING_PERMS": "Oops! I am missing `Manage Server`, `Manage Channels` permission!\nI cannot track invites",
+        "MISSING_PERMS_CHANNEL": "I may not be able to track invites properly\nI am missing `Manage Channel` permission in the following channels ```{{channels}}```",
+        "ENABLED": "Invite tracking has been enabled",
+        "DISABLED": "Invite tracking has been disabled"
+    }
+}

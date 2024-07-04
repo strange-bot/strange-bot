@@ -1,0 +1,21 @@
+/**
+ * @param {import('discord.js').VoiceState} oldState
+ * @param {import('discord.js').VoiceState} newState
+ */
+module.exports = async (oldState, newState) => {
+    const { guild, client } = oldState;
+
+    // if nobody left the channel in question, return.
+    if (oldState.channelId !== guild.members.me.voice.channelId || newState.channel) return;
+
+    // otherwise, check how many people are in the channel now
+    if (oldState.channel.members.size === 1) {
+        setTimeout(() => {
+            // if 1 (you), wait 1 minute
+            if (!oldState.channel.members.size - 1) {
+                const player = client.musicManager.getPlayer(guild.id);
+                if (player) client.musicManager.destroyPlayer(guild.id).then(player.disconnect()); // destroy the player
+            }
+        }, client.config.MUSIC.IDLE_TIME * 1000);
+    }
+};

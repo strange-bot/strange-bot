@@ -1,0 +1,15 @@
+{
+    "EMBED_TITLE": "Joined a server",
+    "FIELD_SERVER": "Server Name",
+    "FIELD_ID": "Server ID",
+    "FIELD_OWNER": "Server Owner",
+    "FIELD_MEMBERS": "Server Members",
+    "FOOTER": "Guild #{{guilds}}",
+    "DELETED_USER": "Deleted User",
+
+    "DASH": {
+        "CONFIG_TITLE": "Configuration",
+        "WEBHOOK": "Webhook",
+        "WEBHOOK_DESC": "The webhook to send the logs to."
+    }
+}

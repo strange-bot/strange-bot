@@ -1,0 +1,13 @@
+{
+    "name": "moderation",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Sai Teja Madha",
+    "license": "ISC",
+    "dependencies": {
+        "common-tags": "^1.8.2",
+        "enhanced-ms": "^2.3.0",
+        "mongoose": "^7.6.11",
+        "strange-sdk": "github:strange-bot/strange-sdk"
+    }
+}

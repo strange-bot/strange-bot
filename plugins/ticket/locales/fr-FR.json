@@ -1,0 +1,186 @@
+{
+    "TITLE": "Billet",
+    "DESCRIPTION": "Gérer le système de billetterie",
+
+    "DASH": {
+        "SETTINGS_TITLE": "Paramètres",
+        "CREATE_EMBED_TITLE": "Créer une couleur intégrée",
+        "CREATE_EMBED_DESC": "Couleur de l'embed lors de la création d'un ticket",
+        "CLOSE_EMBED_TITLE": "Fermer la couleur intégrée",
+        "CLOSE_EMBED_DESC": "Couleur de l'intégration lorsqu'un ticket est fermé",
+        "LOGS_TITLE": "Canal des journaux",
+        "LOGS_DESC": "Canal pour enregistrer les actions du ticket",
+        "LIMIT_TITLE": "Limite de billets",
+        "LIMIT_DESC": "Nombre maximum de tickets sur le serveur à la fois",
+
+        "CATEGORY_TITLE": "Catégories de billets",
+        "CATEGORY_DESC": "Gérer les catégories de billets",
+        "CREATE_MODAL_BTN": "Créer une catégorie",
+        "CAT_COL": "Catégorie",
+        "CAT_DESC_COL": "Description",
+        "ACTION_COL": "Action",
+        "ACTION_UPDATE_BTN": "Mise à jour",
+        "ACTION_DELETE_BTN": "Supprimer",
+
+        "CREATE_TITLE": "Créer une catégorie",
+        "UPDATE_TITLE": "Catégorie de mise à jour",
+        "NAME_TITLE": "Nom",
+        "NAME_DESC": "Nom de la catégorie",
+        "DESC_TITLE": "Description",
+        "DESC_DESC": "Description courte de la catégorie",
+        "STAFF_ROLE_TITLE": "Rôles du personnel",
+        "STAFF_ROLE_DESC": "Rôles pouvant gérer les tickets dans cette catégorie",
+        "MEM_ROLE_TITLE": "Rôles des membres",
+        "MEM_ROLE_DESC": "Rôles pouvant créer des tickets dans cette catégorie",
+        "OPEN_MSG": "Ouvrir le message",
+        "EMBED_TITLE": "Titre intégré",
+        "EMBED_TITLE_DESC": "Titre de l'intégration lors de la création d'un ticket",
+        "EMBED_DESC": "Description intégrée",
+        "EMBED_DESC_DESC": "Description de l'intégration lors de la création d'un ticket",
+        "EMBED_FOOTER": "Intégrer le pied de page",
+        "EMBED_FOOTER_DESC": "Pied de page pour l'intégration lors de la création d'un ticket",
+        "CREATE_BTN": "Créer",
+        "UPDATE_BTN": "Mise à jour",
+
+        "DELETE_CONFIRM": "Etes-vous sûr de vouloir supprimer cette catégorie ?",
+        "DELETE_CONFIRM_BTN": "Oui, supprimer",
+        "DELETE_CANCEL_BTN": "Non, annuler",
+
+        "CLOSE_MODAL_BTN": "Fermer"
+    },
+
+    "HANDLER": {
+        "TICKET_ID": "IDENTIFIANT",
+        "CATEGORY_LABEL": "Catégorie",
+        "SERVER_LABEL": "Serveur",
+        "OWNER_LABEL": "Ouvert par",
+
+        "CLOSE_PERMS": "Impossible de fermer le ticket, permissions manquantes. Contactez le gestionnaire du serveur pour obtenir de l'aide !",
+        "CLOSE_LOG_EMBED_TITLE": "Ticket Fermé",
+        "CLOSE_LOG_EMBED_REASON": "Raison",
+        "CLOSE_LOG_EMBED_OPENED": "Ouvert Par",
+        "CLOSE_LOG_EMBED_CLOSED": "Fermé Par",
+        "CLOSE_LOG_BTN": "Transcription",
+        "CLOSE_FAIL": "Échec de la fermeture du ticket, une erreur est survenue !",
+        "CLOSE_ALL_REASON": "Fermeture forcée de tous les tickets ouverts",
+
+        "OPEN_PERMS": "Impossible de créer le canal du ticket, permission `Gérer le Canal` manquante. Contactez le gestionnaire du serveur pour obtenir de l'aide !",
+        "ALREADY_OPEN": "Vous avez déjà un ticket ouvert !",
+        "TOO_MANY": "Il y a trop de tickets ouverts ! Veuillez réessayer plus tard.",
+        "OPEN_MENU_REPLY": "Veuillez choisir une catégorie de ticket dans le menu déroulant ci-dessous.",
+        "OPEN_MENU_PLACEHOLDER": "Choisissez la catégorie du ticket",
+        "OPEN_MENU_TIMEOUT": "La création du ticket a expiré. Veuillez réessayer.",
+        "OPEN_MENU_PROCESS": "Création du ticket...",
+        "OPEN_EMBED_TITLE": "Ticket {ticket:number}",
+        "OPEN_EMBED_DESC": "Bonjour {member:mention},\nMerci de nous avoir contactés ! Veuillez patienter pendant qu'un membre du personnel vient vous assister.",
+        "OPEN_EMBED_FOOTER": "Vous pouvez fermer votre ticket à tout moment en cliquant sur le bouton ci-dessous",
+        "OPEN_CLOSE_BTN": "Fermer le Ticket",
+        "OPEN_CREATE_FAIL": "Échec de la création du canal du ticket, une erreur est survenue !",
+        "OPEN_SUCCESS": "Ticket créé ! 🔥",
+        "OPEN_FAILED": "Échec de la création du canal du ticket, une erreur est survenue !",
+        "OPEN_LOG_TITLE": "Ticket Créé",
+        "OPEN_LOG_BTN": "Voir le Canal"
+    },
+
+    "CATEGORY": {
+        "DESCRIPTION": "gérer les catégories de tickets",
+
+        "SUB_LIST_DESC": "lister toutes les catégories de tickets",
+
+        "SUB_ADD_DESC": "ajouter une nouvelle catégorie de tickets",
+        "SUB_ADD_CAT_NAME": "le nom de la catégorie",
+        "SUB_ADD_CAT_DESC": "la description de la catégorie",
+
+        "SUB_REMOVE_DESC": "supprimer une catégorie de tickets",
+        "SUB_REMOVE_CAT_NAME": "le nom de la catégorie",
+
+        "SUB_CONFIG_DESC": "configurer les catégories de tickets",
+        "SUB_CONFIG_CAT_NAME": "le nom de la catégorie",
+
+        "LIST_EMPTY": "Aucune catégorie de tickets trouvée.",
+        "LIST_EMBED_TITLE": "Catégories de Tickets",
+
+        "ADD_NO_NAME": "Utilisation invalide ! Le nom de la catégorie n'est pas fourni.",
+        "ADD_EXISTS": "Une catégorie de tickets avec ce nom {{category}} existe déjà.",
+        "ADD_SUCCESS": "Catégorie de tickets `{{category}}` ajoutée avec succès.",
+
+        "REMOVE_NOT_EXISTS": "Une catégorie de tickets avec ce nom {{category}} n'existe pas.",
+        "REMOVE_SUCCESS": "Catégorie de tickets `{{category}}` supprimée avec succès.",
+
+        "CONFIG_NOT_EXISTS": "Une catégorie de tickets avec ce nom {{category}} n'existe pas.",
+        "CONFIG_CONTENT": "Que souhaitez-vous configurer pour la catégorie `{{category}}` ?",
+        "CONFIG_BTN_MEM_ROLE": "Rôle des Membres",
+        "CONFIG_BTN_STAFF_ROLE": "Rôle du Personnel",
+        "CONFIG_BTN_MSG": "Message d'Ouverture",
+        "CONFIG_MODAL_MEM_ROLE_TITLE": "Configurer les Rôles des Membres",
+        "CONFIG_MODAL_MEM_ROLE_ADD": "Ajouter un nouvel ID de rôle de membre",
+        "CONFIG_MODAL_MEM_ROLE_REMOVE": "Supprimer un ID de rôle de membre existant",
+        "CONFIG_MODAL_STAFF_ROLE_TITLE": "Configurer les Rôles du Personnel",
+        "CONFIG_MODAL_STAFF_ROLE_ADD": "Ajouter un nouvel ID de rôle du personnel",
+        "CONFIG_MODAL_STAFF_ROLE_REMOVE": "Supprimer un ID de rôle du personnel existant",
+        "CONFIG_MODAL_MSG_TITLE": "Configurer le Message d'Ouverture",
+        "CONFIG_MODAL_MSG_EMBED_TITLE": "Titre de l'Intégration",
+        "CONFIG_MODAL_MSG_EMBED_DESC": "Description de l'Intégration",
+        "CONFIG_MODAL_MSG_EMBED_FOOTER": "Pied de Page de l'Intégration",
+        "CONFIG_ROLE_NOT_EXIST": "Un rôle avec l'ID {{role}} n'existe pas.",
+        "CONFIG_MEM_ROLE_SUCCESS": "Configuration des rôles des membres mise à jour avec succès.",
+        "CONFIG_STAFF_ROLE_SUCCESS": "Configuration des rôles du personnel mise à jour avec succès.",
+        "CONFIG_MSG_SUCCESS": "Configuration du message d'ouverture mise à jour avec succès."
+    },
+
+    "TICKET": {
+        "DESCRIPTION": "diverses commandes de billetterie",
+
+        "SUB_SETUP_DESC": "configurer un nouveau message de ticket",
+        "SUB_SETUP_CHANNEL": "le canal où le message de création de ticket doit être envoyé",
+
+        "SUB_LOG_DESC": "configurer le canal de logs pour la billetterie",
+        "SUB_LOG_CHANNEL": "le canal où les logs de tickets doivent être envoyés",
+
+        "SUB_LIMIT_DESC": "définir le nombre maximum de tickets ouverts simultanément",
+        "SUB_LIMIT_AMOUNT": "nombre max de tickets",
+
+        "SUB_CLOSE_DESC": "ferme le ticket [utilisé uniquement dans le canal de ticket]",
+
+        "SUB_CLOSEALL_DESC": "ferme tous les tickets ouverts",
+
+        "SUB_ADD_DESC": "ajouter un utilisateur au ticket [utilisé uniquement dans le canal de ticket]",
+        "SUB_ADD_USER": "l'utilisateur à ajouter au ticket",
+
+        "SUB_REMOVE_DESC": "retirer un utilisateur du ticket [utilisé uniquement dans le canal de ticket]",
+        "SUB_REMOVE_USER": "l'utilisateur à retirer du ticket",
+
+        "SETUP_PERMS": "Il me manque la permission `Gérer les canaux` pour créer des canaux de tickets",
+        "SETUP_TIMEOUT": "Aucune réponse reçue, annulation de la configuration",
+        "SETUP_BTN": "Message de Configuration",
+        "SETUP_MSG_CONTENT": "Veuillez utiliser le bouton ci-dessous pour configurer le message de ticket",
+        "SETUP_MODAL_TITLE": "Configuration du Ticket",
+        "SETUP_MODAL_LABEL_TITLE": "Titre de l'Intégration",
+        "SETUP_MODAL_LABEL_DESC": "Description de l'Intégration",
+        "SETUP_MODAL_LABEL_FOOTER": "Pied de page de l'Intégration",
+        "SETUP_EMBED_TITLE": "Ticket de Support",
+        "SETUP_EMBED_DESC": "Veuillez utiliser le bouton ci-dessous pour créer un ticket",
+        "SETUP_EMBED_FOOTER": "Vous ne pouvez avoir qu'un seul ticket ouvert à la fois !",
+        "SETUP_EMBED_BTN": "Ouvrir un Ticket",
+        "SETUP_DONE": "Terminé ! Message de Ticket Créé",
+
+        "NOT_TICKET_CHANNEL": "Oups ! Cette commande ne peut être utilisée que dans un canal de ticket",
+
+        "LOG_CHANNEL_PERMS": "Oups ! Je n'ai pas la permission d'envoyer une intégration à {{channel}}",
+        "LOG_CHANNEL_SUCCESS": "Configuration sauvegardée ! Les logs de tickets seront envoyés à {{channel}}",
+
+        "LIMIT_TOO_LOW": "Oups ! La limite doit être d'au moins 5",
+        "LIMIT_SUCCESS": "Configuration sauvegardée. Vous pouvez maintenant avoir un maximum de `{{limit}}` tickets ouverts",
+
+        "CLOSE_REASON": "Fermé par un modérateur",
+        "CLOSE_PERMS": "Je n'ai pas la permission de fermer les tickets",
+        "CLOSE_ERROR": "Une erreur s'est produite lors de la fermeture du ticket",
+
+        "CLOSE_ALL": "Terminé ! Succès : `{{success}}` | Échec : `{{failed}}`",
+
+        "DONE": "Terminé !",
+        "ADD_ERROR": "Échec de l'ajout de l'utilisateur au ticket",
+        "INVALID_ID": "Oups ! Vous devez entrer un identifiant d'utilisateur/role valide",
+        "REMOVE_ERROR": "Échec du retrait de l'utilisateur du ticket"
+    }
+}

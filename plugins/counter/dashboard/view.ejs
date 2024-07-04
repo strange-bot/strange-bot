@@ -1,0 +1,83 @@
+<form method="post">
+  <!-- START: Card Body -->
+  <div class="mb-3">
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+
+      <!-- START: Column 1 (User Counter) -->
+      <% const userCounter = settings.counters.find(c => c.counter_type === 'USERS') %>
+      <div>
+        <div class="mb-2">
+          <label for="user_counter" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("counter:DASH.USER_TITLE") %></label>
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("counter:DASH.USER_DESC") %>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="user_counter"
+          id="user_counter"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= userCounter?.name %>"
+          placeholder="<%= tr("counter:DASH.NAME_PLACEHOLDER") %>"
+        />
+      </div>
+      <!-- END: Column 1 (User Counter) -->
+
+      <!-- START: Column 2 (Member Counter) -->
+      <% const memberCounter = settings.counters.find(c => c.counter_type === 'MEMBERS') %>
+      <div>
+        <div class="mb-2">
+          <label for="member_counter" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("counter:DASH.MEMBER_TITLE") %></label>
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("counter:DASH.MEMBER_DESC") %>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="member_counter"
+          id="member_counter"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= memberCounter?.name %>"
+          placeholder="<%= tr("counter:DASH.NAME_PLACEHOLDER") %>"
+        />
+      </div>
+      <!-- END: Column 2 (Member Counter) -->
+
+      <!-- START: Column 3 (Bot Counter) -->
+      <% const botCounter = settings.counters.find(c => c.counter_type === 'BOTS') %>
+      <div>
+        <div class="mb-2">
+          <label for="bot_counter" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("counter:DASH.BOT_TITLE") %></label>
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("counter:DASH.BOT_DESC") %>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="bot_counter"
+          id="bot_counter"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= botCounter?.name %>"
+          placeholder="<%= tr("counter:DASH.NAME_PLACEHOLDER") %>"
+        />
+      </div>
+      <!-- END: Column 3 (Bot Counter) -->
+
+    </div>
+  </div>
+  <!-- END: Card Body -->
+
+  <!-- START: Card Footer -->
+  <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+    <div></div>
+    <div class="flex-shrink-0">
+      <button
+        type="submit"
+        name="settings"
+        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <%= tr("common:DASH.UPDATE") %>
+      </button>
+    </div>
+  </div>
+  <!-- END: Card Footer -->
+</form>

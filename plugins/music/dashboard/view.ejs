@@ -1,0 +1,392 @@
+<section class="mb-6 px-4">
+  <div
+    class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2">
+    <!-- START: Card Header -->
+    <div class="mb-4 flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr("music:DASH.CONFIG_TITLE") %></h3>
+    </div>
+    <!-- END: Card Header -->
+
+    <form method="post">
+      <!-- START: Card Body -->
+      <div class="mb-3">
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+          <!-- START: Column 1 -->
+          <div>
+            <div class="mb-2">
+              <label for="idle_time" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("music:DASH.IDLE") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400"><%= tr("music:DASH.IDLE_DESC") %></div>
+            </div>
+            <input
+              type="number"
+              name="idle_time"
+              id="idle_time"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              value="<%= config.IDLE_TIME %>"
+              required />
+          </div>
+
+          <!-- START: Column 2 -->
+          <div>
+            <div class="mb-2">
+              <label for="source" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("music:DASH.SOURCE") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("music:DASH.SOURCE_DESC") %>
+              </div>
+            </div>
+            <select
+              name="source"
+              id="source"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
+              <% if(config.DEFAULT_SOURCE === "YT") { %>
+              <option value="YT" selected>Youtube</option>
+              <% } %> <% if(config.DEFAULT_SOURCE === "YTM") { %>
+              <option value="YTM" selected>Youtube Music</option>
+              <% } %> <% if(config.DEFAULT_SOURCE === "SC") { %>
+              <option value="SC" selected>SoundCloud</option>
+              <% } %>
+              <!-- Unselected -->
+              <% if(config.DEFAULT_SOURCE !== "YT") { %>
+              <option value="YT">Youtube</option>
+              <% } %> <% if(config.DEFAULT_SOURCE !== "YTM") { %>
+              <option value="YTM">Youtube Music</option>
+              <% } %> <% if(config.DEFAULT_SOURCE !== "SC") { %>
+              <option value="SC">SoundCloud</option>
+              <% } %>
+            </select>
+          </div>
+
+          <div>
+            <div class="mb-2">
+              <label for="client_id" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("music:DASH.CLIENT_ID") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("music:DASH.CLIENT_ID_DESC") %>
+              </div>
+            </div>
+            <input
+              type="text"
+              name="client_id"
+              id="client_id"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              value="<%= config.SPOTIFY.CLIENT_ID %>" />
+          </div>
+
+          <div>
+            <div class="mb-2">
+              <label for="client_secret" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("music:DASH.CLIENT_SECRET") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("music:DASH.CLIENT_SECRET_DESC") %>
+              </div>
+            </div>
+            <input
+              type="url"
+              name="client_secret"
+              id="client_secret"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              value="<%= config.SPOTIFY.CLIENT_SECRET %>" />
+          </div>
+        </div>
+      </div>
+      <!-- END: Card Body -->
+
+      <!-- START: Card Footer -->
+      <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+        <div></div>
+        <div class="flex-shrink-0">
+          <button
+            type="submit"
+            name="config"
+            class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <%= tr("common:DASH.UPDATE_ALL") %>
+          </button>
+        </div>
+      </div>
+      <!-- END: Card Footer -->
+    </form>
+  </div>
+</section>
+
+<!-- Nodes -->
+<section class="mb-6 px-4 pt-2">
+  <div
+    class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2">
+    <!-- START: Card Header -->
+    <div class="items-center justify-between lg:flex">
+      <div class="mb-4 lg:mb-0">
+        <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white"><%= tr("music:DASH.NODES_TITLE") %></h3>
+        <span class="text-base font-normal text-gray-500 dark:text-gray-400"><%= tr("music:DASH.NODES_DESC") %></span>
+      </div>
+      <div class="items-center sm:flex">
+        <div class="flex-shrink-0">
+          <a
+            data-modal-target="add-node-modal"
+            data-modal-toggle="add-node-modal"
+            class="inline-flex cursor-pointer items-center rounded-lg p-2 text-xs font-medium uppercase text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 sm:text-sm">
+            <%= tr("music:DASH.ADD_NODE_BTN") %>
+            <i class="fa-solid fa-angle-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- END: Card Header -->
+
+    <!-- START: Card Body -->
+    <div class="mt-6 flex flex-col">
+      <div class="overflow-x-auto rounded-lg">
+        <div class="inline-block min-w-full align-middle">
+          <div class="overflow-hidden shadow sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th
+                    scope="col"
+                    class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                    <%=tr("music:DASH.NODE_HOST")%>
+                  </th>
+                  <th
+                    scope="col"
+                    class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                    <%=tr("music:DASH.NODE_PORT")%>
+                  </th>
+                  <th
+                    scope="col"
+                    class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                    <%=tr("music:DASH.NODE_PASS")%>
+                  </th>
+                  <th
+                    scope="col"
+                    class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                    <%=tr("music:DASH.NODE_ID")%>
+                  </th>
+                  <th
+                    scope="col"
+                    class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                    <%=tr("music:DASH.NODE_SECURE")%>
+                  </th>
+                  <th
+                    scope="col"
+                    class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                    <%=tr("music:DASH.NODE_ACTION")%>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800">
+                <% config.LAVALINK_NODES.forEach((node, i) => { %> <% if (i % 2 === 0) { %>
+                <tr class="bg-gray-50 dark:bg-gray-700">
+                  <% } else { %>
+                </tr>
+                <tr>
+                  <% } %>
+                  <td class="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
+                    <%= node.host %>
+                  </td>
+                  <td class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= node.port %>
+                  </td>
+                  <td class="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
+                    <%= node.password %>
+                  </td>
+                  <td class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= node.id %>
+                  </td>
+                  <td
+                    class="inline-flex items-center space-x-2 whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= node.secure %>
+                  </td>
+                  <td class="whitespace-nowrap p-4">
+                    <button
+                      data-modal-target="delete-modal-<%=i+1%>"
+                      data-modal-toggle="delete-modal-<%=i+1%>"
+                      class="rounded-md border border-red-100 bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:border-red-500 dark:bg-gray-700 dark:text-red-400">
+                      <%=tr("music:DASH.NODE_ACTION_DELETE_BTN")%>
+                    </button>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END: Card Body -->
+  </div>
+</section>
+
+<!-- Add Node Modal -->
+<div
+  id="add-node-modal"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+  <div class="relative max-h-full w-full max-w-2xl p-4">
+    <form method="post">
+      <!-- Modal content -->
+      <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-600 md:p-5">
+          <h4 class="text-xl font-semibold text-gray-900 dark:text-white"><%= tr("music:DASH.ADD_NODE_TITLE") %></h4>
+          <button
+            type="button"
+            class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="add-node-modal">
+            <i class="fa-solid fa-xmark h-4 w-4"></i>
+            <span class="sr-only"><%=tr("music:DASH.CLOSE_MODAL_BTN")%></span>
+          </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="space-y-4 p-4 md:p-5">
+          <div class="mb-3">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+              <div>
+                <div class="mb-2">
+                  <label for="node_host" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("music:DASH.NODE_HOST") %>*</label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("music:DASH.NODE_HOST_DESC")%>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  name="node_host"
+                  id="node_host"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+                  required />
+              </div>
+
+              <div>
+                <div class="mb-2">
+                  <label for="node_port" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("music:DASH.NODE_PORT") %>*</label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("music:DASH.NODE_PORT_DESC")%>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  name="node_port"
+                  id="node_port"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+                  required />
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+              <div>
+                <div class="mb-2">
+                  <label for="node_pass" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("music:DASH.NODE_PASS") %></label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("music:DASH.NODE_PASS_DESC")%>
+                  </div>
+                </div>
+                <input
+                  type="password"
+                  name="node_pass"
+                  id="node_pass"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm" />
+              </div>
+
+              <div>
+                <div class="mb-2">
+                  <label for="is_secure" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("music:DASH.NODE_SECURE") %></label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("music:DASH.NODE_SECURE_DESC") %>
+                  </div>
+                </div>
+                <select
+                  name="is_secure"
+                  id="is_secure"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="mb-2">
+              <label for="node_id" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("music:DASH.NODE_ID") %></label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("music:DASH.NODE_ID_DESC")%>
+              </div>
+            </div>
+            <input
+              type="text"
+              name="node_id"
+              id="node_id"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm" />
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="mt-2 flex items-center rounded-b border-t border-gray-200 p-4 dark:border-gray-600 md:p-5">
+          <button
+            name="add_node"
+            type="submit"
+            class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <%= tr("music:DASH.ADD_NODE_CREATE_BTN") %>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Modals -->
+<% config.LAVALINK_NODES.forEach((node, i) => { %>
+<div
+  id="delete-modal-<%=i+1%>"
+  tabindex="-1"
+  class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+  <div class="relative max-h-full w-full max-w-md p-4">
+    <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+      <button
+        type="button"
+        class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        data-modal-hide="delete-modal-<%=i+1%>">
+        <i class="fa-solid fa-xmark h-4 w-4"></i>
+        <span class="sr-only"><%=tr("music:DASH.CLOSE_MODAL_BTN")%></span>
+      </button>
+      <div class="p-4 text-center md:p-5">
+        <i class="fa-regular fa-circle-exclamation mb-3 h-12 w-12 dark:text-gray-200"></i>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"><%=tr("music:DASH.DELETE_CONFIRM")%></h3>
+        <form method="post">
+          <input type="hidden" name="node_host" value="<%= node.host %>" />
+          <button
+            type="submit"
+            name="delete_node"
+            class="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
+            <%=tr("music:DASH.DELETE_CONFIRM_BTN")%>
+          </button>
+          <button
+            data-modal-hide="delete-modal-<%=i+1%>"
+            type="button"
+            class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            <%=tr("music:DASH.DELETE_CANCEL_BTN")%>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% }) %>

@@ -1,0 +1,33 @@
+<form method="post">
+  <!-- START: Card Body -->
+  <div class="mb-3 flex items-center justify-between">
+    <div class="flex flex-grow flex-col">
+      <div class="mb-1 text-sm font-semibold text-gray-900 dark:text-white"><%= tr("translation:DASH.FLAG_TR") %></div>
+      <div class="text-sm font-normal text-gray-500 dark:text-gray-400"><%= tr("translation:DASH.FLAG_TR_DESC") %></div>
+    </div>
+    <label for="flag_tr" class="relative flex cursor-pointer items-center">
+      <% if (settings.flag_translation) { %>
+      <input type="checkbox" name="flag_tr" id="flag_tr" class="sr-only" checked />
+      <% } else { %>
+      <input type="checkbox" name="flag_tr" id="flag_tr" class="sr-only" />
+      <% } %>
+      <span
+        class="toggle-bg h-6 w-11 rounded-full border border-gray-200 bg-gray-200 dark:border-gray-600 dark:bg-gray-700"></span>
+    </label>
+  </div>
+  <!-- END: Card Body -->
+
+  <!-- START: Card Footer -->
+  <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+    <div></div>
+    <div class="flex-shrink-0">
+      <button
+        type="submit"
+        name="settings"
+        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <%= tr("common:DASH.UPDATE") %>
+      </button>
+    </div>
+  </div>
+  <!-- END: Card Footer -->
+</form>

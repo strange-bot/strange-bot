@@ -1,0 +1,11 @@
+{
+    "DASH": {
+        "CONFIG_TITLE": "Configuration",
+        "STATUS": "Statut",
+        "STATUS_DESC": "Définir le statut du bot",
+        "TYPE": "Type",
+        "TYPE_DESC": "Définissez le type de statut du bot",
+        "MESSAGE": "Message",
+        "MESSAGE_DESC": "Définir le message d'état du bot"
+    }
+}

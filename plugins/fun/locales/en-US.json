@@ -1,0 +1,51 @@
+{
+    "TITLE": "Fun",
+    "DESCRIPTION": "Fun commands",
+
+    "ANIMAL": {
+        "DESCRIPTION": "shows a random animal image",
+        "NAME_DESC": "animal to get an image of",
+        "INVALID_ANIMAL": "Invalid animal selected. Available animals:\n{{animals}}"
+    },
+
+    "FACTS": {
+        "DESCRIPTION": "shows a random animal facts",
+        "ANIMAL_DESC": "shows a random fact about a specific animal",
+        "INVALID_ANIMAL": "Invalid animal selected. Available animals:\n{{animals}}"
+    },
+
+    "FLIP": {
+        "DESCRIPTION": "flips a coin or message",
+        "SUB_COIN_DESC": "flips a coin heads or tails",
+        "SUB_MSG_DESC": "reverses the given message",
+        "SUB_MSG_INPUT": "text to flip",
+
+        "TOSS_HEAD": "HEADS",
+        "TOSS_TAIL": "TAILS",
+        "TOSS_START": "{{user}}, started a coin toss",
+        "TOSS_AIR": "The coin is in the air",
+        "TOSS_WIN": "Wins",
+        "MISSING_TEXT": "You need to provide a message to reverse"
+    },
+
+    "MEME": {
+        "DESCRIPTION": "get a random meme",
+        "CATEGORY_DESC": "the category of the meme",
+        "FETCH_FAIL": "Failed to fetch meme. Try again!",
+        "NO_MATCH": "No meme found matching {{choice}}"
+    },
+
+    "SNAKE": {
+        "DESCRIPTION": "play snake game on discord",
+        "START_GAME": "**Starting Snake Game**",
+        "GAME_TITLE": "Snake Game",
+        "GAME_OVER_TITLE": "Game Over"
+    },
+
+    "TOGETHER": {
+        "DESCRIPTION": "discord together",
+        "TYPE_DESC": "the type of activity",
+        "NO_VOICE_CHANNEL": "You must be in a voice channel to use this command.",
+        "INVALID_GAME": "Invalid game.\nValid games: {{games}}"
+    }
+}

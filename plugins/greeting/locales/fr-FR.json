@@ -1,0 +1,128 @@
+{
+    "TITLE": "Salutations",
+    "DESCRIPTION": "Gérer les messages d'accueil pour votre serveur",
+
+    "DASH": {
+        "WELCOME_TITLE": "Configuration de bienvenue",
+        "WELCOME_PLACEHOLDER": "Bienvenue sur le serveur {member:name} 🎉",
+
+        "FAREWELL_TITLE": "Configuration d'adieu",
+        "FAREWELL_PLACEHOLDER": "Au revoir {member:name} 👋",
+
+        "CHANNEL_TITLE": "Chaîne",
+        "CHANNEL_DESC": "Le canal où le message sera envoyé",
+        "CONTENT_TITLE": "Contenu",
+        "CONTENT_DESC": "Le message qui sera envoyé",
+        "EMBED_OPTIONS": "Options d'intégration",
+        "EMBED_DESC_TITLE": "Description intégrée",
+        "EMBED_DESC_DESC": "La description de l'embed",
+        "EMBED_FOOTER_TITLE": "Intégrer le pied de page",
+        "EMBED_FOOTER_DESC": "Le pied de page de l'intégration",
+        "EMBED_THUMB_TITLE": "Intégrer la vignette",
+        "EMBED_THUMB_DESC": "Inclure l'image de l'auteur comme miniature ?",
+        "EMBED_COLOR_TITLE": "Intégrer la couleur",
+        "EMBED_COLOR_DESC": "La couleur de l'intégration",
+        "EMBED_IMAGE_TITLE": "Intégrer l'image",
+        "EMBED_IMAGE_DESC": "L'image de l'intégration",
+
+        "AUTOROLE_TITLE": "Rôle à attribuer",
+        "AUTOROLE_DESC": "Le rôle qui sera attribué aux utilisateurs lorsqu'ils rejoindront le serveur"
+    },
+
+    "AUTOROLE": {
+        "DESCRIPTION": "Configurer le rôle à attribuer lorsqu'un membre rejoint le serveur",
+        "SUB_ADD": "Configurer le rôle à attribuer lorsqu'un membre rejoint le serveur",
+        "SUB_ADD_ROLE": "Le rôle à attribuer",
+        "SUB_ADD_ROLE_ID": "L'ID du rôle à attribuer",
+        "SUB_REMOVE": "Désactiver l'autorôle",
+
+        "MISSING_ROLE": "Veuillez fournir un rôle ou un ID de rôle",
+        "ROLE_NOT_FOUND": "Aucun rôle correspondant trouvé à votre requête",
+        "EVERYONE_ROLE": "Vous ne pouvez pas définir `@everyone` comme autorôle",
+        "MISSING_PERM": "Je n'ai pas la permission `Gérer les rôles`",
+        "ROLE_PERM": "Je n'ai pas les permissions pour attribuer ce rôle",
+        "MANAGED_ROLE": "Oops ! Ce rôle est géré par une intégration",
+        "ENABLED": "Autorôle activé ! Les utilisateurs recevront désormais le rôle `{{role}}` lorsqu'ils rejoindront",
+        "DISABLED": "L'autorôle a été désactivé"
+    },
+
+    "WELCOME": {
+        "DESCRIPTION": "Configurez le message de bienvenue pour votre serveur",
+        "SUB_STATUS": "Activer ou désactiver le message de bienvenue",
+        "SUB_STATUS_STATUS": "activer ou désactiver",
+        "SUB_CHANNEL": "Définir le salon pour envoyer le message de bienvenue",
+        "SUB_PREVIEW": "Prévisualisez le message de bienvenue",
+        "SUB_DESC": "Configurez la description du message de bienvenue",
+        "SUB_THUMBNAIL": "Activer ou désactiver la miniature dans le message de bienvenue",
+        "SUB_COLOR": "Définir la couleur du message de bienvenue",
+        "SUB_IMAGE": "Définir l'image pour le message de bienvenue",
+        "SUB_MSG": "Définir le message de bienvenue",
+        "SUB_MSG_CHANNEL": "le salon pour envoyer le message de bienvenue",
+        "SUB_MSG_DESC": "la description pour le message de bienvenue",
+        "SUB_MSG_THUMBNAIL": "activer ou désactiver la miniature dans le message de bienvenue",
+        "SUB_MSG_COLOR": "la couleur pour le message de bienvenue",
+        "SUB_MSG_FOOTER": "le pied de page pour le message de bienvenue",
+        "SUB_MSG_IMAGE": "l'image pour le message de bienvenue",
+
+        "INVALID_STATUS": "Statut invalide. La valeur doit être `on/off`",
+        "INVALID_CONTENT": "Arguments insuffisants ! Veuillez fournir un contenu valide",
+        "INVALID_THUMBNAIL": "Statut invalide. La valeur doit être `on/off`",
+        "INVALID_COLOR": "Couleur invalide. La valeur doit être un code hexadécimal valide",
+        "INVALID_IMAGE": "URL d'image invalide. Veuillez fournir une URL d'image valide",
+
+        "PLUGIN_DISABLED": "Le plugin de salutations est désactivé dans ce serveur",
+        "WELCOME_DISABLED": "Le message de bienvenue n'est pas activé dans ce serveur",
+
+        "CHANNEL_NOT_CONFIG": "Aucun salon n'est configuré pour envoyer le message de bienvenue",
+        "PREVIEW_SENT": "Message de bienvenue envoyé à {{channel}}",
+
+        "ENABLED": "Configuration enregistrée ! Le message de bienvenue est maintenant activé",
+        "DISABLED": "Configuration enregistrée ! Le message de bienvenue est maintenant désactivé",
+
+        "CHANNEL_NO_PERMS": "Ugh! Je ne peux pas envoyer de salutation dans ce salon ? J'ai besoin des permissions `Écrire des messages` et `Incorporer des liens` dans {{channel}}",
+        "CHANNEL_SET": "Configuration enregistrée ! Le message de bienvenue sera envoyé à {{channel}}",
+
+        "CONFIG_UPDATED": "Configuration enregistrée ! Message de bienvenue mis à jour",
+        "CONFIG_SAVED": "Configuration enregistrée ! Le message de bienvenue est configuré pour être envoyé dans {{channel}}"
+    },
+
+    "FAREWELL": {
+        "DESCRIPTION": "Configurez le message d'adieu de votre serveur",
+        "SUB_STATUS": "Activer ou désactiver le message d'adieu",
+        "SUB_STATUS_STATUS": "activer ou désactiver",
+        "SUB_CHANNEL": "Définissez le canal pour envoyer un message d'adieu",
+        "SUB_PREVIEW": "Prévisualisez le message d'adieu",
+        "SUB_DESC": "Configurer la description du message d'adieu",
+        "SUB_THUMBNAIL": "Activer ou désactiver la vignette dans le message d'adieu",
+        "SUB_COLOR": "Définissez la couleur du message d'adieu",
+        "SUB_IMAGE": "Définir l'image pour le message d'adieu",
+        "SUB_MSG": "Définir le message d'adieu",
+        "SUB_MSG_CHANNEL": "le canal pour envoyer le message d'adieu",
+        "SUB_MSG_DESC": "la description du message d'adieu",
+        "SUB_MSG_THUMBNAIL": "activer ou désactiver la vignette dans le message d'adieu",
+        "SUB_MSG_COLOR": "la couleur du message d'adieu",
+        "SUB_MSG_FOOTER": "le pied de page du message d'adieu",
+        "SUB_MSG_IMAGE": "l'image du message d'adieu",
+
+        "INVALID_STATUS": "Statut invalide. La valeur doit être `on/off`",
+        "INVALID_CONTENT": "Arguments insuffisants ! Veuillez fournir un contenu valide",
+        "INVALID_THUMBNAIL": "Statut invalide. La valeur doit être `on/off`",
+        "INVALID_COLOR": "Couleur invalide. La valeur doit être un code couleur hexadécimal valide",
+        "INVALID_IMAGE": "URL d'image invalide. Veuillez fournir une URL d'image valide",
+
+        "PLUGIN_DISABLED": "Le plugin de message d'accueil est désactivé sur ce serveur",
+        "FAREWELL_DISABLED": "Message d'adieu non activé sur ce serveur",
+
+        "CHANNEL_NOT_CONFIG": "Aucun canal n'est configuré pour envoyer un message d'adieu",
+        "PREVIEW_SENT": "Aperçu d'adieu envoyé à {{channel}}",
+
+        "ENABLED": "Configuration enregistrée ! Le message d'adieu est désormais activé",
+        "DISABLED": "Configuration enregistrée ! Le message d'adieu est désormais désactivé",
+
+        "CHANNEL_NO_PERMS": "Ugh! Je ne peux pas envoyer de message d'accueil à cette chaîne ? J'ai besoin des autorisations 'Écrire des messages' et 'Intégrer des liens' dans {{channel}}",
+        "CHANNEL_SET": "Configuration enregistrée ! Un message d'adieu sera envoyé à {{channel}}",
+
+        "CONFIG_UPDATED": "Configuration enregistrée ! Message d'adieu mis à jour",
+        "CONFIG_SAVED": "Configuration enregistrée! Le message d'adieu est configuré pour être envoyé dans {{channel}}"
+    }
+}

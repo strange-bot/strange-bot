@@ -1,0 +1,78 @@
+{
+    "TITLE": "Economy",
+    "DESCRIPTION": "Manage your server's economy with this plugin.",
+
+    "DASH": {
+        "SETTINGS_TITLE": "Settings",
+        "CURRENCY_TITLE": "Currency",
+        "CURRENCY_DESC": "Set the emoji/character that represents your server's currency.",
+        "DAILY_TITLE": "Daily Coins",
+        "DAILY_DESC": "Set the amount of coins a player can claim daily.",
+        "MIN_BEG_TITLE": "Minimum Beg Amount",
+        "MIN_BEG_DESC": "Set the minimum amount of coins a player can beg for.",
+        "MAX_BEG_TITLE": "Maximum Beg Amount",
+        "MAX_BEG_DESC": "Set the maximum amount of coins a player can beg for.",
+        "DEFAULTS": "Server Defaults",
+        "BEG_INTERVAL": "Beg Interval",
+        "BEG_INTERVAL_DESC": "Set the interval in which a player can beg for coins (in hours)."
+    },
+
+    "BANK": {
+        "DESCRIPTION": "access to bank operations",
+        "BALANCE_DESC": "check your balance",
+        "BALANCE_USER": "name of the user",
+        "DEPOSIT_DESC": "deposit coins to your bank account",
+        "DEPOSIT_COINS": "number of coins to deposit",
+        "WITHDRAW_DESC": "withdraw coins from your bank account",
+        "WITHDRAW_COINS": "number of coins to withdraw",
+        "TRANSFER_DESC": "transfer coins to another user",
+        "TRANSFER_USER": "name of the user to transfer coins to",
+        "TRANSFER_COINS": "number of coins to transfer",
+
+        "INVALID_DEPOSIT": "Provide a valid number of coins you wish to deposit",
+        "INSUFFICIENT_WALLET": "You only have {{coins}}{{currency}} coins in your wallet",
+
+        "INVALID_WITHDRAW": "Provide a valid number of coins you wish to withdraw",
+        "INSUFFICIENT_BANK": "You only have {{coins}}{{currency}} coins in your bank",
+
+        "INVALID_TRANSFER": "Provide a valid user and coins to transfer",
+        "INVALID_TRANSFER_USER": "Provide a valid user to transfer coins to",
+        "INVALID_TRANSFER_AMOUNT": "Provide a valid amount of coins to transfer",
+        "TRANSFER_BOTS": "You cannot transfer coins to bots",
+        "TRANSFER_SELF": "You cannot transfer coins to yourself",
+        "TRANSFER_INSUFFICIENT": "Insufficient bank balance! You only have {{coins}}{{currency}} in your bank account",
+        "TRANSFER_DEPOSIT": "You must deposit your coins in bank before you can transfer",
+        "TRANSFER_SUCCESS": "You have successfully transferred {{coins}}{{currency}} to {{target}}",
+
+        "WALLET": "Wallet",
+        "BANK": "Bank",
+        "NET": "Net Worth",
+        "NEW_BALANCE": "New Balance",
+        "UPDATED_BALANCE": "Updated Balance"
+    },
+
+    "BEG": {
+        "DESCRIPTION": "beg from someone",
+        "SUCCESS": "**{{random}}** donated you **{{amount}}** {{currency}}\n**Updated Balance:** **{{coins}}** {{currency}}"
+    },
+
+    "DAILY": {
+        "DESCRIPTION": "receive a daily bonus",
+        "ALREADY_CLAIMED": "You can again run this command in `{{time}}`",
+        "CLAIMED": "You got {{daily}}{{currency}} as your daily reward\n**Updated Balance:** {{coins}}{{currency}}"
+    },
+
+    "GAMBLE": {
+        "DESCRIPTION": "try your luck by gambling",
+        "COINS_DESC": "Amount of coins to gamble",
+        "INVALID_AMOUNT": "Bet amount needs to be a valid number input",
+        "INVALID_AMOUNT_NEGATIVE": "Bet amount cannot be negative",
+        "INVALID_AMOUNT_MIN": "Bet amount cannot be less than {{min}}",
+        "INSUFFICIENT_COINS": "You do not have sufficient coins to gamble!\n**Coin balance:** {{coins}}{{currency}}",
+
+        "GAMBLE_TITLE": "Gamble Amount",
+        "MULTIPLIER": "Multiplier",
+        "GAMBLE_WIN": "You won: {{amount}}{{currency}}\nUpdated Wallet balance: {{coins}}{{currency}}",
+        "GAMBLE_LOSE": "You lost: {{amount}}{{currency}}\nUpdated Wallet balance: {{coins}}{{currency}}"
+    }
+}

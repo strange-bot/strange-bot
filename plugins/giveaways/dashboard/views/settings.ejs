@@ -1,0 +1,484 @@
+<form method="post">
+  <!-- START: Card Body -->
+  <div class="mb-3">
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <!-- START: Column 1 (Reaction Emoji) -->
+      <div>
+        <div class="mb-2">
+          <label for="reaction" class="text-sm font-semibold text-gray-900 dark:text-white"
+            ><%= tr("giveaways:DASH.REACTION_TITLE") %></label
+          >
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("giveaways:DASH.REACTION_DESC") %>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="reaction"
+          id="reaction"
+          maxlength="2"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= settings.reaction %>"
+          required />
+      </div>
+      <!-- END: Column 1 -->
+
+      <!-- START: Column 2 (Start Embed) -->
+      <div>
+        <div class="mb-2">
+          <label for="start_embed_color" class="text-sm font-semibold text-gray-900 dark:text-white"
+            ><%= tr("giveaways:DASH.START_EMBED_TITLE") %></label
+          >
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("giveaways:DASH.START_EMBED_DESC") %>
+          </div>
+        </div>
+        <input
+          type="color"
+          name="start_embed_color"
+          id="start_embed_color"
+          class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= settings.start_embed_color %>"
+          required />
+      </div>
+      <!-- END: Column 2 -->
+
+      <!-- START: Column 3 (End Embed) -->
+      <div>
+        <div class="mb-2">
+          <label for="end_embed_color" class="text-sm font-semibold text-gray-900 dark:text-white"
+            ><%= tr("giveaways:DASH.END_EMBED_TITLE") %></label
+          >
+          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <%= tr("giveaways:DASH.END_EMBED_DESC") %>
+          </div>
+        </div>
+        <input
+          type="color"
+          name="end_embed_color"
+          id="end_embed_color"
+          class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+          value="<%= settings.end_embed_color %>"
+          required />
+      </div>
+      <!-- END: Column 3 -->
+    </div>
+  </div>
+  <!-- END: Card Body -->
+
+  <!-- START: Card Footer -->
+  <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+    <div></div>
+    <div class="flex-shrink-0">
+      <button
+        type="submit"
+        name="settings"
+        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <%= tr("common:DASH.UPDATE") %>
+      </button>
+    </div>
+  </div>
+  <!-- END: Card Footer -->
+</form>
+
+<%- contentFor(tr("giveaways:DASH.LIST_TITLE")) %>
+<!-- START: List Giveaways -->
+<section>
+  <!-- START: Card Header -->
+  <div class="items-center justify-between lg:flex">
+    <div class="mb-4 lg:mb-0">
+      <span class="text-base font-normal text-gray-500 dark:text-gray-400"><%= tr("giveaways:DASH.LIST_DESC") %></span>
+    </div>
+    <div class="items-center sm:flex">
+      <div class="flex-shrink-0">
+        <a
+          data-modal-target="create-giveaway"
+          data-modal-toggle="create-giveaway"
+          class="cursor-pointer inline-flex items-center rounded-lg p-2 text-xs font-medium uppercase text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700 sm:text-sm">
+          <%= tr("giveaways:DASH.CREATE_NEW_BTN") %>
+          <i class="fa-solid fa-angle-right ml-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- END: Card Header -->
+
+  <!-- START: Card Body -->
+  <div class="mt-6 flex flex-col">
+    <div class="overflow-x-auto rounded-lg">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden shadow sm:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th
+                  scope="col"
+                  class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                  <%=tr("giveaways:DASH.LIST_PRIZE")%>
+                </th>
+                <th
+                  scope="col"
+                  class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                  <%=tr("giveaways:DASH.LIST_ENDS_AT")%>
+                </th>
+                <th
+                  scope="col"
+                  class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                  <%=tr("giveaways:DASH.LIST_WINNERS")%>
+                </th>
+                <th
+                  scope="col"
+                  class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                  <%=tr("giveaways:DASH.LIST_HOST")%>
+                </th>
+                <th
+                  scope="col"
+                  class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                  <%=tr("giveaways:DASH.LIST_CHANNEL")%>
+                </th>
+                <th
+                  scope="col"
+                  class="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-white">
+                  <%=tr("giveaways:DASH.LIST_ACTION")%>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800">
+              <% giveaways.forEach((giveaway, i) => { %> <% if (i % 2 === 0) { %>
+              <tr class="bg-gray-50 dark:bg-gray-700">
+                <% } else { %>
+              </tr>
+              <tr>
+                <% } %>
+                <td class="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
+                  <%= giveaway.prize %>
+                </td>
+                <td class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <%= giveaway.timeRemaining %>
+                </td>
+                <td class="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
+                  <%= giveaway.winnerCount %>
+                </td>
+                <td class="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <%= giveaway.extraData?.hostTag || giveaway.hostedBy %>
+                </td>
+                <td
+                  class="inline-flex items-center space-x-2 whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <%= "#" + guild.channels.cache.get(giveaway.channelId)?.name || "deleted" %>
+                </td>
+                <td class="whitespace-nowrap p-4">
+                  <a
+                    <% if (giveaway.pauseOptions.isPaused) { %>
+                    data-modal-target="resume-modal-<%= giveaway.messageId %>"
+                    data-modal-toggle="resume-modal-<%= giveaway.messageId %>"
+                    <% } else { %>
+                    data-modal-target="pause-modal-<%= giveaway.messageId %>"
+                    data-modal-toggle="pause-modal-<%= giveaway.messageId %>">
+                    <% } %>
+                    <span class="cursor-pointer mr-2 rounded-md border border-green-100 bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:border-green-500 dark:bg-gray-700 dark:text-green-400">
+                      <%= giveaway.pauseOptions.isPaused ? tr("giveaways:DASH.RESUME_BTN") : tr("giveaways:DASH.PAUSE_BTN") %>
+                    </span>
+                  </a>
+                  <a
+                    data-modal-target="end-modal-<%= giveaway.messageId %>"
+                    data-modal-toggle="end-modal-<%= giveaway.messageId %>"
+                    >
+                    <span
+                      class="cursor-pointer rounded-md border border-red-100 bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:border-red-500 dark:bg-gray-700 dark:text-red-400"
+                      ><%=tr("giveaways:DASH.END_BTN")%></span
+                    >
+                  </a>
+                </td>
+              </tr>
+
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Card Body -->
+</section>
+<!-- END: List Giveaways -->
+
+<div
+  id="create-giveaway"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+  <div class="relative max-h-full w-full max-w-2xl p-4">
+    <form method="post">
+      <!-- Modal content -->
+      <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-600 md:p-5">
+          <h4 class="text-xl font-semibold text-gray-900 dark:text-white"><%= tr("giveaways:DASH.CREATE_TITLE") %></h4>
+          <button
+            type="button"
+            class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="create-giveaway">
+            <i class="fa-solid fa-xmark h-4 w-4"></i>
+            <span class="sr-only"><%=tr("giveaways:DASH.CREATE_CLOSE_BTN")%></span>
+          </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="space-y-4 p-4 md:p-5">
+          <div class="mb-3">
+            <div>
+              <div class="mb-2">
+                <label for="channel" class="text-sm font-semibold text-gray-900 dark:text-white"
+                  ><%= tr("giveaways:DASH.CREATE_CHANNEL") %>*</label
+                >
+                <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <%= tr("giveaways:DASH.CREATE_CHANNEL_DESC") %>
+                </div>
+              </div>
+              <select
+                name="channel"
+                id="channel"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
+                <option selected disabled><%= tr("giveaways:DASH.CREATE_CHANNEL_PLACEHOLDER") %></option>
+                <% guild.channels.cache.filter((ch) => ch.type === 0).map((r) => { %>
+                <option value="<%= r.id %>"><%= r.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="mb-2">
+              <label for="prize" class="text-sm font-semibold text-gray-900 dark:text-white"
+                ><%= tr("giveaways:DASH.CREATE_PRIZE") %>*</label
+              >
+              <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                <%= tr("giveaways:DASH.CREATE_PRIZE_DESC")%>
+              </div>
+            </div>
+            <input
+              type="text"
+              name="prize"
+              id="prize"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+              required />
+          </div>
+
+          <div class="mb-3">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+              <div>
+                <div class="mb-2">
+                  <label for="duration" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("giveaways:DASH.CREATE_DURATION") %>*</label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("giveaways:DASH.CREATE_DURATION_DESC")%>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  name="duration"
+                  id="duration"
+                  placeholder="1d/1h/1m/1s"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+                  required />
+              </div>
+              <div>
+                <div class="mb-2">
+                  <label for="winners" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("giveaways:DASH.CREATE_WINNERS") %>*</label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("giveaways:DASH.CREATE_WINNERS_DESC")%>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  name="winners"
+                  id="winners"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+                  value="1"
+                  required />
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+              <div>
+                <div class="mb-2">
+                  <label for="host" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("giveaways:DASH.CREATE_HOST") %></label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("giveaways:DASH.CREATE_HOST_DESC") %>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  name="host"
+                  id="host"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm" />
+              </div>
+              <div>
+                <div class="mb-2">
+                  <label for="member_roles" class="text-sm font-semibold text-gray-900 dark:text-white"
+                    ><%= tr("giveaways:DASH.CREATE_MEM_ROLE") %></label
+                  >
+                  <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <%= tr("giveaways:DASH.CREATE_MEM_ROLE_DESC") %>
+                  </div>
+                </div>
+                <select
+                  name="member_roles"
+                  id="member_roles"
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
+                  <option selected disabled><%= tr("giveaways:DASH.CREATE_MEM_ROLE_PLACEHOLDER") %></option>
+                  <% guild.roles.cache.filter((r) => r != guild.roles.everyone &&
+                  guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
+                  <option value="<%= r.id %>"><%= r.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="mt-2 flex items-center rounded-b border-t border-gray-200 p-4 dark:border-gray-600 md:p-5">
+          <button
+            name="create_giveaway"
+            type="submit"
+            class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <%= tr("giveaways:DASH.CREATE_BTN") %>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<% giveaways.filter((g) => !g.pauseOptions.isPaused).forEach(giveaway => { %>
+<div
+  id="pause-modal-<%= giveaway.messageId %>"
+  tabindex="-1"
+  class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+  <div class="relative max-h-full w-full max-w-md p-4">
+    <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+      <button
+        type="button"
+        class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        data-modal-hide="pause-modal-<%= giveaway.messageId %>">
+        <i class="fa-solid fa-xmark h-4 w-4"></i>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div class="p-4 text-center md:p-5">
+        <i class="fa-regular fa-circle-exclamation"></i>
+        <i class="fa-regular fa-circle-exclamation mb-3 w-12 h-12 dark:text-gray-200"></i>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+          <%= tr('giveaways:DASH.PAUSE_CONFIRMATION') %>
+        </h3>
+        <form method="post">
+          <input type="hidden" name="message_id" value="<%= giveaway.messageId %>" />
+          <button
+            data-modal-hide="pause-modal-<%= giveaway.messageId %>"
+            name="pause_giveaway"
+            type="submit"
+            class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+            <%= tr('giveaways:DASH.PAUSE_CONFIRM_YES') %>
+          </button>
+          <button
+            data-modal-hide="pause-modal-<%= giveaway.messageId %>"
+            type="button"
+            class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            <%= tr('giveaways:DASH.PAUSE_CONFIRM_NO') %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% }) %>
+
+<% giveaways.filter((g) => g.pauseOptions.isPaused).forEach(giveaway => { %>
+<div
+  id="resume-modal-<%= giveaway.messageId %>"
+  tabindex="-1"
+  class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+  <div class="relative max-h-full w-full max-w-md p-4">
+    <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+      <button
+        type="button"
+        class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        data-modal-hide="resume-modal-<%= giveaway.messageId %>">
+        <i class="fa-solid fa-xmark h-4 w-4"></i>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div class="p-4 text-center md:p-5">
+        <i class="fa-regular fa-circle-exclamation mb-3 w-12 h-12 dark:text-gray-200"></i>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+          <%= tr('giveaways:DASH.RESUME_CONFIRMATION') %>
+        </h3>
+        <form method="post">
+          <input type="hidden" name="message_id" value="<%= giveaway.messageId %>" />
+          <button
+            data-modal-hide="resume-modal-<%= giveaway.messageId %>"
+            name="resume_giveaway"
+            type="submit"
+            class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+            <%= tr('giveaways:DASH.RESUME_CONFIRM_YES') %>
+          </button>
+          <button
+            data-modal-hide="resume-modal-<%= giveaway.messageId %>"
+            type="button"
+            class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            <%= tr('giveaways:DASH.RESUME_CONFIRM_NO') %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% }) %>
+
+
+<% giveaways.forEach(giveaway => { %>
+<div
+  id="end-modal-<%= giveaway.messageId %>"
+  tabindex="-1"
+  class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+  <div class="relative max-h-full w-full max-w-md p-4">
+    <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+      <button
+        type="button"
+        class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        data-modal-hide="end-modal-<%= giveaway.messageId %>">
+        <i class="fa-solid fa-xmark h-4 w-4"></i>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div class="p-4 text-center md:p-5">
+        <i class="fa-regular fa-circle-exclamation mb-3 w-12 h-12 dark:text-gray-200"></i>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+          <%= tr('giveaways:DASH.PAUSE_CONFIRMATION') %>
+        </h3>
+        <form method="post">
+          <input type="hidden" name="message_id" value="<%= giveaway.messageId %>" />
+          <button
+            data-modal-hide="end-modal-<%= giveaway.messageId %>"
+            name="end_giveaway"
+            type="submit"
+            class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+            <%= tr('giveaways:DASH.PAUSE_CONFIRM_YES') %>
+          </button>
+          <button
+            data-modal-hide="end-modal-<%= giveaway.messageId %>"
+            type="button"
+            class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            <%= tr('giveaways:DASH.PAUSE_CONFIRM_NO') %>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% }) %>

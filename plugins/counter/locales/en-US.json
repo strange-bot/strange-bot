@@ -1,0 +1,25 @@
+{
+    "TITLE": "Counter Channels",
+    "DESCRIPTION": "Setup the counter channels for your server",
+
+    "CMD_DESC": "setups the counter channel",
+    "TYPE_DESC": "type of counter channel",
+    "NAME_DESC": "name of the counter channel",
+
+    "INVALID_TYPE": "Incorrect arguments are passed! Counter types: `users/members/bots`",
+    "INVALID_NAME": "Invalid name! Please provide a valid name for the counter channel",
+    "ALREADY_EXISTS": "Counter channel already exists!",
+    "CREATED": "Configuration saved! Counter channel created",
+    "UPDATED": "Counter channel updated!",
+    "FAILED": "Failed to create the counter channel",
+
+    "DASH": {
+        "USER_TITLE": "Users Counter",
+        "USER_DESC": "Setup the counter channel for the users",
+        "MEMBER_TITLE": "Members Counter",
+        "MEMBER_DESC": "Setup the counter channel for the members",
+        "BOT_TITLE": "Bots Counter",
+        "BOT_DESC": "Setup the counter channel for the bots",
+        "NAME_PLACEHOLDER": "channel name"
+    }
+}

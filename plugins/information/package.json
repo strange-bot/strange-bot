@@ -1,0 +1,13 @@
+{
+    "name": "information",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Sai Teja Madha",
+    "license": "ISC",
+    "dependencies": {
+        "common-tags": "^1.8.2",
+        "moment": "^2.30.1",
+        "strange-sdk": "github:strange-bot/strange-sdk",
+        "os": "^0.1.2"
+    }
+}
