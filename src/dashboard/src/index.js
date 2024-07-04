@@ -4,3 +4,4 @@ import "./sidebar";
 import "./dark-mode";
 import "./plugin-enable-disable";
 import "./language";
+import "./tabs";

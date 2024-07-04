@@ -4,15 +4,14 @@ const path = require("node:path");
 const { flattenObject } = require("../utils");
 const { updateResourceBundle } = require("../../utils/i18n");
 const i18next = require("i18next");
+const { get: getConfig } = require("../config");
 
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 module.exports.get = async function (req, res) {
-    const html = fs.readFileSync(path.join(__dirname, "../views/landing.html"), "utf8");
-    const js = fs.readFileSync(path.join(__dirname, "../public/js/landing.js"), "utf8");
-    const css = fs.readFileSync(path.join(__dirname, "../public/css/landing.css"), "utf8");
+    const { html, css, js } = getConfig().config;
 
     const plugins = req.client.pluginManager.plugins.filter(
         (p) => p.dashboard.enabled && p.dashboard.adminRouter !== undefined,
@@ -85,6 +84,13 @@ module.exports.post = async function (req, res) {
         fs.writeFileSync(htmlFilePath, sanitizedHtml);
         fs.writeFileSync(cssFilePath, sanitizedCss);
         fs.writeFileSync(jsFilePath, sanitizedJs);
+
+        // Save to mongo
+        const dbConfig = getConfig();
+        dbConfig.config.html = sanitizedHtml;
+        dbConfig.config.css = sanitizedCss;
+        dbConfig.config.js = sanitizedJs;
+        await dbConfig.save();
 
         res.redirect("/admin");
     } catch (error) {

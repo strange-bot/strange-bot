@@ -1,3 +1,5 @@
+const { init } = require("./config");
+
 /**
  * @param {import('discord.js').Client} client
  * @param {import('mongoose').Connection} connection
@@ -69,7 +71,8 @@ module.exports = async (client, connection) => {
     });
 
     // Launch
-    app.listen(app.get("port"), () => {
+    app.listen(app.get("port"), async () => {
+        await init();
         client.logger.info(`Dashboard is running on port ${app.get("port")}`);
     });
 };
