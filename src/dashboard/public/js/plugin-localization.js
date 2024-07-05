@@ -14,12 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 Object.keys(keys).forEach((key) => {
                     const keyHTML = `
-                            <div class="flex items-center mb-4">
-                                <div class="w-1/3 pr-2">
-                                    <label for="${key}" class="text-sm font-semibold text-gray-900 dark:text-white">${key}:</label>
+                            <div class="flex flex-col md:flex-row items-center mb-4">
+                                <div class="w-full md:w-1/3 mb-2 md:mb-0 md:pr-2">
+                                    <label for="${key}" class="block text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">${key}:</label>
                                 </div>
-                                <div class="w-2/3">
-                                    <input type="text" id="${key}" name="${key}" value="${keys[key]}" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm">
+                                <div class="w-full md:w-2/3">
+                                    <input type="text" id="${key}" name="${key}" value="${keys[key]}" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 sm:p-2.5 text-xs sm:text-sm text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
                                 </div>
                             </div>
                         `;

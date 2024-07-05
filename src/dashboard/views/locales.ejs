@@ -9,18 +9,19 @@
 </section>
 
 <section class="mb-6 px-4 pt-6">
-  <div class="items-center justify-between rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-white">
+  <div
+    class="flex flex-col items-center justify-between rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-white">
     <!-- Filters -->
-    <div class="mb-4 flex">
+    <div class="mb-4 flex w-full flex-col md:flex-row">
       <!-- Plugin Filter -->
-      <div class="flex-1 pr-2">
-        <label for="plugin" class="mb-2 block text-sm font-medium text-gray-700 dark:text-white"
-          ><%= tr("dash:LOCALES_PAGE.PLUGIN_SELECT") %>:</label
-        >
+      <div class="mb-4 flex-1 md:mb-0 md:pr-2">
+        <label for="plugin" class="mb-2 block text-sm font-medium text-gray-700 dark:text-white">
+          <%= tr("dash:LOCALES_PAGE.PLUGIN_SELECT") %>:
+        </label>
         <select
           id="plugin"
           name="plugin"
-          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:p-2.5 sm:text-sm">
           <% for (let plugin of availablePlugins) { %>
           <option value="<%= plugin %>"><%= plugin %></option>
           <% } %>
@@ -29,13 +30,13 @@
 
       <!-- Language Filter -->
       <div class="flex-1">
-        <label for="language" class="mb-2 block text-sm font-medium text-gray-700 dark:text-white"
-          ><%= tr("dash:LOCALES_PAGE.LOCALE_SELECT") %>:</label
-        >
+        <label for="language" class="mb-2 block text-sm font-medium text-gray-700 dark:text-white">
+          <%= tr("dash:LOCALES_PAGE.LOCALE_SELECT") %>:
+        </label>
         <select
           id="language"
           name="language"
-          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:p-2.5 sm:text-sm">
           <% for (let language of availableLanguages) { %>
           <option value="<%= language.value %>"><%= language.name %></option>
           <% } %>
@@ -43,13 +44,17 @@
       </div>
     </div>
 
+    <!-- Break -->
+    <hr class="my-5 w-full border-t border-gray-200 dark:border-gray-700 md:hidden" />
+
     <!-- Localization Keys Section -->
-    <div id="keysSection" class="mb-4">
+    <div id="keysSection" class="mb-4 w-full">
       <!-- Localization keys will be dynamically generated here -->
     </div>
 
     <!-- Save Button -->
-    <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+    <div
+      class="mt-4 flex w-full items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
       <div></div>
       <div class="flex-shrink-0">
         <button

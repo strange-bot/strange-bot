@@ -12,7 +12,7 @@
               href="/dashboard"
               class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug === "dashboard") { %>bg-gray-100 dark:bg-gray-700<% }%>">
               <i class="fa-solid fa-chart-pie text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
-              <span class="ml-3" sidebar-toggle-item><%= tr('dash:SIDEBAR.DASHBOARD') %></span>
+              <span class="text-sm md:text-base ml-3" sidebar-toggle-item><%= tr('dash:SIDEBAR.DASHBOARD') %></span>
             </a>
           </li>
 
@@ -21,7 +21,7 @@
               href="/admin"
               class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug === "admin") { %>bg-gray-100 dark:bg-gray-700<% }%>">
               <i class="fa-solid fa-pager text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white text-lg"></i>
-              <span class="ml-3" sidebar-toggle-item><%= tr('dash:SIDEBAR.LANDING') %></span>
+              <span class="text-sm md:text-base ml-3" sidebar-toggle-item><%= tr('dash:SIDEBAR.LANDING') %></span>
             </a>
           </li>
 
@@ -30,7 +30,7 @@
               href="/admin/locales"
               class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug === "locales") { %>bg-gray-100 dark:bg-gray-700<% }%>">
               <i class="fa-solid fa-language text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
-              <span class="ml-3" sidebar-toggle-item><%= tr('dash:SIDEBAR.LOCALES') %></span>
+              <span class="text-sm md:text-base ml-3" sidebar-toggle-item><%= tr('dash:SIDEBAR.LOCALES') %></span>
             </a>
           </li>
 
@@ -43,7 +43,7 @@
                 aria-controls="dropdown-plugins"
                 data-collapse-toggle="dropdown-plugins">
                 <i class="fa-solid fa-puzzle-piece text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white text-xl"></i>
-                <span class="ml-3 flex-1 whitespace-nowrap text-left" sidebar-toggle-item><%= tr('dash:SIDEBAR.PLUGINS') %></span>
+                <span class="text-sm md:text-base ml-3 flex-1 whitespace-nowrap text-left" sidebar-toggle-item><%= tr('dash:SIDEBAR.PLUGINS') %></span>
                 <i class="fa-solid fa-angle-down"></i>
               </button>
               <ul id="dropdown-plugins" class="space-y-2 py-2 <% if (!slug.includes('plugins')) { %>hidden<% }%>">
@@ -53,7 +53,7 @@
                 <li <% if (slug.includes(plugins[i].name)) { %>id="aside-active-item"<% }%>>
                   <a
                     href="/admin/<%=urlName%>"
-                    class="group flex items-center rounded-lg p-2 pl-11 text-base text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug.includes(plugins[i].name)) { %>bg-gray-100 dark:bg-gray-700<% }%>"
+                    class="text-sm md:text-base group flex items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug.includes(plugins[i].name)) { %>bg-gray-100 dark:bg-gray-700<% }%>"
                     ><%=name%></a
                   >
                 </li>
