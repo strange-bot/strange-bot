@@ -1,6 +1,5 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const { SourceMapDevToolPlugin } = require("webpack");
 const path = require("node:path");
@@ -28,7 +27,6 @@ module.exports = {
         extensions: ["", ".js", ".jsx", ".css"],
     },
     plugins: [
-        new CompressionWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
         }),

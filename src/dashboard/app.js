@@ -10,7 +10,6 @@ module.exports = async (client, connection) => {
     const session = require("express-session");
     const expressLayouts = require("express-ejs-layouts");
     const MongoStore = require("connect-mongo");
-    const expressStaticGzip = require("express-static-gzip");
 
     // Express App
     const app = express();
@@ -26,13 +25,6 @@ module.exports = async (client, connection) => {
     const { CheckAuth, CheckAdmin } = require("./middlewares/auth.middleware");
     const Context = require("./middlewares/context.middleware");
 
-    app.use(
-        "/",
-        expressStaticGzip(path.join(__dirname, "/public"), {
-            enableBrotli: true,
-            orderPreference: ["br", "gz"],
-        }),
-    );
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(expressLayouts);
