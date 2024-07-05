@@ -12,4 +12,5 @@ logs/
 *.tar.gz
 
 # Dashboard build
-src/dashboard/**/*.bundle.*
+src/dashboard/public/css/
+src/dashboard/public/js/
