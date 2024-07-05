@@ -52,7 +52,7 @@
             <%= tr("ticket:DASH.LOGS_DESC") %>
           </div>
         </div>
-        <select name="log_channel" id="log_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <select name="log_channel" id="log_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
           <option selected value><%= tr("common:DASH.CHANNEL_SELECT") %></option>
           <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
             <option value="<%= ch.id %>" <%= settings.log_channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
@@ -89,7 +89,7 @@
       <button
         type="submit"
         name="settings"
-        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
         <%= tr("common:DASH.UPDATE_ALL") %>
       </button>
     </div>
@@ -229,7 +229,7 @@
                     <%= tr("ticket:DASH.STAFF_ROLE_DESC") %>
                   </div>
                 </div>
-                <select multiple name="staff_roles" id="staff_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select multiple name="staff_roles" id="staff_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                   <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
                     <option value="<%= r.id %>"><%= r.name %></option>
                   <% }) %>
@@ -242,7 +242,7 @@
                     <%= tr("ticket:DASH.MEM_ROLE_DESC") %>
                   </div>
                 </div>
-                <select multiple name="member_roles" id="member_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select multiple name="member_roles" id="member_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                   <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
                     <option value="<%= r.id %>"><%= r.name %></option>
                   <% }) %>
@@ -284,7 +284,7 @@
               maxlength="2000"
               id="embed_description"
               name="embed_description"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             ></textarea>
           </div>
 
@@ -308,7 +308,7 @@
 
         <!-- Modal footer -->
         <div class="flex items-center mt-2 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-          <button name="create_category" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><%= tr("ticket:DASH.CREATE_BTN") %></button>
+          <button name="create_category" type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><%= tr("ticket:DASH.CREATE_BTN") %></button>
         </div>
       </div>
     </form>
@@ -366,7 +366,7 @@
                     <%= tr("ticket:DASH.STAFF_ROLE_DESC") %>
                   </div>
                 </div>
-                <select multiple name="staff_roles" id="staff_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select multiple name="staff_roles" id="staff_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                   <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
                     <option value="<%= r.id %>" <%= cat.staff_roles.includes(r.id) ? 'selected' : '' %>><%= r.name %></option>
                   <% }) %>
@@ -379,7 +379,7 @@
                     <%= tr("ticket:DASH.MEM_ROLE_DESC") %>
                   </div>
                 </div>
-                <select multiple name="member_roles" id="member_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select multiple name="member_roles" id="member_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                   <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
                     <option value="<%= r.id %>" <%= cat.member_roles.includes(r.id) ? 'selected' : '' %>><%= r.name %></option>
                   <% }) %>
@@ -422,7 +422,7 @@
               maxlength="2000"
               id="embed_description"
               name="embed_description"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             ><%-cat.open_msg.description?.replaceAll(/\\n/g, '&#10;')%></textarea>
           </div>
 
@@ -447,7 +447,7 @@
 
         <!-- Modal footer -->
         <div class="flex items-center mt-2 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-          <button name="update_category" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><%= tr("invite/dash:UPDATE_BTN") %></button>
+          <button name="update_category" type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><%= tr("invite/dash:UPDATE_BTN") %></button>
         </div>
       </div>
     </form>
@@ -473,7 +473,7 @@
           <button type="submit" name="delete_category" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
             <%=tr("ticket:DASH.DELETE_CONFIRM_BTN")%>
           </button>
-          <button data-modal-hide="delete-modal-<%=i+1%>" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+          <button data-modal-hide="delete-modal-<%=i+1%>" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
             <%=tr("ticket:DASH.DELETE_CANCEL_BTN")%>
           </button>
         </form>

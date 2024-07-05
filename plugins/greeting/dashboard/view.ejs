@@ -18,7 +18,7 @@
                 <%= tr("greeting:DASH.CHANNEL_DESC") %>
               </div>
             </div>
-            <select id="welcome_channel" name="welcome_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="welcome_channel" name="welcome_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
               <option selected value disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
               <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
                 <option value="<%= ch.id %>" <%= settings.welcome.channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
@@ -38,7 +38,7 @@
               maxlength="2000"
               id="welcome_content"
               name="welcome_content"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="<%= tr("greeting:DASH.WELCOME_PLACEHOLDER") %>"
             ><%-settings.welcome.content?.replaceAll(/\\n/g, '&#10;')%></textarea>
           </div>
@@ -71,7 +71,7 @@
                     maxlength="2000"
                     id="welcome_embed_content"
                     name="welcome_embed_content"
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   ><%-settings.welcome.embed.description?.replaceAll(/\\n/g, '&#10;')%></textarea>
                 </div>
 
@@ -167,14 +167,14 @@
               <button
                 type="submit"
                 name="welcome_update"
-                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                 <%= tr("common:DASH.UPDATE") %>
               </button>
             <% } else { %>
             <button
               type="submit"
               name="welcome_enable"
-              class="inline-flex items-center rounded-lg bg-green-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+              class="inline-flex items-center rounded-lg bg-green-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
               <%= tr("common:DASH.ENABLE") %>
             </button>
             <% } %>
@@ -203,7 +203,7 @@
                 <%= tr("greeting:DASH.CHANNEL_DESC") %>
               </div>
             </div>
-            <select id="farewell_channel" name="farewell_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <select id="farewell_channel" name="farewell_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
               <option selected disabled value><%= tr("common:DASH.CHANNEL_SELECT") %></option>
               <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
                 <option value="<%= ch.id %>" <%= settings.farewell.channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
@@ -223,7 +223,7 @@
               maxlength="2000"
               id="farewell_content"
               name="farewell_content"
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="<%= tr("greeting:DASH.FAREWELL_PLACEHOLDER") %>"
             ><%-settings.farewell.content?.replaceAll(/\\n/g, '&#10;')%></textarea>
           </div>
@@ -256,7 +256,7 @@
                     maxlength="2000"
                     id="farewell_embed_content"
                     name="farewell_embed_content"
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   ><%-settings.farewell.embed.description?.replaceAll(/\\n/g, '&#10;')%></textarea>
                 </div>
 
@@ -352,14 +352,14 @@
               <button
                 type="submit"
                 name="farewell_update"
-                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                 <%= tr("common:DASH.UPDATE") %>
               </button>
             <% } else { %>
             <button
               type="submit"
               name="farewell_enable"
-              class="inline-flex items-center rounded-lg bg-green-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+              class="inline-flex items-center rounded-lg bg-green-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-primary-800">
               <%= tr("common:DASH.ENABLE") %>
             </button>
             <% } %>
@@ -383,7 +383,7 @@
           <%= tr("greeting:DASH.AUTOROLE_DESC") %>
         </div>
       </div>
-      <select name="role_id" id="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <select name="role_id" id="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
         <% if (!settings.role_id) { %>
           <option selected disabled><%= tr("common:DASH.ROLE_SELECT") %></option>
         <% } %>
@@ -401,7 +401,7 @@
         <button
           type="submit"
           name="autorole"
-          class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
           <%= tr("common:DASH.UPDATE") %>
         </button>
       </div>

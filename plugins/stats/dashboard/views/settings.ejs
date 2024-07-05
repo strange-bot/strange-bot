@@ -31,7 +31,7 @@
             <%= tr("stats:DASH.LVL_CH_DESC") %>
           </div>
         </div>
-        <select name="xp_channel" id="xp_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <select name="xp_channel" id="xp_channel" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
           <option selected value><%= tr("common:DASH.CHANNEL_SELECT") %></option>
           <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
             <option value="<%= ch.id %>" <%= settings.xp.channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
@@ -73,7 +73,7 @@
       <button
         type="submit"
         name="settings"
-        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
         <%= tr("common:DASH.UPDATE") %>
       </button>
     </div>

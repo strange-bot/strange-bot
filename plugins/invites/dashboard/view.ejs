@@ -43,7 +43,7 @@
                   <input type="hidden" name="rank_id" value="<%= rank.id %>"/>
 
                   <td class="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                    <select name="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select name="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                       <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
                         <option value="<%= r.id %>" <%= rank.id === r.id ? 'selected' : '' %>><%= r.name %></option>
                       <% }) %>
@@ -112,7 +112,7 @@
                   <%= tr("invites:DASH.ROLE_DESC") %>
                 </div>
               </div>
-              <select aria-placeholder="<%= tr("invites:DASH.ROLE_PLACEHOLDER") %>" required name="role_id" id="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <select aria-placeholder="<%= tr("invites:DASH.ROLE_PLACEHOLDER") %>" required name="role_id" id="role_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                 <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
                   <option value="<%= r.id %>"><%= r.name %></option>
                 <% }) %>
@@ -138,7 +138,7 @@
 
           <!-- Modal footer -->
           <div class="flex items-center mt-2 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-            <button name="add_rank" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><%= tr("invites:DASH.CREATE_BTN") %></button>
+            <button name="add_rank" type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"><%= tr("invites:DASH.CREATE_BTN") %></button>
           </div>
         </div>
       </form>
