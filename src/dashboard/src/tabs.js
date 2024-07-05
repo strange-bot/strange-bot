@@ -11,6 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.querySelectorAll('[role="tab"]').forEach((tab) => {
     tab.addEventListener("click", function () {
         const tabId = this.getAttribute("data-tabs-target");
-        window.location.hash = tabId;
+        history.pushState(null, null, tabId);
     });
 });

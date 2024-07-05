@@ -5,7 +5,7 @@ const sidebar = document.getElementById("sidebar");
 if (sidebar) {
     window.onload = function () {
         const activeItem = document.getElementById("aside-active-item");
-        activeItem?.scrollIntoView({ behavior: "smooth" });
+        activeItem?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
     };
 
     const toggleSidebarMobile = (sidebar, sidebarBackdrop) => {

@@ -33,10 +33,13 @@ module.exports = async (req, res, next, plugin) => {
     ) {
         try {
             const keys = Object.keys(req.body);
-            const filtered = keys.filter((key) => req.body[key] === "on");
+            const filtered = keys
+                .filter((key) => key !== "prefix_commands_toggle" && req.body[key] === "on")
+                .map((key) => key.split("prefix_")[1]);
+
             const disabled = new Set();
             plugin.commands.forEach((cmd) => {
-                if (cmd.command.enabled && !filtered.includes(cmd.name)) {
+                if (cmd.command?.enabled && !filtered.includes(cmd.name)) {
                     disabled.add(cmd.name);
                     cmd.command.aliases?.forEach((alias) => disabled.add(alias));
                 }
@@ -59,14 +62,14 @@ module.exports = async (req, res, next, plugin) => {
     ) {
         try {
             const keys = Object.keys(req.body);
-            const filtered = keys.filter(
-                (key) => key !== "slash_commands_toggle" && req.body[key] === "off",
-            );
+            const filtered = keys
+                .filter((key) => key !== "slash_commands_toggle" && req.body[key] === "on")
+                .map((key) => key.split("slash_")[1]);
+
             const disabled = new Set();
             plugin.commands.forEach((cmd) => {
-                if (cmd.enabled && cmd.command.enabled && filtered.includes(cmd.name)) {
+                if (cmd.slashCommand?.enabled && !filtered.includes(cmd.name)) {
                     disabled.add(cmd.name);
-                    cmd.command.aliases?.forEach((alias) => disabled.add(alias));
                 }
             });
 

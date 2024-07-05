@@ -101,11 +101,11 @@
                           <%= tr(cmd.description) %>
                         </div>
                       </div>
-                      <label for="<%= cmd.name %>" class="relative flex cursor-pointer items-center">
+                      <label for="prefix_<%= cmd.name %>" class="relative flex cursor-pointer items-center">
                         <% if (!coreSettings.disabled_prefix.includes(cmd.name)) { %>
-                          <input type="checkbox" name="<%= cmd.name %>" id="<%= cmd.name %>" class="sr-only" checked />
+                          <input type="checkbox" name="prefix_<%= cmd.name %>" id="prefix_<%= cmd.name %>" class="sr-only" checked />
                         <% } else { %>
-                          <input type="checkbox" name="<%= cmd.name %>" id="<%= cmd.name %>" class="sr-only" />
+                          <input type="checkbox" name="prefix_<%= cmd.name %>" id="prefix_<%= cmd.name %>" class="sr-only" />
                         <% } %>
                         <span class="toggle-bg h-6 w-11 rounded-full border border-gray-200 bg-gray-200 dark:border-gray-600 dark:bg-gray-700"></span>
                       </label>
@@ -143,11 +143,11 @@
                           <%= tr(cmd.description) %>
                         </div>
                       </div>
-                      <label for="<%= cmd.name %>" class="relative flex cursor-pointer items-center">
+                      <label for="slash_<%= cmd.name %>" class="relative flex cursor-pointer items-center">
                         <% if (!coreSettings.disabled_slash.includes(cmd.name)) { %>
-                          <input type="checkbox" name="<%= cmd.name %>" id="<%= cmd.name %>" class="sr-only" checked />
+                          <input type="checkbox" name="slash_<%= cmd.name %>" id="slash_<%= cmd.name %>" class="sr-only" checked />
                         <% } else { %>
-                          <input type="checkbox" name="<%= cmd.name %>" id="<%= cmd.name %>" class="sr-only" />
+                          <input type="checkbox" name="slash_<%= cmd.name %>" id="slash_<%= cmd.name %>" class="sr-only" />
                         <% } %>
                         <span class="toggle-bg h-6 w-11 rounded-full border border-gray-200 bg-gray-200 dark:border-gray-600 dark:bg-gray-700"></span>
                       </label>
