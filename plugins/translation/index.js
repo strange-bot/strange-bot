@@ -4,7 +4,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-language",
     dependencies: [],
     baseDir: __dirname,
-    events: ["messageReactionAdd"],
     settings: {
         enabled: {
             type: Boolean,

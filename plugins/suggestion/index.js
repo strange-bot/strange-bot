@@ -5,7 +5,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-lightbulb",
     dependencies: [],
     baseDir: __dirname,
-    events: ["interactionCreate"],
     settings: {
         enabled: {
             type: Boolean,

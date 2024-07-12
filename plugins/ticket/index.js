@@ -4,7 +4,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-ticket",
     dependencies: [],
     baseDir: __dirname,
-    events: ["interactionCreate"],
 
     settings: {
         enabled: {

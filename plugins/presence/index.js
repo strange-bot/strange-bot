@@ -4,7 +4,6 @@ module.exports = new Plugin({
     dependencies: [],
     ownerOnly: true,
     baseDir: __dirname,
-    events: ["ready"],
 
     dashboard: {
         enabled: true,

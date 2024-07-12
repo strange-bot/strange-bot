@@ -4,7 +4,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-sort-numeric-up",
     dependencies: [],
     baseDir: __dirname,
-    events: ["guildMemberAdd", "guildMemberRemove", "ready"],
     settings: {
         enabled: {
             type: Boolean,

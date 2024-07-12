@@ -4,7 +4,6 @@ module.exports = new Plugin({
     icon: "fa-brands fa-youtube",
     dependencies: [],
     baseDir: __dirname,
-    events: ["ready"],
 
     settings: {
         enabled: {

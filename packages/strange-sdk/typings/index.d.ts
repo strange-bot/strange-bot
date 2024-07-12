@@ -38,10 +38,6 @@ type PluginData = {
      */
     dependencies?: string[];
     /**
-     * List of events to listen to
-     */
-    events?: string[];
-    /**
      * The init function to be executed when the plugin is loaded
      */
     init?: Function | null;
@@ -86,11 +82,6 @@ export class Plugin {
      * List of dependencies required by the plugin
      */
     dependencies: string[];
-
-    /**
-     * List of events to listen to
-     */
-    events: string[];
 
     /**
      * The init function to be executed when the plugin is loaded

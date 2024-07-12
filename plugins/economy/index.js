@@ -5,7 +5,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-coins",
     dependencies: [],
     baseDir: __dirname,
-    events: [],
     settings: {
         enabled: {
             type: Boolean,

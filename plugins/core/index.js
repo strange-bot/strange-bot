@@ -5,16 +5,6 @@ const plugin = new Plugin({
     icon: "fa-solid fa-star",
     dependencies: [],
     baseDir: __dirname,
-    events: [
-        "ready",
-        "warn",
-        "error",
-        "guildCreate",
-        "guildDelete",
-        "guildUnavailable",
-        "messageCreate",
-        "interactionCreate",
-    ],
 
     settings: {
         enabled: {

@@ -4,7 +4,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-user-plus",
     dependencies: ["invites"],
     baseDir: __dirname,
-    events: ["guildMemberAdd", "guildMemberRemove"],
     settings: {
         enabled: {
             type: Boolean,

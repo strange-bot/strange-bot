@@ -5,7 +5,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-chart-line",
     dependencies: [],
     baseDir: __dirname,
-    events: ["messageCreate", "interactionCreate", "voiceStateUpdate"],
     settings: {
         enabled: {
             type: Boolean,

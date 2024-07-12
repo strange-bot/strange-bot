@@ -4,7 +4,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-user-shield",
     dependencies: [],
     baseDir: __dirname,
-    events: [],
     settings: {
         enabled: {
             type: Boolean,

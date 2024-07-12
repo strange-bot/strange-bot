@@ -5,7 +5,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-robot",
     baseDir: __dirname,
     dependencies: [],
-    events: ["messageCreate", "messageDelete"],
     init: (client) => {
         cleanupCache();
     },

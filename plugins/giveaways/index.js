@@ -5,7 +5,6 @@ module.exports = new Plugin({
     icon: "fa-solid fa-gift",
     dependencies: [],
     baseDir: __dirname,
-    events: ["ready"],
 
     init: (client) => {
         client.giveawaysManager = require("./giveaway")(client);

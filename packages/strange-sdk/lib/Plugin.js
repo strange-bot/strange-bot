@@ -16,7 +16,6 @@ const { Logger, MiscUtils, permissions } = require("./utils");
  * @property {string} baseDir - The base directory of the plugin.
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
- * @property {Array<string>} [events] - The events of the plugin.
  * @property {Function|null} [init] - A function that will be called when the plugin is initialized.
  * @property {object|null} [settings] - The settings of the plugin.
  * @property {DashboardSettings|null} [dashboard] - The dashboard settings of the plugin.
@@ -36,7 +35,6 @@ class Plugin {
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
-        this.events = data.events || [];
         this.baseDir = data.baseDir;
         this.init = data.init || null;
         this.settings = data.settings || { enabled: { type: Boolean, default: true } };
@@ -86,18 +84,24 @@ class Plugin {
 
     #loadEvents() {
         Logger.debug(`Loading events for plugin ${this.name}`);
-        for (const event of this.events) {
-            const eventHandlerPath = `${this.baseDir}/events/${event}.js`;
-            if (!fs.existsSync(eventHandlerPath)) {
-                throw new Error(
-                    `Event handler for event ${event} does not exist. Please create a file called ${event}.js in ${path.join(
-                        this.baseDir,
-                        "events",
-                    )}`,
-                );
+        const eventHandlerPath = `${this.baseDir}/events`;
+        if (!fs.existsSync(eventHandlerPath)) {
+            Logger.debug(`No events directory found for plugin ${this.name}`);
+            return;
+        }
+
+        const eventFiles = fs.readdirSync(eventHandlerPath).filter((file) => file.endsWith(".js"));
+        for (const file of eventFiles) {
+            const event = file.split(".")[0];
+            if (!Object.values(Events).includes(event)) {
+                throw new Error(`Invalid event: ${event}`);
             }
-            const eventHandler = require(eventHandlerPath);
-            // TODO: Validate event handler
+
+            const eventHandler = require(`${eventHandlerPath}/${file}`);
+            if (typeof eventHandler !== "function") {
+                throw new Error(`Event handler for event ${event} must be a function`);
+            }
+
             this.eventHandlers.set(event, eventHandler);
         }
     }
@@ -193,18 +197,6 @@ class Plugin {
 
         if (data.dependencies && !Array.isArray(data.dependencies)) {
             throw new Error("Plugin dependencies must be an array");
-        }
-
-        if (data.events) {
-            if (!Array.isArray(data.events)) {
-                throw new Error("Plugin events must be an array");
-            }
-
-            for (const event of data.events) {
-                if (!Object.values(Events).includes(event)) {
-                    throw new Error(`Invalid event: ${event}`);
-                }
-            }
         }
 
         if (data.init && typeof data.init !== "function") {
