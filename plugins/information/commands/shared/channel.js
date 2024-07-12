@@ -1,7 +1,6 @@
 const { ChannelType } = require("discord.js");
-const { EmbedUtils } = require("strange-sdk/utils");
+const { EmbedUtils, channelTypes } = require("strange-sdk/utils");
 const { stripIndent } = require("common-tags");
-const channelTypes = require("../../channelTypes");
 
 /**
  * @param {import('discord.js').GuildChannel} channel
