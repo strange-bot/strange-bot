@@ -4,6 +4,7 @@ class EmbedUtils {
     static #bot = "#068ADD";
     static #success = "#00A56A";
     static #error = "#D61A3C";
+    static #transparent = "#36393F";
 
     /**
      * Creates an embed
@@ -37,6 +38,16 @@ class EmbedUtils {
      */
     static error(options) {
         return EmbedUtils.embed(options).setColor(this.#error);
+    }
+
+    /**
+     * Creates a transparent embed
+     * @param {object} options
+     * @param {string} options.title
+     * @param {string} options.description
+     */
+    static transparent(options) {
+        return EmbedUtils.embed(options).setColor(this.#transparent);
     }
 
     /**
