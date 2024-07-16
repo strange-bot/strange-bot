@@ -22,6 +22,8 @@ class BotClient extends Client {
                 GatewayIntentBits.GuildPresences,
                 GatewayIntentBits.GuildMessageReactions,
                 GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildModeration,
+                GatewayIntentBits.GuildEmojisAndStickers,
             ],
             partials: [Partials.User, Partials.Message, Partials.Reaction],
             allowedMentions: {
@@ -282,6 +284,7 @@ class BotClient extends Client {
                 "SendMessagesInThreads",
                 "Speak",
                 "ViewChannel",
+                "ViewAuditLog",
             ],
         });
     }

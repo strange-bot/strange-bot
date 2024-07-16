@@ -1,0 +1,10 @@
+{
+    "name": "event-logger",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Sai Teja Madha",
+    "license": "ISC",
+    "dependencies": {
+        "strange-sdk": "*"
+    }
+}
