@@ -408,7 +408,7 @@ function getPrefixPluginCommandEmbed(guild, pluginName, prefix) {
     if (commands.length === 0) {
         const embed = EmbedUtils.embed()
             // .setThumbnail(CommandCategory[pluginName]?.image)
-            .setAuthor({ name: `Plugin ${pluginName.toUpperCase()}` })
+            .setAuthor({ name: `Plugin ${guild.getT(pluginName.toLowerCase() + ":TITLE")}` })
             .setDescription(guild.getT("core:HELP.EMPTY_CATEGORY"));
 
         return [embed];
@@ -437,7 +437,7 @@ function getPrefixPluginCommandEmbed(guild, pluginName, prefix) {
     arrSplitted.forEach((item, index) => {
         const embed = EmbedUtils.embed()
             // .setThumbnail(CommandCategory[pluginName]?.image)
-            .setAuthor({ name: `Plugin ${pluginName.toUpperCase()}` })
+            .setAuthor({ name: `Plugin ${guild.getT(pluginName.toLowerCase() + ":TITLE")}` })
             .setDescription(item.join("\n"))
             .setFooter({
                 text: guild.getT("core:HELP.PLUGIN_EMBED_FOOTER", {

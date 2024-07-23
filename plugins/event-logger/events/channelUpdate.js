@@ -9,6 +9,7 @@ module.exports = async (oldChannel, newChannel) => {
     if (newChannel.isDMBased()) return;
     const guild = newChannel.guild;
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "CHANNEL_UPDATE");
     const logChannelId = event?.log_channel || settings.log_channel;
 

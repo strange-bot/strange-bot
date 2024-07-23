@@ -7,6 +7,7 @@ const { MiscUtils } = require("strange-sdk/utils");
 module.exports = async (invite) => {
     const guild = invite.guild;
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "INVITE_CREATE");
     const logChannelId = event?.log_channel || settings.log_channel;
 

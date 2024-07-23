@@ -46,7 +46,7 @@
 
         "MENU_DESC": "View commands in {{plugin}} plugin",
         "MENU_PLACEHOLDER": "Select the plugin for which you need help",
-        "EMPTY_CATEGORY": "There are no commands for {{plugin}} plugin",
+        "EMPTY_CATEGORY": "There are no commands in this plugin",
 
         "CMD_DESC": "Description",
         "CMD_SUBCOMMANDS": "Subcommands",

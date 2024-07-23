@@ -8,6 +8,7 @@ const { EmbedUtils } = require("strange-sdk/utils");
 module.exports = async (oldRole, newRole) => {
     const guild = newRole.guild;
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "ROLE_UPDATE");
     const logChannelId = event?.log_channel || settings.log_channel;
 

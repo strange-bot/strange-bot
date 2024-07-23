@@ -6,6 +6,7 @@ const { EmbedBuilder, AuditLogEvent } = require("discord.js");
 module.exports = async (invite) => {
     const guild = invite.client.guilds.cache.get(invite.guild.id);
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "INVITE_DELETE");
     const logChannelId = event?.log_channel || settings.log_channel;
 

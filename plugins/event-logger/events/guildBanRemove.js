@@ -7,6 +7,7 @@ const { EmbedBuilder, AuditLogEvent } = require("discord.js");
 module.exports = async (ban) => {
     const guild = ban.guild;
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "BAN_REMOVE");
     const logChannelId = event?.log_channel || settings.log_channel;
 

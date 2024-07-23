@@ -9,6 +9,7 @@ const { EmbedUtils } = require("strange-sdk/utils");
 module.exports = async (oldEmoji, newEmoji) => {
     const guild = newEmoji.guild;
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "EMOJI_UPDATE");
     const logChannelId = event?.log_channel || settings.log_channel;
 

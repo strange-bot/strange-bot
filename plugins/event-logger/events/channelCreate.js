@@ -8,6 +8,7 @@ module.exports = async (channel) => {
     if (channel.isDMBased()) return;
     const guild = channel.guild;
     const settings = guild.getSettings("event-logger");
+    if (!settings.enabled) return;
     const event = settings.events.find((doc) => doc.name === "CHANNEL_CREATE");
     const logChannelId = event?.log_channel || settings.log_channel;
 
