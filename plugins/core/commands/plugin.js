@@ -158,8 +158,8 @@ function pluginInfo({ client, guild }, plugin) {
                 status: settings.enabled
                     ? guild.getT("core:PLUGIN.ENABLED")
                     : guild.getT("core:PLUGIN.DISABLED"),
-                prefixCmds: p.commands.filter((c) => c.command.enabled).length,
-                slashCmds: p.commands.filter((c) => c.slashCommand.enabled).length,
+                prefixCmds: [...p.commands].filter((c) => c.command.enabled).length,
+                slashCmds: [...p.commands].filter((c) => c.slashCommand.enabled).length,
             }),
         );
 

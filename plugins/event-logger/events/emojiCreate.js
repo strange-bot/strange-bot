@@ -15,6 +15,8 @@ module.exports = async (emoji) => {
     const logChannel = guild.channels.cache.get(logChannelId);
     if (!logChannel) return;
 
+    const author = emoji.author || (await emoji.fetchAuthor());
+
     const embed = new EmbedBuilder()
         .setAuthor({ name: guild.getT("event-logger:EMBED.EMOJI_CREATE_TITLE") })
         .setDescription(
@@ -25,7 +27,7 @@ module.exports = async (emoji) => {
         .addFields(
             {
                 name: guild.getT("event-logger:EMBED.CREATED_BY"),
-                value: `${emoji.author.toString()} [${emoji.author.id}]`,
+                value: `${author.toString()} [${author.id}]`,
                 inline: false,
             },
             {
