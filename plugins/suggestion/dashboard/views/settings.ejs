@@ -1,213 +1,215 @@
-<form method="post">
-  <!-- START: Card Body -->
+<section class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+  <form method="post">
+    <!-- START: Card Body -->
 
-  <!-- START: ROW 1 -->
-  <div class="mb-3">
-    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
-      <!-- START: Column 1 (Upvote Emoji) -->
-      <div>
-        <div class="mb-2">
-          <label for="upvote_emoji" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.UPVOTE_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400"><%= tr("suggestion:DASH.UPVOTE_DESC") %></div>
-        </div>
-        <input
-          type="text"
-          name="upvote_emoji"
-          maxlength="2"
-          id="upvote_emoji"
-          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-          value="<%= settings.upvote_emoji %>"
-          required />
-      </div>
-      <!-- END: Column 1 -->
-
-      <!-- START: Column 2 (Downvote Emoji) -->
-      <div>
-        <div class="mb-2">
-          <label for="downvote_emoji" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.DOWNVOTE_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.DOWNVOTE_DESC") %>
+    <!-- START: ROW 1 -->
+    <div class="mb-3">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+        <!-- START: Column 1 (Upvote Emoji) -->
+        <div>
+          <div class="mb-2">
+            <label for="upvote_emoji" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.UPVOTE_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400"><%= tr("suggestion:DASH.UPVOTE_DESC") %></div>
           </div>
+          <input
+            type="text"
+            name="upvote_emoji"
+            maxlength="2"
+            id="upvote_emoji"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+            value="<%= settings.upvote_emoji %>"
+            required />
         </div>
-        <input
-          type="text"
-          name="downvote_emoji"
-          maxlength="2"
-          id="downvote_emoji"
-          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-          value="<%= settings.downvote_emoji %>"
-          required />
-      </div>
-      <!-- END: Column 2 -->
-    </div>
-  </div>
-  <!-- END: ROW 1 -->
+        <!-- END: Column 1 -->
 
-  <!-- START: ROW 2 -->
-  <div class="mb-3">
-    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
-      <!-- START: Column 1 (Default Channel) -->
-      <div>
-        <div class="mb-2">
-          <label for="default_ch" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.DEFAULT_CH_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.DEFAULT_CH_DESC") %>
+        <!-- START: Column 2 (Downvote Emoji) -->
+        <div>
+          <div class="mb-2">
+            <label for="downvote_emoji" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.DOWNVOTE_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.DOWNVOTE_DESC") %>
+            </div>
           </div>
+          <input
+            type="text"
+            name="downvote_emoji"
+            maxlength="2"
+            id="downvote_emoji"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+            value="<%= settings.downvote_emoji %>"
+            required />
         </div>
-        <select name="default_ch" id="default_ch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-          <option selected disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
-          <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
-            <option value="<%= ch.id %>" <%= settings.channel_id === ch.id ? 'selected' : '' %>><%= ch.name %></option>
-          <% }) %>
-        </select>
-      </div>
-
-      <!-- START: Column 2 (Default Embed) -->
-      <div>
-        <div class="mb-2">
-          <label for="default_embed" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.DEFAULT_EMBED_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.DEFAULT_EMBED_DESC") %>
-          </div>
-        </div>
-        <input
-          type="color"
-          name="default_embed"
-          id="default_embed"
-          class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-          value="<%= settings.default_embed %>"
-          required />
+        <!-- END: Column 2 -->
       </div>
     </div>
-  </div>
-  <!-- END: ROW 2 -->
+    <!-- END: ROW 1 -->
 
-  <!-- START: ROW 3 -->
-  <div class="mb-3">
-    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
-      <!-- START: Column 1 (Approved Channel) -->
-      <div>
-        <div class="mb-2">
-          <label for="approved_ch" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.APPROVED_CH_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.APPROVED_CH_DESC") %>
+    <!-- START: ROW 2 -->
+    <div class="mb-3">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+        <!-- START: Column 1 (Default Channel) -->
+        <div>
+          <div class="mb-2">
+            <label for="default_ch" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.DEFAULT_CH_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.DEFAULT_CH_DESC") %>
+            </div>
           </div>
+          <select name="default_ch" id="default_ch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <option selected disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
+            <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
+              <option value="<%= ch.id %>" <%= settings.channel_id === ch.id ? 'selected' : '' %>><%= ch.name %></option>
+            <% }) %>
+          </select>
         </div>
-        <select name="approved_ch" id="approved_ch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-          <option selected disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
-          <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
-            <option value="<%= ch.id %>" <%= settings.approved_channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
-          <% }) %>
-        </select>
-      </div>
 
-      <!-- START: Column 2 (Approved Embed) -->
-      <div>
-        <div class="mb-2">
-          <label for="approved_embed" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.APPROVED_EMBED_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.APPROVED_EMBED_DESC") %>
+        <!-- START: Column 2 (Default Embed) -->
+        <div>
+          <div class="mb-2">
+            <label for="default_embed" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.DEFAULT_EMBED_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.DEFAULT_EMBED_DESC") %>
+            </div>
           </div>
+          <input
+            type="color"
+            name="default_embed"
+            id="default_embed"
+            class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+            value="<%= settings.default_embed %>"
+            required />
         </div>
-        <input
-          type="color"
-          name="approved_embed"
-          id="approved_embed"
-          class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-          value="<%= settings.approved_embed %>"
-          required />
       </div>
     </div>
-  </div>
-  <!-- END: ROW 3 -->
+    <!-- END: ROW 2 -->
 
-  <!-- START: ROW 4 -->
-  <div class="mb-3">
-    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
-      <!-- START: Column 1 (Rejected Channel) -->
-      <div>
-        <div class="mb-2">
-          <label for="rejected_ch" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.REJECTED_CH_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.REJECTED_CH_DESC") %>
+    <!-- START: ROW 3 -->
+    <div class="mb-3">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+        <!-- START: Column 1 (Approved Channel) -->
+        <div>
+          <div class="mb-2">
+            <label for="approved_ch" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.APPROVED_CH_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.APPROVED_CH_DESC") %>
+            </div>
           </div>
+          <select name="approved_ch" id="approved_ch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <option selected disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
+            <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
+              <option value="<%= ch.id %>" <%= settings.approved_channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
+            <% }) %>
+          </select>
         </div>
-        <select name="rejected_ch" id="rejected_ch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-          <option selected disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
-          <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
-            <option value="<%= ch.id %>" <%= settings.rejected_channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
-          <% }) %>
-        </select>
-      </div>
 
-      <!-- START: Column 2 (Rejected Embed) -->
-      <div>
-        <div class="mb-2">
-          <label for="rejected_embed" class="text-sm font-semibold text-gray-900 dark:text-white"
-            ><%= tr("suggestion:DASH.REJECTED_EMBED_TITLE") %></label
-          >
-          <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-            <%= tr("suggestion:DASH.REJECTED_EMBED_DESC") %>
+        <!-- START: Column 2 (Approved Embed) -->
+        <div>
+          <div class="mb-2">
+            <label for="approved_embed" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.APPROVED_EMBED_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.APPROVED_EMBED_DESC") %>
+            </div>
           </div>
+          <input
+            type="color"
+            name="approved_embed"
+            id="approved_embed"
+            class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+            value="<%= settings.approved_embed %>"
+            required />
         </div>
-        <input
-          type="color"
-          name="rejected_embed"
-          id="rejected_embed"
-          class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-          value="<%= settings.rejected_embed %>"
-          required />
       </div>
     </div>
-  </div>
-  <!-- END: ROW 4 -->
+    <!-- END: ROW 3 -->
 
-  <!-- START: ROW 5 -->
-  <div class="mb-3">
-    <div class="mb-2">
-      <label for="staff_roles" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("suggestion:DASH.STAFF_TITLE") %></label>
-      <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-        <%= tr("suggestion:DASH.STAFF_DESC") %>
+    <!-- START: ROW 4 -->
+    <div class="mb-3">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+        <!-- START: Column 1 (Rejected Channel) -->
+        <div>
+          <div class="mb-2">
+            <label for="rejected_ch" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.REJECTED_CH_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.REJECTED_CH_DESC") %>
+            </div>
+          </div>
+          <select name="rejected_ch" id="rejected_ch" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <option selected disabled><%= tr("common:DASH.CHANNEL_SELECT") %></option>
+            <% guild.channels.cache.filter((ch) => ch.type === 0).map((ch) => { %>
+              <option value="<%= ch.id %>" <%= settings.rejected_channel === ch.id ? 'selected' : '' %>><%= ch.name %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- START: Column 2 (Rejected Embed) -->
+        <div>
+          <div class="mb-2">
+            <label for="rejected_embed" class="text-sm font-semibold text-gray-900 dark:text-white"
+              ><%= tr("suggestion:DASH.REJECTED_EMBED_TITLE") %></label
+            >
+            <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+              <%= tr("suggestion:DASH.REJECTED_EMBED_DESC") %>
+            </div>
+          </div>
+          <input
+            type="color"
+            name="rejected_embed"
+            id="rejected_embed"
+            class="block h-10 w-full rounded-lg border border-gray-300 p-0.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+            value="<%= settings.rejected_embed %>"
+            required />
+        </div>
       </div>
     </div>
-    <select multiple name="staff_roles" id="staff_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-      <% if (!settings.staff_roles.size == 0) { %>
-        <option selected disabled><%= tr("common:DASH.ROLE_SELECT") %></option>
-      <% } %>
-      <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
-        <option value="<%= r.id %>" <%= settings.staff_roles.includes(r.id) ? 'selected' : '' %>><%= r.name %></option>
-      <% }) %>
-    </select>
-  </div>
-  <!-- END: ROW 5 -->
+    <!-- END: ROW 4 -->
 
-  <!-- END: Card Body -->
-
-  <!-- START: Card Footer -->
-  <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
-    <div></div>
-    <div class="flex-shrink-0">
-      <button
-        type="submit"
-        name="settings"
-        class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-        <%= tr("common:DASH.UPDATE_ALL") %>
-      </button>
+    <!-- START: ROW 5 -->
+    <div class="mb-3">
+      <div class="mb-2">
+        <label for="staff_roles" class="text-sm font-semibold text-gray-900 dark:text-white"><%= tr("suggestion:DASH.STAFF_TITLE") %></label>
+        <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+          <%= tr("suggestion:DASH.STAFF_DESC") %>
+        </div>
+      </div>
+      <select multiple name="staff_roles" id="staff_roles" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+        <% if (!settings.staff_roles.size == 0) { %>
+          <option selected disabled><%= tr("common:DASH.ROLE_SELECT") %></option>
+        <% } %>
+        <% guild.roles.cache.filter((r) => r != guild.roles.everyone && guild.members.me.roles.highest.position > r.position && !r.managed).map((r) => { %>
+          <option value="<%= r.id %>" <%= settings.staff_roles.includes(r.id) ? 'selected' : '' %>><%= r.name %></option>
+        <% }) %>
+      </select>
     </div>
-  </div>
-  <!-- END: Card Footer -->
-</form>
+    <!-- END: ROW 5 -->
+
+    <!-- END: Card Body -->
+
+    <!-- START: Card Footer -->
+    <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+      <div></div>
+      <div class="flex-shrink-0">
+        <button
+          type="submit"
+          name="settings"
+          class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+          <%= tr("common:DASH.UPDATE_ALL") %>
+        </button>
+      </div>
+    </div>
+    <!-- END: Card Footer -->
+  </form>
+</section>
