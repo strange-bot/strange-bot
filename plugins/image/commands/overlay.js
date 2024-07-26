@@ -1,9 +1,7 @@
 const { EmbedBuilder, AttachmentBuilder, ApplicationCommandOptionType } = require("discord.js");
-const { HttpUtils } = require("strange-sdk/utils");
 const config = require("../config");
 const { getImageFromMessage } = require("../utils");
-
-const STRANGE_IMAGE_API = config.get("STRANGE_API_URL");
+const { StrangeOverlays } = require("strange.js");
 
 const availableOverlays = [
     "approved",
@@ -56,60 +54,92 @@ module.exports = {
     async messageRun(message, args, data) {
         const image = await getImageFromMessage(message, args);
 
-        // use invoke as an endpoint
-        const url = getOverlay(data.invoke.toLowerCase(), image);
-        const response = await HttpUtils.getBuffer(url, {
-            headers: {
-                Authorization: `Bearer ${config.get("STRANGE_API_KEY")}`,
-            },
-        });
+        try {
+            const response = await getResult(data.invoke.toLowerCase(), image);
+            const attachment = new AttachmentBuilder(response, { name: "attachment.png" });
 
-        if (!response.success) return message.replyT("image:OVERLAY_FAIL");
+            const embed = new EmbedBuilder()
+                .setColor(config.get("EMBED_COLOR"))
+                .setImage("attachment://attachment.png")
+                .setFooter({
+                    text: message.guild.getT("common:REQUESTED_BY", { user: message.author.username }),
+                });
 
-        const attachment = new AttachmentBuilder(response.buffer, { name: "attachment.png" });
-        const embed = new EmbedBuilder()
-            .setColor(config.get("EMBED_COLOR"))
-            .setImage("attachment://attachment.png")
-            .setFooter({
-                text: message.guild.getT("common:REQUESTED_BY", { user: message.author.username }),
-            });
+            await message.safeReply({ embeds: [embed], files: [attachment] });
 
-        await message.safeReply({ embeds: [embed], files: [attachment] });
+        } catch(ex) {
+            message.client.logger.error("Error generating overlay", ex);
+            return message.replyT("image:OVERLAY_FAIL");
+        }
     },
 
     async interactionRun(interaction) {
-        const { author, guild } = interaction;
+        const { user, guild } = interaction;
 
-        const user = interaction.options.getUser("user");
+        const optUser = interaction.options.getUser("user");
         const imageLink = interaction.options.getString("link");
-        const filter = interaction.options.getString("name");
+        const generator = interaction.options.getString("name");
 
-        let image;
-        if (user) image = user.displayAvatarURL({ size: 256, extension: "png" });
-        if (!image && imageLink) image = imageLink;
-        if (!image) image = author.displayAvatarURL({ size: 256, extension: "png" });
+        const image = optUser 
+        ? // if user is provided, use their avatar
+        optUser.displayAvatarURL({ size: 256, extension: "png" }) 
+        : // if no user is provided, use the provided image, or the interaction author's avatar
+        (imageLink ? imageLink : user.displayAvatarURL({ size: 256, extension: "png" }));
 
-        const url = getOverlay(filter, image);
-        const response = await HttpUtils.getBuffer(url, {
-            headers: {
-                Authorization: `Bearer ${config.get("STRANGE_API_KEY")}`,
-            },
-        });
+        try {
+            const response = await getResult(generator, image);
 
-        if (!response.success) return interaction.followUp(guild.getT("image:OVERLAY_FAIL"));
-
-        const attachment = new AttachmentBuilder(response.buffer, { name: "attachment.png" });
-        const embed = new EmbedBuilder()
+            const attachment = new AttachmentBuilder(response, { name: "attachment.png" });
+            
+            const embed = new EmbedBuilder()
             .setColor(config.get("EMBED_COLOR"))
             .setImage("attachment://attachment.png")
-            .setFooter({ text: guild.getT("common:REQUESTED_BY", { user: author.username }) });
+            .setFooter({ text: guild.getT("common:REQUESTED_BY", { user: user.username }) });
 
         await interaction.followUp({ embeds: [embed], files: [attachment] });
-    },
+
+        } catch(ex) {
+            interaction.client.logger.error("Error generating a filter", ex);
+            return interaction.followUp(guild.getT("image:OVERLAY_FAIL"));
+        };
+    }
 };
 
-function getOverlay(filter, image) {
-    const endpoint = new URL(`${STRANGE_IMAGE_API}/overlays/${filter}`);
-    endpoint.searchParams.append("image", image);
-    return endpoint.href;
+/**
+ * 
+ * @param {string} filter 
+ * @param {string} image 
+ * @returns {Promise<Buffer>}
+ */
+async function getResult(filter, image) {
+    const overlays = new StrangeOverlays(config.get("STRANGE_API_KEY"));
+
+    switch (filter) {
+        case "approved":
+            return await overlays.approve(image);
+
+        case "brazzers":
+            return await overlays.brazzers(image);
+
+        case "gay":
+            return await overlays.gay(image);
+
+        case "halloween":
+            return await overlays.halloween(image);
+
+        case "rejected":
+            return await overlays.rejected(image);
+
+        case "thuglife":
+            return await overlays.thugLife(image);
+
+        case "to-be-continued":
+            return await overlays.toBeContinued(image);
+
+        case "wasted":
+            return await overlays.wasted(image);
+
+        default:
+            throw new Error("Invalid overlay");
+    }
 }

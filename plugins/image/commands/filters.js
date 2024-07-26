@@ -1,9 +1,7 @@
 const { EmbedBuilder, AttachmentBuilder, ApplicationCommandOptionType } = require("discord.js");
-const { HttpUtils } = require("strange-sdk/utils");
 const { getImageFromMessage } = require("../utils");
+const { StrangeFilters } = require("strange.js");
 const config = require("../config");
-
-const STRANGE_IMAGE_API = config.get("STRANGE_API_URL");
 
 const availableFilters = [
     "blur",
@@ -18,27 +16,6 @@ const availableFilters = [
     "sharpen",
     "threshold",
 ];
-
-const additionalParams = {
-    brighten: {
-        params: [{ name: "amount", value: "100" }],
-    },
-    darken: {
-        params: [{ name: "amount", value: "100" }],
-    },
-    distort: {
-        params: [{ name: "level", value: "10" }],
-    },
-    pixelate: {
-        params: [{ name: "pixels", value: "10" }],
-    },
-    sharpen: {
-        params: [{ name: "level", value: "5" }],
-    },
-    threshold: {
-        params: [{ name: "amount", value: "100" }],
-    },
-};
 
 /**
  * @type {import('strange-sdk').CommandType}
@@ -80,68 +57,94 @@ module.exports = {
     async messageRun(message, args, data) {
         const image = await getImageFromMessage(message, args);
 
-        // use invoke as an endpoint
-        const url = getFilter(data.invoke.toLowerCase(), image);
-        const response = await HttpUtils.getBuffer(url, {
-            headers: {
-                Authorization: `Bearer ${config.get("STRANGE_API_KEY")}`,
-            },
-        });
+        try {
+             // use invoke as an endpoint
+            const result = getResult(data.invoke.toLowerCase(), image);
 
-        if (!response.success) return message.replyT("image:FILTER_FAIL");
+            const attachment = new AttachmentBuilder(result, { name: "attachment.png" });
+            const embed = new EmbedBuilder()
+                .setColor(config.get("EMBED_COLOR"))
+                .setImage("attachment://attachment.png")
+                .setFooter({
+                    text: message.guild.getT("common:REQUESTED_BY", { user: message.author.username }),
+                });
 
-        const attachment = new AttachmentBuilder(response.buffer, { name: "attachment.png" });
-        const embed = new EmbedBuilder()
-            .setColor(config.get("EMBED_COLOR"))
-            .setImage("attachment://attachment.png")
-            .setFooter({
-                text: message.guild.getT("common:REQUESTED_BY", { user: message.author.username }),
-            });
-
-        await message.safeReply({ embeds: [embed], files: [attachment] });
+            await message.safeReply({ embeds: [embed], files: [attachment] });
+        } catch(ex) {
+            message.client.logger.error("Error generating a filter", ex);
+            return message.replyT("image:FILTER_FAIL");
+        }
     },
 
     async interactionRun(interaction) {
-        const { author, guild } = interaction;
+        const { user, guild } = interaction;
 
-        const user = interaction.options.getUser("user");
+        const optUser = interaction.options.getUser("user");
         const imageLink = interaction.options.getString("link");
         const filter = interaction.options.getString("name");
 
-        let image;
-        if (user) image = user.displayAvatarURL({ size: 256, extension: "png" });
-        if (!image && imageLink) image = imageLink;
-        if (!image) image = author.displayAvatarURL({ size: 256, extension: "png" });
+        const image = optUser 
+        ? // if user is provided, use their avatar
+        optUser.displayAvatarURL({ size: 256, extension: "png" }) 
+        : // if no user is provided, use the provided image, or the interaction author's avatar
+        (imageLink ? imageLink : user.displayAvatarURL({ size: 256, extension: "png" }));
 
-        const url = getFilter(filter, image);
-        const response = await HttpUtils.getBuffer(url, {
-            headers: {
-                Authorization: `Bearer ${config.get("STRANGE_API_KEY")}`,
-            },
-        });
+        try {
+            const result = await getResult(filter, image);
+            const attachment = new AttachmentBuilder(result, { name: "attachment.png" });
 
-        if (!response.success) return interaction.followUp(guild.getT("image:FILTER_FAIL"));
-
-        const attachment = new AttachmentBuilder(response.buffer, { name: "attachment.png" });
-        const embed = new EmbedBuilder()
+            const embed = new EmbedBuilder()
             .setColor(config.get("EMBED_COLOR"))
             .setImage("attachment://attachment.png")
-            .setFooter({ text: guild.getT("common:REQUESTED_BY", { user: author.username }) });
+            .setFooter({ text: guild.getT("common:REQUESTED_BY", { user: user.username }) });
 
-        await interaction.followUp({ embeds: [embed], files: [attachment] });
+            await interaction.followUp({ embeds: [embed], files: [attachment] });
+            
+        } catch(ex) {
+            interaction.client.logger.error("Error generating a filter", ex);
+            return interaction.followUp(guild.getT("image:FILTER_FAIL"));
+        }
     },
 };
 
-function getFilter(filter, image) {
-    const endpoint = new URL(`${STRANGE_IMAGE_API}/filters/${filter}`);
-    endpoint.searchParams.append("image", image);
+async function getResult(filter, image) {
+    const filters = new StrangeFilters(config.get("STRANGE_API_KEY"));
 
-    // add additional params if any
-    if (additionalParams[filter]) {
-        additionalParams[filter].params.forEach((param) => {
-            endpoint.searchParams.append(param.name, param.value);
-        });
+    switch (filter) {
+        case "blur":
+            return await filters.blur(image);
+
+        case "brighten":
+            return await filters.brighten(image, 100);
+
+        case "burn":
+            return await filters.burn(image, 100);
+
+        case "darken":
+            return await filters.darken(image);
+
+        case "distort":
+            return await filters.distort(image, 10);
+
+        case "greyscale":
+            return await filters.greyscale(image);
+
+        case "invert":
+            return await filters.invert(image);
+
+        case "pixelate":
+            return await filters.pixelate(image, 10);
+
+        case "sepia":
+            return await filters.sepia(image);
+
+        case "sharpen":
+            return await filters.sharpen(image, 5);
+
+        case "threshold":
+            return await filters.threshold(image, 100);
+        
+        default:
+            throw new Error("Invalid filter");
     }
-
-    return endpoint.href;
 }
