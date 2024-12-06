@@ -7,7 +7,7 @@
     "dependencies": {
         "common-tags": "^1.8.2",
         "moment": "^2.30.1",
-        "strange-sdk": "*",
+        "strange-sdk": "workspace:*",
         "os": "^0.1.2"
     }
 }

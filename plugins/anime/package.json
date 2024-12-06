@@ -6,6 +6,6 @@
     "license": "ISC",
     "dependencies": {
         "nekos.life": "^3.0.0",
-        "strange-sdk": "*"
+        "strange-sdk": "workspace:*"
     }
 }

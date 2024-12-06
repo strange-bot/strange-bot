@@ -5,6 +5,7 @@
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "strange-sdk": "*"
+        "@types/react": "^18.3.12",
+        "strange-sdk": "workspace:*"
     }
 }
