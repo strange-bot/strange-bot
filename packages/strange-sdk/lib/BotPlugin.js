@@ -2,43 +2,39 @@ const { Events, ApplicationCommandType } = require("discord.js");
 const fs = require("node:fs");
 const path = require("node:path");
 const { Logger, MiscUtils, permissions } = require("./utils");
+const DBClient = require("strange-db-client");
+const ConfigLoader = require("./ConfigLoader");
 
 /**
- * @typedef DashboardSettings
- * @property {boolean} enabled - Whether the dashboard is enabled.
- * @property {import('express').Router} settingsRouter - Express router for the settings page.
- * @property {import('express').Router} adminRouter - Express router for the admin page.
- */
-
-/**
- * Represents a Plugin.
- * @typedef {Object} PluginData
+ * Represents a Bot Plugin.
+ * @typedef {Object} BotPluginData
  * @property {string} baseDir - The base directory of the plugin.
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
- * @property {Function|null} [init] - A function that will be called when the plugin is initialized.
- * @property {object|null} [settings] - The settings of the plugin.
- * @property {DashboardSettings|null} [dashboard] - The dashboard settings of the plugin.
+ * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
+ * @property {function(object): object} [settingsSchema] - The settings function (optional)
+ * @property {Object.<string, function(any, import('discord.js').Client): Promise<{success: boolean, data?: any, error?: string}>>} ipcHandler - Object containing message handler functions
  */
 
-class Plugin {
+class BotPlugin {
     /**
      * Creates a new Plugin instance.
-     * @param {PluginData} data
+     * @param {BotPluginData} data
      */
-    constructor(data, _load = true) {
+    constructor(data) {
         Logger.debug("Initializing plugin", data);
-        Plugin.#validate(data);
-        const packageJson = require(path.join(data.baseDir, "package.json"));
+        BotPlugin.#validate(data);
+        this.pluginDir = path.join(data.baseDir, "..");
+        const packageJson = require(path.join(this.pluginDir, "package.json"));
         this.name = packageJson.name;
         this.version = packageJson.version;
-        this.icon = data.icon || "fa-solid fa-puzzle-piece";
+        this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
-        this.baseDir = data.baseDir;
         this.init = data.init || null;
-        this.settings = data.settings || { enabled: { type: Boolean, default: true } };
-        this.dashboard = data.dashboard || { enabled: false };
+        this.settingsSchema =
+            data.settingsSchema || (() => ({ enabled: { type: Boolean, default: true } }));
+        this.ipcHandler = data.ipcHandler || {};
 
         /**
          * @type {Map<string, Function>}
@@ -49,18 +45,18 @@ class Plugin {
          * @type {Set<import('../typings').CommandType>}
          */
         this.commands = new Set();
+
+        /**
+         * @type {Set<import('../typings').ContextType>}
+         */
         this.contexts = new Set();
         this.prefixCount = 0;
         this.slashCount = 0;
 
-        if (_load) {
-            this.load();
-        }
-
-        Logger.debug(`Initialized plugin "${this.name}"`);
+        Logger.debug(`Initialized bot plugin "${this.name}"`);
     }
 
-    load() {
+    async load() {
         this.#loadEvents();
         this.#loadCommands();
         this.#loadContexts();
@@ -70,16 +66,44 @@ class Plugin {
                 if (cmd.slashCommand?.enabled !== false) this.slashCount++;
             }
         });
+        await this.#registerSettings();
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
-    unload() {
+    async unload() {
         this.eventHandlers.clear();
         this.commands.clear();
         this.contexts.clear();
         this.prefixCount = 0;
         this.slashCount = 0;
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
+    }
+
+    async getSettings(guild) {
+        const guildId = typeof guild === "string" ? guild : guild.id;
+        return await DBClient.getInstance().getPluginSettings(guildId, this.name);
+    }
+
+    async setSettings(guild, settings) {
+        const guildId = typeof guild === "string" ? guild : guild.id;
+        await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
+    }
+
+    async getConfig() {
+        if (process.env.DEV_MODE) {
+            return new ConfigLoader(this.pluginDir).config;
+        }
+        return DBClient.getInstance().getPluginConfig(this.name);
+    }
+
+    async setConfig(config) {
+        await DBClient.getInstance().updatePluginConfig(this.name, config);
+    }
+
+    async #registerSettings() {
+        const config = await this.getConfig();
+        const schema = this.settingsSchema(config);
+        await DBClient.getInstance().registerPluginSettings(this.name, schema);
     }
 
     #loadEvents() {
@@ -119,7 +143,7 @@ class Plugin {
             try {
                 const cmd = require(file);
                 if (typeof cmd !== "object") continue;
-                Plugin.#validateCommand(cmd);
+                BotPlugin.#validateCommand(cmd);
                 if (cmd.enabled === false) {
                     Logger.debug(`Command ${cmd.name} is disabled`);
                     continue;
@@ -152,7 +176,7 @@ class Plugin {
         for (const file of contextFiles) {
             try {
                 const context = require(file);
-                Plugin.#validateContext(context);
+                BotPlugin.#validateContext(context);
                 context.plugin = this;
                 this.contexts.add(context);
             } catch (error) {
@@ -170,58 +194,41 @@ class Plugin {
 
     /**
      * Validates the plugin data.
-     * @param {PluginData} data
+     * @param {BotPluginData} data
      */
     static #validate(data) {
         if (typeof data !== "object") {
-            throw new TypeError("Plugin data must be an Object.");
+            throw new TypeError("BotPlugin data must be an Object.");
         }
 
         if (!data.baseDir || typeof data.baseDir !== "string") {
-            throw new Error("Plugin baseDir must be a string");
+            throw new Error("BotPlugin baseDir must be a string");
         }
 
         const fs = require("fs");
         if (!fs.existsSync(data.baseDir)) {
-            throw new Error("Plugin baseDir does not exist");
+            throw new Error("BotPlugin baseDir does not exist");
         }
 
-        const packageJsonPath = path.join(data.baseDir, "package.json");
+        const packageJsonPath = path.join(data.baseDir, "../package.json");
         if (!fs.existsSync(packageJsonPath)) {
             throw new Error("No package.json found in plugin directory");
         }
 
-        if (data.icon && typeof data.icon !== "string") {
-            throw new Error("Plugin icon must be a string");
-        }
-
         if (data.dependencies && !Array.isArray(data.dependencies)) {
-            throw new Error("Plugin dependencies must be an array");
+            throw new Error("BotPlugin dependencies must be an array");
         }
 
         if (data.init && typeof data.init !== "function") {
-            throw new Error("Plugin init must be a function");
+            throw new Error("BotPlugin init must be a function");
         }
 
-        if (data.settings && typeof data.settings !== "object") {
-            throw new Error("Plugin settings must be an object");
+        if (data.settingsSchema && typeof data.settingsSchema !== "function") {
+            throw new Error("BotPlugin settingsSchema must be a function");
         }
 
-        if (data.dashboard && typeof data.dashboard !== "object") {
-            throw new Error("Plugin dashboard must be an object");
-        }
-
-        if (data.dashboard && data.dashboard.enabled) {
-            if (data.dashboard.settingsRouter && !data.dashboard.settingsRouter.stack) {
-                throw new Error(
-                    "Plugin dashboard settingsRouter must be an instance of express.Router",
-                );
-            }
-            if (data.dashboard.adminRouter && !data.dashboard.adminRouter.stack) {
-                throw new Error(
-                    "Plugin dashboard adminRouter must be an instance of express.Router",
-                );
-            }
+        if (data.ipcHandler && typeof data.ipcHandler !== "object") {
+            throw new Error("BotPlugin ipcHandler must be an object");
         }
     }
 
@@ -416,4 +423,4 @@ class Plugin {
     }
 }
 
-module.exports = Plugin;
+module.exports = BotPlugin;

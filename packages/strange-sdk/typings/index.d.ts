@@ -1,30 +1,16 @@
-import { Model } from "mongoose";
 import { Router } from "express";
 import {
+    Guild,
     Message,
     ApplicationCommandOptionData,
     ChatInputCommandInteraction,
     ApplicationCommandType,
     PermissionResolvable,
     ContextMenuCommandInteraction,
+    Client,
 } from "discord.js";
 
-type DashboardData = {
-    /**
-     * Whether the dashboard is enabled or not
-     */
-    enabled: boolean;
-    /**
-     * Express router for the settings page.
-     */
-    settingsRouter: Router;
-    /**
-     * Express router for the admin page.
-     */
-    adminRouter: Router;
-};
-
-type PluginData = {
+type BotPluginData = {
     /**
      * The base directory of the plugin
      */
@@ -40,19 +26,29 @@ type PluginData = {
     /**
      * The init function to be executed when the plugin is loaded
      */
-    init?: Function | null;
+    init?: ((client: Client) => Promise<void>) | null;
     /**
      * The settings object
      */
-    settings?: object | null;
+    settings?: ((config: object) => object) | null;
+
     /**
-     * The dashboard data
+     * The IPC configuration
      */
-    dashboard?: DashboardData | null;
+    ipcHandler?: {
+        [key: string]: (
+            message: any,
+            client: Client,
+        ) => Promise<{
+            success: boolean;
+            data?: any;
+            error?: string;
+        }>;
+    };
 };
 
-export class Plugin {
-    constructor(data: PluginData, _load?: boolean);
+export class BotPlugin {
+    constructor(data: BotPluginData);
     /**
      * The plugin name
      */
@@ -64,14 +60,14 @@ export class Plugin {
     version: string;
 
     /**
-     * Font-awesome icon class
+     * The base directory of the plugin
      */
-    icon: string;
+    baseDir: string;
 
     /**
      * The base directory of the plugin
      */
-    baseDir: string;
+    pluginDir: string;
 
     /**
      * The plugin name
@@ -84,19 +80,28 @@ export class Plugin {
     dependencies: string[];
 
     /**
-     * The init function to be executed when the plugin is loaded
+     * The init function to be executed when the plugin is loaded by the bot
      */
-    init: Function | null;
+    init?: ((client: Client) => Promise<void>) | null;
 
     /**
      * The settings object
      */
-    settings: object | null;
+    settings?: ((config: object) => object) | null;
 
     /**
-     * The dashboard data
+     * The IPC configuration
      */
-    dashboard: DashboardData | null;
+    ipcHandler?: {
+        [key: string]: (
+            message: any,
+            client: Client,
+        ) => Promise<{
+            success: boolean;
+            data?: any;
+            error?: string;
+        }>;
+    };
 
     /**
      * The event handlers
@@ -123,60 +128,97 @@ export class Plugin {
      */
     slashCount: number;
 
-    load(): void;
-    unload(): void;
+    async load(): Promise<void>;
+    async unload(): Promise<void>;
+    async getSettings(guild: Guild | string): Promise<object>;
+    async setSettings(guild: Guild | string, settings: object): Promise<void>;
+    async getConfig(): Promise<object>;
+    async setConfig(config: object): Promise<void>;
 }
 
-export class Config<T> {
+type DashboardPluginData = {
     /**
-     * @param baseDir The base directory of the plugin
-     * @param data The data object
+     * The base directory of the plugin
      */
-    constructor(baseDir: string, data: T);
+    baseDir: string;
+    /**
+     * Whether the plugin is enabled.
+     */
+    enabled?: boolean;
+    /**
+     * Font-awesome icon class
+     */
+    icon?: string;
+    /**
+     * The init function to be executed when the plugin is loaded
+     */
+    init?: (() => Promise<void>) | null;
+    /**
+     * Express router for the settings page.
+     */
+    settingsRouter: Router;
+    /**
+     * Express router for the admin page.
+     */
+    adminRouter: Router;
+};
 
+export class DashboardPlugin {
+    constructor(data: DashboardPluginData);
     /**
      * The plugin name
      */
-    pluginName: string;
+    name: string;
 
     /**
      * The plugin version
      */
-    pluginVersion: string;
+    version: string;
 
     /**
-     * Represents mongoose model if the data is stored in a database
+     * The base directory of the plugin
      */
-    model: Model | null;
+    baseDir: string;
 
     /**
-     * The data object
+     * Whether the plugin is enabled.
      */
-    data: T;
+    enabled: boolean;
 
     /**
-     * Get the value of a key
-     * @param key The key to get the value of
+     * Font-awesome icon class
      */
-    get<K extends keyof T>(key: K): T[K];
+    icon: string;
 
     /**
-     * Set the value of a key
-     * @param key The key to set the value of
-     * @param value The value to set
+     * The init function to be executed when the plugin is loaded by the dashboard
      */
-    set<K extends keyof T>(key: K, value: T[K]): void;
+    init?: ((client: Client) => Promise<void>) | null;
 
     /**
-     * Save the data to the database
+     * Express router for the settings page.
      */
-    async saveToDb(): Promise<void>;
 
+    settingsRouter: Router | null;
     /**
-     * Load the data from the database
-     * @param model The mongoose model to load the data from
+     * Express router for the admin page.
      */
-    async loadFromDb(model: Model): Promise<void>;
+    adminRouter: Router | null;
+
+    async load(): Promise<void>;
+    async unload(): Promise<void>;
+    async getSettings(guild: Guild | string): Promise<object>;
+    async setSettings(guild: Guild | string, settings: object): Promise<void>;
+    async getConfig(): Promise<object>;
+    async setConfig(config: object): Promise<void>;
+}
+
+export class ConfigLoader {
+    /**
+     * @param baseDir The base directory of the plugin
+     */
+    constructor(baseDir: string);
+    syncWithDb(): Promise<void>;
 }
 
 export interface Utils {
