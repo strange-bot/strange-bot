@@ -14,7 +14,8 @@ class Logger {
      * Initialize the pinoLogger and webhookLogger during bot startup
      * @param {string} [dest] - The destination to store the logs
      */
-    static init(dest = "") {
+    static init(dest = "", fields = {}) {
+        const fieldKeys = Object.keys(fields).join(",");
         const streamArray = [
             {
                 level: "info",
@@ -23,7 +24,7 @@ class Logger {
                     options: {
                         colorize: true,
                         translateTime: "yyyy-mm-dd HH:mm:ss",
-                        ignore: "pid,hostname",
+                        ignore: `pid,hostname,${fieldKeys}`,
                         singleLine: false,
                         hideObject: false,
                         customColors: "info:blue,warn:yellow,error:red",
@@ -44,7 +45,8 @@ class Logger {
         }
 
         // Initialize the pinoLogger with the streamArray
-        Logger.#pinoLogger = pino.default({ level: "info" }, pino.multistream(streamArray));
+        const baseLogger = pino.default({ level: "info" }, pino.multistream(streamArray));
+        Logger.#pinoLogger = Object.keys(fields).length > 0 ? baseLogger.child(fields) : baseLogger;
 
         // Check for environment variable ERROR_LOGS and initialize webhookLogger accordingly
         Logger.#webhookLogger = process.env.ERROR_LOGS
