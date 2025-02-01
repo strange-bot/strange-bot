@@ -1,0 +1,14 @@
+{
+    "name": "strange-i18n",
+    "version": "1.0.0",
+    "description": "Internationalization package for strange bot",
+    "main": "lib/index.js",
+    "dependencies": {
+        "i18next": "^24.2.2",
+        "strange-db-client": "workspace:*",
+        "strange-sdk": "workspace:*"
+    },
+    "peerDependencies": {
+        "mongoose": "^8.9.0"
+    }
+}
