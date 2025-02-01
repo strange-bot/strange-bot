@@ -12,7 +12,7 @@ const ConfigLoader = require("./ConfigLoader");
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
  * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
- * @property {function(object): object} [settingsSchema] - The settings function (optional)
+ * @property {function(object): object} [registerSchemas] - The settings function (optional)
  * @property {Object.<string, function(any, import('discord.js').Client): Promise<{success: boolean, data?: any, error?: string}>>} ipcHandler - Object containing message handler functions
  */
 
@@ -32,9 +32,12 @@ class BotPlugin {
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
         this.init = data.init || null;
-        this.settingsSchema =
-            data.settingsSchema || (() => ({ enabled: { type: Boolean, default: true } }));
+        this.registerSchemas = data.registerSchemas || null;
         this.ipcHandler = data.ipcHandler || {};
+        /**
+         * @type {Map<string, import('mongoose').Model>}
+         */
+        this.models = new Map();
 
         /**
          * @type {Map<string, Function>}
@@ -66,7 +69,7 @@ class BotPlugin {
                 if (cmd.slashCommand?.enabled !== false) this.slashCount++;
             }
         });
-        await this.#registerSettings();
+        await this.#registerSchemas();
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
@@ -100,10 +103,46 @@ class BotPlugin {
         await DBClient.getInstance().updatePluginConfig(this.name, config);
     }
 
-    async #registerSettings() {
+    async getModel(modelName) {
+        const prefixedName = `${this.name}-${modelName}`;
+        if (!this.models.has(prefixedName)) {
+            throw new Error(`Model ${modelName} is not registered`);
+        }
+        return this.models.get(prefixedName);
+    }
+
+    async #registerSchemas() {
+        if (!this.registerSchemas) return;
         const config = await this.getConfig();
-        const schema = this.settingsSchema(config);
-        await DBClient.getInstance().registerPluginSettings(this.name, schema);
+        const schemas = this.registerSchemas(config);
+
+        // Validate structure
+        if (typeof schemas !== "object") {
+            throw new Error("registerSchemas must return an object");
+        }
+
+        // Validate each schema
+        for (const [name, schema] of Object.entries(schemas)) {
+            if (typeof name !== "string") {
+                throw new Error(`Schema name must be a string`);
+            }
+
+            if (typeof schema !== "object") {
+                throw new Error(`Schema ${name} must be an object`);
+            }
+        }
+
+        // Register 'settings' schema
+        if (schemas.settings) {
+            await DBClient.getInstance().registerPluginSettings(this.name, schemas.settings);
+            delete schemas.settings;
+        }
+
+        // Register remaining schemas
+        for (const [name, schema] of Object.entries(schemas)) {
+            const prefixedName = `${this.name}-${name}`;
+            await DBClient.getInstance().registerSchema(prefixedName, schema);
+        }
     }
 
     #loadEvents() {
@@ -223,8 +262,8 @@ class BotPlugin {
             throw new Error("BotPlugin init must be a function");
         }
 
-        if (data.settingsSchema && typeof data.settingsSchema !== "function") {
-            throw new Error("BotPlugin settingsSchema must be a function");
+        if (data.registerSchemas && typeof data.registerSchemas !== "function") {
+            throw new Error("BotPlugin registerSchemas must be a function");
         }
 
         if (data.ipcHandler && typeof data.ipcHandler !== "object") {

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Model } from "mongoose";
 import {
     Guild,
     Message,
@@ -28,9 +29,9 @@ type BotPluginData = {
      */
     init?: ((client: Client) => Promise<void>) | null;
     /**
-     * The settings object
+     * Function to register MongoDB schemas for the plugin
      */
-    settings?: ((config: object) => object) | null;
+    registerSchemas?: ((config: object) => object) | null;
 
     /**
      * The IPC configuration
@@ -70,7 +71,7 @@ export class BotPlugin {
     pluginDir: string;
 
     /**
-     * The plugin name
+     * Whether the plugin is owner only
      */
     ownerOnly: boolean;
 
@@ -87,7 +88,7 @@ export class BotPlugin {
     /**
      * The settings object
      */
-    settings?: ((config: object) => object) | null;
+    registerSchemas?: ((config: object) => object) | null;
 
     /**
      * The IPC configuration
@@ -102,6 +103,11 @@ export class BotPlugin {
             error?: string;
         }>;
     };
+
+    /**
+     * Registered schemas
+     */
+    schemas: Map<string, Model<any>>;
 
     /**
      * The event handlers
@@ -134,6 +140,7 @@ export class BotPlugin {
     async setSettings(guild: Guild | string, settings: object): Promise<void>;
     async getConfig(): Promise<object>;
     async setConfig(config: object): Promise<void>;
+    async getModel(name: string): Promise<Model<any>>;
 }
 
 type DashboardPluginData = {
@@ -156,11 +163,11 @@ type DashboardPluginData = {
     /**
      * Express router for the settings page.
      */
-    settingsRouter: Router;
+    settingsRouter?: Router;
     /**
      * Express router for the admin page.
      */
-    adminRouter: Router;
+    adminRouter?: Router;
 };
 
 export class DashboardPlugin {
@@ -198,8 +205,8 @@ export class DashboardPlugin {
     /**
      * Express router for the settings page.
      */
-
     settingsRouter: Router | null;
+
     /**
      * Express router for the admin page.
      */
@@ -320,7 +327,7 @@ export type CommandType = {
         options: ApplicationCommandOptionData[];
     };
 
-    plugin: Plugin | undefined;
+    plugin?: BotPlugin;
     messageRun(
         message: Message,
         args: string[],
