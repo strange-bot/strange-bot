@@ -1,0 +1,22 @@
+{
+    "name": "strange-db-client",
+    "version": "1.0.0",
+    "description": "Database client for the strange discord bot",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "Sai Teja Madha",
+    "license": "ISC",
+    "dependencies": {
+        "ioredis": "^5.4.2",
+        "mongoose": "^7.6.13",
+        "mongoose-lean-defaults": "^2.2.1"
+    },
+    "devDependencies": {
+        "@saiteja-madha/prettier-config": "^1.1.0",
+        "@types/node": "^18.0.0",
+        "typescript": "^5.0.0"
+    },
+    "peerDependencies": {},
+    "prettier": "@saiteja-madha/prettier-config"
+}
