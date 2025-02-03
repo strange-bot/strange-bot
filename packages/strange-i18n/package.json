@@ -5,8 +5,7 @@
     "main": "lib/index.js",
     "dependencies": {
         "i18next": "^24.0.0",
-        "strange-db-client": "workspace:*",
-        "strange-sdk": "workspace:*"
+        "strange-db-client": "workspace:*"
     },
     "peerDependencies": {
         "mongoose": "^8.0.0"

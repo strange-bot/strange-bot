@@ -2,10 +2,18 @@ const { readdirSync, readFileSync, existsSync } = require("node:fs");
 const { join } = require("node:path");
 const i18next = require("i18next");
 const localizationModel = require("./schema");
-const { Logger } = require("strange-sdk/utils");
 
 class I18nManager {
-    constructor(options = {}) {
+    /**
+     * Creates an instance of I18nManager.
+     * @param {string} app - The application name.
+     * @param {Object} [options={}] - The options for the I18nManager.
+     * @param {string} [options.fallbackLng="en-US"] - The fallback language.
+     * @param {string} [options.baseDir] - The base directory for local translations.
+     * @param {string} [options.pluginsDir] - The plugins directory for local translations.
+     */
+    constructor(app, options = {}) {
+        this.app = app;
         this.translations = new Map();
         this.meta = require(join(__dirname, "../languages-meta.json"));
         this.availableLanguages = this.meta.map((lng) => lng.name);
@@ -14,6 +22,10 @@ class I18nManager {
         this.pluginsDir = options.pluginsDir;
     }
 
+    /**
+     * Initializes the I18nManager.
+     * @returns {Promise<Map<string, Function>>} - A map of translation functions.
+     */
     async initialize() {
         await i18next.init({
             debug: false,
@@ -42,6 +54,10 @@ class I18nManager {
         return this.translations;
     }
 
+    /**
+     * Loads translations from the database.
+     * @returns {Promise<void>}
+     */
     async loadFromDb() {
         try {
             const localizations = await localizationModel.find().lean();
@@ -55,11 +71,14 @@ class I18nManager {
                 );
             }
         } catch (error) {
-            Logger.error("Failed to load translations from database", error);
-            throw error;
+            throw new Error(`Failed to load translations from database: ${error.message}`);
         }
     }
 
+    /**
+     * Walks through the base directory and loads translations.
+     * @param {string} baseDir - The base directory path.
+     */
     walkBaseDirectory(baseDir) {
         try {
             const locales = readdirSync(baseDir).filter((file) => file.endsWith(".json"));
@@ -68,7 +87,7 @@ class I18nManager {
                 const lng = lngFile.split(".")[0];
 
                 if (!this.availableLanguages.includes(lng)) {
-                    Logger.warn(`Invalid language file: ${lngFile}`);
+                    console.warn(`Invalid language file: ${lngFile}`);
                     return;
                 }
 
@@ -77,11 +96,14 @@ class I18nManager {
                 i18next.addResourceBundle(lng, "translation", translationData);
             });
         } catch (error) {
-            Logger.error("Failed to walk base directory", error);
-            throw error;
+            throw new Error(`Failed to walk base directory: ${error.message}`);
         }
     }
 
+    /**
+     * Walks through the plugin directory and loads translations.
+     * @param {string} pluginsDir - The plugins directory path.
+     */
     walkPluginDirectory(pluginsDir) {
         try {
             const plugins = readdirSync(pluginsDir);
@@ -90,10 +112,11 @@ class I18nManager {
                 const packageJsonPath = join(pluginsDir, pluginDirName, "package.json");
                 const packageJson = require(packageJsonPath);
                 const pluginName = packageJson.name;
+                const entry = this.app === "bot" ? "bot" : "dashboard";
 
-                const pluginDir = join(pluginsDir, pluginDirName, "locales");
+                const pluginDir = join(pluginsDir, pluginDirName, `${entry}/locales`);
                 if (!existsSync(pluginDir)) {
-                    Logger.debug(`Plugin ${pluginName} does not have locales directory`);
+                    console.debug(`Plugin ${pluginName} does not have locales directory`);
                     return;
                 }
 
@@ -102,7 +125,7 @@ class I18nManager {
                     const lng = lngFile.split(".")[0];
 
                     if (!this.availableLanguages.includes(lng)) {
-                        Logger.warn(`Invalid language file: ${lngFile}`);
+                        console.warn(`Invalid language file: ${lngFile}`);
                         return;
                     }
 
@@ -112,11 +135,17 @@ class I18nManager {
                 });
             });
         } catch (error) {
-            Logger.error("Failed to walk plugin directory", error);
-            throw error;
+            throw new Error(`Failed to walk plugin directory: ${error.message}`);
         }
     }
 
+    /**
+     * Translates a key to the target language.
+     * @param {string} key - The translation key.
+     * @param {Object|string} [optionsOrLanguage] - The options or target language.
+     * @param {string} [language] - The target language.
+     * @returns {string} - The translated string.
+     */
     tr(key, optionsOrLanguage, language) {
         const targetLanguage =
             typeof optionsOrLanguage === "string"
@@ -132,6 +161,11 @@ class I18nManager {
         return translationFn(key, options);
     }
 
+    /**
+     * Gets translations for all available languages.
+     * @param {string} key - The translation key.
+     * @returns {Object} - An object containing translations for all languages.
+     */
     getAllTr(key) {
         const localizations = {};
         for (const language of this.translations.keys()) {
@@ -143,9 +177,16 @@ class I18nManager {
         return localizations;
     }
 
+    /**
+     * Updates the resource bundle for a plugin and language.
+     * @param {string} plugin - The plugin name.
+     * @param {string} language - The language code.
+     * @param {Object} data - The translation data.
+     * @returns {Promise<void>}
+     */
     async updateResourceBundle(plugin, language, data) {
         if (process.env.DEV_MODE === "1") {
-            Logger.warn("Cannot update translations in local config mode");
+            console.warn("Cannot update translations in local config mode");
             return;
         }
 
@@ -157,8 +198,7 @@ class I18nManager {
             );
             i18next.addResourceBundle(language, plugin, data, true, true);
         } catch (error) {
-            Logger.error(`Failed to update resource bundle: ${error.message}`);
-            throw error;
+            throw new Error(`Failed to update resource bundle: ${error.message}`);
         }
     }
 }
