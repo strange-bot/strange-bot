@@ -12,7 +12,7 @@ const Config = require("./Config");
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
  * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
- * @property {function(object): object} [registerSchemas] - The settings function (optional)
+ * @property {function(Config): object} [registerSchemas] - The settings function (optional)
  * @property {Object.<string, function(any, import('discord.js').Client): Promise<{success: boolean, data?: any, error?: string}>>} ipcHandler - Object containing message handler functions
  */
 

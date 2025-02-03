@@ -31,7 +31,7 @@ type BotPluginData = {
     /**
      * Function to register MongoDB schemas for the plugin
      */
-    registerSchemas?: ((config: object) => object) | null;
+    registerSchemas?: ((config: Config) => object) | null;
 
     /**
      * The IPC configuration
@@ -88,7 +88,7 @@ export class BotPlugin {
     /**
      * The settings object
      */
-    registerSchemas?: ((config: object) => object) | null;
+    registerSchemas?: ((config: Config) => object) | null;
 
     /**
      * The IPC configuration
