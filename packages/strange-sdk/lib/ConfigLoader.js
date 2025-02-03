@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const deepmerge = require("deepmerge");
 const DBClient = require("strange-db-client");
-const { Logger } = require("strange-sdk/utils");
+const Logger = require("./utils/Logger");
 
 module.exports = class ConfigLoader {
     constructor(baseDir) {

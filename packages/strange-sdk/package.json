@@ -9,7 +9,7 @@
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "deepmerge": "^4.3.1",
+        "deepmerge": "^4.0.0",
         "node-fetch": "^2.7.0",
         "pino": "^8.21.0",
         "pino-pretty": "^10.3.1",
@@ -21,9 +21,9 @@
         "typescript": "^5.0.0"
     },
     "peerDependencies": {
-        "discord.js": "^14.17.0",
-        "mongoose": "^8.9.0",
-        "express": "^4.18.0"
+        "discord.js": "^14.0.0",
+        "mongoose": "^8.0.0",
+        "express": "^4.0.0"
     },
     "prettier": "@saiteja-madha/prettier-config"
 }

@@ -188,6 +188,15 @@ class DatabaseClient {
         await this.redis.del("dashboard:config");
     }
 
+    async dashboardLocale(userId, locale) {
+        await this.dashboardSchema.updateOne(
+            { _id: userId },
+            { $set: { locale } },
+            { upsert: true },
+        );
+        await this.redis.del("dashboard:config");
+    }
+
     async addToCache(key, value, ttl = 3600) {
         await this.redis.set(key, JSON.stringify(value), "EX", ttl);
     }

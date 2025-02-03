@@ -144,7 +144,7 @@ class I18nManager {
     }
 
     async updateResourceBundle(plugin, language, data) {
-        if (process.env.LOCAL_CONFIG === "1") {
+        if (process.env.DEV_MODE === "1") {
             Logger.warn("Cannot update translations in local config mode");
             return;
         }
