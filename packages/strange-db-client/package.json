@@ -12,11 +12,6 @@
         "mongoose": "^7.0.0",
         "mongoose-lean-defaults": "^2.0.0"
     },
-    "devDependencies": {
-        "@saiteja-madha/prettier-config": "^1.1.0",
-        "@types/node": "^18.0.0",
-        "typescript": "^5.0.0"
-    },
-    "peerDependencies": {},
-    "prettier": "@saiteja-madha/prettier-config"
+    "devDependencies": {},
+    "peerDependencies": {}
 }
