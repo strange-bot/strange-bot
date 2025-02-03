@@ -3,8 +3,8 @@ const { Logger } = require("strange-sdk/utils");
 
 class IPCClient {
     /**
-     * 
-     * @param {import('discord.js').Client} discordClient 
+     *
+     * @param {import('discord.js').Client} discordClient
      */
     constructor(discordClient) {
         if (!discordClient?.shard?.ids?.length) {
@@ -33,12 +33,39 @@ class IPCClient {
     }
 
     connect() {
-        this.node.connectTo(process.env.IPC_SERVER_PORT)
+        this.node
+            .connectTo(process.env.IPC_SERVER_PORT)
             .then(() => (this.firstConnect = true))
             .catch((error) => {
                 if (error.message.includes("ECONNREFUSED")) return;
                 Logger.error("[IPC] Connection failed:", error);
             });
+    }
+
+    async #handleBaseMessage(eventName, message) {
+        if (eventName === "GET_GUILD") {
+            const guild = this.discordClient.guilds.cache.get(message.data.payload);
+            if (!guild) {
+                return message.reply({ success: true, data: null });
+            }
+
+            const guildData = { ...guild.toJSON() };
+            guildData.channels = guild.channels.cache.map((ch) => ch.toJSON());
+            guildData.roles = guild.roles.cache.map((role) => role.toJSON());
+
+            return message.reply({
+                success: true,
+                data: guildData,
+            });
+        }
+
+        if (eventName === "GET_BOT_GUILDS") {
+            const guildIds = [...this.discordClient.guilds.cache.keys()];
+            return message.reply({
+                success: true,
+                data: guildIds,
+            });
+        }
     }
 
     async handleMessage(message) {
@@ -53,8 +80,12 @@ class IPCClient {
             return message.reply({ success: false, error: "Invalid event format" });
         }
 
+        if (pluginName === "dashboard") {
+            return this.#handleBaseMessage(eventName, message);
+        }
+
         const plugin = this.discordClient.pluginManager.getPlugin(pluginName);
-        if (!plugin?.ipc?.handler?.[eventName]) {
+        if (!plugin?.ipcHandler?.[eventName]) {
             return message.reply({ success: false, error: "Handler not found" });
         }
 

@@ -64,7 +64,7 @@ class BotClient extends Client {
 
     async defaultLanguage() {
         const coreConfig = await this.coreConfig();
-        return coreConfig.get("LOCALE").DEFAULT;
+        return coreConfig["LOCALE"]["DEFAULT"];
     }
 
     async loadTranslations(baseDir, pluginsDir) {
@@ -157,7 +157,7 @@ class BotClient extends Client {
         const coreConfig = await this.coreConfig();
 
         // filter slash commands
-        if (coreConfig.get("INTERACTIONS").SLASH) {
+        if (coreConfig["INTERACTIONS"]["SLASH"]) {
             this.slashCommands
                 .map((cmd) => ({
                     name: cmd.name,
@@ -185,7 +185,7 @@ class BotClient extends Client {
         }
 
         // filter contexts
-        if (coreConfig.get("INTERACTIONS").CONTEXT) {
+        if (coreConfig["INTERACTIONS"]["CONTEXT"]) {
             this.contextMenus
                 .map((ctx) => ({
                     name: ctx.name,

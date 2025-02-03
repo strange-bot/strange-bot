@@ -1,6 +1,6 @@
 const { readdirSync, statSync, existsSync } = require("node:fs");
 const { join } = require("node:path");
-const { BotPlugin, Config } = require("strange-sdk");
+const { BotPlugin, PluginConfig } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
 
 class PluginManager {
@@ -90,9 +90,14 @@ class PluginManager {
      */
     async #loadPlugin(pluginDir) {
         // Load config first and sync with database
-        const config = Config.fromDirectory(pluginDir);
+        const packageJson = require(join(pluginDir, "package.json"));
+        if (!packageJson.name || !packageJson.version) {
+            throw new Error("Invalid package.json");
+        }
+        const pluginName = packageJson.name;
+        const config = PluginConfig.fromDirectory(pluginDir);
         if (process.env.DEV_MODE !== "1") {
-            await config.syncWithDb();
+            await PluginConfig.syncWithDb(pluginName, config);
         }
 
         // Load the bot plugin
