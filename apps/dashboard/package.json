@@ -1,0 +1,46 @@
+{
+    "name": "dashboard",
+    "version": "1.0.0",
+    "description": "Dashboard for strange discord bot",
+    "main": "index.js",
+    "author": "Sai Teja M",
+    "license": "AGPL-3.0-only",
+    "scripts": {
+        "start": "npm run build && node index.js",
+        "dev": "npm-run-all --parallel dev:*",
+        "dev:server": "nodemon index.js",
+        "dev:webpack": "webpack --mode=development --watch",
+        "build": "webpack --mode=production"
+    },
+    "dependencies": {
+        "connect-mongo": "^5.1.0",
+        "cryptr": "^6.3.0",
+        "discord-oauth2": "^2.12.1",
+        "discord.js": "^14.17.3",
+        "dotenv": "^16.4.7",
+        "ejs": "^3.1.10",
+        "express": "^4.21.2",
+        "express-ejs-layouts": "^2.5.1",
+        "express-session": "^1.18.1",
+        "i18next": "^23.16.8",
+        "isomorphic-dompurify": "^2.21.0",
+        "strange-db-client": "workspace:*",
+        "strange-i18n": "workspace:*",
+        "strange-sdk": "workspace:*",
+        "veza": "^1.2.0"
+    },
+    "devDependencies": {
+        "apexcharts": "^3.54.1",
+        "autoprefixer": "^10.4.20",
+        "css-loader": "^6.11.0",
+        "css-minimizer-webpack-plugin": "^5.0.1",
+        "flowbite": "^2.5.2",
+        "mini-css-extract-plugin": "^2.9.2",
+        "postcss": "^8.5.1",
+        "postcss-loader": "^7.3.4",
+        "tailwindcss": "^3.4.17",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^5.1.4"
+    },
+    "prettier": "@saiteja-madha/prettier-config"
+}

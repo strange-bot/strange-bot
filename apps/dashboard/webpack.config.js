@@ -6,14 +6,14 @@ const path = require("node:path");
 
 module.exports = {
     entry: {
-        "app": path.resolve(__dirname, "src/dashboard/src/index.js"),
-        "codemirror": path.resolve(__dirname, "src/dashboard/src/codemirror.js"),
-        "landing": path.resolve(__dirname, "src/dashboard/src/landing.js"),
-        "plugin-localization": path.resolve(__dirname, "src/dashboard/src/plugin-localization.js"),
+        "app": path.resolve(__dirname, "src/index.js"),
+        "codemirror": path.resolve(__dirname, "src/codemirror.js"),
+        "landing": path.resolve(__dirname, "src/landing.js"),
+        "plugin-localization": path.resolve(__dirname, "src/plugin-localization.js"),
     },
     output: {
         filename: "js/[name].js",
-        path: path.resolve(__dirname, "src/dashboard/public/"),
+        path: path.resolve(__dirname, "public/"),
     },
     module: {
         rules: [

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom transparent scrollbar styles */
+::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(74, 85, 104, 0.9); /* Customize the thumb color */
+    border-radius: 4px; /* Round the corners */
+}
+::-webkit-scrollbar-track {
+    background-color: transparent; /* Set the track background to transparent */
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(74, 85, 104, 0.9) transparent;
+}

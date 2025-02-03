@@ -1,7 +1,7 @@
 module.exports = {
     content: [
-        "./src/dashboard/views/**/*.ejs",
-        "./plugins/**/*.ejs",
+        "./views/**/*.ejs",
+        "../../plugins/**/*.ejs",
         "./node_modules/flowbite/**/*.js",
     ],
     safelist: [

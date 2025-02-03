@@ -1,0 +1,90 @@
+<nav class="fixed z-30 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-start">
+        <button
+          id="toggleSidebarMobile"
+          aria-expanded="true"
+          aria-controls="sidebar"
+          class="cursor-pointer rounded p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700 lg:hidden">
+          <i id="toggleSidebarMobileHamburger" class="fas fa-bars h-6 w-6"></i>
+          <i id="toggleSidebarMobileClose" class="fas fa-times hidden h-6 w-6"></i>
+        </button>
+        <a href="/dashboard" class="ml-2 flex md:mr-24">
+          <img src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>" class="mr-3 h-8" alt="Strange Logo" />
+          <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl"
+            ><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></span
+          >
+        </a>
+      </div>
+      <div class="flex items-center">
+        <!-- Search mobile -->
+        <button
+          id="theme-toggle"
+          data-tooltip-target="tooltip-toggle"
+          type="button"
+          class="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+          <i id="theme-toggle-dark-icon" class="hidden fas fa-moon h-5 w-5"></i>
+          <i id="theme-toggle-light-icon" class="hidden fas fa-sun h-5 w-5"></i>
+        </button>
+        <div
+          id="tooltip-toggle"
+          role="tooltip"
+          class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300">
+          <%= tr('NAV.TIP_DARK_MODE') %>
+          <div class="tooltip-arrow" data-popper-arrow></div>
+        </div>
+
+        <!-- Profile -->
+        <div class="ml-3 flex items-center">
+          <div>
+            <button
+              type="button"
+              class="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              id="user-menu-button-2"
+              aria-expanded="false"
+              data-dropdown-toggle="dropdown-2">
+              <span class="sr-only"><%= tr('NAV.SR_USER_MENU') %></span>
+              <script>
+                console.log('<%= user %>')
+              </script>
+
+              <img class="h-8 w-8 rounded-full" src="<%= `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` %>" alt="user photo" />
+            </button>
+          </div>
+          <!-- Dropdown menu -->
+          <div
+            class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
+            id="dropdown-2">
+            <div class="px-4 py-3" role="none">
+              <p class="text-sm text-gray-900 dark:text-white" role="none"><%= user.username %></p>
+              <p class="truncate text-sm font-medium text-gray-900 dark:text-gray-300" role="none">
+                <%= user.email %>
+              </p>
+            </div>
+            <ul class="py-1" role="none">
+              <% if (user.isOwner) { %>
+              <li>
+                <a
+                  href="/admin"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                  role="menuitem"
+                  ><%= tr('NAV.ADMIN') %></a
+                >
+              </li>
+              <% } %>
+              <li>
+                <a
+                  href="/auth/logout"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                  role="menuitem"
+                  ><%= tr('NAV.LOGOUT') %></a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
