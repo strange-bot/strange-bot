@@ -1,9 +1,9 @@
 const BotPlugin = require("./lib/BotPlugin");
 const DashboardPlugin = require("./lib/DashboardPlugin");
-const ConfigLoader = require("./lib/ConfigLoader");
+const Config = require("./lib/Config");
 
 module.exports = {
     BotPlugin,
     DashboardPlugin,
-    ConfigLoader,
+    Config,
 };

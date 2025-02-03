@@ -138,7 +138,7 @@ export class BotPlugin {
     async unload(): Promise<void>;
     async getSettings(guild: Guild | string): Promise<object>;
     async setSettings(guild: Guild | string, settings: object): Promise<void>;
-    async getConfig(): Promise<object>;
+    async getConfig(): Promise<Config>;
     async setConfig(config: object): Promise<void>;
     async getModel(name: string): Promise<Model<any>>;
 }
@@ -216,15 +216,21 @@ export class DashboardPlugin {
     async unload(): Promise<void>;
     async getSettings(guild: Guild | string): Promise<object>;
     async setSettings(guild: Guild | string, settings: object): Promise<void>;
-    async getConfig(): Promise<object>;
+    async getConfig(): Promise<Config>;
     async setConfig(config: object): Promise<void>;
 }
 
-export class ConfigLoader {
-    /**
-     * @param baseDir The base directory of the plugin
-     */
-    constructor(baseDir: string);
+export class Config {
+    private data: Record<string, any>;
+    private pluginName: string;
+
+    constructor(pluginName: string, data: Record<string, any>);
+
+    static fromDirectory(baseDir: string): Config;
+    static fromObject(pluginName: string, data: Record<string, any>): Config;
+
+    get(key: string): any;
+    set(key: string, value: any): void;
     syncWithDb(): Promise<void>;
 }
 

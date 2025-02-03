@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { Logger, MiscUtils, permissions } = require("./utils");
 const DBClient = require("strange-db-client");
-const ConfigLoader = require("./ConfigLoader");
+const Config = require("./Config");
 
 /**
  * Represents a Bot Plugin.
@@ -94,9 +94,10 @@ class BotPlugin {
 
     async getConfig() {
         if (process.env.DEV_MODE) {
-            return new ConfigLoader(this.pluginDir).config;
+            return Config.fromDirectory(this.pluginDir);
         }
-        return DBClient.getInstance().getPluginConfig(this.name);
+        const data = DBClient.getInstance().getPluginConfig(this.name);
+        return Config.fromObject(this.name, data);
     }
 
     async setConfig(config) {

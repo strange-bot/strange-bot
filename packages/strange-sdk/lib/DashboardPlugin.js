@@ -1,7 +1,7 @@
 const path = require("node:path");
 const { Logger } = require("./utils");
 const DBClient = require("strange-db-client");
-const ConfigLoader = require("./ConfigLoader");
+const Config = require("./Config");
 
 /**
  * Represents a Plugin.
@@ -55,9 +55,10 @@ class DashboardPlugin {
 
     async getConfig() {
         if (process.env.DEV_MODE) {
-            return new ConfigLoader(this.baseDir).config;
+            return Config.fromDirectory(this.pluginDir);
         }
-        return DBClient.getInstance().getPluginConfig(this.name);
+        const data = DBClient.getInstance().getPluginConfig(this.name);
+        return Config.fromObject(this.name, data);
     }
 
     async setConfig(config) {
