@@ -1,0 +1,31 @@
+{
+    "name": "bot",
+    "version": "1.0.0",
+    "description": "Discord bot application",
+    "main": "index.js",
+    "author": "Sai Teja M",
+    "license": "AGPL-3.0-only",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "dependencies": {
+        "discord.js": "^14.17.3",
+        "dotenv": "^16.4.7",
+        "strange-db-client": "workspace:*",
+        "strange-i18n": "workspace:*",
+        "strange-sdk": "workspace:*",
+        "veza": "^1.2.0"
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.9",
+        "erlpack": "^0.1.4",
+        "utf-8-validate": "^6.0.5",
+        "zlib-sync": "^0.1.9"
+    },
+    "devDependencies": {
+        "@saiteja-madha/prettier-config": "^1.1.0",
+        "nodemon": "^3.1.9"
+    },
+    "prettier": "@saiteja-madha/prettier-config"
+}
