@@ -4,7 +4,16 @@ const deepmerge = require("deepmerge");
 const DBClient = require("strange-db-client");
 const Logger = require("./utils/Logger");
 
+/**
+ * Utility class for managing plugin configurations
+ * Handles loading from files and syncing with database
+ */
 class PluginConfig {
+    /**
+     * Loads plugin configuration from a directory
+     * @param {string} baseDir - Base directory containing config.json
+     * @returns {object} The configuration object
+     */
     static fromDirectory(baseDir) {
         const configPath = path.join(baseDir, "config.json");
         let data = {};
@@ -17,6 +26,13 @@ class PluginConfig {
         return data;
     }
 
+    /**
+     * Synchronizes plugin configuration with database
+     * @param {string} pluginName - Name of the plugin
+     * @param {object} data - Configuration data to sync
+     * @returns {Promise<object>} Merged configuration
+     * @throws {Error} If no plugin name is specified
+     */
     static async syncWithDatabase(pluginName, data) {
         if (process.env.DEV_MODE) {
             Logger.debug("Skipping config sync in dev mode");

@@ -4,11 +4,15 @@ const ROLE_MENTION = /<?@?&?(\d{17,20})>?/;
 const CHANNEL_MENTION = /<?#?(\d{17,20})>?/;
 const MEMBER_MENTION = /<?@?!?(\d{17,20})>?/;
 
+/**
+ * Utility class for Discord guild-related operations
+ */
 class GuildUtils {
     /**
-     * @param {import('discord.js').Guild} guild
-     * @param {import('discord.js').GuildChannel} channel
-     * @returns
+     * Checks if the bot can send embeds in the specified channel
+     * @param {import('discord.js').Guild} guild - The guild to check permissions in
+     * @param {import('discord.js').GuildChannel} channel - The channel to check permissions for
+     * @returns {boolean} Whether the bot can send embeds in the channel
      */
     static canSendEmbeds(guild, channel) {
         if (!guild || !channel) return false;
@@ -17,10 +21,11 @@ class GuildUtils {
     }
 
     /**
-     * Safely send a message to the channel
-     * @param {import('discord.js').GuildChannel} channel
-     * @param {string|import('discord.js').MessagePayload|import('discord.js').MessageReplyOptions} content
-     * @param {number} [seconds]
+     * Safely send a message to the channel with optional auto-delete
+     * @param {import('discord.js').GuildChannel} channel - The channel to send the message to
+     * @param {string|import('discord.js').MessagePayload|import('discord.js').MessageReplyOptions} content - The message content to send
+     * @param {number} [seconds] - Optional duration after which to delete the message
+     * @returns {Promise<import('discord.js').Message|void>} The sent message, if successful
      */
     static async safeSend(channel, content, seconds) {
         if (!content) return;
@@ -40,17 +45,13 @@ class GuildUtils {
     }
 
     /**
-     * Returns a list of matching channels.
-     * @param {import('discord.js').Guild} guild
-     * @param {string} query
-     * @param {import('discord.js').ChannelType[]} type
-     * @returns
+     * Returns a list of matching channels based on query
+     * @param {import('discord.js').Guild} guild - The guild to search in
+     * @param {string} query - The search query (name/id/mention)
+     * @param {import('discord.js').ChannelType[]} [type=[ChannelType.GuildText, ChannelType.GuildAnnouncement]] - Channel types to include
+     * @returns {import('discord.js').GuildChannel[]} Array of matching channels
      */
-    static findMatchingChannels(
-        guild,
-        query,
-        type = [ChannelType.GuildText, ChannelType.GuildAnnouncement],
-    ) {
+    static findMatchingChannels(guild, query, type = [ChannelType.GuildText, ChannelType.GuildAnnouncement]) {
         if (!guild || !query || typeof query !== "string") return [];
 
         const channelManager = guild.channels.cache.filter((ch) => type.includes(ch.type));
@@ -79,10 +80,10 @@ class GuildUtils {
     }
 
     /**
-     * Returns a list of matching roles.
-     * @param {import('discord.js').Guild} guild
-     * @param {string} query
-     * @returns
+     * Returns a list of matching roles based on query
+     * @param {import('discord.js').Guild} guild - The guild to search in
+     * @param {string} query - The search query (name/id/mention)
+     * @returns {import('discord.js').Role[]} Array of matching roles
      */
     static findMatchingRoles(guild, query) {
         if (!guild || !query || typeof query !== "string") return [];
@@ -111,8 +112,10 @@ class GuildUtils {
 
     /**
      * Resolves a guild member from search query
-     * @param {string} query
-     * @param {boolean} exact
+     * @param {import('discord.js').Guild} guild - The guild to search in
+     * @param {string} query - The search query (username/id/mention/tag)
+     * @param {boolean} [exact=false] - Whether to match the query exactly
+     * @returns {Promise<import('discord.js').GuildMember|undefined>} The resolved member, if found
      */
     static async resolveMember(guild, query, exact = false) {
         if (!query || typeof query !== "string") return;

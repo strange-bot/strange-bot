@@ -16,10 +16,15 @@ const PluginConfig = require("./PluginConfig");
  * @property {Object.<string, function(any, import('discord.js').Client): Promise<{success: boolean, data?: any, error?: string}>>} ipcHandler - Object containing message handler functions
  */
 
+/**
+ * Bot Plugin class for managing Discord bot plugins
+ * Handles loading of commands, events, and contexts for a bot plugin
+ */
 class BotPlugin {
     /**
-     * Creates a new Plugin instance.
-     * @param {BotPluginData} data
+     * Creates a new Bot Plugin instance
+     * @param {BotPluginData} data - Plugin initialization data
+     * @throws {TypeError} If plugin data is invalid
      */
     constructor(data) {
         Logger.debug("Initializing plugin", data);
@@ -59,6 +64,10 @@ class BotPlugin {
         Logger.debug(`Initialized bot plugin "${this.name}"`);
     }
 
+    /**
+     * Loads the plugin by registering events, commands, and schemas
+     * @returns {Promise<void>}
+     */
     async load() {
         this.#loadEvents();
         this.#loadCommands();
@@ -73,6 +82,10 @@ class BotPlugin {
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
+    /**
+     * Unloads the plugin by clearing all registered handlers and commands
+     * @returns {Promise<void>}
+     */
     async unload() {
         this.eventHandlers.clear();
         this.commands.clear();
@@ -82,6 +95,10 @@ class BotPlugin {
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 
+    /**
+     * Retrieves the plugin configuration
+     * @returns {Promise<object>} The plugin configuration
+     */
     async getConfig() {
         if (process.env.DEV_MODE) {
             return PluginConfig.fromDirectory(this.pluginDir);
@@ -89,10 +106,21 @@ class BotPlugin {
         return DBClient.getInstance().getPluginConfig(this.name);
     }
 
+    /**
+     * Updates the plugin configuration
+     * @param {object} config - The new configuration object
+     * @returns {Promise<void>}
+     */
     async setConfig(config) {
         await DBClient.getInstance().updatePluginConfig(this.name, config);
     }
 
+    /**
+     * Retrieves a registered MongoDB model by name
+     * @param {string} modelName - The name of the model to retrieve
+     * @returns {Promise<import('mongoose').Model>} The mongoose model
+     * @throws {Error} If the model is not registered
+     */
     async getModel(modelName) {
         const prefixedName = `${this.name}-${modelName}`;
         if (!this.models.has(prefixedName)) {

@@ -2,10 +2,14 @@ const { readdirSync, lstatSync } = require("node:fs");
 const { join, extname } = require("node:path");
 const permissions = require("../utils/permissions");
 
+/**
+ * Collection of miscellaneous utility functions
+ */
 class MiscUtils {
     /**
      * Checks if a string contains a URL
-     * @param {string} text
+     * @param {string} text - Text to check for URLs
+     * @returns {boolean} True if text contains a URL
      */
     static containsLink(text) {
         return /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/.test(
@@ -14,8 +18,9 @@ class MiscUtils {
     }
 
     /**
-     * Checks if a string is a valid discord invite
-     * @param {string} text
+     * Checks if a string contains a Discord invite link
+     * @param {string} text - Text to check for Discord invites
+     * @returns {boolean} True if text contains a Discord invite
      */
     static containsDiscordInvite(text) {
         return /(https?:\/\/)?(www.)?(discord.(gg|io|me|li|link|plus)|discorda?p?p?.com\/invite|invite.gg|dsc.gg|urlcord.cf)\/[^\s/]+?(?=\b)/.test(
@@ -24,24 +29,27 @@ class MiscUtils {
     }
 
     /**
-     * Returns a random number below a max
-     * @param {number} max
+     * Generates a random integer between 0 and max
+     * @param {number} max - Upper bound (exclusive)
+     * @returns {number} Random integer
      */
     static getRandomInt(max) {
         return Math.floor(Math.random() * max);
     }
 
     /**
-     * Checks if a string is a valid Hex color
-     * @param {string} text
+     * Checks if a string is a valid hexadecimal color code
+     * @param {string} text - Text to validate
+     * @returns {boolean} True if text is a valid hex color
      */
     static isHex(text) {
         return /^#[0-9A-F]{6}$/i.test(text);
     }
 
     /**
-     * Checks if a string is a valid Hex color
-     * @param {string} text
+     * Checks if a string is a valid Discord color name
+     * @param {string} text - Color name to validate
+     * @returns {boolean} True if text is a valid Discord color name
      */
     static isValidColor(text) {
         if (
@@ -85,9 +93,10 @@ class MiscUtils {
     }
 
     /**
-     * Returns hour difference between two dates
-     * @param {Date} dt2
-     * @param {Date} dt1
+     * Calculates the absolute hour difference between two dates
+     * @param {Date} dt2 - Second date
+     * @param {Date} dt1 - First date
+     * @returns {number} Hour difference
      */
     static diffHours(dt2, dt1) {
         let diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -96,8 +105,9 @@ class MiscUtils {
     }
 
     /**
-     * Returns remaining time in days, hours, minutes and seconds
-     * @param {number} timeInSeconds
+     * Formats time in seconds to a human-readable string
+     * @param {number} timeInSeconds - Time in seconds
+     * @returns {string} Formatted time string
      */
     static timeformat(timeInSeconds) {
         const days = Math.floor((timeInSeconds % 31536000) / 86400);
@@ -113,8 +123,9 @@ class MiscUtils {
     }
 
     /**
-     * Converts duration to milliseconds
-     * @param {string} duration
+     * Converts duration string (HH:MM:SS) to milliseconds
+     * @param {string} duration - Duration in HH:MM:SS format
+     * @returns {number} Duration in milliseconds
      */
     static durationToMillis(duration) {
         return (
@@ -126,8 +137,9 @@ class MiscUtils {
     }
 
     /**
-     * Returns time remaining until provided date
-     * @param {Date} timeUntil
+     * Calculates and formats time remaining until a future date
+     * @param {Date} timeUntil - Target future date
+     * @returns {string} Formatted remaining time
      */
     static getRemainingTime(timeUntil) {
         const seconds = Math.abs((timeUntil - new Date()) / 1000);
@@ -136,7 +148,9 @@ class MiscUtils {
     }
 
     /**
-     * @param {import("discord.js").PermissionResolvable[]} perms
+     * Converts Discord permission flags to readable strings
+     * @param {import("discord.js").PermissionResolvable[]} perms - Array of permission flags
+     * @returns {string} Formatted permission string
      */
     static parsePermissions(perms) {
         const permissionWord = `permission${perms.length > 1 ? "s" : ""}`;
@@ -144,9 +158,10 @@ class MiscUtils {
     }
 
     /**
-     * Recursively searches for a file in a directory
-     * @param {string} dir
-     * @param {string[]} allowedExtensions
+     * Recursively finds all files with specified extensions in a directory
+     * @param {string} dir - Directory to search in
+     * @param {string[]} [allowedExtensions=[".js"]] - Array of allowed file extensions
+     * @returns {string[]} Array of file paths
      */
     static recursiveReadDirSync(dir, allowedExtensions = [".js"]) {
         const filePaths = [];

@@ -2,9 +2,13 @@ const { WebhookClient } = require("discord.js");
 const Logger = require("./Logger");
 const HttpUtils = require("./HttpUtils");
 
+/**
+ * Utility class for bot-related operations
+ */
 class BotUtils {
     /**
-     * Check if the bot is up to date
+     * Check if the bot is up to date by comparing versions with GitHub releases
+     * @returns {Promise<boolean>} True if check was successful
      */
     static async checkForUpdates() {
         const response = await HttpUtils.getJson(
@@ -26,6 +30,12 @@ class BotUtils {
         }
     }
 
+    /**
+     * Sends a message through a webhook
+     * @param {string} webhookUrl - The Discord webhook URL
+     * @param {import('discord.js').WebhookMessageCreateOptions} payload - The message payload to send
+     * @returns {Promise<import('discord.js').Message>} The sent message
+     */
     static async sendWebhookMessage(webhookUrl, payload) {
         const webhook = new WebhookClient({ url: webhookUrl });
         return webhook.send(payload);

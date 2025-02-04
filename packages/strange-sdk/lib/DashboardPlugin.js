@@ -5,7 +5,7 @@ const PluginConfig = require("./PluginConfig");
 
 /**
  * Represents a Plugin.
- * @typedef {Object} PluginData
+ * @typedef {Object} DashboardPluginData
  * @property {string} baseDir - The base directory of the plugin.
  * @property {boolean} [enabled] - Whether the plugin is enabled.
  * @property {string} [icon] - The icon of the plugin.
@@ -14,10 +14,15 @@ const PluginConfig = require("./PluginConfig");
  * @property {import('express').Router} adminRouter - Express router for the admin page.
  */
 
+/**
+ * Dashboard Plugin class for managing dashboard UI plugins
+ * Handles settings, admin routes, and configuration for dashboard plugins
+ */
 class DashboardPlugin {
     /**
-     * Creates a new Plugin instance.
-     * @param {PluginData} data
+     * Creates a new Dashboard Plugin instance
+     * @param {DashboardPluginData} data - Plugin initialization data
+     * @throws {TypeError} If plugin data is invalid
      */
     constructor(data) {
         Logger.debug("Initializing plugin", data);
@@ -36,19 +41,38 @@ class DashboardPlugin {
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
+    /**
+     * Loads the dashboard plugin
+     * @returns {Promise<void>}
+     */
     async load() {
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
+    /**
+     * Unloads the dashboard plugin
+     * @returns {Promise<void>}
+     */
     async unload() {
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 
+    /**
+     * Gets plugin settings for a specific guild
+     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
+     * @returns {Promise<object>} The plugin settings for the guild
+     */
     async getSettings(guild) {
         const guildId = typeof guild === "string" ? guild : guild.id;
         return await DBClient.getInstance().getPluginSettings(guildId, this.name);
     }
 
+    /**
+     * Updates plugin settings for a specific guild
+     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
+     * @param {object} settings - The new settings object
+     * @returns {Promise<void>}
+     */
     async setSettings(guild, settings) {
         const guildId = typeof guild === "string" ? guild : guild.id;
         await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
@@ -67,7 +91,7 @@ class DashboardPlugin {
 
     /**
      * Validates the plugin data.
-     * @param {PluginData} data
+     * @param {DashboardPluginData} data
      */
     static #validate(data) {
         if (typeof data !== "object") {
