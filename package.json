@@ -8,11 +8,6 @@
         "node": ">=18.0.0"
     },
     "private": true,
-    "workspaces": [
-        "apps/*",
-        "packages/*",
-        "new-plugins/*"
-    ],
     "scripts": {
         "start:bot": "pnpm --filter bot start",
         "start:dashboard": "pnpm --filter dashboard start",
@@ -27,6 +22,7 @@
     "devDependencies": {
         "eslint": "^8.57.1",
         "eslint-plugin-jsdoc": "^46.10.1",
+        "pnpm": "10.2.0",
         "prettier": "3.2.5"
     },
     "keywords": [
