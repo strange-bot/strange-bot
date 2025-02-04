@@ -83,6 +83,12 @@ const pluginContext = async (req, res, next) => {
         plugin.getConfig(),
     ]);
 
+    const title =
+        plugin.name.charAt(0).toUpperCase() +
+        plugin.name.slice(1) +
+        " | " +
+        res.locals.coreConfig["DASHBOARD"]["LOGO_NAME"];
+
     res.locals.locale = req.locale;
     res.locals.tr = req.translate;
     res.locals.coreSettings = coreSettings;

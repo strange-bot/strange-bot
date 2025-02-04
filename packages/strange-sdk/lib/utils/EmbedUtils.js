@@ -15,7 +15,7 @@ class EmbedUtils {
 
     /**
      * Creates a default embed with bot color
-     * @param {Object} [options] - The embed options
+     * @param {object} [options] - The embed options
      * @param {string} [options.title] - The embed title
      * @param {string} [options.description] - The embed description
      * @returns {import('discord.js').EmbedBuilder} The created embed
@@ -30,7 +30,7 @@ class EmbedUtils {
 
     /**
      * Creates a success embed with green color
-     * @param {Object} [options] - The embed options
+     * @param {object} [options] - The embed options
      * @param {string} [options.title] - The embed title
      * @param {string} [options.description] - The embed description
      * @returns {import('discord.js').EmbedBuilder} The created embed
@@ -41,7 +41,7 @@ class EmbedUtils {
 
     /**
      * Creates an error embed with red color
-     * @param {Object} [options] - The embed options
+     * @param {object} [options] - The embed options
      * @param {string} [options.title] - The embed title
      * @param {string} [options.description] - The embed description
      * @returns {import('discord.js').EmbedBuilder} The created embed
@@ -52,7 +52,7 @@ class EmbedUtils {
 
     /**
      * Creates a transparent embed matching Discord's dark theme
-     * @param {Object} [options] - The embed options
+     * @param {object} [options] - The embed options
      * @param {string} [options.title] - The embed title
      * @param {string} [options.description] - The embed description
      * @returns {import('discord.js').EmbedBuilder} The created embed
@@ -63,7 +63,7 @@ class EmbedUtils {
 
     /**
      * Updates the default embed colors
-     * @param {Object} [options] - The color options
+     * @param {object} [options] - The color options
      * @param {string} [options.bot] - New bot embed color (hex)
      * @param {string} [options.success] - New success embed color (hex)
      * @param {string} [options.error] - New error embed color (hex)

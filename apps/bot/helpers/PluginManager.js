@@ -37,7 +37,7 @@ class PluginManager {
     }
 
     /**
-     * @param {string} pluginName
+     * @param {string} pluginName The name of the plugin.
      * @returns {BotPlugin} The plugin object for the given plugin.
      */
     getPlugin(pluginName) {

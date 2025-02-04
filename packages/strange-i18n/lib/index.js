@@ -7,7 +7,7 @@ class I18nManager {
     /**
      * Creates an instance of I18nManager.
      * @param {string} app - The application name.
-     * @param {Object} [options={}] - The options for the I18nManager.
+     * @param {object} [options={}] - The options for the I18nManager.
      * @param {string} [options.fallbackLng="en-US"] - The fallback language.
      * @param {string} [options.baseDir] - The base directory for local translations.
      * @param {string} [options.pluginsDir] - The plugins directory for local translations.
@@ -142,7 +142,7 @@ class I18nManager {
     /**
      * Translates a key to the target language.
      * @param {string} key - The translation key.
-     * @param {Object|string} [optionsOrLanguage] - The options or target language.
+     * @param {object | string} [optionsOrLanguage] - The options or target language.
      * @param {string} [language] - The target language.
      * @returns {string} - The translated string.
      */
@@ -164,7 +164,7 @@ class I18nManager {
     /**
      * Gets translations for all available languages.
      * @param {string} key - The translation key.
-     * @returns {Object} - An object containing translations for all languages.
+     * @returns {object} - An object containing translations for all languages.
      */
     getAllTr(key) {
         const localizations = {};
@@ -181,7 +181,7 @@ class I18nManager {
      * Updates the resource bundle for a plugin and language.
      * @param {string} plugin - The plugin name.
      * @param {string} language - The language code.
-     * @param {Object} data - The translation data.
+     * @param {object} data - The translation data.
      * @returns {Promise<void>}
      */
     async updateResourceBundle(plugin, language, data) {

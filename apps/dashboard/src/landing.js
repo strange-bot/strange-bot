@@ -1,3 +1,5 @@
+/* global tippy AOS */
+
 import "./landing.css";
 
 // tippy.js

@@ -7,13 +7,13 @@ const PluginConfig = require("./PluginConfig");
 
 /**
  * Represents a Bot Plugin.
- * @typedef {Object} BotPluginData
+ * @typedef {object} BotPluginData
  * @property {string} baseDir - The base directory of the plugin.
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
  * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
  * @property {function(object): object} [registerSchemas] - The settings function (optional)
- * @property {Object.<string, function(any, import('discord.js').Client): Promise<{success: boolean, data?: any, error?: string}>>} ipcHandler - Object containing message handler functions
+ * @property {{[key: string]: (message: any, client: import('discord.js').Client) => Promise<{success: boolean, data?: any, error?: string}>}} ipcHandler - Object containing message handler functions
  */
 
 /**
@@ -29,36 +29,57 @@ class BotPlugin {
     constructor(data) {
         Logger.debug("Initializing plugin", data);
         BotPlugin.#validate(data);
+
+        /** @type {string} The plugin's root directory */
         this.pluginDir = path.join(data.baseDir, "..");
+
         const packageJson = require(path.join(this.pluginDir, "package.json"));
+
+        /** @type {string} The plugin's name from package.json */
         this.name = packageJson.name;
+
+        /** @type {string} The plugin's version from package.json */
         this.version = packageJson.version;
+
+        /** @type {string} The plugin's base directory containing bot-specific files */
         this.baseDir = data.baseDir;
+
+        /** @type {boolean} Whether the plugin is restricted to bot owners */
         this.ownerOnly = data.ownerOnly || false;
+
+        /** @type {string[]} List of other plugins this plugin depends on */
         this.dependencies = data.dependencies || [];
+
+        /** @type {?function(import('discord.js').Client): Promise<void>} Plugin initialization function */
         this.init = data.init || null;
+
+        /** @type {?function(object): object} Function to register database schemas */
         this.registerSchemas = data.registerSchemas || null;
+
+        /** @type {{[key: string]: (message: any, client: import('discord.js').Client) => Promise<{success: boolean, data?: any, error?: string}>}} - Object containing message handler functions */
         this.ipcHandler = data.ipcHandler || {};
         /**
-         * @type {Map<string, import('mongoose').Model>}
+         * @type {Map<string, import('mongoose').Model>} - Map of registered MongoDB models
          */
         this.models = new Map();
 
         /**
-         * @type {Map<string, Function>}
+         * @type {Map<string, Function>} - Map of event handlers
          */
         this.eventHandlers = new Map();
 
         /**
-         * @type {Set<import('../typings').CommandType>}
+         * @type {Set<import('../typings').CommandType>} - Set of loaded commands
          */
         this.commands = new Set();
 
-        /**
-         * @type {Set<import('../typings').ContextType>}
-         */
+        /** @type {Set<import('../typings').ContextType>} */
         this.contexts = new Set();
+
+        /** @type {number} Counter for enabled prefix commands */
         this.prefixCount = 0;
+
+        /** @type {number} Counter for enabled slash commands */
         this.slashCount = 0;
 
         Logger.debug(`Initialized bot plugin "${this.name}"`);
@@ -251,7 +272,7 @@ class BotPlugin {
 
     /**
      * Validates the plugin data.
-     * @param {BotPluginData} data
+     * @param {BotPluginData} data - The plugin data to validate.
      */
     static #validate(data) {
         if (typeof data !== "object") {
@@ -290,7 +311,7 @@ class BotPlugin {
     }
 
     /**
-     * @param {import('typings').CommandType} cmd
+     * @param {import('typings').CommandType} cmd - The command to validate.
      */
     static #validateCommand(cmd) {
         if (typeof cmd !== "object") {
@@ -424,7 +445,7 @@ class BotPlugin {
     }
 
     /**
-     * @param {import('typings').ContextType} context
+     * @param {import('typings').ContextType} context - The context to validate.
      */
     static #validateContext(context) {
         if (typeof context !== "object") {

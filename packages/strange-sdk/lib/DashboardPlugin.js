@@ -5,7 +5,7 @@ const PluginConfig = require("./PluginConfig");
 
 /**
  * Represents a Plugin.
- * @typedef {Object} DashboardPluginData
+ * @typedef {object} DashboardPluginData
  * @property {string} baseDir - The base directory of the plugin.
  * @property {boolean} [enabled] - Whether the plugin is enabled.
  * @property {string} [icon] - The icon of the plugin.
@@ -27,15 +27,34 @@ class DashboardPlugin {
     constructor(data) {
         Logger.debug("Initializing plugin", data);
         DashboardPlugin.#validate(data);
+
+        /** @type {string} The plugin's root directory */
         this.pluginDir = path.join(data.baseDir, "..");
+
         const packageJson = require(path.join(this.pluginDir, "package.json"));
+
+        /** @type {string} The plugin's name from package.json */
         this.name = packageJson.name;
+
+        /** @type {string} The plugin's version from package.json */
         this.version = packageJson.version;
+
+        /** @type {string} The plugin's base directory containing dashboard-specific files */
         this.baseDir = data.baseDir;
+
+        /** @type {boolean} Whether the plugin is enabled in the dashboard */
         this.enabled = data.enabled || true;
+
+        /** @type {string} FontAwesome icon class used in the dashboard UI */
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
+
+        /** @type {?function(): Promise<void>} Plugin initialization function */
         this.init = data.init || null;
+
+        /** @type {?import('express').Router} Express router for plugin settings page */
         this.settingsRouter = data.settingsRouter || null;
+
+        /** @type {?import('express').Router} Express router for plugin admin page */
         this.adminRouter = data.adminRouter || null;
 
         Logger.debug(`Initialized plugin "${this.name}"`);
@@ -91,7 +110,7 @@ class DashboardPlugin {
 
     /**
      * Validates the plugin data.
-     * @param {DashboardPluginData} data
+     * @param {DashboardPluginData} data - The plugin data to validate.
      */
     static #validate(data) {
         if (typeof data !== "object") {

@@ -1,4 +1,4 @@
-/* eslint-env browser */
+/* global CodeMirror */
 
 // Check if CodeMirror is available
 if (typeof CodeMirror !== "undefined") {

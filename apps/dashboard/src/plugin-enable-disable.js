@@ -4,6 +4,9 @@
 const pluginToggle = document.getElementById("plugin-toggle");
 
 // Based on pluginToggle, enable or disable all other inputs/selects/checkboxes/buttons
+/**
+ *
+ */
 function toggleInputs() {
     const inputs = document.querySelectorAll(
         "div#main-content input, div#main-content select, div#main-content button, div#main-content textarea, div#main-content checkbox, div#main-content button",

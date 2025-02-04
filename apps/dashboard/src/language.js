@@ -1,5 +1,8 @@
 /* eslint-env browser */
 
+/**
+ *
+ */
 function changeLanguage(languageCode) {
     console.log("Language code: ", languageCode);
 

@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const localizationKeys = data;
 
             // Function to populate localization keys based on selected plugin and language
+            /**
+             *
+             */
             function populateLocalizationKeys(pluginId, languageId) {
                 const keys = localizationKeys[pluginId][languageId];
                 const keysSection = document.getElementById("keysSection");

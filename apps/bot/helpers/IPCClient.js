@@ -3,7 +3,6 @@ const { Logger } = require("strange-sdk/utils");
 
 class IPCClient {
     /**
-     *
      * @param {import('discord.js').Client} discordClient
      */
     constructor(discordClient) {

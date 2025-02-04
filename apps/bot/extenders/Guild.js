@@ -3,8 +3,8 @@ const DBClient = require("strange-db-client");
 
 /**
  * Returns the translation for the provided key
- * @param {string} key
- * @param {object} args
+ * @param {string} key - The translation key
+ * @param {object} args - The translation arguments
  */
 Guild.prototype.getT = function (key, args) {
     // TODO: Set this property on guild or fetch from client.locale

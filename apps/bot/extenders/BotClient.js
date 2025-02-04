@@ -150,7 +150,7 @@ class BotClient extends Client {
 
     /**
      * Register slash command on startup
-     * @param {string} [guildId]
+     * @param {string} [guildId] - Guild ID to register commands in
      */
     async registerInteractions(guildId) {
         const toRegister = [];
@@ -215,8 +215,8 @@ class BotClient extends Client {
     }
 
     /**
-     * @param {string} search
-     * @param {Boolean} exact
+     * @param {string} search - The search string
+     * @param {Boolean} exact - Whether to search for exact matches
      */
     async resolveUsers(search, exact = false) {
         if (!search || typeof search !== "string") return [];

@@ -6,7 +6,7 @@ class DatabaseClient {
 
     /**
      * Creates an instance of DatabaseClient.
-     * @param {Object} options - The options for the database client.
+     * @param {object} options - The options for the database client.
      * @param {string} options.mongoUri - The MongoDB URI.
      * @param {string} options.redisUri - The Redis URI.
      * @throws {Error} If MongoDB and Redis URIs are not provided.
@@ -91,7 +91,7 @@ class DatabaseClient {
 
     /**
      * Registers a guild in the database.
-     * @param {Object} guild - The guild object.
+     * @param {object} guild - The guild object.
      * @param {string} guild.id - The guild ID.
      * @param {string} guild.name - The guild name.
      * @param {Date} guild.joinedAt - The date the guild joined.
@@ -109,7 +109,7 @@ class DatabaseClient {
 
     /**
      * Marks a guild as left in the database.
-     * @param {Object} guild - The guild object.
+     * @param {object} guild - The guild object.
      * @param {string} guild.id - The guild ID.
      * @param {string} guild.name - The guild name.
      * @param {Date} guild.joinedAt - The date the guild joined.
@@ -135,8 +135,8 @@ class DatabaseClient {
     /**
      * Registers plugin settings in the schema.
      * @param {string} pluginName - The name of the plugin.
-     * @param {Object} pluginSettings - The settings of the plugin.
-     * @returns {Promise<boolean>}
+     * @param {object} pluginSettings - The settings of the plugin.
+     * @returns {Promise<boolean>} True if the settings are registered.
      * @throws {Error} If the plugin name is not a string.
      */
     async registerPluginSettings(pluginName, pluginSettings) {
@@ -155,7 +155,7 @@ class DatabaseClient {
      * Registers a schema in the database.
      * @param {string} schemaName - The name of the schema.
      * @param {mongoose.Schema} schema - The schema object.
-     * @returns {Promise<mongoose.Model>}
+     * @returns {Promise<mongoose.Model>} The registered schema model.
      */
     async registerSchema(schemaName, schema) {
         const schemaModel = mongoose.model(schemaName, schema);
@@ -165,7 +165,7 @@ class DatabaseClient {
     /**
      * Gets the settings for a guild.
      * @param {string} guildId - The ID of the guild.
-     * @returns {Promise<Object>} The settings object.
+     * @returns {Promise<object>} The settings object.
      */
     async getSettings(guildId) {
         let settings = await this.settingsSchema.findById(guildId).lean({ defaults: true });
@@ -181,7 +181,7 @@ class DatabaseClient {
      * Gets the plugin settings for a guild.
      * @param {string} guildId - The ID of the guild.
      * @param {string} pluginName - The name of the plugin.
-     * @returns {Promise<Object>} The plugin settings object.
+     * @returns {Promise<object>} The plugin settings object.
      */
     async getPluginSettings(guildId, pluginName) {
         const cacheKey = `settings:${guildId}:${pluginName}`;
@@ -206,7 +206,7 @@ class DatabaseClient {
      * Updates the plugin settings for a guild.
      * @param {string} guildId - The ID of the guild.
      * @param {string} pluginName - The name of the plugin.
-     * @param {Object} settings - The settings object.
+     * @param {object} settings - The settings object.
      * @returns {Promise<void>}
      */
     async updatePluginSettings(guildId, pluginName, settings) {
@@ -226,7 +226,7 @@ class DatabaseClient {
     /**
      * Gets the configuration for a plugin.
      * @param {string} pluginName - The name of the plugin.
-     * @returns {Promise<Object>} The plugin configuration object.
+     * @returns {Promise<object>} The plugin configuration object.
      */
     async getPluginConfig(pluginName) {
         const cacheKey = `config:${pluginName}`;
@@ -247,7 +247,7 @@ class DatabaseClient {
     /**
      * Updates the configuration for a plugin.
      * @param {string} pluginName - The name of the plugin.
-     * @param {Object} config - The configuration object.
+     * @param {object} config - The configuration object.
      * @returns {Promise<void>}
      */
     async updatePluginConfig(pluginName, config) {
@@ -259,7 +259,7 @@ class DatabaseClient {
     /**
      * Gets the dashboard configuration for a user.
      * @param {string} userId - The ID of the user.
-     * @returns {Promise<Object>} The dashboard configuration object.
+     * @returns {Promise<object>} The dashboard configuration object.
      */
     async getDashboardConfig(userId) {
         const cacheKey = "dashboard:config";
@@ -275,7 +275,7 @@ class DatabaseClient {
     /**
      * Logs in a user to the dashboard.
      * @param {string} userId - The ID of the user.
-     * @param {Object} tokens - The tokens object.
+     * @param {object} tokens - The tokens object.
      * @returns {Promise<void>}
      */
     async dashboardLogin(userId, tokens) {
@@ -319,7 +319,7 @@ class DatabaseClient {
     /**
      * Adds a value to the cache.
      * @param {string} key - The cache key.
-     * @param {Object} value - The value to cache.
+     * @param {object} value - The value to cache.
      * @param {number} [ttl=3600] - The time-to-live in seconds.
      * @returns {Promise<void>}
      */
@@ -330,7 +330,7 @@ class DatabaseClient {
     /**
      * Gets a value from the cache.
      * @param {string} key - The cache key.
-     * @returns {Promise<Object>} The cached value.
+     * @returns {Promise<object>} The cached value.
      */
     async getFromCache(key) {
         return this.redis.get(key);

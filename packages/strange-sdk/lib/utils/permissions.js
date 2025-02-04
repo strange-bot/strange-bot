@@ -1,5 +1,5 @@
 /**
- * @type {Object<string, string>}
+ * @type {{[key: string]: string}}
  * Mapping of Discord permission flags to their human-readable names
  * Used for converting permission flags to display strings
  */
