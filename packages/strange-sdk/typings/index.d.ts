@@ -31,7 +31,7 @@ type BotPluginData = {
     /**
      * Function to register MongoDB schemas for the plugin
      */
-    registerSchemas?: ((config: Config) => object) | null;
+    registerSchemas?: ((config: object) => object) | null;
 
     /**
      * The IPC configuration
@@ -51,17 +51,17 @@ type BotPluginData = {
 export class BotPlugin {
     constructor(data: BotPluginData);
     /**
-     * The plugin name
+     * The plugin name from package.json
      */
     name: string;
 
     /**
-     * The plugin version
+     * The plugin version from package.json
      */
     version: string;
 
     /**
-     * The base directory of the plugin
+     * The directry containing bot Plugin
      */
     baseDir: string;
 
@@ -71,27 +71,27 @@ export class BotPlugin {
     pluginDir: string;
 
     /**
-     * Whether the plugin is owner only
+     * Whether the plugin is restricted to bot owners only
      */
     ownerOnly: boolean;
 
     /**
-     * List of dependencies required by the plugin
+     * List of plugin dependencies
      */
     dependencies: string[];
 
     /**
-     * The init function to be executed when the plugin is loaded by the bot
+     * Function called when plugin is loaded by the bot
      */
     init?: ((client: Client) => Promise<void>) | null;
 
     /**
-     * The settings object
+     * Function to register MongoDB schemas
      */
-    registerSchemas?: ((config: Config) => object) | null;
+    registerSchemas?: ((config: object) => object) | null;
 
     /**
-     * The IPC configuration
+     * IPC message handlers
      */
     ipcHandler?: {
         [key: string]: (
@@ -105,41 +105,62 @@ export class BotPlugin {
     };
 
     /**
-     * Registered schemas
+     * Map of registered MongoDB models
      */
-    schemas: Map<string, Model<any>>;
+    models: Map<string, Model<any>>;
 
     /**
-     * The event handlers
+     * Map of registered event handlers
      */
     eventHandlers: Map<string, Function>;
 
     /**
-     * The commands set
+     * Set of registered bot commands
      */
     commands: Set<CommandType>;
 
     /**
-     * The contexts set
+     * Set of registered context menu commands
      */
     contexts: Set<ContextType>;
 
     /**
-     * The number of prefix commands
+     * Number of registered prefix commands
      */
     prefixCount: number;
 
     /**
-     * The number of slash commands
+     * Number of registered slash commands
      */
     slashCount: number;
 
+    /**
+     * Loads the plugin by registering events, commands and schemas
+     */
     async load(): Promise<void>;
+
+    /**
+     * Unloads the plugin by clearing registered handlers and commands
+     */
     async unload(): Promise<void>;
-    async getSettings(guild: Guild | string): Promise<object>;
-    async setSettings(guild: Guild | string, settings: object): Promise<void>;
-    async getConfig(): Promise<Config>;
+
+    /**
+     * Gets the plugin configuration
+     * @returns {Promise<object>} The plugin configuration object
+     */
+    async getConfig(): Promise<object>;
+
+    /**
+     * Updates the plugin configuration
+     * @param {object} config - The new configuration object
+     */
     async setConfig(config: object): Promise<void>;
+
+    /**
+     * Gets a registered MongoDB model by name
+     * @param {string} name - The model name
+     * @returns {Promise<Model<any>>} The mongoose model
+     */
     async getModel(name: string): Promise<Model<any>>;
 }
 
@@ -173,75 +194,149 @@ type DashboardPluginData = {
 export class DashboardPlugin {
     constructor(data: DashboardPluginData);
     /**
-     * The plugin name
+     * The plugin name from package.json
      */
     name: string;
 
     /**
-     * The plugin version
+     * The plugin version from package.json
      */
     version: string;
 
     /**
-     * The base directory of the plugin
+     * The base directory containing the plugin code
      */
     baseDir: string;
 
     /**
-     * Whether the plugin is enabled.
+     * Whether the plugin is enabled
+     * @default true
      */
     enabled: boolean;
 
     /**
-     * Font-awesome icon class
+     * Font-awesome icon class for the plugin
+     * @default "fa-solid fa-puzzle-piece"
      */
     icon: string;
 
     /**
-     * The init function to be executed when the plugin is loaded by the dashboard
+     * Function called when plugin is loaded by the dashboard
      */
-    init?: ((client: Client) => Promise<void>) | null;
+    init?: (() => Promise<void>) | null;
 
     /**
-     * Express router for the settings page.
+     * Express router for the plugin settings page
      */
     settingsRouter: Router | null;
 
     /**
-     * Express router for the admin page.
+     * Express router for the plugin admin page
      */
     adminRouter: Router | null;
 
+    /**
+     * Loads the plugin
+     */
     async load(): Promise<void>;
+
+    /**
+     * Unloads the plugin
+     */
     async unload(): Promise<void>;
+
+    /**
+     * Gets the plugin settings for a guild
+     * @param {Guild|string} guild - The guild or guild ID
+     * @returns {Promise<object>} The plugin settings
+     */
     async getSettings(guild: Guild | string): Promise<object>;
+
+    /**
+     * Updates the plugin settings for a guild
+     * @param {Guild|string} guild - The guild or guild ID
+     * @param {object} settings - The new settings
+     */
     async setSettings(guild: Guild | string, settings: object): Promise<void>;
-    async getConfig(): Promise<Config>;
+
+    /**
+     * Gets the plugin configuration
+     * @returns {Promise<object>} The plugin configuration
+     */
+    async getConfig(): Promise<object>;
+
+    /**
+     * Updates the plugin configuration
+     * @param {object} config - The new configuration
+     */
     async setConfig(config: object): Promise<void>;
 }
 
-export class Config {
-    private data: Record<string, any>;
-    private pluginName: string;
+export class PluginConfig {
+    /**
+     * Reads and parses the config.json file from the specified directory
+     * @param {string} baseDir - The base directory containing the config.json file
+     * @returns {object} The parsed configuration object
+     */
+    static fromDirectory(baseDir: string): object;
 
-    constructor(pluginName: string, data: Record<string, any>);
-
-    static fromDirectory(baseDir: string): Config;
-    static fromObject(pluginName: string, data: Record<string, any>): Config;
-
-    get(key: string): any;
-    set(key: string, value: any): void;
-    syncWithDb(): Promise<void>;
+    /**
+     * Synchronizes the plugin configuration with the database
+     * @param {string} pluginName - The name of the plugin
+     * @param {object} data - The configuration data to sync
+     * @returns {Promise<object>} The merged configuration object
+     */
+    static syncWithDb(pluginName: string, data: object): Promise<object>;
 }
 
 export interface Utils {
+    /**
+     * Utility functions for bot-related operations
+     */
     BotUtils: import("../lib/utils/BotUtils");
+    
+    /**
+     * Utility functions for creating and managing Discord embeds
+     */
     EmbedUtils: import("../lib/utils/EmbedUtils");
+    
+    /**
+     * Utility functions for making HTTP requests
+     */
     HttpUtils: import("../lib/utils/HttpUtils");
+    
+    /**
+     * Logger utility for consistent logging across the application
+     */
     Logger: import("../lib/utils/Logger");
+    
+    /**
+     * Miscellaneous utility functions
+     */
     MiscUtils: import("../lib/utils/MiscUtils");
+    
+    /**
+     * Discord permission utility functions
+     */
     permissions: import("../lib/utils/permissions");
 }
+
+export type CommandContext = {
+    message: Message;
+    prefix: string;
+    invoke: string;
+    args: string[];
+    plugin: BotPlugin;
+    settings: Record<string, any>;
+    config: Record<string, any>;
+};
+
+export type ChatInputCommandInteractionContext = {
+    interaction: ChatInputCommandInteraction;
+    plugin: BotPlugin;
+    settings: Record<string, any>;
+    config: Record<string, any>;
+};
 
 export type CommandType = {
     /**
@@ -334,12 +429,15 @@ export type CommandType = {
     };
 
     plugin?: BotPlugin;
-    messageRun(
-        message: Message,
-        args: string[],
-        data: { prefix: string; invoke: string },
-    ): Promise<any>;
-    interactionRun(interaction: ChatInputCommandInteraction): Promise<any>;
+    messageRun(ctx: CommandContext): Promise<any>;
+    interactionRun(ctx: ChatInputCommandInteractionContext): Promise<any>;
+};
+
+export type ContextMenuCommandInteractionContext = {
+    interaction: ContextMenuCommandInteraction;
+    plugin: BotPlugin;
+    settings: Record<string, any>;
+    config: Record<string, any>;
 };
 
 export type ContextType = {
@@ -374,5 +472,5 @@ export type ContextType = {
     /**
      * The callback to be executed when the context is invoked
      */
-    run(interaction: ContextMenuCommandInteraction): Promise<any>;
+    run(ctx: ContextMenuCommandInteractionContext): Promise<any>;
 };

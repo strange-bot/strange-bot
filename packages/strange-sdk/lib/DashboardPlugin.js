@@ -1,7 +1,7 @@
 const path = require("node:path");
 const { Logger } = require("./utils");
 const DBClient = require("strange-db-client");
-const Config = require("./Config");
+const PluginConfig = require("./PluginConfig");
 
 /**
  * Represents a Plugin.
@@ -22,7 +22,8 @@ class DashboardPlugin {
     constructor(data) {
         Logger.debug("Initializing plugin", data);
         DashboardPlugin.#validate(data);
-        const packageJson = require(path.join(data.baseDir, "package.json"));
+        this.pluginDir = path.join(data.baseDir, "..");
+        const packageJson = require(path.join(this.pluginDir, "package.json"));
         this.name = packageJson.name;
         this.version = packageJson.version;
         this.baseDir = data.baseDir;
@@ -55,10 +56,9 @@ class DashboardPlugin {
 
     async getConfig() {
         if (process.env.DEV_MODE) {
-            return Config.fromDirectory(this.pluginDir);
+            return PluginConfig.fromDirectory(this.pluginDir);
         }
-        const data = DBClient.getInstance().getPluginConfig(this.name);
-        return Config.fromObject(this.name, data);
+        return DBClient.getInstance().getPluginConfig(this.name);
     }
 
     async setConfig(config) {

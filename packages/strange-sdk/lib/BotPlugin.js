@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { Logger, MiscUtils, permissions } = require("./utils");
 const DBClient = require("strange-db-client");
-const Config = require("./Config");
+const PluginConfig = require("./PluginConfig");
 
 /**
  * Represents a Bot Plugin.
@@ -12,7 +12,7 @@ const Config = require("./Config");
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
  * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
- * @property {function(Config): object} [registerSchemas] - The settings function (optional)
+ * @property {function(object): object} [registerSchemas] - The settings function (optional)
  * @property {Object.<string, function(any, import('discord.js').Client): Promise<{success: boolean, data?: any, error?: string}>>} ipcHandler - Object containing message handler functions
  */
 
@@ -82,22 +82,11 @@ class BotPlugin {
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 
-    async getSettings(guild) {
-        const guildId = typeof guild === "string" ? guild : guild.id;
-        return await DBClient.getInstance().getPluginSettings(guildId, this.name);
-    }
-
-    async setSettings(guild, settings) {
-        const guildId = typeof guild === "string" ? guild : guild.id;
-        await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
-    }
-
     async getConfig() {
         if (process.env.DEV_MODE) {
-            return Config.fromDirectory(this.pluginDir);
+            return PluginConfig.fromDirectory(this.pluginDir);
         }
-        const data = DBClient.getInstance().getPluginConfig(this.name);
-        return Config.fromObject(this.name, data);
+        return DBClient.getInstance().getPluginConfig(this.name);
     }
 
     async setConfig(config) {
