@@ -2,8 +2,6 @@
     "name": "strange-bot",
     "version": "1.0.0",
     "description": "Premium version of Discord JS Bot",
-    "types": "typings/index.d.ts",
-    "main": "src/index.js",
     "author": "Sai Teja M",
     "license": "AGPL-3.0-only",
     "engines": {
@@ -18,8 +16,6 @@
     "scripts": {
         "start:bot": "pnpm --filter bot start",
         "start:dashboard": "pnpm --filter dashboard start",
-        "git:pull": "git reset --hard && git fetch && git pull origin main",
-        "git:modules:update": "git submodule update --init --recursive",
         "format": "prettier --write 'src/**/*.js' 'plugins/**/*.{js,json}'",
         "validate": "node scripts/validate-env.js",
         "sync:config": "node scripts/sync-config.js",
@@ -64,5 +60,6 @@
             "jsdoc/no-undefined-types": 1,
             "no-cond-assign": 0
         }
-    }
+    },
+    "prettier": "@saiteja-madha/prettier-config"
 }

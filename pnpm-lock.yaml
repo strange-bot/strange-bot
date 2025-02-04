@@ -38,6 +38,10 @@ importers:
       veza:
         specifier: ^1.2.0
         version: 1.2.0
+    devDependencies:
+      nodemon:
+        specifier: ^3.1.9
+        version: 3.1.9
     optionalDependencies:
       bufferutil:
         specifier: ^4.0.9
@@ -51,13 +55,6 @@ importers:
       zlib-sync:
         specifier: ^0.1.9
         version: 0.1.9
-    devDependencies:
-      '@saiteja-madha/prettier-config':
-        specifier: ^1.1.0
-        version: 1.1.0(prettier@3.2.5)
-      nodemon:
-        specifier: ^3.1.9
-        version: 3.1.9
 
   apps/dashboard:
     dependencies:
@@ -144,14 +141,14 @@ importers:
   packages/strange-db-client:
     dependencies:
       ioredis:
-        specifier: ^5.0.0
+        specifier: ^5.4.2
         version: 5.4.2
       mongoose:
-        specifier: ^7.0.0
-        version: 7.8.3
+        specifier: ^7.8.6
+        version: 7.8.6
       mongoose-lean-defaults:
-        specifier: ^2.0.0
-        version: 2.2.1(mongoose@7.8.3)
+        specifier: ^2.2.1
+        version: 2.2.1(mongoose@7.8.6)
 
   packages/strange-i18n:
     dependencies:
@@ -1899,8 +1896,8 @@ packages:
     peerDependencies:
       mongoose: '>=5.11.0'
 
-  mongoose@7.8.3:
-    resolution: {integrity: sha512-eFnbkKgyVrICoHB6tVJ4uLanS7d5AIo/xHkEbQeOv6g2sD7gh/1biRwvFifsmbtkIddQVNr3ROqHik6gkknN3g==}
+  mongoose@7.8.6:
+    resolution: {integrity: sha512-1oVPRHvcmPVwk/zeSTEzayzQEVeYQM1D5zrkLsttfNNB7pPRUmkKeFu6gpbvyEswOuZLrWJjqB8kSTY+k2AZOA==}
     engines: {node: '>=14.20.1'}
 
   mongoose@8.9.6:
@@ -4753,12 +4750,12 @@ snapshots:
     optionalDependencies:
       socks: 2.8.3
 
-  mongoose-lean-defaults@2.2.1(mongoose@7.8.3):
+  mongoose-lean-defaults@2.2.1(mongoose@7.8.6):
     dependencies:
-      mongoose: 7.8.3
+      mongoose: 7.8.6
       mpath: 0.9.0
 
-  mongoose@7.8.3:
+  mongoose@7.8.6:
     dependencies:
       bson: 5.5.1
       kareem: 2.5.1

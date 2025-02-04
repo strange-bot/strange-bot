@@ -24,8 +24,6 @@
         "zlib-sync": "^0.1.9"
     },
     "devDependencies": {
-        "@saiteja-madha/prettier-config": "^1.1.0",
         "nodemon": "^3.1.9"
-    },
-    "prettier": "@saiteja-madha/prettier-config"
+    }
 }

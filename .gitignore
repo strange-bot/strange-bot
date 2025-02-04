@@ -2,6 +2,7 @@
 .vscode/
 node_modules/
 logs/
+apps/dashboard/public
 
 # Files
 .DS_Store
@@ -10,7 +11,3 @@ logs/
 # Extensions
 *.log
 *.tar.gz
-
-# Dashboard build
-src/dashboard/public/css/
-src/dashboard/public/js/

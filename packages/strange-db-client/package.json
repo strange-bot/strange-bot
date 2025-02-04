@@ -8,9 +8,9 @@
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "ioredis": "^5.0.0",
-        "mongoose": "^7.0.0",
-        "mongoose-lean-defaults": "^2.0.0"
+        "ioredis": "^5.4.2",
+        "mongoose": "^7.8.6",
+        "mongoose-lean-defaults": "^2.2.1"
     },
     "devDependencies": {},
     "peerDependencies": {}
