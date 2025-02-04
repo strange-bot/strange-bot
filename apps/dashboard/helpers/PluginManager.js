@@ -66,7 +66,7 @@ class PluginManager {
         }
         const pluginName = packageJson.name;
         const config = PluginConfig.fromDirectory(pluginDir);
-        if (process.env.DEV_MODE !== "1") {
+        if (process.env.NODE_ENV === "production") {
             await PluginConfig.syncWithDb(pluginName, config);
         }
 

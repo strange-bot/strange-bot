@@ -1,4 +1,4 @@
-const { readdirSync, statSync, existsSync } = require("node:fs");
+const { readdirSync, statSync } = require("node:fs");
 const { join } = require("node:path");
 const { BotPlugin, PluginConfig } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
@@ -96,7 +96,7 @@ class PluginManager {
         }
         const pluginName = packageJson.name;
         const config = PluginConfig.fromDirectory(pluginDir);
-        if (process.env.DEV_MODE !== "1") {
+        if (process.env.NODE_ENV === "production") {
             await PluginConfig.syncWithDb(pluginName, config);
         }
 

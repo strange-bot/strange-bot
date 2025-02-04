@@ -34,7 +34,7 @@ class PluginConfig {
      * @throws {Error} If no plugin name is specified
      */
     static async syncWithDatabase(pluginName, data) {
-        if (process.env.DEV_MODE) {
+        if (process.env.NODE_ENV !== "production") {
             Logger.debug("Skipping config sync in dev mode");
             return;
         }

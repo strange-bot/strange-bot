@@ -36,7 +36,7 @@ class I18nManager {
             preload: this.availableLanguages,
         });
 
-        if (process.env.DEV_MODE === "1") {
+        if (process.env.NODE_ENV !== "production") {
             if (!this.baseDir || !this.pluginsDir) {
                 throw new Error("baseDir and pluginsDir are required in local mode");
             }
@@ -185,11 +185,6 @@ class I18nManager {
      * @returns {Promise<void>}
      */
     async updateResourceBundle(plugin, language, data) {
-        if (process.env.DEV_MODE === "1") {
-            console.warn("Cannot update translations in local config mode");
-            return;
-        }
-
         try {
             await localizationModel.findOneAndUpdate(
                 { plugin, lang: language },

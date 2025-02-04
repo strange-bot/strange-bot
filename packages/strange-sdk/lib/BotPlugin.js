@@ -100,7 +100,7 @@ class BotPlugin {
      * @returns {Promise<object>} The plugin configuration
      */
     async getConfig() {
-        if (process.env.DEV_MODE) {
+        if (process.env.NODE_ENV !== "production") {
             return PluginConfig.fromDirectory(this.pluginDir);
         }
         return DBClient.getInstance().getPluginConfig(this.name);
