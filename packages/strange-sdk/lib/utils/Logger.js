@@ -33,11 +33,13 @@ class Logger {
                     options: {
                         colorize: true,
                         translateTime: "yyyy-mm-dd HH:mm:ss",
-                        ignore: fields ? Object.keys(fields).join(",") : "",
+                        ignore: fields
+                            ? `pid,hostname,${Object.keys(fields).join(",")}`
+                            : "pid,hostname",
                         singleLine: false,
                         hideObject: false,
                         customColors: "success:green,info:blue,warn:yellow,error:red",
-                        customLevels: { success: 35 },
+                        customLevels: { success: 35, info: 30, warn: 40, error: 50 },
                     },
                 }),
             });
@@ -68,33 +70,33 @@ class Logger {
     /**
      * Log a success message with optional arguments
      * @param {string} msg - The message to log
-     * @param {...any} args - Additional arguments to include
+     * @param {object} args - Additional arguments to include
      * @example
      * Logger.success('Operation completed', { userId: '123' })
      */
-    static success(msg, ...args) {
-        Logger.#pinoLogger.log(35, args, msg);
+    static success(msg, args) {
+        Logger.#pinoLogger.success(args, msg);
     }
 
     /**
      * Log an info message with optional arguments
      * @param {string} msg - The message to log
-     * @param {...any} args - Additional arguments to include
+     * @param {object} args - Additional arguments to include
      * @example
      * Logger.info('Processing request', { requestId: '456' })
      */
-    static info(msg, ...args) {
+    static info(msg, args) {
         Logger.#pinoLogger.info(args, msg);
     }
 
     /**
      * Log a warning message with optional arguments
      * @param {string} msg - The message to log
-     * @param {...any} args - Additional arguments to include
+     * @param {object} args - Additional arguments to include
      * @example
      * Logger.warn('Rate limit approaching', { current: 80, limit: 100 })
      */
-    static warn(msg, ...args) {
+    static warn(msg, args) {
         Logger.#pinoLogger.warn(args, msg);
     }
 
@@ -122,11 +124,11 @@ class Logger {
     /**
      * Log a debug message with optional arguments
      * @param {string} msg - The message to log
-     * @param {...any} args - Additional arguments to include
+     * @param {object} args - Additional arguments to include
      * @example
      * Logger.debug('Variable state', { count: 5, active: true })
      */
-    static debug(msg, ...args) {
+    static debug(msg, args) {
         Logger.#pinoLogger.debug(args, msg);
     }
 }
