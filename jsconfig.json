@@ -5,7 +5,8 @@
         "baseUrl": "./",
         "paths": {
             "typings": [
-                "typings"
+                "apps/bot/typings",
+                "apps/dashboard/typings",
             ]
         }
     },
