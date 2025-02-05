@@ -27,8 +27,8 @@ class IPCClient {
         })
             .on("error", (error, client) => Logger.error(`[IPC] Error from ${client.name}:`, error))
             .on("disconnect", (client) => Logger.warn(`[IPC] Disconnected from ${client.name}`))
-            .on("ready", async (client) => {
-                Logger.success(`[IPC] Shard#${this.shardId} connected to ${client.name}`);
+            .on("ready", async (_client) => {
+                Logger.success(`[IPC] Shard#${this.shardId} connected`);
             });
     }
 
@@ -61,18 +61,42 @@ class IPCClient {
 
         if (eventName === "GET_GUILD_STATS") {
             const guild = this.discordClient.guilds.cache.get(message.data.payload);
-            const data = {
-                channels: {
-                    text: guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size,
-                    voice: guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice)
-                        .size,
-                },
-                roles: guild.roles.cache.size,
-                members: guild.memberCount,
-            };
+            const data = guild
+                ? {
+                      channels: {
+                          text: guild.channels.cache.filter((c) => c.type === ChannelType.GuildText)
+                              .size,
+                          voice: guild.channels.cache.filter(
+                              (c) => c.type === ChannelType.GuildVoice,
+                          ).size,
+                      },
+                      roles: guild.roles.cache.size,
+                      members: guild.memberCount,
+                  }
+                : null;
             return message.reply({
                 success: true,
-                data,
+                data: data,
+            });
+        }
+
+        if (eventName === "GET_PLUGIN_CMDS") {
+            const { guildId, pluginName } = message.data.payload;
+            const guild = this.discordClient.guilds.cache.has(guildId);
+            message.reply({
+                success: true,
+                data: guild
+                    ? this.discordClient.prefixCommands
+                          .filter((cmd) => cmd.plugin?.name === pluginName)
+                          .map((cmd) =>
+                              structuredClone({
+                                  name: cmd.name,
+                                  description: cmd.description,
+                                  command: cmd.command,
+                                  slashCommand: cmd.slashCommand,
+                              }),
+                          )
+                    : null,
             });
         }
     }
