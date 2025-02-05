@@ -35,7 +35,7 @@ module.exports.serverSelector = async function (req, res) {
         locale: req.session.locale,
         tr: req.translate,
         user: req.session.user.info,
-        guilds: guilds,
+        guilds: req.session.user.guilds,
 
         title: `Server Selector | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
         slug: "selector",
@@ -49,12 +49,21 @@ module.exports.serverSelector = async function (req, res) {
  */
 module.exports.homePage = async function (req, res) {
     const [allSettings, coreConfig] = await Promise.all([
-        DBClient.getInstance().getSettings(res.locals.guild.id),
+        DBClient.getInstance().getSettings(req.params.guildId),
         req.app.pluginManager.getPlugin("core").getConfig(),
     ]);
+
     const enabledPlugins = Object.entries(allSettings.plugins)
         .filter(([_, value]) => value.enabled === true)
         .map(([key]) => key);
+
+    const guild = req.session.user.guilds.find((g) => g.id === req.params.guildId);
+    const responses = await req.app.ipcServer.broadcast(
+        "dashboard:GET_GUILD_STATS",
+        req.params.guildId,
+    );
+    const stats = responses.find((r) => r.success && r.data)?.data;
+    const extendedGuild = { ...guild, ...stats };
 
     res.render("home", {
         coreConfig,
@@ -62,11 +71,11 @@ module.exports.homePage = async function (req, res) {
         tr: req.translate,
         user: req.session.user.info,
 
-        guild: res.locals.guild,
+        guild: extendedGuild,
         plugins: req.app.pluginManager.plugins,
         enabledPlugins,
 
-        title: `${res.locals.guild.name} | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
+        title: `${guild.name} | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
         slug: "home",
         breadcrumb: true,
     });

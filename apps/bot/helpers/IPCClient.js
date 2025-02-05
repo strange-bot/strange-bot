@@ -1,5 +1,6 @@
 const veza = require("veza");
 const { Logger } = require("strange-sdk/utils");
+const { ChannelType } = require("discord.js");
 
 class IPCClient {
     /**
@@ -42,19 +43,11 @@ class IPCClient {
     }
 
     async #handleBaseMessage(eventName, message) {
-        if (eventName === "GET_GUILD") {
+        if (eventName === "VALIDATE_GUILD") {
             const guild = this.discordClient.guilds.cache.get(message.data.payload);
-            if (!guild) {
-                return message.reply({ success: true, data: null });
-            }
-
-            const guildData = { ...guild.toJSON() };
-            guildData.channels = guild.channels.cache.map((ch) => ch.toJSON());
-            guildData.roles = guild.roles.cache.map((role) => role.toJSON());
-
             return message.reply({
                 success: true,
-                data: guildData,
+                data: guild ? true : false,
             });
         }
 
@@ -65,11 +58,28 @@ class IPCClient {
                 data: guildIds,
             });
         }
+
+        if (eventName === "GET_GUILD_STATS") {
+            const guild = this.discordClient.guilds.cache.get(message.data.payload);
+            const data = {
+                channels: {
+                    text: guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size,
+                    voice: guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice)
+                        .size,
+                },
+                roles: guild.roles.cache.size,
+                members: guild.memberCount,
+            };
+            return message.reply({
+                success: true,
+                data,
+            });
+        }
     }
 
     async handleMessage(message) {
         if (!message?.data?.event) {
-            return message.reply({ success: false, error: "Invalid message format" });
+            return;
         }
 
         const { event, payload } = message.data;

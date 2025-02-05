@@ -47,13 +47,14 @@ const guildContext = async (req, res, next) => {
         return next();
     }
 
-    const responses = await req.app.ipcServer.broadcast("dashboard:GET_GUILD", req.params.guildId);
-    const guildData = responses.find((r) => r.success && r.data !== null)?.data;
-    if (!guildData) {
+    const responses = await req.app.ipcServer.broadcast(
+        "dashboard:VALIDATE_GUILD",
+        req.params.guildId,
+    );
+    const hasGuild = responses.some((r) => r.success && r.data === true);
+    if (!hasGuild) {
         return res.status(404).send("Guild not found");
     }
-
-    res.locals.guild = guildData;
 
     next();
 };
