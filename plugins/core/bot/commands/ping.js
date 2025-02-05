@@ -13,11 +13,11 @@ module.exports = {
         options: [],
     },
 
-    async messageRun(message, args) {
+    async messageRun({ message }) {
         await message.replyT("core:PING.RESPONSE", { ping: Math.floor(message.client.ws.ping) });
     },
 
-    async interactionRun(interaction) {
+    async interactionRun({ interaction }) {
         await interaction.followUpT("core:PING.RESPONSE", {
             ping: Math.floor(interaction.client.ws.ping),
         });

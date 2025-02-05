@@ -1,0 +1,100 @@
+{
+    "TITLE": "Core",
+    "DESCRIPTION": "Core module for the application",
+
+    "DASH": {
+        "SETTINGS_TITLE": "Settings",
+        "PREFIX_TITLE": "Prefix",
+        "PREFIX_DESC": "The prefix for the bot commands",
+        "LOCALE_TITLE": "Locale",
+        "LOCALE_DESC": "The locale for the bot",
+
+        "SERVER_DEFAULTS": "Server Defaults",
+        "SUPPORT": "Support Server",
+        "SUPPORT_DESC": "Discord invite link for the support server",
+        "SLASH": "Slash Commands",
+        "SLASH_DESC": "Enable/disable slash commands",
+        "CONTEXT": "Context Menu",
+        "CONTEXT_DESC": "Enable/disable context menus",
+
+        "DASH_DEFAULTS": "Dashboard Defaults",
+        "LOGO": "Logo",
+        "LOGO_DESC": "Logo for the dashboard",
+        "LOGO_URL": "Logo URL",
+        "LOGO_URL_DESC": "URL to the logo image"
+    },
+
+    "HANDLER": {
+        "PLUGIN_DISABLED": "This plugin is disabled by the server administrator",
+        "CMD_DISABLED": "This command is disabled by the server administrator",
+        "CMD_NOT_FOUND": "Command not found",
+        "OWNER_ONLY": "This command is only available to the bot owner",
+        "USER_PERMISSIONS": "You need the following permissions to run this command: {{permissions}}",
+        "BOT_PERMISSIONS": "I need the following permissions to run this command: {{permissions}}",
+        "COOLDOWN": "You are on cooldown! Please wait for {{time}} seconds",
+        "ERROR": "An error occurred while running this command"
+    },
+
+    "HELP": {
+        "DESCRIPTION": "command help menu",
+        "PLUGIN_DESC": "name of the plugin",
+        "COMMAND_DESC": "name of the command",
+
+        "PLUGIN_NOT_FOUND": "No matching plugin found",
+        "COMMAND_NOT_FOUND": "No matching command found",
+        "NOT_FOUND": "No matching plugin or command found",
+
+        "MENU_DESC": "View commands in {{plugin}} plugin",
+        "MENU_PLACEHOLDER": "Select the plugin for which you need help",
+        "EMPTY_CATEGORY": "There are no commands in this plugin",
+
+        "CMD_DESC": "Description",
+        "CMD_SUBCOMMANDS": "Subcommands",
+        "PLUGIN_EMBED_FOOTER": "Page {{page}} of {{pages}}. Type {{prefix}}help <command> for more command information"
+    },
+
+    "PING": {
+        "DESCRIPTION": "shows the current ping from the bot to the discord servers",
+        "RESPONSE": "🏓 Pong : `{{ping}}ms`"
+    },
+
+    "PLUGIN": {
+        "DESCRIPTION": "plugin management commands",
+        "SUB_LIST": "list all plugins",
+        "SUB_INFO": "get info about a plugin",
+        "SUB_STATUS": "manage a plugin's status",
+
+        "LIST_EMBED_TITLE": "List of Available Plugins",
+        "LIST_EMBED_FOOTER": "Total: {{count}}",
+        "ENABLED": "Enabled",
+        "DISABLED": "Disabled",
+
+        "INFO_MISSING_PLUGIN": "Missing plugin name",
+        "NOT_FOUND": "No plugin found with the name: {{plugin}}",
+        "INFO_EMBED_TITLE": "Plugin Info: {{plugin}}",
+        "INFO_EMBED_DESC": "**Name:** {{name}}\n**Version:** {{version}}\n**Status:** {{status}}\n**Prefix Commands:** {{prefixCmds}}\n**Slash Commands:** {{slashCmds}}",
+
+        "STATUS_SELECT_PLACEHOLDER": "Available Plugins",
+        "STATUS_SELECT_PROMPT": "Select/Unselect the plugins you want to enable/disable them",
+        "STATUS_SELECT_TIMEOUT": "Timeout!. You didn't make a selection",
+        "STATUS_SELECT_PROCESSING": "Processing your selection...",
+        "STATUS_SELECT_SUCCESS": "Successfully enabled/disabled the selected plugins",
+
+        "SUB_ENABLE": "enable a plugin",
+        "SUB_DISABLE": "disable a plugin"
+    },
+
+    "LANG": {
+        "DESCRIPTION": "sets the language of the bot",
+        "NEW_LANG": "new language",
+        "INVALID_LANG": "Oops! `{{lang}}` is not a valid language.\nAvailable languages: `{{langChoices}}`",
+        "SUCCESS": "Success! The language has been set to `{{lang}}`"
+    },
+
+    "PREFIX": {
+        "DESCRIPTION": "sets a new prefix for this server",
+        "NEW_PREFIX": "new prefix to set",
+        "TOO_LONG": "The prefix is too long! It must be 2 characters or less.",
+        "SUCCESS": "New prefix has been set to `{{prefix}}`"
+    }
+}

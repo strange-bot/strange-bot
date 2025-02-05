@@ -1,16 +1,17 @@
 const path = require("node:path");
 const router = require("express").Router();
+const languages = require("strange-i18n/languages-meta.json");
 
-router.get("/", (req, res) => {
+router.get("/", (_req, res) => {
     res.render(path.join(__dirname, "views/settings.ejs"), {
-        languages: req.client.languages.map((lang) => lang.name),
+        languages: languages.map((lang) => lang.name),
     });
 });
 
 router.post("/", async (req, res) => {
     const guild = res.locals.guild;
     const body = req.body;
-    const settings = guild.getSettings("core");
+    const settings = await guild.getSettings("core");
 
     // settings
     if (Object.prototype.hasOwnProperty.call(body, "settings")) {
@@ -27,7 +28,7 @@ router.post("/", async (req, res) => {
             }
         }
 
-        await guild.updateSettings();
+        await guild.updateSettings(settings);
     }
 
     res.redirect("/dashboard/" + guild.id + "/core");

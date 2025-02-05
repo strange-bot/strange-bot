@@ -1,21 +1,24 @@
 const { handlePrefixCommand } = require("../handler");
-const config = require("../config");
 
 /**
  * @param {import('discord.js').Message} message
+ * @param {import('strange-sdk').BotPlugin} plugin
  */
-module.exports = async (message) => {
+module.exports = async (message, plugin) => {
     message.isCommand = false;
     if (!message.guild || message.author.bot) return;
     const guild = message.guild;
 
-    if (!config.get("PREFIX_COMMANDS").ENABLED) return;
+    const [config, settings] = await Promise.all([
+        plugin.getConfig(),
+        guild.getSettings(plugin.name),
+    ]);
 
-    const settings = guild.getSettings("core");
+    if (!config["PREFIX_COMMANDS"]["ENABLED"]) return;
 
     // check for bot mentions
     if (message.content.includes(`${guild.client.user.id}`)) {
-        message.channel.safeSend(`> My prefix is \`${settings.prefix}\``);
+        message.channel.send(`> My prefix is \`${settings.prefix}\``);
     }
 
     if (message.content && message.content.startsWith(settings.prefix)) {
@@ -23,13 +26,15 @@ module.exports = async (message) => {
         const cmd = guild.client.prefixCommands.get(invoke);
         if (cmd) {
             // check if the plugin is disabled
-            if (guild.getSettings(cmd.plugin.name).enabled === false) return;
+            const pluginSettings = await guild.getSettings(cmd.plugin.name);
+            if (pluginSettings.enabled === false) return;
 
             // check if the command is disabled
             if (settings.disabled_prefix.includes(cmd.name)) return;
 
             message.isCommand = true;
-            handlePrefixCommand(message, cmd, settings);
+            const context = { plugin, settings, config };
+            handlePrefixCommand(message, cmd, context);
         }
     }
 };

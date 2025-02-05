@@ -10,7 +10,6 @@ const {
 } = require("discord.js");
 const { getCommandUsage, getSlashUsage } = require("../handler");
 const { EmbedUtils } = require("strange-sdk/utils");
-const config = require("../config");
 
 const CMDS_PER_PAGE = 5;
 const IDLE_TIMEOUT = 30;
@@ -45,40 +44,38 @@ module.exports = {
         ],
     },
 
-    async messageRun(message, args, data) {
+    async messageRun({ message, args, prefix, settings }) {
         let trigger = args[0];
 
         // !help
         if (!trigger) {
             const response = await getHelpMenu(message);
-            const sentMsg = await message.safeReply(response);
-            return waiter(sentMsg, message.author.id, data.prefix);
+            const sentMsg = await message.reply(response);
+            return waiter(sentMsg, message.author.id, prefix);
         }
 
         // check if category help (!help cat)
+        const enabledPlugins = await message.guild.getEnabledPlugins();
         if (
             message.client.pluginManager.plugins.some(
-                (p) =>
-                    p.name === trigger &&
-                    !p.ownerOnly &&
-                    message.guild.getSettings(p.name)?.enabled,
+                (p) => p.name === trigger && !p.ownerOnly && enabledPlugins.includes(p.name),
             )
         ) {
-            return pluginWaiter(message, trigger, data.prefix);
+            return pluginWaiter(message, trigger, prefix);
         }
 
         // check if command help (!help cmdName)
         const cmd = message.client.prefixCommands.get(trigger);
-        if (cmd && message.guild.getSettings(cmd.plugin.name)?.enabled) {
-            const embed = getCommandUsage(message.guild, cmd, data.prefix, trigger);
-            return message.safeReply({ embeds: [embed] });
+        if (cmd && settings?.enabled) {
+            const embed = getCommandUsage(message.guild, cmd, prefix, trigger);
+            return message.reply({ embeds: [embed] });
         }
 
         // No matching command/category found
         await message.replyT("core:HELP.NOT_FOUND");
     },
 
-    async interactionRun(interaction) {
+    async interactionRun({ interaction, settings }) {
         let pluginName = interaction.options.getString("plugin");
         let cmdName = interaction.options.getString("command");
 
@@ -90,13 +87,11 @@ module.exports = {
         }
 
         // check if category help (!help cat)
+        const enabledPlugins = await interaction.guild.getEnabledPlugins();
         if (pluginName) {
             if (
                 interaction.client.pluginManager.plugins.some(
-                    (p) =>
-                        p.name === pluginName &&
-                        !p.ownerOnly &&
-                        interaction.guild.getSettings(p.name)?.enabled,
+                    (p) => p.name === pluginName && !p.ownerOnly && enabledPlugins.includes(p.name),
                 )
             ) {
                 return pluginWaiter(interaction, pluginName);
@@ -107,7 +102,7 @@ module.exports = {
         // check if command help (!help cmdName)
         if (cmdName) {
             const cmd = interaction.client.slashCommands.get(cmdName);
-            if (cmd && interaction.guild.getSettings(cmd.plugin.name)?.enabled) {
+            if (cmd && settings?.enabled) {
                 const embed = getSlashUsage(interaction.guild, cmd);
                 return interaction.followUp({ embeds: [embed] });
             }
@@ -123,7 +118,8 @@ async function getHelpMenu({ client, guild }) {
     // Menu Row
     const options = [];
     for (const plugin of client.pluginManager.plugins.filter((p) => !p.ownerOnly)) {
-        if (!guild.getSettings(plugin.name)?.enabled) continue;
+        const settings = await guild.getSettings(plugin.name);
+        if (!settings?.enabled) continue;
         options.push({
             label: plugin.name,
             value: plugin.name,
@@ -155,7 +151,7 @@ async function getHelpMenu({ client, guild }) {
     );
 
     let buttonsRow = new ActionRowBuilder().addComponents(components);
-
+    const config = await client.pluginManager.getPlugin("core").getConfig();
     const embed = EmbedUtils.embed()
         .setThumbnail(client.user.displayAvatarURL())
         .setDescription(
@@ -163,7 +159,7 @@ async function getHelpMenu({ client, guild }) {
                 `Hello I am ${guild.members.me.displayName}!\n` +
                 "A cool multipurpose discord bot which can serve all your needs\n\n" +
                 `**Invite Me:** [Here](${client.getInvite()})\n` +
-                `**Support Server:** [Join](${config.get("SUPPORT_SERVER")})`,
+                `**Support Server:** [Join](${config["SUPPORT_SERVER"]})`,
         );
 
     return {

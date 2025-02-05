@@ -25,16 +25,17 @@ module.exports = {
         ],
     },
 
-    async messageRun(message, args) {
+    async messageRun({ message, args, settings }) {
         const newPrefix = args[0];
-        const response = await setNewPrefix(message.guild, newPrefix);
-        await message.safeReply(response);
+        const response = await setNewPrefix(message.guild, newPrefix, settings);
+        await message.reply(response);
     },
 
-    async interactionRun(interaction) {
+    async interactionRun({ interaction, settings }) {
         const response = await setNewPrefix(
             interaction.guild,
             interaction.options.getString("newprefix"),
+            settings,
         );
         await interaction.followUp(response);
     },
@@ -43,13 +44,13 @@ module.exports = {
 /**
  * @param {import('discord.js').Guild} guild
  * @param {string} newPrefix
+ * @param {object} settings
  */
-async function setNewPrefix(guild, newPrefix) {
+async function setNewPrefix(guild, newPrefix, settings) {
     if (newPrefix.length > 2) return guild.getT("core:PREFIX.TOO_LONG");
 
-    const settings = guild.getSettings("core");
     settings.prefix = newPrefix;
-    await guild.updateSettings();
+    await guild.updateSettings("core", settings);
 
     return guild.getT("core:PREFIX.SUCCESS", { prefix: newPrefix });
 }

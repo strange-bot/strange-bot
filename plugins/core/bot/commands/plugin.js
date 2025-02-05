@@ -5,6 +5,7 @@ const {
     ChatInputCommandInteraction,
     ComponentType,
 } = require("discord.js");
+const DatabaseClient = require("strange-db-client");
 const { EmbedUtils } = require("strange-sdk/utils");
 
 /**
@@ -62,21 +63,21 @@ module.exports = {
         ],
     },
 
-    async messageRun(message, args) {
+    async messageRun({ message, args }) {
         const [sub, plugin] = args;
         let resp;
 
         switch (sub?.toLowerCase()) {
             case "list":
-                resp = listPlugins(message);
+                resp = await listPlugins(message);
                 break;
 
             case "info":
-                resp = pluginInfo(message, plugin);
+                resp = await pluginInfo(message, plugin);
                 break;
 
             case "status":
-                return pluginStatus(message);
+                return await pluginStatus(message);
 
             default:
                 resp = message.guild.getT("common:INVALID_SUBCOMMAND", { sub });
@@ -86,22 +87,22 @@ module.exports = {
         await message.reply(resp);
     },
 
-    async interactionRun(interaction) {
+    async interactionRun({ interaction }) {
         const sub = interaction.options.getSubcommand();
         const plugin = interaction.options.getString("name");
 
         let resp;
         switch (sub.toLowerCase()) {
             case "list":
-                resp = listPlugins(interaction);
+                resp = await listPlugins(interaction);
                 break;
 
             case "info":
-                resp = pluginInfo(interaction, plugin);
+                resp = await pluginInfo(interaction, plugin);
                 break;
 
             case "status":
-                return pluginStatus(interaction);
+                return await pluginStatus(interaction);
         }
 
         await interaction.followUp(resp);
@@ -111,15 +112,15 @@ module.exports = {
 /**
  * @param {import('discord.js').Message | import('discord.js').CommandInteraction} arg0
  */
-function listPlugins({ client, guild }) {
+async function listPlugins({ client, guild }) {
     const plugins = client.pluginManager.plugins.filter((p) => !p.ownerOnly);
+    const enabledPlugins = await guild.getEnabledPlugins();
 
     const embed = EmbedUtils.embed()
         .setAuthor({ name: guild.getT("core:PLUGIN.LIST_EMBED_TITLE") })
         .addFields(
             plugins.map((p) => {
-                const settings = guild.getSettings(p.name);
-                const status = settings.enabled
+                const status = enabledPlugins.includes(p.name)
                     ? guild.getT("core:PLUGIN.ENABLED")
                     : guild.getT("core:PLUGIN.DISABLED");
                 return {
@@ -140,14 +141,14 @@ function listPlugins({ client, guild }) {
  * @param {import('discord.js').Message | import('discord.js').CommandInteraction} arg0
  * @param {string} plugin
  */
-function pluginInfo({ client, guild }, plugin) {
+async function pluginInfo({ client, guild }, plugin) {
     if (!plugin) return guild.getT("core:PLUGIN.INFO_MISSING_PLUGIN");
 
     const p = client.pluginManager.plugins
         .filter((p) => !p.ownerOnly)
         .find((p) => p.name === plugin);
     if (!p) return guild.getT("core:PLUGIN.NOT_FOUND", { plugin });
-    const settings = guild.getSettings(p.name);
+    const settings = await guild.getSettings(p.name);
 
     const embed = EmbedUtils.embed()
         .setAuthor({ name: guild.getT("core:PLUGIN.INFO_EMBED_TITLE", { plugin }) })
@@ -174,7 +175,7 @@ async function pluginStatus(arg0) {
 
     const options = [];
     for (const p of client.pluginManager.plugins.filter((p) => !p.ownerOnly)) {
-        const settings = guild.getSettings(p.name);
+        const settings = await guild.getSettings(p.name);
         options.push({
             label: p.name,
             value: p.name,
@@ -206,7 +207,7 @@ async function pluginStatus(arg0) {
             time: 60000,
             dispose: true,
         })
-        .catch((ex) => {});
+        .catch(() => {});
 
     if (!waiter) {
         reply = {
@@ -222,16 +223,19 @@ async function pluginStatus(arg0) {
         components: [],
     });
 
-    const settings = guild.getSettings();
-    for (const plugin in settings.plugins) {
-        // 'core' plugin should always be enabled
-        if (plugin === "core") {
-            settings.plugins[plugin].enabled = true;
-            continue;
-        }
-        settings.plugins[plugin].enabled = waiter.values.includes(plugin);
+    const allSettings = await DatabaseClient.getInstance().getSettings(guild.id);
+    const pluginUpdates = Object.entries(allSettings.plugins).map(([key, value]) => ({
+        key,
+        value: {
+            ...value,
+            enabled: key === "core" ? true : waiter.values.includes(key),
+        },
+    }));
+
+    // Update settings for each plugin sequentially
+    for (const plugin of pluginUpdates) {
+        await guild.updateSettings(plugin.key, plugin.value);
     }
-    await guild.updateSettings();
 
     await sentMsg.edit({
         content: guild.getT("core:PLUGIN.STATUS_SELECT_SUCCESS"),

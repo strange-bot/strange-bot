@@ -1,11 +1,14 @@
 {
     "name": "core",
+    "description": "The core of the bot",
     "version": "1.0.0",
-    "main": "index.js",
     "author": "Sai Teja Madha",
     "license": "ISC",
-    "dependencies": {
-        "@types/react": "^18.3.12",
-        "strange-sdk": "workspace:*"
+    "peerDependencies": {
+        "discord.js": "^14.17.3",
+        "express": "^4.21.2",
+        "strange-sdk": "workspace:*",
+        "strange-i18n": "workspace:*",
+        "strange-db-client": "workspace:*"
     }
 }

@@ -1,6 +1,5 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, MessageFlags } = require("discord.js");
 const { MiscUtils, EmbedUtils } = require("strange-sdk/utils");
-const config = require("./config");
 
 const cooldownCache = new Map();
 const OWNER_IDS = process.env.OWNER_IDS?.split(",").map((id) => id.trim());
@@ -8,10 +7,10 @@ const OWNER_IDS = process.env.OWNER_IDS?.split(",").map((id) => id.trim());
 /**
  * @param {import('discord.js').Message} message
  * @param {import('strange-sdk').CommandType} cmd
- * @param {object} settings
+ * @param {object} context
  */
-async function handlePrefixCommand(message, cmd, settings) {
-    const prefix = settings.prefix;
+async function handlePrefixCommand(message, cmd, context) {
+    const prefix = context.settings.prefix;
     const args = message.content.replace(prefix, "").split(/\s+/);
     const invoke = args.shift().toLowerCase();
 
@@ -25,7 +24,7 @@ async function handlePrefixCommand(message, cmd, settings) {
     if (cmd.validations) {
         for (const validation of cmd.validations) {
             if (!validation.callback(message)) {
-                return message.safeReply(validation.message);
+                return message.reply(validation.message);
             }
         }
     }
@@ -56,7 +55,7 @@ async function handlePrefixCommand(message, cmd, settings) {
     // minArgs count
     if (cmd.command.minArgsCount > args.length) {
         const usageEmbed = getCommandUsage(message.guild, cmd, prefix, invoke);
-        return message.safeReply({ embeds: [usageEmbed] });
+        return message.reply({ embeds: [usageEmbed] });
     }
 
     // cooldown check
@@ -70,7 +69,11 @@ async function handlePrefixCommand(message, cmd, settings) {
     }
 
     try {
-        await cmd.messageRun(message, args, data);
+        context.message = message;
+        context.prefix = prefix;
+        context.invoke = invoke;
+        context.args = args;
+        await cmd.messageRun(context);
     } catch (ex) {
         message.client.logger.error("messageRun", ex);
         message.replyT("core:HANDLER.ERROR");
@@ -82,8 +85,9 @@ async function handlePrefixCommand(message, cmd, settings) {
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
  * @param {import('strange-sdk').CommandType} cmd
+ * @param {object} context
  */
-async function handleSlashCommand(interaction, cmd) {
+async function handleSlashCommand(interaction, cmd, context) {
     const guild = interaction.guild;
 
     // callback validations
@@ -92,7 +96,7 @@ async function handleSlashCommand(interaction, cmd) {
             if (!validation.callback(interaction)) {
                 return interaction.reply({
                     content: validation.message,
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                 });
             }
         }
@@ -102,7 +106,7 @@ async function handleSlashCommand(interaction, cmd) {
     if (cmd.category === "OWNER" && !OWNER_IDS.includes(interaction.user.id)) {
         return interaction.reply({
             content: guild.getT("core:HANDLER.OWNER_ONLY"),
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
     }
 
@@ -113,7 +117,7 @@ async function handleSlashCommand(interaction, cmd) {
                 content: guild.getT("core:HANDLER.USER_PERMISSIONS", {
                     permissions: MiscUtils.parsePermissions(cmd.userPermissions),
                 }),
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }
@@ -125,7 +129,7 @@ async function handleSlashCommand(interaction, cmd) {
                 content: guild.getT("core:HANDLER.BOT_PERMISSIONS", {
                     permissions: MiscUtils.parsePermissions(cmd.botPermissions),
                 }),
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }
@@ -138,14 +142,15 @@ async function handleSlashCommand(interaction, cmd) {
                 content: guild.getT("core:HANDLER.COOLDOWN", {
                     time: MiscUtils.timeformat(remaining),
                 }),
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }
 
     try {
-        await interaction.deferReply({ ephemeral: cmd.slashCommand.ephemeral });
-        await cmd.interactionRun(interaction);
+        await interaction.deferReply({ flags: cmd.slashCommand.ephemeral ? MessageFlags.Ephemeral : 0 });
+        context.interaction = interaction;
+        await cmd.interactionRun(context);
     } catch (ex) {
         await interaction.followUpT("core:HANDLER.ERROR");
         interaction.client.logger.error("interactionRun", ex);
@@ -162,13 +167,7 @@ async function handleSlashCommand(interaction, cmd) {
  * @param {string} invoke - alias that was used to trigger this command
  * @param {string} [title] - the embed title
  */
-function getCommandUsage(
-    guild,
-    cmd,
-    prefix = config.get("PREFIX_COMMANDS").DEFAULT_PREFIX,
-    invoke,
-    title = "Usage",
-) {
+function getCommandUsage(guild, cmd, prefix, invoke, title = "Usage") {
     let desc = "";
     if (cmd.command.subcommands && cmd.command.subcommands.length > 0) {
         cmd.command.subcommands.forEach((sub) => {
@@ -178,7 +177,7 @@ function getCommandUsage(
             desc += `**Cooldown:** ${MiscUtils.timeformat(cmd.cooldown)}`;
         }
     } else {
-        desc += `\`\`\`css\n${prefix}${invoke || cmd.name} ${cmd.command.usage}\`\`\``;
+        desc += `\`\`\`css\n${prefix}${invoke || cmd.name} ${cmd.command.usage || ""}\`\`\``;
         if (cmd.description !== "") desc += `\n**Help:** ${guild.getT(cmd.description)}`;
         if (cmd.cooldown) desc += `\n**Cooldown:** ${MiscUtils.timeformat(cmd.cooldown)}`;
     }
@@ -227,7 +226,7 @@ async function handleContext(interaction, context) {
                 content: guild.getT("core:HANDLER.COOLDOWN", {
                     time: MiscUtils.timeformat(remaining),
                 }),
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }
@@ -239,13 +238,13 @@ async function handleContext(interaction, context) {
                 content: guild.getT("core:HANDLER.USER_PERMISSIONS", {
                     permissions: MiscUtils.parsePermissions(context.userPermissions),
                 }),
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }
 
     try {
-        await interaction.deferReply({ ephemeral: context.ephemeral });
+        await interaction.deferReply({ flags: context.ephemeral ? MessageFlags.Ephemeral : 0 });
         await context.run(interaction);
     } catch (ex) {
         interaction.followUpT("core:HANDLER.ERROR");
