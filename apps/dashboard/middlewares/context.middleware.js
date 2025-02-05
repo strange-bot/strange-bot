@@ -10,10 +10,11 @@ const OWNER_IDS = process.env.OWNER_IDS.split(",");
  * @param {import('express').NextFunction} next
  */
 const baseContext = async (req, res, next) => {
+    const coreConfig = await DBClient.getInstance().getPluginConfig("core");
+    res.locals.coreConfig = coreConfig;
+
     // Set Locale
     if (!req.session.locale) {
-        const coreConfig = await DBClient.getInstance().getPluginConfig("core");
-        res.locals.coreConfig = coreConfig;
         if (!req.session.user) {
             req.session.locale = coreConfig["DASHBOARD"]["DEFAULT_LOCALE"];
         } else {
@@ -56,59 +57,11 @@ const guildContext = async (req, res, next) => {
         return res.status(404).send("Guild not found");
     }
 
+    res.locals.guild = req.session.user.guilds.find((guild) => guild.id === req.params.guildId);
     next();
-};
-
-/**
- * Middleware to populate the request object
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
-const pluginContext = async (req, res, next) => {
-    const { guildId, pluginName } = req.params;
-    if (!pluginName) {
-        return next();
-    }
-
-    const pluginManager = req.app.pluginManager;
-    const plugin = pluginManager.getPlugin(pluginName);
-
-    if (!plugin) {
-        return res.status(404).send("Plugin not found");
-    }
-
-    const [settings, coreSettings, config] = await Promise.all([
-        DBClient.getInstance().getPluginSettings(guildId, pluginName),
-        DBClient.getInstance().getPluginSettings(guildId, "core"),
-        plugin.getConfig(),
-    ]);
-
-    const title =
-        plugin.name.charAt(0).toUpperCase() +
-        plugin.name.slice(1) +
-        " | " +
-        res.locals.coreConfig["DASHBOARD"]["LOGO_NAME"];
-
-    res.locals.locale = req.locale;
-    res.locals.tr = req.translate;
-    res.locals.coreSettings = coreSettings;
-    // res.locals.coreConfig = res.locals.coreConfig;
-    // res.locals.guild = res.locals.guild;
-    res.locals.user = req.user;
-    res.locals.plugins = req.app.pluginManager.plugins;
-    res.locals.plugin = plugin;
-    res.locals.config = config;
-    res.locals.settings = settings;
-
-    res.locals.title = title;
-    res.locals.slug = `/plugins/${plugin.name}`;
-    res.locals.layout = "layouts/dashboard-tabbed";
-    res.locals.breadcrumb = true;
 };
 
 module.exports = {
     baseContext,
     guildContext,
-    pluginContext,
 };

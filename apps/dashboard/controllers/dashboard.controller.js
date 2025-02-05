@@ -67,7 +67,7 @@ module.exports.homePage = async function (req, res) {
 
     res.render("home", {
         coreConfig,
-        locale: req.locale,
+        locale: req.session.locale,
         tr: req.translate,
         user: req.session.user.info,
 

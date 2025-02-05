@@ -24,7 +24,9 @@ declare module "express-session" {
     export interface SessionData {
         user:
             | {
-                  info: import("discord-oauth2").User;
+                  info: import("discord-oauth2").User & {
+                      isOwner?: boolean;
+                  };
                   guilds: import("discord-oauth2").PartialGuild[];
               }
             | undefined;
