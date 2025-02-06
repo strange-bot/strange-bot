@@ -20,7 +20,7 @@
     },
 
     "NAV": {
-        "ADMIN": "Admin Page",
+        "ADMIN": "Admin",
         "LOGOUT": "Logout",
         "TIP_DARK_MODE": "Toggle Dark Mode",
         "SR_USER_MENU": "Open User Menu"

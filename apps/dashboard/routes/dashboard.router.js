@@ -5,11 +5,11 @@ const router = express.Router();
 const dashboardController = require("../controllers/dashboard.controller");
 
 // Middlewares
-const { guildContext } = require("../middlewares/context.middleware");
-const pluginMiddleware = require("../middlewares/plugin.middleware");
+const guildMiddlware = require("../middlewares/context/guild.middleware");
+const pluginMiddleware = require("../middlewares/context/plugin.middleware");
 
 router.get("/", dashboardController.serverSelector);
-router.get("/:guildId", guildContext, dashboardController.homePage);
+router.get("/:guildId", guildMiddlware, dashboardController.homePage);
 
 const defaultRouter = () => {
     const router = express.Router();
@@ -24,8 +24,18 @@ const defaultRouter = () => {
     return router;
 };
 
-router.use("/:guildId/:pluginName", guildContext, pluginMiddleware, (req, res, next) => {
-    (res.locals.plugin.settingsRouter || defaultRouter())(req, res, next);
-});
+router.use(
+    "/:guildId/:pluginName",
+    guildMiddlware,
+    pluginMiddleware.dashboard,
+    (req, res, next) => {
+        const plugin = res.locals.plugin;
+        if (plugin.settingsRouter) {
+            plugin.settingsRouter(req, res, next);
+        } else {
+            defaultRouter()(req, res, next);
+        }
+    },
+);
 
 module.exports = router;

@@ -20,7 +20,7 @@
     },
 
     "NAV": {
-        "SETTINGS": "Paramètres",
+        "ADMIN": "Administrateur",
         "LOGOUT": "Déconnexion",
         "TIP_DARK_MODE": "Activer le mode sombre",
         "SR_USER_MENU": "Ouvrir le menu utilisateur"

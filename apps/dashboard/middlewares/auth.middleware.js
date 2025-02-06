@@ -18,3 +18,17 @@ module.exports.CheckAuth = async (req, res, next) => {
     }
     return next();
 };
+
+/**
+ * Middleware to check if the user is an admin
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+module.exports.CheckAdmin = async (req, res, next) => {
+    if (!req.session.user?.info.isOwner) {
+        return res.redirect("/dashboard");
+    }
+
+    return next();
+};
