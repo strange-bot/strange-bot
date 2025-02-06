@@ -92,7 +92,7 @@ class DashboardPlugin {
      * @param {object} settings - The new settings object
      * @returns {Promise<void>}
      */
-    async setSettings(guild, settings) {
+    async updateSettings(guild, settings) {
         const guildId = typeof guild === "string" ? guild : guild.id;
         await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
     }

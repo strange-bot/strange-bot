@@ -117,6 +117,27 @@ class BotPlugin {
     }
 
     /**
+     * Gets plugin settings for a specific guild
+     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
+     * @returns {Promise<object>} The plugin settings for the guild
+     */
+    async getSettings(guild) {
+        const guildId = typeof guild === "string" ? guild : guild.id;
+        return await DBClient.getInstance().getPluginSettings(guildId, this.name);
+    }
+
+    /**
+     * Updates plugin settings for a specific guild
+     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
+     * @param {object} settings - The new settings object
+     * @returns {Promise<void>}
+     */
+    async updateSettings(guild, settings) {
+        const guildId = typeof guild === "string" ? guild : guild.id;
+        await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
+    }
+
+    /**
      * Retrieves the plugin configuration
      * @returns {Promise<object>} The plugin configuration
      */
