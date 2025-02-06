@@ -1,16 +1,17 @@
 const path = require("path");
 const router = require("express").Router();
-const config = require("../config");
+const languages = require("strange-i18n/languages-meta.json");
 
-router.get("/", (req, res) => {
+router.get("/", (_req, res) => {
     res.render(path.join(__dirname, "views", "admin.ejs"), {
-        config: config.data,
-        languages: req.client.languages.map((lang) => lang.name),
+        config: res.locals.config,
+        languages: languages.map((lang) => lang.name),
     });
 });
 
 router.post("/", async (req, res) => {
     const body = req.body;
+    const { plugin, config } = res.locals;
 
     // Server Config
     if (Object.prototype.hasOwnProperty.call(body, "server_config")) {
@@ -22,17 +23,17 @@ router.post("/", async (req, res) => {
             return res.status(400);
         }
 
-        config.data.PREFIX_COMMANDS.DEFAULT_PREFIX = body.prefix;
-        config.data.LOCALE.DEFAULT = body.locale;
-        config.data.SUPPORT_SERVER = body.support_server;
+        config.PREFIX_COMMANDS.DEFAULT_PREFIX = body.prefix;
+        config.LOCALE.DEFAULT = body.locale;
+        config.SUPPORT_SERVER = body.support_server;
 
         body.slash_commands = body.slash_commands === "on";
-        config.data.INTERACTIONS.SLASH = body.slash_commands;
+        config.INTERACTIONS.SLASH = body.slash_commands;
 
         body.context_menus = body.context_menus === "on";
-        config.data.INTERACTIONS.CONTEXT = body.context_menus;
+        config.INTERACTIONS.CONTEXT = body.context_menus;
 
-        await config.saveToDb();
+        await plugin.setConfig(config);
     }
 
     // Dashboard Config
@@ -44,10 +45,10 @@ router.post("/", async (req, res) => {
             return res.status(400);
         }
 
-        config.data.DASHBOARD.LOGO_NAME = body.logo;
-        config.data.DASHBOARD.LOGO_URL = body.logo_url;
+        config.DASHBOARD.LOGO_NAME = body.logo;
+        config.DASHBOARD.LOGO_URL = body.logo_url;
 
-        await config.saveToDb();
+        await plugin.setConfig(config);
     }
 
     res.redirect("/admin/core");

@@ -9,9 +9,8 @@ router.get("/", (_req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const guild = res.locals.guild;
+    const { guild, settings, plugin } = res.locals;
     const body = req.body;
-    const settings = await guild.getSettings("core");
 
     // settings
     if (Object.prototype.hasOwnProperty.call(body, "settings")) {
@@ -20,7 +19,7 @@ router.post("/", async (req, res) => {
         }
 
         if (body.locale) {
-            if (!req.client.languages.find((lang) => lang.name === body.locale)) {
+            if (!languages.find((lang) => lang.name === body.locale)) {
                 return res.status(400).send("Invalid language");
             }
             if (settings.locale !== body.locale) {
@@ -28,7 +27,7 @@ router.post("/", async (req, res) => {
             }
         }
 
-        await guild.updateSettings(settings);
+        await plugin.updateSettings(guild.id, settings);
     }
 
     res.redirect("/dashboard/" + guild.id + "/core");

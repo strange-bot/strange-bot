@@ -80,7 +80,7 @@ module.exports = {
                 return await pluginStatus(message);
 
             default:
-                resp = message.guild.getT("common:INVALID_SUBCOMMAND", { sub });
+                resp = message.guild.getT("INVALID_SUBCOMMAND", { sub });
                 break;
         }
 
