@@ -1,0 +1,69 @@
+const DBClient = require("strange-db-client");
+const languages = require("strange-i18n/languages-meta.json");
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+module.exports.getBotLocales = async function (req, res) {
+    const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_LOCALE_BUNDLE");
+    if (!ipcResp?.success) return res.sendStatus(500);
+
+    return res.json(ipcResp.data);
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+module.exports.updateBotLocales = async function (req, res) {
+    const { plugin, language, keys } = req.body;
+
+    // TODO: Add validations
+
+    const response = await req.app.ipcServer.broadcastOne(
+        "dashboard:SET_LOCALE_BUNDLE",
+        {
+            plugin,
+            language,
+            keys,
+        },
+        false,
+    );
+
+    if (response.success) {
+        await req.app.ipcServer.broadcast("dashboard:LOCALE_BUNDLE_SYNC", null, false);
+        return res.sendStatus(200);
+    }
+
+    return res.status(500);
+};
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+module.exports.updateDashboardLanguage = async function (req, res) {
+    const lang = req.body.language_code;
+
+    // check if language is valid
+    if (!languages.find((l) => l.name === lang)) {
+        return res.sendStatus(400);
+    }
+
+    if (!req.session.locale === lang) {
+        return res.sendStatus(200);
+    }
+
+    await DBClient.getInstance().dashboardLocale(req.session.user.info.id, lang);
+
+    req.session.locale = lang;
+    req.session.save(async (err) => {
+        if (err) {
+            req.client.logger.error("Failed to save session: " + err);
+            return res.sendStatus(500);
+        }
+
+        res.sendStatus(200);
+    });
+};

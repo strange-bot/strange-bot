@@ -10,11 +10,9 @@
           <i id="toggleSidebarMobileHamburger" class="fas fa-bars h-6 w-6"></i>
           <i id="toggleSidebarMobileClose" class="fas fa-times hidden h-6 w-6"></i>
         </button>
-        <a href="/dashboard" class="ml-2 flex md:mr-24">
-          <img src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>" class="mr-3 h-8" alt="Strange Logo" />
-          <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl"
-            ><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></span
-          >
+        <a href="/dashboard" class="ml-2 flex items-center md:mr-24">
+          <img src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>" class="mr-2 h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8" alt="Strange Logo" />
+          <span class="self-center whitespace-nowrap text-lg font-semibold dark:text-white sm:text-xl md:text-2xl"><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></span>
         </a>
       </div>
       <div class="flex items-center">

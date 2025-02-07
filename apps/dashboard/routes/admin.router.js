@@ -7,8 +7,9 @@ const adminController = require("../controllers/admin.controller");
 // Middlewares
 const pluginMiddleware = require("../middlewares/context/plugin.middleware");
 
-router.get("/", adminController.get);
-router.post("/", adminController.post);
+// Routes
+router.get("/", adminController.getHome);
+router.get("/locales", adminController.getLocales);
 
 router.use("/:pluginName", pluginMiddleware.admin, (req, res, next) => {
     const plugin = res.locals.plugin;

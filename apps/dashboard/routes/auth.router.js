@@ -67,7 +67,7 @@ router.get("/callback", async (req, res) => {
     req.session.user = userData;
 
     // Set locale
-    const coreConfig = await db.getPluginConfig("core");
+    const coreConfig = await req.app.pluginManager.getPlugin("core").getConfig();
     const config = await db.getDashboardConfig(req.session.user.info.id);
     req.session.locale = config.locale || coreConfig["LOCALE"]["DEFAULT"];
 

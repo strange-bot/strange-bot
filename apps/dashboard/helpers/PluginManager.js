@@ -1,4 +1,4 @@
-const { readdirSync, statSync } = require("node:fs");
+const { existsSync, readdirSync, statSync } = require("node:fs");
 const { join } = require("node:path");
 const { DashboardPlugin, PluginConfig } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
@@ -28,6 +28,17 @@ class PluginManager {
      * @param {string} directory The directory to load plugins from.
      */
     async loadPlugins(directory) {
+        if (!existsSync(directory)) {
+            Logger.warn(`Plugins directory ${directory} does not exist. Skipping plugin loading.`);
+            return;
+        }
+
+        const plugins = readdirSync(directory);
+        if (plugins.length === 0) {
+            Logger.warn(`Plugins directory ${directory} is empty. Skipping plugin loading.`);
+            return;
+        }
+
         // Load core plugin first
         const corePluginPath = join(directory, "core");
         try {
@@ -37,12 +48,12 @@ class PluginManager {
             process.exit(1);
         }
 
-        const plugins = readdirSync(directory).filter(
+        const remPlugins = plugins.filter(
             (f) => statSync(join(directory, f)).isDirectory() && f !== "core",
         );
 
         // Load all plugins
-        for (const plugin of plugins) {
+        for (const plugin of remPlugins) {
             const pluginPath = join(directory, plugin);
             try {
                 await this.#loadPlugin(pluginPath);

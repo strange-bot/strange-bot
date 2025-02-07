@@ -1,5 +1,6 @@
 module.exports = {
     content: [
+        "./src/*.js",
         "./views/**/*.ejs",
         "../../plugins/**/*.ejs",
         "./node_modules/flowbite/**/*.js",

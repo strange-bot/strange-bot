@@ -11,19 +11,69 @@ class IPCServer {
         return Array.from(this.server.sockets).filter((c) => /\d+$/.test(c[0]));
     }
 
-    async broadcast(event, data) {
-        const results = await Promise.all(
-            this.getSockets().map((s) =>
-                s[1].send(
+    async broadcast(event, data, receptive = true) {
+        try {
+            const sockets = this.getSockets();
+            if (!sockets.length) {
+                Logger.warn("[IPC] No available sockets for broadcast");
+                return [];
+            }
+
+            const results = await Promise.allSettled(
+                sockets.map((s) =>
+                    s[1]
+                        .send(
+                            {
+                                event,
+                                payload: data,
+                            },
+                            { receptive },
+                        )
+                        .catch((error) => {
+                            Logger.error(
+                                `[IPC] Failed to send message to socket ${s[0]}: ${error.message}`,
+                            );
+                            return null;
+                        }),
+                ),
+            );
+
+            return results
+                .filter((r) => r.status === "fulfilled" && r.value !== null)
+                .map((r) => r.value)
+                .flat();
+        } catch (error) {
+            Logger.error("[IPC] Broadcast error:", error);
+            return [];
+        }
+    }
+
+    async broadcastOne(event, data, receptive = true) {
+        try {
+            const sockets = this.getSockets();
+            if (!sockets.length) {
+                Logger.warn("[IPC] No available sockets for broadcast");
+                return { success: false, data: null };
+            }
+
+            const result = await sockets[0][1]
+                .send(
                     {
                         event,
                         payload: data,
                     },
-                    { receptive: true },
-                ),
-            ),
-        );
-        return results.flat();
+                    { receptive },
+                )
+                .catch((error) => {
+                    Logger.error(`[IPC] Failed to send message to socket: ${error.message}`);
+                    return { success: false, data: null };
+                });
+
+            return result;
+        } catch (error) {
+            Logger.error("[IPC] BroadcastOne error:", error);
+            return { success: false, data: null };
+        }
     }
 
     async initialize() {
@@ -32,7 +82,7 @@ class IPCServer {
         });
 
         this.server.on("disconnect", (client) => {
-            Logger.info(`[IPC] Client disconnected: ${client.name}`);
+            Logger.warn(`[IPC] Client disconnected: ${client.name}`);
         });
 
         this.server.on("error", (error, client) => {

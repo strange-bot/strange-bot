@@ -6,7 +6,7 @@ const { PermissionsBitField } = require("discord.js");
  * @param {import('express').Response} res
  */
 module.exports.serverSelector = async function (req, res) {
-    const coreConfig = await DBClient.getInstance().getPluginConfig("core");
+    const coreConfig = await req.app.pluginManager.getPlugin("core").getConfig();
 
     // Populate user guild data
     const guilds = req.session.user.guilds;
@@ -30,7 +30,7 @@ module.exports.serverSelector = async function (req, res) {
             : "https://discordemoji.com/assets/emoji/discordcry.png";
     });
 
-    res.render("server-selector", {
+    res.render("dashboard/server-selector", {
         coreConfig: coreConfig,
         locale: req.session.locale,
         tr: req.translate,
@@ -65,7 +65,7 @@ module.exports.homePage = async function (req, res) {
     const stats = responses.find((r) => r.success && r.data)?.data;
     const extendedGuild = { ...guild, ...stats };
 
-    res.render("home", {
+    res.render("dashboard/home", {
         coreConfig,
         locale: req.session.locale,
         tr: req.translate,

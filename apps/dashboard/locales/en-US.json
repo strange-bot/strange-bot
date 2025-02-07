@@ -1,5 +1,6 @@
 {
     "SAVE": "Save",
+    "SAVING": "Saving",
     "UPDATE": "Update",
     "UPDATE_ALL": "Update All",
     "ENABLE": "Enable",
@@ -71,6 +72,7 @@
     "LOCALES_PAGE": {
         "TITLE": "Localizations",
         "DESCRIPTION": "Manage localization keys for different plugins and languages.",
+        "APP_SELECT": "Select Application",
         "PLUGIN_SELECT": "Select Plugin",
         "LOCALE_SELECT": "Select Language"
     },

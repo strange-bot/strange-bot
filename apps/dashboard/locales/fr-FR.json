@@ -1,5 +1,7 @@
 {
     "SAVE": "Sauvegarder",
+    "SAVING": "En cours de sauvegarde...",
+    
     "UPDATE": "Mise à jour",
     "UPDATE_ALL": "Tout mettre à jour",
     "ENABLE": "Activer",
@@ -71,6 +73,7 @@
     "LOCALES_PAGE": {
         "TITLE": "Localisations",
         "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
+        "APP_SELECT": "Sélectionnez l'application",
         "PLUGIN_SELECT": "Sélectionner un plugin",
         "LOCALE_SELECT": "Sélectionner une langue"
     },

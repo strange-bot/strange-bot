@@ -8,13 +8,15 @@ const PluginManager = require("./helpers/PluginManager");
 // Middlewares
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
-const { baseContext } = require("./middlewares/context.middleware");
-const { CheckAuth } = require("./middlewares/auth.middleware");
+const baseMiddleware = require("./middlewares/context/base.middleware");
+const { CheckAuth, CheckAdmin } = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
 
 // Routers
 const authRouter = require("./routes/auth.router");
 const dashboardRouter = require("./routes/dashboard.router");
+const adminRouter = require("./routes/admin.router");
+const apiRouter = require("./routes/api.router");
 
 module.exports = class App {
     /**
@@ -82,12 +84,14 @@ module.exports = class App {
                 }),
             }),
         );
-        this.app.use(baseContext);
+        this.app.use(baseMiddleware);
     }
 
     #initializeRoutes() {
         this.app.use("/auth", authRouter);
         this.app.use("/dashboard", CheckAuth, dashboardRouter);
+        this.app.use("/admin", CheckAdmin, adminRouter);
+        this.app.use("/api", CheckAuth, apiRouter);
     }
 
     #initializeViewEngine() {

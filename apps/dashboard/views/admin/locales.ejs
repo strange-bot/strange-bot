@@ -1,0 +1,150 @@
+<section class="px-4">
+  <div
+    class="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr("LOCALES_PAGE.TITLE") %></h2>
+      <p class="text-sm text-gray-500"><%= tr("LOCALES_PAGE.DESCRIPTION") %></p>
+    </div>
+    <div class="flex items-center space-x-4"></div>
+  </div>
+</section>
+
+<section class="mb-6 px-4 pt-6" 
+  x-data="{ 
+    localizationKeys: {},
+    selectedPlugin: '',
+    selectedLanguage: '',
+    loading: true,
+
+    async init() {
+      try {
+        const response = await fetch('/api/locales');
+        this.localizationKeys = await response.json();
+        this.loading = false;
+        
+        const firstPlugin = document.querySelector('#plugin option');
+        this.selectedPlugin = firstPlugin ? firstPlugin.value : '';
+        this.selectedLanguage = document.querySelector('#language').value;
+        
+      } catch (error) {
+        console.error('Error fetching localization keys:', error);
+        Alpine.store('toast').show('Failed to load localization data', 'error');
+      }
+    },
+
+    async saveChanges() {
+      const keys = {};
+      document.querySelectorAll('#keysSection input').forEach(input => {
+        keys[input.name] = input.value;
+      });
+
+      try {
+        const response = await fetch('/api/locales', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plugin: this.selectedPlugin,
+            language: this.selectedLanguage,
+            keys
+          })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          Alpine.store('toast').show('Localization keys updated successfully', 'success');
+        } else {
+          throw new Error(data.error || 'Failed to update');
+        }
+      } catch (error) {
+        console.error('Error saving data:', error);
+        Alpine.store('toast').show(error.message, 'error');
+      }
+    }
+  }"
+  x-init="init()"
+>
+  <div class="flex flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+    <!-- Filters -->
+    <div class="mb-6 flex w-full flex-col border-b border-gray-200 pb-6 dark:border-gray-700 md:flex-row">
+      <!-- Plugin Filter -->
+      <div class="mb-3 flex-1 md:mb-0 md:pr-2">
+        <label for="plugin" class="mb-2 block text-sm font-medium text-gray-700 dark:text-white">
+          <%= tr("LOCALES_PAGE.PLUGIN_SELECT") %>:
+        </label>
+        <select
+          id="plugin"
+          x-model="selectedPlugin"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:p-2.5 sm:text-sm">
+          <% for (let plugin of plugins) { %>
+          <option value="<%= plugin.name %>"><%= plugin.name %></option>
+          <% } %>
+        </select>
+      </div>
+
+
+
+      <!-- Language Filter -->
+      <div class="mb-3 flex-1 md:mb-0 md:pr-2">
+        <label for="language" class="mb-2 block text-sm font-medium text-gray-700 dark:text-white">
+          <%= tr("LOCALES_PAGE.LOCALE_SELECT") %>:
+        </label>
+        <select
+          id="language"
+          x-model="selectedLanguage"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-xs text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:p-2.5 sm:text-sm">
+          <% for (let language of availableLanguages) { %>
+          <option value="<%= language.value %>"><%= language.name %></option>
+          <% } %>
+        </select>
+
+      </div>
+    </div>
+
+
+    <!-- Localization Keys Section -->
+    <div id="keysSection" class="mb-4 w-full">
+
+      <template x-if="loading">
+        <div class="text-center">Loading...</div>
+
+      </template>
+      <template x-if="!loading && localizationKeys[selectedPlugin]?.[selectedLanguage]">
+        <div>
+
+          <template x-for="(value, key) in localizationKeys[selectedPlugin][selectedLanguage]" :key="key">
+            <div class="flex flex-col md:flex-row items-center mb-4">
+              <div class="w-full md:w-1/3 mb-2 md:mb-0 md:pr-2">
+                <label :for="key" class="block text-xs sm:text-sm font-semibold text-gray-900 dark:text-white" x-text="key + ':'"></label>
+              </div>
+              <div class="w-full md:w-2/3">
+                <input type="text" :id="key" :name="key" x-model="localizationKeys[selectedPlugin][selectedLanguage][key]" 
+                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 sm:p-2.5 text-xs sm:text-sm text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+
+              </div>
+            </div>
+          </template>
+
+        </div>
+      </template>
+    </div>
+
+    <!-- Save Button -->
+    <div class="mt-4 flex w-full items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+      <div></div>
+      <div class="flex-shrink-0">
+
+        <button
+          type="button"
+          @click="saveChanges()"
+          :disabled="loading"
+          class="inline-flex items-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50">
+
+          <%= tr("UPDATE_ALL") %>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
