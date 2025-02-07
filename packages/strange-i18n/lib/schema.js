@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const localizationSchema = new mongoose.Schema({
+    app: String,
     plugin: String,
     lang: String,
     data: mongoose.Schema.Types.Mixed,

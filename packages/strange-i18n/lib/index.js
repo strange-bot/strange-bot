@@ -60,7 +60,7 @@ class I18nManager {
      */
     async loadFromDb() {
         try {
-            const localizations = await localizationModel.find().lean();
+            const localizations = await localizationModel.find({ app: this.app }).lean();
             for (const localization of localizations) {
                 i18next.addResourceBundle(
                     localization.lang,
@@ -177,6 +177,10 @@ class I18nManager {
         return localizations;
     }
 
+    getResourceBundle(plugin, language) {
+        return i18next.getResourceBundle(plugin, language) || {};
+    }
+
     /**
      * Updates the resource bundle for a plugin and language.
      * @param {string} plugin - The plugin name.
@@ -186,8 +190,8 @@ class I18nManager {
      */
     async updateResourceBundle(plugin, language, data) {
         try {
-            await localizationModel.findOneAndUpdate(
-                { plugin, lang: language },
+            await localizationModel.updateOne(
+                { app: this.app, plugin, lang: language },
                 { data },
                 { upsert: true },
             );
@@ -195,6 +199,12 @@ class I18nManager {
         } catch (error) {
             throw new Error(`Failed to update resource bundle: ${error.message}`);
         }
+    }
+
+    // Helper function to update bot/dashboard translations (static method)
+    static async updateTranslations(plugin, language, data) {
+        const i18nManager = new I18nManager("bot");
+        await i18nManager.updateResourceBundle(plugin, language, data);
     }
 }
 
