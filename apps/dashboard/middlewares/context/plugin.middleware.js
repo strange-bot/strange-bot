@@ -14,17 +14,17 @@ module.exports.dashboard = async (req, res, next) => {
         return res.status(404).send("Plugin not found");
     }
 
-    // POST route
-    if (req.method === "POST") {
+    // PUT route
+    if (req.method === "PUT") {
         const { guildId, pluginName } = req.params;
         const settings = await DBClient.getInstance().getPluginSettings(guildId, pluginName);
 
         // Plugin Status Toggle
-        if (Object.prototype.hasOwnProperty.call(req.body, "plugin_toggle")) {
+        if (req.query.operation && req.query.operation === "plugin_toggle") {
             try {
                 settings.enabled = Boolean(req.body.plugin_toggle);
                 await DBClient.getInstance().updatePluginSettings(guildId, pluginName, settings);
-                return res.status(200).send("Success");
+                return res.sendStatus(200);
             } catch (error) {
                 console.error(error);
                 return res.status(500).send(error.message);
@@ -32,24 +32,25 @@ module.exports.dashboard = async (req, res, next) => {
         }
 
         // Prefix Commands Toggle
-        if (Object.prototype.hasOwnProperty.call(req.body, "prefix_commands_toggle")) {
+        if (req.query.operation && req.query.operation === "prefix_commands_toggle") {
             try {
                 const keys = Object.keys(req.body);
                 const filtered = keys
                     .filter((key) => key !== "prefix_commands_toggle" && req.body[key] === "on")
                     .map((key) => key.split("prefix_")[1]);
 
-                const ipcResp = await req.app.ipcServer.broadcast("dashboard:GET_PLUGIN_CMDS", {
+                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_PLUGIN_CMDS", {
                     guildId,
                     pluginName,
+                    type: "prefix",
                 });
-                const pluginCmds = ipcResp.find((r) => r.success && r.data !== null).data;
+                const pluginCmds = ipcResp.success ? ipcResp.data : { prefix: [], slash: [] };
 
                 const disabled = new Set();
-                pluginCmds.forEach((cmd) => {
-                    if (cmd.command?.enabled && !filtered.includes(cmd.name)) {
+                pluginCmds.prefix.forEach((cmd) => {
+                    if (!filtered.includes(cmd.name)) {
                         disabled.add(cmd.name);
-                        cmd.command.aliases?.forEach((alias) => disabled.add(alias));
+                        cmd.aliases?.forEach((alias) => disabled.add(alias));
                     }
                 });
 
@@ -60,7 +61,7 @@ module.exports.dashboard = async (req, res, next) => {
                 coreSettings.disabled_prefix = Array.from(disabled);
                 await DBClient.getInstance().updatePluginSettings(guildId, "core", coreSettings);
 
-                return res.redirect(`/dashboard/${guildId}/${pluginName}`);
+                return res.sendStatus(200);
             } catch (error) {
                 console.error(error);
                 return res.status(500).send(error.message);
@@ -68,22 +69,23 @@ module.exports.dashboard = async (req, res, next) => {
         }
 
         // Slash Commands Toggle
-        if (Object.prototype.hasOwnProperty.call(req.body, "slash_commands_toggle")) {
+        if (req.query.operation && req.query.operation === "slash_commands_toggle") {
             try {
                 const keys = Object.keys(req.body);
                 const filtered = keys
                     .filter((key) => key !== "slash_commands_toggle" && req.body[key] === "on")
                     .map((key) => key.split("slash_")[1]);
 
-                const ipcResp = await req.app.ipcServer.broadcast("dashboard:GET_PLUGIN_CMDS", {
+                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_PLUGIN_CMDS", {
                     guildId,
                     pluginName,
+                    type: "slash",
                 });
+                const pluginCmds = ipcResp.success ? ipcResp.data : { prefix: [], slash: [] };
 
-                const pluginCmds = ipcResp.find((r) => r.success && r.data !== null).data;
                 const disabled = new Set();
-                pluginCmds.forEach((cmd) => {
-                    if (cmd.slashCommand?.enabled && !filtered.includes(cmd.name)) {
+                pluginCmds.slash.forEach((cmd) => {
+                    if (!filtered.includes(cmd.name)) {
                         disabled.add(cmd.name);
                     }
                 });
@@ -95,7 +97,7 @@ module.exports.dashboard = async (req, res, next) => {
                 coreSettings.disabled_slash = Array.from(disabled);
                 await DBClient.getInstance().updatePluginSettings(guildId, "core", coreSettings);
 
-                return res.redirect(`/dashboard/${guildId}/${pluginName}`);
+                return res.sendStatus(200);
             } catch (error) {
                 console.error(error);
                 return res.status(500).send(error.message);
@@ -109,11 +111,11 @@ module.exports.dashboard = async (req, res, next) => {
         plugin.getConfig(),
     ]);
 
-    const ipcResp = await req.app.ipcServer.broadcast("dashboard:GET_PLUGIN_CMDS", {
+    const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_PLUGIN_CMDS", {
         guildId,
         pluginName,
     });
-    const pluginCmds = ipcResp.find((r) => r.success && r.data !== null).data;
+    const pluginCmds = ipcResp.success ? ipcResp.data : { prefix: [], slash: [] };
 
     const title =
         plugin.name.charAt(0).toUpperCase() +

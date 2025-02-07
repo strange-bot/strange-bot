@@ -1,5 +1,6 @@
 const { Logger } = require("strange-sdk/utils");
 const DBClient = require("strange-db-client");
+const languages = require("strange-i18n/languages-meta.json");
 
 const OWNER_IDS = process.env.OWNER_IDS.split(",");
 
@@ -10,7 +11,7 @@ const OWNER_IDS = process.env.OWNER_IDS.split(",");
  * @param {import('express').NextFunction} next
  */
 module.exports = async (req, res, next) => {
-    const coreConfig = await DBClient.getInstance().getPluginConfig("core");
+    const coreConfig = await req.app.pluginManager.getPlugin("core").getConfig();
     res.locals.coreConfig = coreConfig;
 
     // Set Locale
@@ -33,6 +34,8 @@ module.exports = async (req, res, next) => {
 
     // Set translate
     req.translate = req.app.translations.get(req.session.locale);
+    res.locals.languages = languages;
+    res.locals.locale = req.session.locale;
 
     next();
 };

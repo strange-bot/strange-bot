@@ -6,10 +6,7 @@ const path = require("node:path");
 
 module.exports = {
     entry: {
-        "app": path.resolve(__dirname, "src/index.js"),
-        "codemirror": path.resolve(__dirname, "src/codemirror.js"),
-        "landing": path.resolve(__dirname, "src/landing.js"),
-        "plugin-localization": path.resolve(__dirname, "src/plugin-localization.js"),
+        app: path.resolve(__dirname, "src/index.js"),
     },
     output: {
         filename: "js/[name].js",
@@ -24,7 +21,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ["", ".js", ".jsx", ".css"],
+        extensions: ["", ".js", ".css"],
     },
     plugins: [
         new MiniCssExtractPlugin({
