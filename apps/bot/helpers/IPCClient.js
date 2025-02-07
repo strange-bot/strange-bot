@@ -1,6 +1,8 @@
 const veza = require("veza");
 const { Logger } = require("strange-sdk/utils");
+const languages = require("strange-i18n/languages-meta.json");
 const { ChannelType } = require("discord.js");
+const { flattenObject } = require("./utils");
 
 class IPCClient {
     /**
@@ -81,23 +83,74 @@ class IPCClient {
         }
 
         if (eventName === "GET_PLUGIN_CMDS") {
-            const { guildId, pluginName } = message.data.payload;
-            const guild = this.discordClient.guilds.cache.has(guildId);
+            const { pluginName, type } = message.data.payload;
+
+            const data = {};
+            if (!type || type === "prefix") {
+                const prefixCommands = this.discordClient.prefixCommands
+                    .filter((cmd) => cmd.plugin?.name === pluginName)
+                    .map((cmd) =>
+                        structuredClone({
+                            name: cmd.name,
+                            description: this.discordClient.i18n.tr(cmd.description),
+                            aliases: cmd.command.aliases,
+                        }),
+                    );
+                data.prefix = prefixCommands;
+            }
+
+            if (!type || type === "slash") {
+                const slashCommands = this.discordClient.slashCommands
+                    .filter((cmd) => cmd.plugin?.name === pluginName)
+                    .map((cmd) =>
+                        structuredClone({
+                            name: cmd.name,
+                            description: this.discordClient.i18n.tr(cmd.description),
+                        }),
+                    );
+                data.slash = slashCommands;
+            }
+
             message.reply({
                 success: true,
-                data: guild
-                    ? this.discordClient.prefixCommands
-                          .filter((cmd) => cmd.plugin?.name === pluginName)
-                          .map((cmd) =>
-                              structuredClone({
-                                  name: cmd.name,
-                                  description: cmd.description,
-                                  command: cmd.command,
-                                  slashCommand: cmd.slashCommand,
-                              }),
-                          )
-                    : null,
+                data,
             });
+        }
+
+        if (eventName === "GET_LOCALE_BUNDLE") {
+            const resourceBundle = {};
+            const availableLanguages = languages.map((l) => l.name);
+            for (const plugin of this.discordClient.pluginManager.plugins) {
+                const pluginName = plugin.name;
+                for (const lang of availableLanguages) {
+                    const bundle = this.discordClient.i18n.getResourceBundle(lang, pluginName);
+                    resourceBundle[pluginName] = resourceBundle[pluginName] || {};
+                    resourceBundle[pluginName][lang] = flattenObject(bundle);
+                }
+            }
+
+            return message.reply({
+                success: true,
+                data: resourceBundle,
+            });
+        }
+
+        if (eventName === "SET_LOCALE_BUNDLE") {
+            if (process.env.NODE_ENV === "production") {
+                const { plugin, language, keys } = message.data.payload;
+                await this.discordClient.i8next.updateResourceBundle(plugin, language, keys);
+            }
+
+            return message.reply({
+                success: true,
+                data: null,
+            });
+        }
+
+        if (eventName === "LOCALE_BUNDLE_SYNC") {
+            if (process.env.NODE_ENV === "production") {
+                await this.discordClient.i8next.loadFromDb();
+            }
         }
     }
 

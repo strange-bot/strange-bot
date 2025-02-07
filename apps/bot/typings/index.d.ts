@@ -12,7 +12,7 @@ declare global {
             public pluginManager : import('apps/bot/helpers/PluginManager');
 
             public translations: Map<string, import('i18next').TFunction> | undefined;
-            public i8next: import('strange-i18n') | undefined;
+            public i18n: import('strange-i18n') | undefined;
 
             public wait: (ms: number) => Promise<void>;
 
