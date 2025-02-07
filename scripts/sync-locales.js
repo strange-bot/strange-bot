@@ -9,6 +9,9 @@ const meta = require("../src/locales/languages-meta.json");
 
 const availableLanguages = meta.map((lng) => lng.name);
 
+/**
+ *
+ */
 function syncLocalizationData(localData, dbData) {
     // deep clone of the dbData to avoid modifying the original object
     const mergedData = deepmerge({}, dbData);

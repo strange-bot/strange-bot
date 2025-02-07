@@ -35,6 +35,6 @@ const IPCServer = require("./helpers/IPCServer");
     // Initialize the Express App
     const app = new App(ipcServer);
     app.loadTranslations(localesDir, pluginsDir);
-    app.loadPlugins(pluginsDir)
+    app.loadPlugins(pluginsDir);
     app.listen(process.env.DASHBOARD_PORT);
 })();

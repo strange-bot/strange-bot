@@ -11,7 +11,11 @@
     "scripts": {
         "start:bot": "pnpm --filter bot start",
         "start:dashboard": "pnpm --filter dashboard start",
-        "format": "prettier --write 'src/**/*.js' 'plugins/**/*.{js,json}'",
+        "dev:bot": "pnpm --filter bot dev",
+        "dev:dashboard": "pnpm --filter dashboard dev",
+        "plugins:init": "git submodule update --init --recursive",
+        "plugins:update": "git submodule update --remote plugins",
+        "format": "prettier --write 'apps/**/*.js' 'plugins/**/*.{js,json}'",
         "lint": "eslint --fix .",
         "validate": "node scripts/validate-env.js",
         "sync:config": "node scripts/sync-config.js",
@@ -35,5 +39,12 @@
         "multipurpose",
         "multi-purpose-bot"
     ],
-    "prettier": "@saiteja-madha/prettier-config"
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "bufferutil",
+            "erlpack",
+            "utf-8-validate",
+            "zlib-sync"
+        ]
+    }
 }

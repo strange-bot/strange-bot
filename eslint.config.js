@@ -33,9 +33,11 @@ module.exports = [
             "no-unused-vars": [
                 "error",
                 {
-                    args: "none",
+                    vars: "all",
+                    args: "all",
                     varsIgnorePattern: "^_",
                     argsIgnorePattern: "^_",
+                    caughtErrors: "none",
                 },
             ],
             "jsdoc/no-undefined-types": 1,

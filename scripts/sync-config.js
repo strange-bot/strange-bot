@@ -10,6 +10,9 @@ const { Config } = require("strange-sdk");
 
 Logger.init();
 
+/**
+ *
+ */
 async function syncConfig() {
     // Get the list of directories in the plugins directory
     const pluginsDir = path.join(__dirname, "..", "plugins");
@@ -32,7 +35,7 @@ async function syncConfig() {
             if (existingConfig) {
                 // If the config exists in the database, update it
                 existingConfig.config = deepmerge(existingConfig.config, configData.data, {
-                    arrayMerge: (target, source, options) => target,
+                    arrayMerge: (target, _source, _options) => target,
                 });
                 await existingConfig.save();
             } else {
