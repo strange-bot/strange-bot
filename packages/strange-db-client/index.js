@@ -324,7 +324,8 @@ class DatabaseClient {
      * @returns {Promise<void>}
      */
     async addToCache(key, value, ttl = 3600) {
-        await this.redis.set(key, JSON.stringify(value), "EX", ttl);
+        const v = typeof value === "object" ? JSON.stringify(value) : value;
+        await this.redis.set(key, v, "EX", ttl);
     }
 
     /**
