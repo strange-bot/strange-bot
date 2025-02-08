@@ -172,7 +172,11 @@ class BotPlugin {
     }
 
     async #registerSchemas() {
-        if (!this.registerSchemas) return;
+        if (!this.registerSchemas) {
+            return await DBClient.getInstance().registerPluginSettings(this.name, {
+                enabled: { type: String, default: true },
+            });
+        }
         const config = await this.getConfig();
         const schemas = this.registerSchemas(config);
 

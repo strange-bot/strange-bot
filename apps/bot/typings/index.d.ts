@@ -35,25 +35,20 @@ declare global {
             public getEnabledPlugins(): Promise<string[]>;
             public getSettings(pluginName: string): Promise<any>;
             public updateSettings(pluginName: string, settings: any): Promise<void>;
-            public findMatchingChannels(query: string, type?: GuildChannelTypes[]): GuildBasedChannel[];
-            public findMatchingRoles(query: string): Role[];
-            public resolveMember(query: string, exact?: boolean): Promise<GuildMember>;
-        }
-
-        interface GuildChannel {
-            public canSendEmbeds(): boolean;
-            public safeSend(content: string | MessagePayload | MessageOptions): Promise<Message|undefined>;
         }
 
         interface Message {
             public isCommand: boolean | undefined;
             public commandName: string | undefined;
             
-            public safeReply(options: string | MessagePayload | MessageReplyOptions): Promise<Message|undefined>;
             public replyT(key: string, args?: Object): Promise<Message|undefined>;
         }
 
         interface ChatInputCommandInteraction  {
+            public followUpT(key: string, args?: Object): Promise<Message|undefined>;
+        }
+
+        interface ButtonInteraction  {
             public followUpT(key: string, args?: Object): Promise<Message|undefined>;
         }
 

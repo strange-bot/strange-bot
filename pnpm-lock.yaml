@@ -23,9 +23,6 @@ importers:
       prettier:
         specifier: ^3.2.5
         version: 3.4.2
-      prettier-plugin-ejs:
-        specifier: 1.0.3
-        version: 1.0.3(prettier@3.4.2)
 
   apps/bot:
     dependencies:
@@ -219,6 +216,18 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.6.3
+
+  plugins/anime:
+    dependencies:
+      discord.js:
+        specifier: ^14.0.0
+        version: 14.17.3(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      nekos.life:
+        specifier: ^3.0.0
+        version: 3.0.0
+      strange-sdk:
+        specifier: workspace:*
+        version: link:../../packages/strange-sdk
 
   plugins/core:
     dependencies:
@@ -2460,6 +2469,9 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
+  nekos.life@3.0.0:
+    resolution: {integrity: sha512-7LbvSqLtfK4XRA91nJaGOWthrNADmG7Vx9d54TC77Hx5qFvRCssFUaHraI6bZGjVENBCUaF7CreisoFX+8mnKQ==}
+
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
@@ -2951,11 +2963,6 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
-
-  prettier-plugin-ejs@1.0.3:
-    resolution: {integrity: sha512-wTL4U/ou6dHHp1ZTfS67SHVb/dRgVhpIOTgCvkgdqF/Lw6A472W90dxFtsWSXIR7GmLZRgZb2PdArR9ozxX7cg==}
-    peerDependencies:
-      prettier: 2.x - 3.x
 
   prettier@3.4.2:
     resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
@@ -6188,6 +6195,8 @@ snapshots:
 
   negotiator@0.6.3: {}
 
+  nekos.life@3.0.0: {}
+
   neo-async@2.6.2: {}
 
   nice-try@1.0.5: {}
@@ -6658,10 +6667,6 @@ snapshots:
       xtend: 4.0.2
 
   prelude-ls@1.2.1: {}
-
-  prettier-plugin-ejs@1.0.3(prettier@3.4.2):
-    dependencies:
-      prettier: 3.4.2
 
   prettier@3.4.2: {}
 

@@ -9,6 +9,7 @@
     },
     "private": true,
     "scripts": {
+        "start": "pnpm --parallel run start",
         "start:bot": "pnpm --filter bot start",
         "start:dashboard": "pnpm --filter dashboard start",
         "dev:bot": "pnpm --filter bot dev",
