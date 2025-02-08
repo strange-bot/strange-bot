@@ -119,7 +119,6 @@ class I18nManager {
 
                 const pluginDir = join(pluginsDir, pluginDirName, `${entry}/locales`);
                 if (!existsSync(pluginDir)) {
-                    console.debug(`Plugin ${pluginName} does not have locales directory`);
                     return;
                 }
 
