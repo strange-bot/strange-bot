@@ -70,7 +70,7 @@ class PluginManager {
         }
 
         const remPlugins = plugins.filter(
-            (f) => statSync(join(directory, f)).isDirectory() && f !== "core",
+            (f) => statSync(join(directory, f)).isDirectory() && f !== "core" && !f.startsWith("."),
         );
 
         // Load all plugins

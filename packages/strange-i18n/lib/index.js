@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync, existsSync } = require("node:fs");
+const { readdirSync, readFileSync, existsSync, statSync } = require("node:fs");
 const { join } = require("node:path");
 const i18next = require("i18next");
 const localizationModel = require("./schema");
@@ -106,7 +106,10 @@ class I18nManager {
      */
     walkPluginDirectory(pluginsDir) {
         try {
-            const plugins = readdirSync(pluginsDir);
+            const plugins = readdirSync(pluginsDir).filter((dir) => {
+                const stats = statSync(join(pluginsDir, dir));
+                return stats.isDirectory() && !dir.startsWith(".");
+            });
 
             plugins.forEach((pluginDirName) => {
                 const packageJsonPath = join(pluginsDir, pluginDirName, "package.json");
