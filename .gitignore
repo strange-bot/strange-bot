@@ -2,7 +2,11 @@
 .vscode/
 node_modules/
 logs/
-apps/dashboard/public
+
+# Dashboard
+apps/dashboard/public/js
+apps/dashboard/public/css
+
 
 # Files
 .DS_Store

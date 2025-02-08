@@ -88,6 +88,9 @@ module.exports = class App {
     }
 
     #initializeRoutes() {
+        this.app.use("/", (_req, res) => {
+            res.redirect("/dashboard");
+        });
         this.app.use("/auth", authRouter);
         this.app.use("/dashboard", CheckAuth, dashboardRouter);
         this.app.use("/admin", CheckAdmin, adminRouter);
