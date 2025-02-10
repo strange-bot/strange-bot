@@ -105,6 +105,12 @@ module.exports.dashboard = async (req, res, next) => {
         }
     }
 
+    // Broadcast
+    req.broadcast = function (eventName, data) {
+        const event = `${plugin.name}:${eventName}`;
+        return req.app.ipcServer.broadcast(event, data);
+    };
+
     const [settings, coreSettings, config] = await Promise.all([
         DBClient.getInstance().getPluginSettings(guildId, pluginName),
         DBClient.getInstance().getPluginSettings(guildId, "core"),

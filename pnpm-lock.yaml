@@ -262,6 +262,27 @@ importers:
         specifier: workspace:*
         version: link:../../packages/strange-sdk
 
+  plugins/moderation:
+    dependencies:
+      common-tags:
+        specifier: ^1.8.2
+        version: 1.8.2
+      discord.js:
+        specifier: ^14.0.0
+        version: 14.17.3(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      enhanced-ms:
+        specifier: ^2.3.0
+        version: 2.3.0
+      mongoose:
+        specifier: ^7.0.0
+        version: 7.8.6
+      strange-db-client:
+        specifier: workspace:*
+        version: link:../../packages/strange-db-client
+      strange-sdk:
+        specifier: workspace:*
+        version: link:../../packages/strange-sdk
+
   plugins/presence:
     dependencies:
       discord.js:
@@ -1321,6 +1342,10 @@ packages:
     resolution: {integrity: sha512-buhp5kePrmda3vhc5B9t7pUQXAb2Tnd0qgpkIhPhkHXxJpiPJ11H0ZEU0oBpJ2QztSbzG/ZxMj/CHsYJqRHmyg==}
     engines: {node: '>= 12.0.0'}
 
+  common-tags@1.8.2:
+    resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
+    engines: {node: '>=4.0.0'}
+
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -1624,6 +1649,9 @@ packages:
 
   end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
+
+  enhanced-ms@2.3.0:
+    resolution: {integrity: sha512-w+pgd9dKRpixmzJEIhpklx51UmhRLeCJSqBNQdmF1hNMR9kuNBYxHXYjonXRsViicl4Nov9nScLTxhaxOTx3lw==}
 
   enhanced-resolve@5.17.1:
     resolution: {integrity: sha512-LMHl3dXhTcfv8gM4kEzIUeTQ+7fpdA0l2tUf34BddXPkz2A5xJ5L/Pchd5BL6rdccM9QGvu0sWZzK1Z1t4wwyg==}
@@ -4957,6 +4985,8 @@ snapshots:
 
   comment-parser@1.4.1: {}
 
+  common-tags@1.8.2: {}
+
   concat-map@0.0.1: {}
 
   connect-mongo@5.1.0(express-session@1.18.1)(mongodb@6.12.0(socks@2.8.3)):
@@ -5280,6 +5310,8 @@ snapshots:
   end-of-stream@1.4.4:
     dependencies:
       once: 1.4.0
+
+  enhanced-ms@2.3.0: {}
 
   enhanced-resolve@5.17.1:
     dependencies:

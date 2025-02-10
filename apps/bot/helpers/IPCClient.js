@@ -176,7 +176,7 @@ class IPCClient {
         }
 
         try {
-            const data = await plugin.ipc.handler[eventName](payload, this.discordClient);
+            const data = await plugin.ipcHandler[eventName](payload, this.discordClient);
             return message.reply({
                 success: true,
                 data: data,

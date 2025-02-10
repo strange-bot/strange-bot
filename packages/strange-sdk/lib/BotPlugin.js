@@ -12,7 +12,6 @@ const PluginConfig = require("./PluginConfig");
  * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {Array<string>} [dependencies] - The dependencies of the plugin.
  * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
- * @property {function(object): object} [registerSchemas] - The settings function (optional)
  * @property {{[key: string]: (message: any, client: import('discord.js').Client) => Promise<{success: boolean, data?: any, error?: string}>}} ipcHandler - Object containing message handler functions
  */
 
@@ -53,9 +52,6 @@ class BotPlugin {
         /** @type {?function(import('discord.js').Client): Promise<void>} Plugin initialization function */
         this.init = data.init || null;
 
-        /** @type {?function(object): object} Function to register database schemas */
-        this.registerSchemas = data.registerSchemas || null;
-
         /** @type {{[key: string]: (message: any, client: import('discord.js').Client) => Promise<{success: boolean, data?: any, error?: string}>}} - Object containing message handler functions */
         this.ipcHandler = data.ipcHandler || {};
         /**
@@ -90,6 +86,7 @@ class BotPlugin {
      * @returns {Promise<void>}
      */
     async load() {
+        await this.#registerSchemas();
         this.#loadEvents();
         this.#loadCommands();
         this.#loadContexts();
@@ -99,7 +96,6 @@ class BotPlugin {
                 if (cmd.slashCommand?.enabled !== false) this.slashCount++;
             }
         });
-        await this.#registerSchemas();
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
@@ -160,10 +156,10 @@ class BotPlugin {
     /**
      * Retrieves a registered MongoDB model by name
      * @param {string} modelName - The name of the model to retrieve
-     * @returns {Promise<import('mongoose').Model>} The mongoose model
+     * @returns {import('mongoose').Model} The mongoose model
      * @throws {Error} If the model is not registered
      */
-    async getModel(modelName) {
+    getModel(modelName) {
         const prefixedName = `${this.name}-${modelName}`;
         if (!this.models.has(prefixedName)) {
             throw new Error(`Model ${modelName} is not registered`);
@@ -172,13 +168,16 @@ class BotPlugin {
     }
 
     async #registerSchemas() {
-        if (!this.registerSchemas) {
+        const schemaPath = path.join(this.baseDir, "..", "schemas.js");
+        if (!require("fs").existsSync(schemaPath)) {
             return await DBClient.getInstance().registerPluginSettings(this.name, {
                 enabled: { type: String, default: true },
             });
         }
+
+        const schemaFile = require(schemaPath);
         const config = await this.getConfig();
-        const schemas = this.registerSchemas(config);
+        const schemas = schemaFile(config);
 
         // Validate structure
         if (typeof schemas !== "object") {
@@ -200,12 +199,17 @@ class BotPlugin {
         if (schemas.settings) {
             await DBClient.getInstance().registerPluginSettings(this.name, schemas.settings);
             delete schemas.settings;
+        } else {
+            await DBClient.getInstance().registerPluginSettings(this.name, {
+                enabled: { type: String, default: true },
+            });
         }
 
         // Register remaining schemas
         for (const [name, schema] of Object.entries(schemas)) {
             const prefixedName = `${this.name}-${name}`;
-            await DBClient.getInstance().registerSchema(prefixedName, schema);
+            const model = await DBClient.getInstance().registerSchema(prefixedName, schema);
+            this.models.set(prefixedName, model);
         }
     }
 
@@ -324,10 +328,6 @@ class BotPlugin {
 
         if (data.init && typeof data.init !== "function") {
             throw new Error("BotPlugin init must be a function");
-        }
-
-        if (data.registerSchemas && typeof data.registerSchemas !== "function") {
-            throw new Error("BotPlugin registerSchemas must be a function");
         }
 
         if (data.ipcHandler && typeof data.ipcHandler !== "object") {

@@ -10,6 +10,7 @@ const pluginMiddleware = require("../middlewares/context/plugin.middleware");
 
 router.get("/", dashboardController.serverSelector);
 router.get("/:guildId", guildMiddlware, dashboardController.homePage);
+router.post("/:guildId", guildMiddlware, dashboardController.postPlugins);
 
 const defaultRouter = () => {
     const router = express.Router();

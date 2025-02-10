@@ -4,8 +4,6 @@
     
     "ENABLE": "Enable",
     "DISABLE": "Disable",
-    "CHANNEL_SELECT": "Select a channel",
-    "ROLE_SELECT": "Select a role",
 
     "SIDEBAR": {
         "DASHBOARD": "Dashboard",

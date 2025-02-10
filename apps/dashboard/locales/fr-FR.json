@@ -1,11 +1,9 @@
 {
     "SAVE": "Sauvegarder",
     "SAVING": "En cours de sauvegarde...",
-    
+
     "ENABLE": "Activer",
     "DISABLE": "Désactiver",
-    "CHANNEL_SELECT": "Sélectionnez une chaîne",
-    "ROLE_SELECT": "Sélectionnez un rôle",
 
     "SIDEBAR": {
         "DASHBOARD": "Tableau de bord",

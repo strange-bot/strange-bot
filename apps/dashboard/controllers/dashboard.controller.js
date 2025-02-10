@@ -80,3 +80,27 @@ module.exports.homePage = async function (req, res) {
         breadcrumb: true,
     });
 };
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+exports.postPlugins = async function (req, res) {
+    const guild = res.locals.guild;
+
+    if (Object.prototype.hasOwnProperty.call(req.body, "plugin_enable")) {
+        const plugin = req.app.pluginManager.plugins.find((p) => p.name === req.body.plugin_enable);
+        if (!plugin) return res.status(404).send("Plugin not found");
+
+        const settings = await plugin.getSettings(guild);
+        try {
+            settings.enabled = true;
+            await plugin.updateSettings(guild.id, settings);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send(error.message);
+        }
+    }
+
+    res.redirect(`/dashboard/${guild.id}`);
+};

@@ -51,6 +51,11 @@ class DashboardPlugin {
         /** @type {?function(): Promise<void>} Plugin initialization function */
         this.init = data.init || null;
 
+        /**
+         * @type {Map<string, import('mongoose').Model>} - Map of registered MongoDB models
+         */
+        this.models = new Map();
+
         /** @type {?import('express').Router} Express router for plugin settings page */
         this.settingsRouter = data.settingsRouter || null;
 
@@ -65,6 +70,7 @@ class DashboardPlugin {
      * @returns {Promise<void>}
      */
     async load() {
+        await this.#registerSchemas();
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
@@ -106,6 +112,66 @@ class DashboardPlugin {
 
     async setConfig(config) {
         await DBClient.getInstance().updatePluginConfig(this.name, config);
+    }
+
+    /**
+     * Retrieves a registered MongoDB model by name
+     * @param {string} modelName - The name of the model to retrieve
+     * @returns {import('mongoose').Model} The mongoose model
+     * @throws {Error} If the model is not registered
+     */
+    getModel(modelName) {
+        const prefixedName = `${this.name}-${modelName}`;
+        if (!this.models.has(prefixedName)) {
+            throw new Error(`Model ${modelName} is not registered`);
+        }
+        return this.models.get(prefixedName);
+    }
+
+    async #registerSchemas() {
+        const schemaPath = path.join(this.baseDir, "..", "schemas.js");
+        if (!require("fs").existsSync(schemaPath)) {
+            return await DBClient.getInstance().registerPluginSettings(this.name, {
+                enabled: { type: String, default: true },
+            });
+        }
+
+        const schemaFile = require(schemaPath);
+        const config = await this.getConfig();
+        const schemas = schemaFile(config);
+
+        // Validate structure
+        if (typeof schemas !== "object") {
+            throw new Error("registerSchemas must return an object");
+        }
+
+        // Validate each schema
+        for (const [name, schema] of Object.entries(schemas)) {
+            if (typeof name !== "string") {
+                throw new Error(`Schema name must be a string`);
+            }
+
+            if (typeof schema !== "object") {
+                throw new Error(`Schema ${name} must be an object`);
+            }
+        }
+
+        // Register 'settings' schema
+        if (schemas.settings) {
+            await DBClient.getInstance().registerPluginSettings(this.name, schemas.settings);
+            delete schemas.settings;
+        } else {
+            await DBClient.getInstance().registerPluginSettings(this.name, {
+                enabled: { type: String, default: true },
+            });
+        }
+
+        // Register remaining schemas
+        for (const [name, schema] of Object.entries(schemas)) {
+            const prefixedName = `${this.name}-${name}`;
+            const model = await DBClient.getInstance().registerSchema(prefixedName, schema);
+            this.models.set(prefixedName, model);
+        }
     }
 
     /**
