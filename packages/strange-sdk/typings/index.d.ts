@@ -15,6 +15,7 @@ import BotPlugin, { BotPluginData } from "../lib/BotPlugin";
 import DashboardPlugin, { DashboardPluginData } from "../lib/DashboardPlugin";
 import PluginConfig from "../lib/PluginConfig";
 import BotUtils from "../lib/utils/BotUtils";
+import channelTypes from "../lib/utils/channelTypes";
 import EmbedUtils from "../lib/utils/EmbedUtils";
 import HttpUtils from "../lib/utils/HttpUtils";
 import Logger from "../lib/utils/Logger";
@@ -25,6 +26,7 @@ export { BotPlugin, BotPluginData, DashboardPlugin, DashboardPluginData, PluginC
 
 export interface Utils {
     BotUtils: typeof BotUtils;
+    channelTypes: typeof channelTypes;
     EmbedUtils: typeof EmbedUtils;
     HttpUtils: typeof HttpUtils;
     Logger: typeof Logger;

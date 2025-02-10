@@ -35,6 +35,11 @@ declare global {
             public getEnabledPlugins(): Promise<string[]>;
             public getSettings(pluginName: string): Promise<any>;
             public updateSettings(pluginName: string, settings: any): Promise<void>;
+            public canSendEmbeds(channel: import('discord.js').GuildChannel): boolean;
+            public findMatchingChannels(query: string, type?: import("discord.js").GuildChannelTypes[]): import("discord.js").GuildChannel[];
+            public findMatchingRoles(query: string): import("discord.js").Role[];
+            public resolveMember(query: string, exact?: boolean): Promise<import("discord.js").GuildMember>;
+
         }
 
         interface Message {
