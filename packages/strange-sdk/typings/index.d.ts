@@ -39,16 +39,10 @@ export type CommandContext = {
     prefix: string;
     invoke: string;
     args: string[];
-    plugin: BotPlugin;
-    settings: Record<string, any>;
-    config: Record<string, any>;
 };
 
 export type ChatInputCommandInteractionContext = {
     interaction: ChatInputCommandInteraction;
-    plugin: BotPlugin;
-    settings: Record<string, any>;
-    config: Record<string, any>;
 };
 
 export type CommandType = {
@@ -148,9 +142,6 @@ export type CommandType = {
 
 export type ContextMenuCommandInteractionContext = {
     interaction: ContextMenuCommandInteraction;
-    plugin: BotPlugin;
-    settings: Record<string, any>;
-    config: Record<string, any>;
 };
 
 export type ContextType = {
