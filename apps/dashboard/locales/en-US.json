@@ -1,7 +1,12 @@
 {
-    "SAVE": "Save",
-    "SAVING": "Saving",
-    
+    "COMMON": {
+        "BTN_SAVE": "Save",
+        "BTN_SAVING": "Saving",
+
+        "CHANNEL_SELECT": "Select Channel",
+        "ROLE_SELECT": "Select Role"
+    },
+
     "ENABLE": "Enable",
     "DISABLE": "Disable",
 
@@ -54,16 +59,6 @@
         "PLUGIN_ENABLE_CONFIRM": "Are you sure you want to enable this plugin?",
         "PLUGIN_CONFIRM_YES": "Yes, I'm sure",
         "PLUGIN_CONFIRM_NO": "No, cancel"
-    },
-
-    "LANDING_PAGE": {
-        "TITLE": "Bot Landing Page",
-        "DESCRIPTION": "Set the HTML content, custom CSS, and JavaScript for the bot homepage.",
-        "SAVE_BTN": "Save",
-        "PREVIEW_BTN": "Preview",
-        "HTML_LABEL": "HTML Content",
-        "CSS_LABEL": "Custom CSS",
-        "JS_LABEL": "Custom JavaScript"
     },
 
     "LOCALES_PAGE": {

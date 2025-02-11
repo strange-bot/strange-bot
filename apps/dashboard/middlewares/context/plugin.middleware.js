@@ -20,7 +20,7 @@ module.exports.dashboard = async (req, res, next) => {
         const settings = await DBClient.getInstance().getPluginSettings(guildId, pluginName);
 
         // Plugin Status Toggle
-        if (req.query.operation && req.query.operation === "plugin_toggle") {
+        if (req.query.operation && req.query.operation === "toggle") {
             try {
                 settings.enabled = Boolean(req.body.plugin_toggle);
                 await DBClient.getInstance().updatePluginSettings(guildId, pluginName, settings);

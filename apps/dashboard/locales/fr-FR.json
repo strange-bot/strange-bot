@@ -1,6 +1,11 @@
 {
-    "SAVE": "Sauvegarder",
-    "SAVING": "En cours de sauvegarde...",
+    "COMMON": {
+        "BTN_SAVE": "Sauvegarder",
+        "BTN_SAVING": "En cours de sauvegarde...",
+
+        "CHANNEL_SELECT": "Sélectionnez la chaîne",
+        "ROLE_SELECT": "Sélectionnez un rôle"
+    },
 
     "ENABLE": "Activer",
     "DISABLE": "Désactiver",
@@ -54,16 +59,6 @@
         "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
         "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
         "PLUGIN_CONFIRM_NO": "Non, annuler"
-    },
-
-    "LANDING_PAGE": {
-        "TITLE": "Page de destination du bot",
-        "DESCRIPTION": "Définissez le contenu HTML, le CSS personnalisé et le JavaScript pour la page d'accueil du bot.",
-        "SAVE_BTN": "Enregistrer",
-        "PREVIEW_BTN": "Aperçu",
-        "HTML_LABEL": "Contenu HTML",
-        "CSS_LABEL": "CSS personnalisé",
-        "JS_LABEL": "JavaScript personnalisé"
     },
 
     "LOCALES_PAGE": {
