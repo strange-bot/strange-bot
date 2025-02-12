@@ -31,8 +31,8 @@ router.use(
     pluginMiddleware.dashboard,
     (req, res, next) => {
         const plugin = res.locals.plugin;
-        if (plugin.settingsRouter) {
-            plugin.settingsRouter(req, res, next);
+        if (plugin.dashboardRouter) {
+            plugin.dashboardRouter(req, res, next);
         } else {
             defaultRouter()(req, res, next);
         }

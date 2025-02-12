@@ -1,14 +1,14 @@
 {
-    "COMMON": {
-        "BTN_SAVE": "Sauvegarder",
-        "BTN_SAVING": "En cours de sauvegarde...",
+    "BTN_SAVE": "Sauvegarder",
+    "BTN_SAVING": "En cours de sauvegarde...",
 
-        "CHANNEL_SELECT": "Sélectionnez la chaîne",
-        "ROLE_SELECT": "Sélectionnez un rôle"
-    },
+    "SETTINGS_SAVE": "Paramètres de guilde enregistrés",
+    "SETTINGS_SAVE_ERROR": "Échec de la sauvegarde des paramètres de guilde",
+    "CONFIG_SAVE": "Configuration enregistrée",
+    "CONFIG_SAVE_ERROR": "Échec de la sauvegarde de la configuration",
 
-    "ENABLE": "Activer",
-    "DISABLE": "Désactiver",
+    "CHANNEL_SELECT": "Sélectionner une chaîne",
+    "ROLE_SELECT": "Sélectionner un rôle",
 
     "SIDEBAR": {
         "DASHBOARD": "Tableau de bord",

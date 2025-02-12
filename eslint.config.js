@@ -41,7 +41,7 @@ module.exports = [
                 },
             ],
             "jsdoc/no-undefined-types": 1,
-            "jsdoc/require-jsdoc": 1,
+            "jsdoc/require-jsdoc": 0,
             "no-cond-assign": 0,
         },
     },

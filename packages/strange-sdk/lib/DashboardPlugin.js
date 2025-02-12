@@ -10,7 +10,7 @@ const PluginConfig = require("./PluginConfig");
  * @property {boolean} [enabled] - Whether the plugin is enabled.
  * @property {string} [icon] - The icon of the plugin.
  * @property {function(): Promise<void>} [init] - The init function to be executed when the plugin is loaded by the dashboard
- * @property {import('express').Router} settingsRouter - Express router for the settings page.
+ * @property {import('express').Router} dashboardRouter - Express router for the settings page.
  * @property {import('express').Router} adminRouter - Express router for the admin page.
  */
 
@@ -57,7 +57,7 @@ class DashboardPlugin {
         this.models = new Map();
 
         /** @type {?import('express').Router} Express router for plugin settings page */
-        this.settingsRouter = data.settingsRouter || null;
+        this.dashboardRouter = data.dashboardRouter || null;
 
         /** @type {?import('express').Router} Express router for plugin admin page */
         this.adminRouter = data.adminRouter || null;
@@ -212,9 +212,9 @@ class DashboardPlugin {
         }
 
         if (data.enabled) {
-            if (data.settingsRouter && !data.settingsRouter.stack) {
+            if (data.dashboardRouter && !data.dashboardRouter.stack) {
                 throw new Error(
-                    "DashboardPlugin settingsRouter must be an instance of express.Router",
+                    "DashboardPlugin dashboardRouter must be an instance of express.Router",
                 );
             }
             if (data.adminRouter && !data.adminRouter.stack) {

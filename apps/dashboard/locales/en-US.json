@@ -1,14 +1,14 @@
 {
-    "COMMON": {
-        "BTN_SAVE": "Save",
-        "BTN_SAVING": "Saving",
+    "BTN_SAVE": "Save",
+    "BTN_SAVING": "Saving",
 
-        "CHANNEL_SELECT": "Select Channel",
-        "ROLE_SELECT": "Select Role"
-    },
+    "SETTINGS_SAVE": "Guild settings saved",
+    "SETTINGS_SAVE_ERROR": "Failed to save guild settings",
+    "CONFIG_SAVE": "Configuration saved",
+    "CONFIG_SAVE_ERROR": "Failed to save configuration",
 
-    "ENABLE": "Enable",
-    "DISABLE": "Disable",
+    "CHANNEL_SELECT": "Select Channel",
+    "ROLE_SELECT": "Select Role",
 
     "SIDEBAR": {
         "DASHBOARD": "Dashboard",
