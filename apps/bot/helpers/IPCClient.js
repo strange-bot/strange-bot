@@ -87,8 +87,15 @@ class IPCClient {
 
             const data = {};
             if (!type || type === "prefix") {
+                const uniqueCommands = new Set();
                 const prefixCommands = this.discordClient.prefixCommands
-                    .filter((cmd) => cmd.plugin?.name === pluginName)
+                    .filter((cmd) => {
+                        if (cmd.plugin?.name === pluginName && !uniqueCommands.has(cmd.name)) {
+                            uniqueCommands.add(cmd.name);
+                            return true;
+                        }
+                        return false;
+                    })
                     .map((cmd) =>
                         structuredClone({
                             name: cmd.name,
@@ -100,8 +107,15 @@ class IPCClient {
             }
 
             if (!type || type === "slash") {
+                const uniqueCommands = new Set();
                 const slashCommands = this.discordClient.slashCommands
-                    .filter((cmd) => cmd.plugin?.name === pluginName)
+                    .filter((cmd) => {
+                        if (cmd.plugin?.name === pluginName && !uniqueCommands.has(cmd.name)) {
+                            uniqueCommands.add(cmd.name);
+                            return true;
+                        }
+                        return false;
+                    })
                     .map((cmd) =>
                         structuredClone({
                             name: cmd.name,

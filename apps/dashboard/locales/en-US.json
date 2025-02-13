@@ -66,7 +66,10 @@
         "DESCRIPTION": "Manage localization keys for different plugins and languages.",
         "APP_SELECT": "Select Application",
         "PLUGIN_SELECT": "Select Plugin",
-        "LOCALE_SELECT": "Select Language"
+        "LOCALE_SELECT": "Select Language",
+        "FETCH_FAIL": "Failed to fetch localization keys",
+        "UPDATE_SUCCESS": "Bot Localization updated successfully",
+        "UPDATE_ERROR": "Failed to update bot localization"
     },
 
     "NO_SETTINGS": "This plugin does not have any settings."

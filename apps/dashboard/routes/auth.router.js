@@ -87,8 +87,8 @@ router.get("/callback", async (req, res) => {
 
 // Logout
 router.get("/logout", async function (req, res) {
-    if (!req.user) return res.redirect(BASE_URL);
-    const userId = req.user.info.id;
+    if (!req.session.user) return res.redirect(BASE_URL);
+    const userId = req.session.user.info.id;
     req.session.destroy(async (err) => {
         if (err) {
             req.logger.error("Failed to destroy session: " + err);

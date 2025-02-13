@@ -28,7 +28,6 @@ module.exports.updateBotLocales = async function (req, res) {
             language,
             keys,
         },
-        false,
     );
 
     if (response.success) {

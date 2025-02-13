@@ -66,7 +66,10 @@
         "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
         "APP_SELECT": "Sélectionnez l'application",
         "PLUGIN_SELECT": "Sélectionner un plugin",
-        "LOCALE_SELECT": "Sélectionner une langue"
+        "LOCALE_SELECT": "Sélectionner une langue",
+        "FETCH_FAIL": "Échec de la récupération des clés de localisation",
+        "UPDATE_SUCCESS": "Localisation du bot mise à jour avec succès",
+        "UPDATE_ERROR": "Échec de la mise à jour de la localisation du bot"
     },
 
     "NO_SETTINGS": "Ce plugin n'a aucun paramètre."

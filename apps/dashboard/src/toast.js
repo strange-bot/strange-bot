@@ -3,11 +3,11 @@
 document.addEventListener("alpine:init", () => {
     Alpine.store("toast", {
         init() {
-            console.log("Toast initialized");
+            console.debug("Toast initialized");
         },
 
         show(message, type = "success") {
-            console.log("Toast show called with:", message, type);
+            console.debug("Toast show called with:", message, type);
             const id = "toast-" + Math.random().toString(36).substring(2, 9);
             const icons = {
                 success:

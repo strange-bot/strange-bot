@@ -7,7 +7,7 @@ const PluginConfig = require("./PluginConfig");
  * Represents a Plugin.
  * @typedef {object} DashboardPluginData
  * @property {string} baseDir - The base directory of the plugin.
- * @property {boolean} [enabled] - Whether the plugin is enabled.
+ * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
  * @property {string} [icon] - The icon of the plugin.
  * @property {function(): Promise<void>} [init] - The init function to be executed when the plugin is loaded by the dashboard
  * @property {import('express').Router} dashboardRouter - Express router for the settings page.
@@ -42,8 +42,8 @@ class DashboardPlugin {
         /** @type {string} The plugin's base directory containing dashboard-specific files */
         this.baseDir = data.baseDir;
 
-        /** @type {boolean} Whether the plugin is enabled in the dashboard */
-        this.enabled = data.enabled || true;
+        /** @type {boolean} Whether the plugin is owner-only */
+        this.ownerOnly = data.ownerOnly || false;
 
         /** @type {string} FontAwesome icon class used in the dashboard UI */
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
@@ -197,9 +197,9 @@ class DashboardPlugin {
             throw new Error("No package.json found in plugin directory");
         }
 
-        if (Object.prototype.hasOwnProperty.call(data, "enabled")) {
-            if (typeof data.enabled !== "boolean") {
-                throw new Error("DashboardPlugin enabled must be a boolean");
+        if (Object.prototype.hasOwnProperty.call(data, "ownerOnly")) {
+            if (typeof data.ownerOnly !== "boolean") {
+                throw new Error("DashboardPlugin ownerOnly must be a boolean");
             }
         }
 
@@ -211,17 +211,13 @@ class DashboardPlugin {
             throw new Error("DashboardPlugin init must be a function");
         }
 
-        if (data.enabled) {
-            if (data.dashboardRouter && !data.dashboardRouter.stack) {
-                throw new Error(
-                    "DashboardPlugin dashboardRouter must be an instance of express.Router",
-                );
-            }
-            if (data.adminRouter && !data.adminRouter.stack) {
-                throw new Error(
-                    "DashboardPlugin adminRouter must be an instance of express.Router",
-                );
-            }
+        if (data.dashboardRouter && !data.dashboardRouter.stack) {
+            throw new Error(
+                "DashboardPlugin dashboardRouter must be an instance of express.Router",
+            );
+        }
+        if (data.adminRouter && !data.adminRouter.stack) {
+            throw new Error("DashboardPlugin adminRouter must be an instance of express.Router");
         }
     }
 }

@@ -77,7 +77,7 @@
 
   <!-- Grid for plugin information -->
   <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-    <% plugins.forEach(plugin => { %>
+    <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
     <div
       class="relative flex items-stretch rounded border bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <!-- Image -->
@@ -129,7 +129,7 @@
   </div>
 </section>
 
-<% plugins.forEach(plugin => { %> <% if(!enabledPlugins.includes(plugin.name)) { %>
+<% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %> <% if(!enabledPlugins.includes(plugin.name)) { %>
 <div
   id="modal-<%= plugin.name %>"
   tabindex="-1"
