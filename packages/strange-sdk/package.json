@@ -22,7 +22,7 @@
         "typescript": "^5.0.0"
     },
     "peerDependencies": {
-        "discord.js": "^14.0.0",
+        "discord.js": "^14.18.0",
         "express": "^4.0.0",
         "strange-db-client": "workspace:*"
     }
