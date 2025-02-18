@@ -1,6 +1,7 @@
 const { existsSync, readdirSync, statSync } = require("node:fs");
 const { join } = require("node:path");
-const { DashboardPlugin, PluginConfig } = require("strange-sdk");
+const { DBClient } = require("strange-db-client");
+const { DashboardPlugin } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
 
 class PluginManager {
@@ -70,17 +71,6 @@ class PluginManager {
      * @param {string} pluginDir
      */
     async #loadPlugin(pluginDir) {
-        // Load config first and sync with database
-        const packageJson = require(join(pluginDir, "package.json"));
-        if (!packageJson.name || !packageJson.version) {
-            throw new Error("Invalid package.json");
-        }
-        const pluginName = packageJson.name;
-        const config = PluginConfig.fromDirectory(pluginDir);
-        if (process.env.NODE_ENV === "production") {
-            await PluginConfig.syncWithDb(pluginName, config);
-        }
-
         // Load the bot plugin
         const dashboardEntry = join(pluginDir, "dashboard");
         if (!existsSync(dashboardEntry)) {
@@ -98,7 +88,7 @@ class PluginManager {
         }
 
         this.#pluginMap.set(plugin.name, plugin);
-        await plugin.load();
+        await plugin.load(DBClient.getInstance());
 
         if (plugin.init) {
             plugin.init();

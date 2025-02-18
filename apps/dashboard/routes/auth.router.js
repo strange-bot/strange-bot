@@ -1,6 +1,5 @@
 const express = require("express");
 const DiscordOauth2 = require("discord-oauth2");
-const DBClient = require("strange-db-client");
 const { encrypt } = require("../helpers/utils");
 
 const router = express.Router();
@@ -25,8 +24,8 @@ router.get("/login", async function (req, res) {
 // Callback
 router.get("/callback", async (req, res) => {
     if (!req.query.code) return res.redirect(BASE_URL);
-    const db = DBClient.getInstance();
-    const cached = await db.getFromCache(`dashboard:${req.query.state}`);
+    const db = req.app.db;
+    const cached = await db.getFromCache(`dashboard:states:${req.query.state}`);
     const redirectURL = cached || "/dashboard";
 
     const tokens = await oauth
@@ -68,19 +67,26 @@ router.get("/callback", async (req, res) => {
 
     // Set locale
     const coreConfig = await req.app.pluginManager.getPlugin("core").getConfig();
-    const config = await db.getDashboardConfig(req.session.user.info.id);
-    req.session.locale = config.locale || coreConfig["LOCALE"]["DEFAULT"];
+    const config = await db.getModel("dashboard").findOne({ _id: req.session.user.info.id }).lean();
+    req.session.locale = config?.locale || coreConfig["LOCALE"]["DEFAULT"];
 
     req.session.save((err) => {
         if (err) req.logger.error("Failed to save session", err);
     });
 
     // Update DB Login
-    await db.dashboardLogin(req.session.user.info.id, {
+    const tokenData = {
         access_token: encrypt(tokens.access_token),
         refresh_token: encrypt(tokens.refresh_token),
         expires: Date.now() + tokens.expires_in * 1000,
-    });
+    };
+    await db
+        .getModel("dashboard")
+        .updateOne(
+            { _id: req.session.user.info.id },
+            { $set: { logged_in: true, tokens: tokenData } },
+            { upsert: true },
+        );
 
     res.redirect(redirectURL);
 });
@@ -95,7 +101,10 @@ router.get("/logout", async function (req, res) {
             return res.redirect(BASE_URL);
         }
 
-        await DBClient.getInstance().dashboardLogout(userId);
+        await req.app.db
+            .getModel("dashboard")
+            .updateOne({ _id: userId }, { $set: { logged_in: false } });
+
         res.redirect(BASE_URL);
     });
 });

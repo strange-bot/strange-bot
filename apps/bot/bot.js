@@ -8,7 +8,7 @@ const path = require("node:path");
 const { Logger } = require("strange-sdk/utils");
 const BotClient = require("./extenders/BotClient");
 const IPCClient = require("./helpers/IPCClient");
-const DatabaseClient = require("strange-db-client");
+const { DBClient } = require("strange-db-client");
 
 // Setup Directories
 const logsDir = path.join(__dirname, "..", "..", "logs");
@@ -26,7 +26,7 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
 
 (async () => {
     // Initialize Database connection
-    const db = new DatabaseClient({
+    const db = new DBClient({
         mongoUri: process.env.MONGO_URI,
         redisUri: process.env.REDIS_URL,
     });
@@ -35,6 +35,10 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
         process.exit(1);
     });
     Logger.success("Connected to database");
+
+    // Register models
+    const ConfigSchema = require("./schemas/Config");
+    db.registerSchema("configs", ConfigSchema);
 
     // Initialize translations
     await client.loadTranslations(localesDir, pluginsDir);

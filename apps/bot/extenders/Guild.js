@@ -1,5 +1,4 @@
 const { Guild } = require("discord.js");
-const DBClient = require("strange-db-client");
 const { ChannelType } = require("discord.js");
 
 const ROLE_MENTION = /<?@?&?(\d{17,20})>?/;
@@ -18,19 +17,19 @@ Guild.prototype.getT = function (key, args) {
     return tFunction(key, args);
 };
 
-Guild.prototype.getEnabledPlugins = async function () {
-    const allSettings = await DBClient.getInstance().getSettings(this.id);
-    return Object.entries(allSettings.plugins)
-        .filter(([_, value]) => value.enabled === true)
-        .map(([key]) => key);
+Guild.prototype.getSettings = async function (pluginName) {
+    return await this.client.pluginManager.getPlugin(pluginName)?.getSettings(this);
 };
 
-Guild.prototype.getSettings = async function (pluginName) {
-    return await DBClient.getInstance().getPluginSettings(this.id, pluginName);
+Guild.prototype.getEnabledPlugins = async function () {
+    const plugins = this.client.pluginManager.plugins.map((plugin) => plugin.name);
+    const settings = await this.getSettings("core");
+    const disabled = settings.disabled_plugins || [];
+    return plugins.filter((plugin) => !disabled.includes(plugin));
 };
 
 Guild.prototype.updateSettings = async function (pluginName, settings) {
-    return await DBClient.getInstance().updatePluginSettings(this.id, pluginName, settings);
+    return this.client.pluginManager.getPlugin(pluginName)?.updateSettings(this, settings);
 };
 
 /**

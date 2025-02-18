@@ -58,13 +58,13 @@ class BotClient extends Client {
         this.wait = require("util").promisify(setTimeout);
     }
 
-    async coreConfig() {
-        return this.pluginManager.getPlugin("core").getConfig();
-    }
-
     async defaultLanguage() {
         const coreConfig = await this.coreConfig();
         return coreConfig["LOCALE"]["DEFAULT"];
+    }
+
+    async coreConfig() {
+        return this.pluginManager.getPlugin("core").getConfig();
     }
 
     async loadTranslations(baseDir, pluginsDir) {
@@ -73,6 +73,7 @@ class BotClient extends Client {
             baseDir,
             pluginsDir,
             fallbackLng: "en-US",
+            useDatabase: process.env.NODE_ENV === "production",
         });
 
         this.translations = await this.i18n.initialize();

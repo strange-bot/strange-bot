@@ -12,13 +12,13 @@ const today = new Date();
 const logsFile = `dashboard-${today.getFullYear()}.${today.getMonth() + 1}.${today.getDate()}.log`;
 Logger.init(path.join(logsDir, logsFile));
 
-const DatabaseClient = require("strange-db-client");
+const { DBClient } = require("strange-db-client");
 const App = require("./app");
 const IPCServer = require("./helpers/IPCServer");
 
 (async () => {
     // Initialize Database connection
-    const dbClient = new DatabaseClient({
+    const dbClient = new DBClient({
         mongoUri: process.env.MONGO_URI,
         redisUri: process.env.REDIS_URL,
     });
@@ -28,12 +28,16 @@ const IPCServer = require("./helpers/IPCServer");
     });
     Logger.success("Connected to database");
 
+    // Register Models
+    dbClient.registerSchema("configs", require("./schemas/Config"));
+    dbClient.registerSchema("dashboard", require("./schemas/Dashboard"));
+
     // Initialize IPC Server
     const ipcServer = new IPCServer();
     await ipcServer.initialize();
 
     // Initialize the Express App
-    const app = new App(ipcServer);
+    const app = new App(dbClient, ipcServer);
     app.loadTranslations(localesDir, pluginsDir);
     app.loadPlugins(pluginsDir);
     app.listen(process.env.DASHBOARD_PORT);

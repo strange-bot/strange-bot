@@ -2,7 +2,6 @@ const veza = require("veza");
 const { Logger } = require("strange-sdk/utils");
 const languages = require("strange-i18n/languages-meta.json");
 const { ChannelType } = require("discord.js");
-const { flattenObject } = require("./utils");
 
 class IPCClient {
     /**
@@ -82,6 +81,21 @@ class IPCClient {
             });
         }
 
+        if (eventName === "GET_CMDS_SUMMARY") {
+            const data = {};
+            this.discordClient.pluginManager.plugins.forEach((plugin) => {
+                data[plugin.name] = {
+                    prefixCount: plugin.prefixCount,
+                    slashCount: plugin.slashCount,
+                };
+            });
+
+            return message.reply({
+                success: true,
+                data: data,
+            });
+        }
+
         if (eventName === "GET_PLUGIN_CMDS") {
             const { pluginName, type } = message.data.payload;
 
@@ -137,9 +151,13 @@ class IPCClient {
             for (const plugin of this.discordClient.pluginManager.plugins) {
                 const pluginName = plugin.name;
                 for (const lang of availableLanguages) {
-                    const bundle = this.discordClient.i18n.getResourceBundle(lang, pluginName);
+                    const bundle = this.discordClient.i18n.getResourceBundle(
+                        lang,
+                        pluginName,
+                        true,
+                    );
                     resourceBundle[pluginName] = resourceBundle[pluginName] || {};
-                    resourceBundle[pluginName][lang] = flattenObject(bundle);
+                    resourceBundle[pluginName][lang] = bundle;
                 }
             }
 
@@ -150,21 +168,13 @@ class IPCClient {
         }
 
         if (eventName === "SET_LOCALE_BUNDLE") {
-            if (process.env.NODE_ENV === "production") {
-                const { plugin, language, keys } = message.data.payload;
-                await this.discordClient.i8next.updateResourceBundle(plugin, language, keys);
-            }
+            const { plugin, language, keys } = message.data.payload;
+            await this.discordClient.i18n.updateResourceBundle(plugin, language, keys);
 
             return message.reply({
                 success: true,
                 data: null,
             });
-        }
-
-        if (eventName === "LOCALE_BUNDLE_SYNC") {
-            if (process.env.NODE_ENV === "production") {
-                await this.discordClient.i8next.loadFromDb();
-            }
         }
     }
 
