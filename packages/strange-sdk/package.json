@@ -9,12 +9,11 @@
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "@sentry/node": "^8.54.0",
+        "@sentry/node": "^9.0.0",
         "deepmerge": "^4.0.0",
         "node-fetch": "^2.7.0",
         "pino": "^8.21.0",
-        "pino-pretty": "^10.3.1",
-        "strange-db-client": "workspace:*"
+        "pino-pretty": "^10.3.0"
     },
     "devDependencies": {
         "@types/express": "^4.0.0",
@@ -25,6 +24,6 @@
     "peerDependencies": {
         "discord.js": "^14.0.0",
         "express": "^4.0.0",
-        "mongoose": "^8.0.0"
+        "strange-db-client": "workspace:*"
     }
 }

@@ -183,6 +183,85 @@ class MiscUtils {
         readCommands(dir);
         return filePaths;
     }
+
+    static mergeObjects(leftObj, rightObj) {
+        let shouldSync = false;
+
+        function isObject(item) {
+            return item && typeof item === "object" && !Array.isArray(item);
+        }
+
+        function deepMerge(_leftObj, _rightObj) {
+            const merged = { ..._rightObj };
+
+            // Check left keys
+            for (const key in _leftObj) {
+                const leftValue = _leftObj[key];
+                const rightValue = _rightObj[key];
+
+                // New key in left that doesn't exist in right
+                if (!(key in _rightObj)) {
+                    shouldSync = true;
+                    merged[key] = leftValue;
+                    continue;
+                }
+
+                // Handle arrays
+                if (Array.isArray(leftValue)) {
+                    if (!Array.isArray(rightValue)) {
+                        // Type mismatch: left is array, right is not
+                        delete merged[key];
+                        shouldSync = true;
+                        continue;
+                    }
+
+                    // If array contains objects, merge them by index
+                    if (leftValue.some((item) => isObject(item))) {
+                        merged[key] = leftValue.map((item, index) => {
+                            if (
+                                isObject(item) &&
+                                index < rightValue.length &&
+                                isObject(rightValue[index])
+                            ) {
+                                return deepMerge(item, rightValue[index]);
+                            }
+                            return index < rightValue.length ? rightValue[index] : item;
+                        });
+
+                        // If left array has more items than right array
+                        if (leftValue.length > rightValue.length) {
+                            shouldSync = true;
+                        }
+                    } else {
+                        // For primitive arrays, keep right value
+                        merged[key] = rightValue;
+                    }
+                    continue;
+                }
+
+                // Check if types are different
+                if (typeof leftValue !== typeof rightValue) {
+                    delete merged[key];
+                    shouldSync = true;
+                    continue;
+                }
+
+                // Handle nested objects
+                if (isObject(leftValue) && isObject(rightValue)) {
+                    merged[key] = deepMerge(leftValue, rightValue);
+                }
+            }
+
+            return merged;
+        }
+
+        const mergedConfig = deepMerge(leftObj, rightObj);
+
+        return {
+            merged: mergedConfig,
+            shouldSync,
+        };
+    }
 }
 
 module.exports = MiscUtils;

@@ -1,91 +1,43 @@
 const { Events, ApplicationCommandType } = require("discord.js");
 const fs = require("node:fs");
 const path = require("node:path");
-const { Logger, MiscUtils, permissions } = require("./utils");
-const DBClient = require("strange-db-client");
-const PluginConfig = require("./PluginConfig");
+const { Schema, DBClient } = require("strange-db-client");
+const { MiscUtils, permissions, Logger } = require("./utils");
+const Config = require("./Config");
 
-/**
- * Represents a Bot Plugin.
- * @typedef {object} BotPluginData
- * @property {string} baseDir - The base directory of the plugin.
- * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
- * @property {Array<string>} [dependencies] - The dependencies of the plugin.
- * @property {function(import('discord.js').Client): Promise<void>} [init] - The initialization function (optional)
- * @property {{[key: string]: (message: any, client: import('discord.js').Client) => Promise<{success: boolean, data?: any, error?: string}>}} ipcHandler - Object containing message handler functions
- */
-
-/**
- * Bot Plugin class for managing Discord bot plugins
- * Handles loading of commands, events, and contexts for a bot plugin
- */
 class BotPlugin {
-    /**
-     * Creates a new Bot Plugin instance
-     * @param {BotPluginData} data - Plugin initialization data
-     * @throws {TypeError} If plugin data is invalid
-     */
     constructor(data) {
         Logger.debug("Initializing plugin", data);
         BotPlugin.#validate(data);
-
-        /** @type {string} The plugin's root directory */
         this.pluginDir = path.join(data.baseDir, "..");
-
         const packageJson = require(path.join(this.pluginDir, "package.json"));
-
-        /** @type {string} The plugin's name from package.json */
         this.name = packageJson.name;
-
-        /** @type {string} The plugin's version from package.json */
         this.version = packageJson.version;
-
-        /** @type {string} The plugin's base directory containing bot-specific files */
         this.baseDir = data.baseDir;
-
-        /** @type {boolean} Whether the plugin is restricted to bot owners */
         this.ownerOnly = data.ownerOnly || false;
-
-        /** @type {string[]} List of other plugins this plugin depends on */
         this.dependencies = data.dependencies || [];
-
-        /** @type {?function(import('discord.js').Client): Promise<void>} Plugin initialization function */
         this.init = data.init || null;
-
-        /** @type {{[key: string]: (message: any, client: import('discord.js').Client) => Promise<{success: boolean, data?: any, error?: string}>}} - Object containing message handler functions */
         this.ipcHandler = data.ipcHandler || {};
-        /**
-         * @type {Map<string, import('mongoose').Model>} - Map of registered MongoDB models
-         */
-        this.models = new Map();
-
-        /**
-         * @type {Map<string, Function>} - Map of event handlers
-         */
         this.eventHandlers = new Map();
-
-        /**
-         * @type {Set<import('../typings').CommandType>} - Set of loaded commands
-         */
         this.commands = new Set();
-
-        /** @type {Set<import('../typings').ContextType>} */
         this.contexts = new Set();
-
-        /** @type {number} Counter for enabled prefix commands */
         this.prefixCount = 0;
-
-        /** @type {number} Counter for enabled slash commands */
         this.slashCount = 0;
-
-        Logger.debug(`Initialized bot plugin "${this.name}"`);
+        this.config = new Config(this.name, this.pluginDir);
+        this.dbClient = null;
+        this.schemas = new Map();
+        Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
-    /**
-     * Loads the plugin by registering events, commands, and schemas
-     * @returns {Promise<void>}
-     */
-    async load() {
+    async load(dbClient = null) {
+        if (dbClient && !(dbClient instanceof DBClient)) {
+            throw new TypeError("dbClient must be an instance of DBClient");
+        }
+
+        this.dbClient = dbClient;
+        if (dbClient) {
+            await this.config.init(this.dbClient);
+        }
         await this.#registerSchemas();
         this.#loadEvents();
         this.#loadCommands();
@@ -99,10 +51,6 @@ class BotPlugin {
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
-    /**
-     * Unloads the plugin by clearing all registered handlers and commands
-     * @returns {Promise<void>}
-     */
     async unload() {
         this.eventHandlers.clear();
         this.commands.clear();
@@ -112,112 +60,101 @@ class BotPlugin {
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 
-    /**
-     * Gets plugin settings for a specific guild
-     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
-     * @returns {Promise<object>} The plugin settings for the guild
-     */
     async getSettings(guild) {
         const guildId = typeof guild === "string" ? guild : guild.id;
-        return await DBClient.getInstance().getPluginSettings(guildId, this.name);
+        const cached = await this.getCache(`settings:${guildId}`, 5 * 60);
+
+        if (cached) {
+            return cached === "null"
+                ? this.getModel("settings")({ _id: guildId })
+                : this.getModel("settings").hydrate(cached);
+        }
+
+        const settings = await this.getModel("settings").findById(guildId);
+        await this.cache(`settings:${guildId}`, settings ? settings.toObject() : "null", 5 * 60);
+        return settings || this.getModel("settings")({ _id: guildId });
     }
 
-    /**
-     * Updates plugin settings for a specific guild
-     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
-     * @param {object} settings - The new settings object
-     * @returns {Promise<void>}
-     */
     async updateSettings(guild, settings) {
         const guildId = typeof guild === "string" ? guild : guild.id;
-        await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
+        await this.getModel("settings").updateOne(
+            { _id: guildId },
+            { $set: settings },
+            { upsert: true },
+        );
     }
 
-    /**
-     * Retrieves the plugin configuration
-     * @returns {Promise<object>} The plugin configuration
-     */
     async getConfig() {
-        if (process.env.NODE_ENV !== "production") {
-            return PluginConfig.fromDirectory(this.pluginDir);
-        }
-        return DBClient.getInstance().getPluginConfig(this.name);
+        return await this.config.get();
     }
 
-    /**
-     * Updates the plugin configuration
-     * @param {object} config - The new configuration object
-     * @returns {Promise<void>}
-     */
-    async setConfig(config) {
-        await DBClient.getInstance().updatePluginConfig(this.name, config);
+    async setConfig(newConfig) {
+        await this.config.save(newConfig);
     }
 
-    /**
-     * Retrieves a registered MongoDB model by name
-     * @param {string} modelName - The name of the model to retrieve
-     * @returns {import('mongoose').Model} The mongoose model
-     * @throws {Error} If the model is not registered
-     */
-    getModel(modelName) {
-        const prefixedName = `${this.name}-${modelName}`;
-        if (!this.models.has(prefixedName)) {
-            throw new Error(`Model ${modelName} is not registered`);
+    getModel(schemaName) {
+        if (!this.schemas.has(schemaName)) {
+            throw new Error(`Schema ${schemaName} is not registered with plugin ${this.name}`);
         }
-        return this.models.get(prefixedName);
+        const prefixedName = `${this.name}.${schemaName}`;
+        return this.dbClient.getModel(prefixedName);
+    }
+
+    async reloadConfigSchemas() {
+        const config = await this.config.get();
+        for (const [schemaName, schemaRequire] of this.schemas) {
+            if (typeof schemaRequire !== "function") {
+                continue;
+            }
+            const schema = schemaRequire(config);
+            const prefixedName = `${this.name}.${schemaName}`;
+            this.dbClient.reloadSchema(prefixedName, schema);
+        }
+    }
+
+    async cache(key, value, ttl) {
+        const prefixedKey = `${this.name}:${key}`;
+        return await this.dbClient.addToCache(prefixedKey, value, ttl);
+    }
+
+    async getCache(key, ttl) {
+        const prefixedKey = `${this.name}:${key}`;
+        return await this.dbClient.getFromCache(prefixedKey, ttl);
     }
 
     async #registerSchemas() {
-        const schemaPath = path.join(this.baseDir, "..", "schemas.js");
-        if (!require("fs").existsSync(schemaPath)) {
-            return await DBClient.getInstance().registerPluginSettings(this.name, {
-                enabled: { type: String, default: true },
-            });
-        }
+        const schemasDir = path.join(this.baseDir, "..", "schemas");
+        if (!fs.existsSync(schemasDir)) return;
 
-        const schemaFile = require(schemaPath);
-        const config = await this.getConfig();
-        const schemas = schemaFile(config);
+        const schemaFiles = fs.readdirSync(schemasDir).filter((file) => file.endsWith(".js"));
+        for (const file of schemaFiles) {
+            const schemaRequire = require(path.join(schemasDir, file));
+            const schemaName = file.split(".")[0];
 
-        // Validate structure
-        if (typeof schemas !== "object") {
-            throw new Error("registerSchemas must return an object");
-        }
-
-        // Validate each schema
-        for (const [name, schema] of Object.entries(schemas)) {
-            if (typeof name !== "string") {
-                throw new Error(`Schema name must be a string`);
+            let schema = schemaRequire;
+            if (typeof schemaRequire === "function") {
+                const config = await this.config.get();
+                schema = schemaRequire(config);
             }
 
-            if (typeof schema !== "object") {
-                throw new Error(`Schema ${name} must be an object`);
+            BotPlugin.#validateSchema(schema);
+            if (this.schemas.has(schemaName)) {
+                throw new Error(
+                    `Schema with name ${schemaName} is already registered with plugin ${this.name}`,
+                );
             }
-        }
 
-        // Register 'settings' schema
-        if (schemas.settings) {
-            await DBClient.getInstance().registerPluginSettings(this.name, schemas.settings);
-            delete schemas.settings;
-        } else {
-            await DBClient.getInstance().registerPluginSettings(this.name, {
-                enabled: { type: String, default: true },
-            });
-        }
-
-        // Register remaining schemas
-        for (const [name, schema] of Object.entries(schemas)) {
-            const prefixedName = `${this.name}-${name}`;
-            const model = await DBClient.getInstance().registerSchema(prefixedName, schema);
-            this.models.set(prefixedName, model);
+            if (this.dbClient) {
+                const prefixedName = `${this.name}.${schemaName}`;
+                this.dbClient.registerSchema(prefixedName, schema);
+            }
+            this.schemas.set(schemaName, schemaRequire);
         }
     }
 
     #loadEvents() {
-        Logger.debug(`Loading events for plugin ${this.name}`);
         const eventHandlerPath = `${this.baseDir}/events`;
         if (!fs.existsSync(eventHandlerPath)) {
-            Logger.debug(`No events directory found for plugin ${this.name}`);
             return;
         }
 
@@ -238,10 +175,7 @@ class BotPlugin {
     }
 
     #loadCommands() {
-        Logger.debug(`Loading commands for plugin ${this.name}`);
-
         if (!fs.existsSync(`${this.baseDir}/commands`)) {
-            Logger.debug(`No commands directory found for plugin ${this.name}`);
             return;
         }
 
@@ -252,30 +186,28 @@ class BotPlugin {
                 if (typeof cmd !== "object") continue;
                 BotPlugin.#validateCommand(cmd);
                 if (cmd.enabled === false) {
-                    Logger.debug(`Command ${cmd.name} is disabled`);
                     continue;
                 }
+
+                cmd.enabled = cmd.enabled || true;
+                cmd.cooldown = cmd.cooldown || 0;
+                cmd.botPermissions = cmd.botPermissions || [];
+                cmd.userPermissions = cmd.userPermissions || [];
+                cmd.validations = cmd.validations || [];
+                cmd.command = cmd.command || {};
+                cmd.slashCommand = cmd.slashCommand || {};
                 cmd.plugin = this;
+
                 this.commands.add(cmd);
-                Logger.debug(`Loaded command: ${cmd.name}`);
             } catch (error) {
-                Logger.error(
-                    `Error loading command ${file} for plugin ${this.name}: ${error.message}`,
-                    error,
-                );
             } finally {
                 delete require.cache[require.resolve(file)];
             }
         }
-
-        Logger.debug(`Loaded ${this.commands.size} commands for plugin ${this.name}`);
     }
 
     #loadContexts() {
-        Logger.debug(`Loading contexts for plugin ${this.name}`);
-
         if (!fs.existsSync(`${this.baseDir}/contexts`)) {
-            Logger.debug(`No contexts directory found for plugin ${this.name}`);
             return;
         }
 
@@ -287,22 +219,12 @@ class BotPlugin {
                 context.plugin = this;
                 this.contexts.add(context);
             } catch (error) {
-                Logger.error(
-                    `Error loading context ${file} for plugin ${this.name}: ${error.message}`,
-                    error,
-                );
             } finally {
                 delete require.cache[require.resolve(file)];
             }
         }
-
-        Logger.debug(`Loaded ${this.contexts.size} contexts for plugin ${this.name}`);
     }
 
-    /**
-     * Validates the plugin data.
-     * @param {BotPluginData} data - The plugin data to validate.
-     */
     static #validate(data) {
         if (typeof data !== "object") {
             throw new TypeError("BotPlugin data must be an Object.");
@@ -335,9 +257,14 @@ class BotPlugin {
         }
     }
 
-    /**
-     * @param {import('typings').CommandType} cmd - The command to validate.
-     */
+    static #validateSchema(schema) {
+        if (!(schema instanceof Schema)) {
+            throw new Error(`Schema must be an instance of Schema`);
+        }
+
+        // TODO: Validate schema fields
+    }
+
     static #validateCommand(cmd) {
         if (typeof cmd !== "object") {
             throw new TypeError("Command data must be an Object.");
@@ -390,7 +317,6 @@ class BotPlugin {
             }
         }
 
-        // Validate Command Details
         if (cmd.command) {
             if (typeof cmd.command !== "object") {
                 throw new TypeError("Command.command must be an object");
@@ -443,7 +369,6 @@ class BotPlugin {
             }
         }
 
-        // Validate Slash Command Details
         if (cmd.slashCommand) {
             if (typeof cmd.slashCommand !== "object") {
                 throw new TypeError("Command.slashCommand must be an object");
@@ -469,9 +394,6 @@ class BotPlugin {
         }
     }
 
-    /**
-     * @param {import('typings').ContextType} context - The context to validate.
-     */
     static #validateContext(context) {
         if (typeof context !== "object") {
             throw new TypeError("Context must be an object");

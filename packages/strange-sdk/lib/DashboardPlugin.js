@@ -1,183 +1,137 @@
+const fs = require("node:fs");
 const path = require("node:path");
+const { DBClient, Schema } = require("strange-db-client");
 const { Logger } = require("./utils");
-const DBClient = require("strange-db-client");
-const PluginConfig = require("./PluginConfig");
+const Config = require("./Config");
 
-/**
- * Represents a Plugin.
- * @typedef {object} DashboardPluginData
- * @property {string} baseDir - The base directory of the plugin.
- * @property {boolean} [ownerOnly] - Whether the plugin is configured to be owner only.
- * @property {string} [icon] - The icon of the plugin.
- * @property {function(): Promise<void>} [init] - The init function to be executed when the plugin is loaded by the dashboard
- * @property {import('express').Router} dashboardRouter - Express router for the settings page.
- * @property {import('express').Router} adminRouter - Express router for the admin page.
- */
-
-/**
- * Dashboard Plugin class for managing dashboard UI plugins
- * Handles settings, admin routes, and configuration for dashboard plugins
- */
 class DashboardPlugin {
-    /**
-     * Creates a new Dashboard Plugin instance
-     * @param {DashboardPluginData} data - Plugin initialization data
-     * @throws {TypeError} If plugin data is invalid
-     */
     constructor(data) {
         Logger.debug("Initializing plugin", data);
         DashboardPlugin.#validate(data);
-
-        /** @type {string} The plugin's root directory */
         this.pluginDir = path.join(data.baseDir, "..");
-
         const packageJson = require(path.join(this.pluginDir, "package.json"));
-
-        /** @type {string} The plugin's name from package.json */
         this.name = packageJson.name;
-
-        /** @type {string} The plugin's version from package.json */
         this.version = packageJson.version;
-
-        /** @type {string} The plugin's base directory containing dashboard-specific files */
         this.baseDir = data.baseDir;
-
-        /** @type {boolean} Whether the plugin is owner-only */
         this.ownerOnly = data.ownerOnly || false;
-
-        /** @type {string} FontAwesome icon class used in the dashboard UI */
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
-
-        /** @type {?function(): Promise<void>} Plugin initialization function */
         this.init = data.init || null;
-
-        /**
-         * @type {Map<string, import('mongoose').Model>} - Map of registered MongoDB models
-         */
-        this.models = new Map();
-
-        /** @type {?import('express').Router} Express router for plugin settings page */
         this.dashboardRouter = data.dashboardRouter || null;
-
-        /** @type {?import('express').Router} Express router for plugin admin page */
         this.adminRouter = data.adminRouter || null;
-
+        this.config = new Config(this.name, this.pluginDir);
+        this.dbClient = null;
+        this.schemas = new Map();
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
-    /**
-     * Loads the dashboard plugin
-     * @returns {Promise<void>}
-     */
-    async load() {
+    async load(dbClient = null) {
+        if (dbClient && !(dbClient instanceof DBClient)) {
+            throw new TypeError("dbClient must be an instance of DBClient");
+        }
+        this.dbClient = dbClient;
+        if (dbClient) {
+            await this.config.init(this.dbClient);
+        }
         await this.#registerSchemas();
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
-    /**
-     * Unloads the dashboard plugin
-     * @returns {Promise<void>}
-     */
     async unload() {
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 
-    /**
-     * Gets plugin settings for a specific guild
-     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
-     * @returns {Promise<object>} The plugin settings for the guild
-     */
     async getSettings(guild) {
         const guildId = typeof guild === "string" ? guild : guild.id;
-        return await DBClient.getInstance().getPluginSettings(guildId, this.name);
+        const cached = await this.getCache(`settings:${guildId}`, 5 * 60);
+
+        if (cached) {
+            return cached === "null"
+                ? this.getModel("settings")({ _id: guildId })
+                : this.getModel("settings").hydrate(cached);
+        }
+
+        const settings = await this.getModel("settings").findById(guildId);
+        await this.cache(`settings:${guildId}`, settings ? settings.toObject() : "null", 5 * 60);
+        return settings || this.getModel("settings")({ _id: guildId });
     }
 
-    /**
-     * Updates plugin settings for a specific guild
-     * @param {import('discord.js').Guild|string} guild - The guild or guild ID
-     * @param {object} settings - The new settings object
-     * @returns {Promise<void>}
-     */
     async updateSettings(guild, settings) {
         const guildId = typeof guild === "string" ? guild : guild.id;
-        await DBClient.getInstance().updatePluginSettings(guildId, this.name, settings);
+        await this.getModel("settings").updateOne(
+            { _id: guildId },
+            { $set: settings },
+            { upsert: true },
+        );
     }
 
     async getConfig() {
-        if (process.env.NODE_ENV !== "production") {
-            return PluginConfig.fromDirectory(this.pluginDir);
-        }
-        return DBClient.getInstance().getPluginConfig(this.name);
+        return await this.config.get();
     }
 
-    async setConfig(config) {
-        await DBClient.getInstance().updatePluginConfig(this.name, config);
+    async setConfig(newConfig) {
+        await this.config.save(newConfig);
     }
 
-    /**
-     * Retrieves a registered MongoDB model by name
-     * @param {string} modelName - The name of the model to retrieve
-     * @returns {import('mongoose').Model} The mongoose model
-     * @throws {Error} If the model is not registered
-     */
-    getModel(modelName) {
-        const prefixedName = `${this.name}-${modelName}`;
-        if (!this.models.has(prefixedName)) {
-            throw new Error(`Model ${modelName} is not registered`);
+    getModel(schema) {
+        if (!this.schemas.has(schema)) {
+            throw new Error(`Schema ${schema} is not registered with plugin ${this.name}`);
         }
-        return this.models.get(prefixedName);
+        const prefixedName = `${this.name}.${schema}`;
+        return this.dbClient.getModel(prefixedName);
+    }
+
+    async reloadConfigSchemas() {
+        const config = await this.config.get();
+        for (const [schemaName, schemaRequire] of this.schemas) {
+            if (typeof schemaRequire !== "function") {
+                continue;
+            }
+            const schema = schemaRequire(config);
+            const prefixedName = `${this.name}.${schemaName}`;
+            this.dbClient.reloadSchema(prefixedName, schema);
+        }
+    }
+
+    async cache(key, value, ttl) {
+        const prefixedKey = `${this.name}:${key}`;
+        return await this.dbClient.addToCache(prefixedKey, value, ttl);
+    }
+
+    async getCache(key, ttl) {
+        const prefixedKey = `${this.name}:${key}`;
+        return await this.dbClient.getFromCache(prefixedKey, ttl);
     }
 
     async #registerSchemas() {
-        const schemaPath = path.join(this.baseDir, "..", "schemas.js");
-        if (!require("fs").existsSync(schemaPath)) {
-            return await DBClient.getInstance().registerPluginSettings(this.name, {
-                enabled: { type: String, default: true },
-            });
-        }
+        const schemasDir = path.join(this.baseDir, "..", "schemas");
+        if (!fs.existsSync(schemasDir)) return;
 
-        const schemaFile = require(schemaPath);
-        const config = await this.getConfig();
-        const schemas = schemaFile(config);
+        const schemaFiles = fs.readdirSync(schemasDir).filter((file) => file.endsWith(".js"));
+        for (const file of schemaFiles) {
+            const schemaRequire = require(path.join(schemasDir, file));
+            const schemaName = file.split(".")[0];
 
-        // Validate structure
-        if (typeof schemas !== "object") {
-            throw new Error("registerSchemas must return an object");
-        }
-
-        // Validate each schema
-        for (const [name, schema] of Object.entries(schemas)) {
-            if (typeof name !== "string") {
-                throw new Error(`Schema name must be a string`);
+            let schema = schemaRequire;
+            if (typeof schemaRequire === "function") {
+                const config = await this.config.get();
+                schema = schemaRequire(config);
             }
 
-            if (typeof schema !== "object") {
-                throw new Error(`Schema ${name} must be an object`);
+            DashboardPlugin.#validateSchema(schema);
+            if (this.schemas.has(schemaName)) {
+                throw new Error(
+                    `Schema with name ${schemaName} is already registered with plugin ${this.name}`,
+                );
             }
-        }
 
-        // Register 'settings' schema
-        if (schemas.settings) {
-            await DBClient.getInstance().registerPluginSettings(this.name, schemas.settings);
-            delete schemas.settings;
-        } else {
-            await DBClient.getInstance().registerPluginSettings(this.name, {
-                enabled: { type: String, default: true },
-            });
-        }
-
-        // Register remaining schemas
-        for (const [name, schema] of Object.entries(schemas)) {
-            const prefixedName = `${this.name}-${name}`;
-            const model = await DBClient.getInstance().registerSchema(prefixedName, schema);
-            this.models.set(prefixedName, model);
+            if (this.dbClient) {
+                const prefixedName = `${this.name}.${schemaName}`;
+                this.dbClient.registerSchema(prefixedName, schema);
+            }
+            this.schemas.set(schemaName, schemaRequire);
         }
     }
 
-    /**
-     * Validates the plugin data.
-     * @param {DashboardPluginData} data - The plugin data to validate.
-     */
     static #validate(data) {
         if (typeof data !== "object") {
             throw new TypeError("DashboardPlugin data must be an Object.");
@@ -219,6 +173,14 @@ class DashboardPlugin {
         if (data.adminRouter && !data.adminRouter.stack) {
             throw new Error("DashboardPlugin adminRouter must be an instance of express.Router");
         }
+    }
+
+    static #validateSchema(schema) {
+        if (!(schema instanceof Schema)) {
+            throw new Error(`Schema must be an instance of Schema`);
+        }
+
+        // TODO: Validate schema fields
     }
 }
 
