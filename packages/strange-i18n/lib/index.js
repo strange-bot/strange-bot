@@ -1,31 +1,31 @@
 const { readdirSync, readFileSync, existsSync, statSync } = require("node:fs");
 const { join } = require("node:path");
 const i18next = require("i18next");
-const localizationModel = require("./schema");
+const deepmerge = require("deepmerge");
+const flat = require("flat");
+const { DBClient } = require("strange-db-client");
+const localizationSchema = require("./schema");
 
 class I18nManager {
-    /**
-     * Creates an instance of I18nManager.
-     * @param {string} app - The application name.
-     * @param {object} [options={}] - The options for the I18nManager.
-     * @param {string} [options.fallbackLng="en-US"] - The fallback language.
-     * @param {string} [options.baseDir] - The base directory for local translations.
-     * @param {string} [options.pluginsDir] - The plugins directory for local translations.
-     */
     constructor(app, options = {}) {
         this.app = app;
         this.translations = new Map();
-        this.meta = require(join(__dirname, "../languages-meta.json"));
-        this.availableLanguages = this.meta.map((lng) => lng.name);
+        this.languagesMeta = require(join(__dirname, "../languages-meta.json"));
+        this.availableLanguages = this.languagesMeta.map((lng) => lng.name);
         this.fallbackLng = options.fallbackLng || "en-US";
         this.baseDir = options.baseDir;
         this.pluginsDir = options.pluginsDir;
+        this.useDatabase = options.useDatabase || false;
+
+        if (this.useDatabase) {
+            this.dbClient = DBClient.getInstance();
+            this.localizationModel = this.dbClient.registerSchema(
+                "localizations",
+                localizationSchema,
+            );
+        }
     }
 
-    /**
-     * Initializes the I18nManager.
-     * @returns {Promise<Map<string, Function>>} - A map of translation functions.
-     */
     async initialize() {
         await i18next.init({
             debug: false,
@@ -36,14 +36,13 @@ class I18nManager {
             preload: this.availableLanguages,
         });
 
-        if (process.env.NODE_ENV !== "production") {
-            if (!this.baseDir || !this.pluginsDir) {
-                throw new Error("baseDir and pluginsDir are required in local mode");
-            }
+        if (this.baseDir && this.pluginsDir) {
             this.walkBaseDirectory(this.baseDir);
             this.walkPluginDirectory(this.pluginsDir);
-        } else {
-            await this.loadFromDb();
+        }
+
+        if (this.useDatabase) {
+            await this.syncWithDatabase();
         }
 
         for (const language of this.availableLanguages) {
@@ -54,31 +53,83 @@ class I18nManager {
         return this.translations;
     }
 
-    /**
-     * Loads translations from the database.
-     * @returns {Promise<void>}
-     */
-    async loadFromDb() {
+    async syncWithDatabase() {
         try {
-            const localizations = await localizationModel.find({ app: this.app }).lean();
-            for (const localization of localizations) {
-                i18next.addResourceBundle(
-                    localization.lang,
-                    localization.plugin,
-                    localization.data,
-                    true,
-                    true,
-                );
+            const localTranslations = this.getAllLocalTranslations();
+            const dbLocalizations = await this.localizationModel.find({ app: this.app }).lean();
+            const dbTranslationsMap = new Map(
+                dbLocalizations.map((loc) => [`${loc.lang}:${loc.plugin}`, loc]),
+            );
+
+            const updates = [];
+            const inserts = [];
+
+            for (const [lang, plugins] of Object.entries(localTranslations)) {
+                for (const [plugin, localData] of Object.entries(plugins)) {
+                    const key = `${lang}:${plugin}`;
+                    const dbEntry = dbTranslationsMap.get(key);
+
+                    if (!dbEntry) {
+                        inserts.push({
+                            insertOne: {
+                                document: {
+                                    app: this.app,
+                                    lang,
+                                    plugin,
+                                    data: localData,
+                                },
+                            },
+                        });
+                        i18next.addResourceBundle(lang, plugin, localData, true, true);
+                    } else {
+                        const mergedData = deepmerge(dbEntry.data, localData, {
+                            arrayMerge: (destination, _source) => destination,
+                            customMerge: (_key) => {
+                                return (dbValue, localValue) => {
+                                    return dbValue !== undefined ? dbValue : localValue;
+                                };
+                            },
+                        });
+
+                        if (JSON.stringify(mergedData) !== JSON.stringify(dbEntry.data)) {
+                            updates.push({
+                                updateOne: {
+                                    filter: { _id: dbEntry._id },
+                                    update: { $set: { data: mergedData } },
+                                },
+                            });
+                        }
+                        i18next.addResourceBundle(lang, plugin, mergedData, true, true);
+                    }
+                }
+            }
+
+            if (inserts.length > 0) {
+                await this.localizationModel.bulkWrite(inserts);
+            }
+            if (updates.length > 0) {
+                await this.localizationModel.bulkWrite(updates);
             }
         } catch (error) {
-            throw new Error(`Failed to load translations from database: ${error.message}`);
+            throw new Error(`Failed to sync translations with database: ${error.message}`);
         }
     }
 
-    /**
-     * Walks through the base directory and loads translations.
-     * @param {string} baseDir - The base directory path.
-     */
+    getAllLocalTranslations() {
+        const translations = {};
+
+        for (const lang of this.availableLanguages) {
+            translations[lang] = {};
+            const resources = i18next.services.resourceStore.data[lang] || {};
+
+            for (const [plugin, data] of Object.entries(resources)) {
+                translations[lang][plugin] = data;
+            }
+        }
+
+        return translations;
+    }
+
     walkBaseDirectory(baseDir) {
         try {
             const locales = readdirSync(baseDir).filter((file) => file.endsWith(".json"));
@@ -100,10 +151,6 @@ class I18nManager {
         }
     }
 
-    /**
-     * Walks through the plugin directory and loads translations.
-     * @param {string} pluginsDir - The plugins directory path.
-     */
     walkPluginDirectory(pluginsDir) {
         try {
             const plugins = readdirSync(pluginsDir).filter((dir) => {
@@ -141,13 +188,6 @@ class I18nManager {
         }
     }
 
-    /**
-     * Translates a key to the target language.
-     * @param {string} key - The translation key.
-     * @param {object | string} [optionsOrLanguage] - The options or target language.
-     * @param {string} [language] - The target language.
-     * @returns {string} - The translated string.
-     */
     tr(key, optionsOrLanguage, language) {
         const targetLanguage =
             typeof optionsOrLanguage === "string"
@@ -163,50 +203,42 @@ class I18nManager {
         return translationFn(key, options);
     }
 
-    /**
-     * Gets translations for all available languages.
-     * @param {string} key - The translation key.
-     * @returns {object} - An object containing translations for all languages.
-     */
     getAllTr(key) {
         const localizations = {};
         for (const language of this.translations.keys()) {
             const dKey =
-                this.meta.find((lng) => lng.name === language || lng.aliases.includes(language))
-                    ?.discord || language;
+                this.languagesMeta.find(
+                    (lng) => lng.name === language || lng.aliases.includes(language),
+                )?.discord || language;
             localizations[dKey] = this.tr(key, language);
         }
         return localizations;
     }
 
-    getResourceBundle(plugin, language) {
-        return i18next.getResourceBundle(plugin, language) || {};
+    getResourceBundle(language, plugin, flatten = false) {
+        const bundle = i18next.getResourceBundle(language, plugin);
+        return flatten ? flat.flatten(bundle) : bundle;
     }
 
-    /**
-     * Updates the resource bundle for a plugin and language.
-     * @param {string} plugin - The plugin name.
-     * @param {string} language - The language code.
-     * @param {object} data - The translation data.
-     * @returns {Promise<void>}
-     */
     async updateResourceBundle(plugin, language, data) {
         try {
-            await localizationModel.updateOne(
-                { app: this.app, plugin, lang: language },
-                { data },
-                { upsert: true },
-            );
-            i18next.addResourceBundle(language, plugin, data, true, true);
+            const currentBundle = i18next.getResourceBundle(language, plugin) || {};
+            const unflattenedData = flat.unflatten(data);
+
+            if (JSON.stringify(currentBundle) !== JSON.stringify(unflattenedData)) {
+                if (this.useDatabase) {
+                    await this.localizationModel.updateOne(
+                        { app: this.app, plugin, lang: language },
+                        { data: unflattenedData },
+                        { upsert: true },
+                    );
+                }
+
+                i18next.addResourceBundle(language, plugin, unflattenedData, true, true);
+            }
         } catch (error) {
             throw new Error(`Failed to update resource bundle: ${error.message}`);
         }
-    }
-
-    // Helper function to update bot/dashboard translations (static method)
-    static async updateTranslations(plugin, language, data) {
-        const i18nManager = new I18nManager("bot");
-        await i18nManager.updateResourceBundle(plugin, language, data);
     }
 }
 
