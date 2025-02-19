@@ -78,7 +78,7 @@ declare class DatabaseClient {
      * @param {string} key The key to get the value from.
      * @param {number} [ttl] The time-to-live in seconds. This is used to refresh the cache.
      */
-    getFromCache(key: string, ttl?: number): Promise<string | null>;
+    getFromCache(key: string, ttl?: number): Promise<any|undefined>;
 
     /**
      * Disconnects from MongoDB and Redis.

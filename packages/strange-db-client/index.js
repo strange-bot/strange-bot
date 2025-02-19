@@ -75,27 +75,19 @@ class DatabaseClient {
         throw new Error(`Model ${name} not found`);
     }
 
-    async registerPluginSettings(pluginName, pluginSettings) {
-        if (!pluginName || typeof pluginName !== "string") {
-            throw new Error("Plugin name must be a string");
-        }
-
-        this.settingsSchema.schema.add({
-            [`plugins.${pluginName}`]: pluginSettings,
-        });
-
-        return true;
-    }
-
     async addToCache(key, value, ttl = 60) {
-        const v = typeof value === "object" ? JSON.stringify(value) : value;
-        await this.redis.set(key, v, "EX", ttl);
+        const serializedValue = typeof value === "object" ? JSON.stringify(value) : value;
+        if (ttl === 0) {
+            await this.redis.set(key, serializedValue);
+        } else {
+            await this.redis.set(key, serializedValue, "EX", ttl);
+        }
     }
 
-    async getFromCache(key, ttl) {
-        if (!this.redis.exists(key)) return null;
+    async getFromCache(key, ttl = 0) {
         const value = await this.redis.get(key);
-        if (ttl) await this.redis.expire(key, ttl);
+        if (value === null) return undefined;
+        if (ttl !== 0) await this.redis.expire(key, ttl);
         return value;
     }
 
