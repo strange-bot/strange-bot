@@ -20,4 +20,5 @@ export interface Utils {
 export * from "./BotPlugin";
 export * from "./Config";
 export * from "./DashboardPlugin";
+export * from "./DBService";
 export { Schema, SchemaTypes };

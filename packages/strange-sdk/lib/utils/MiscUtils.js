@@ -187,10 +187,21 @@ class MiscUtils {
     static mergeObjects(leftObj, rightObj) {
         let shouldSync = false;
 
+        /**
+         * Check if item is an object
+         * @param {*} item - Item to check
+         * @returns {boolean} True if item is an object
+         */
         function isObject(item) {
             return item && typeof item === "object" && !Array.isArray(item);
         }
 
+        /**
+         * Deep merge two objects
+         * @param {object} _leftObj - Left object
+         * @param {object} _rightObj - Right object
+         * @returns {{merged: {}, shouldSync: boolean}} Merged object and sync flag
+         */
         function deepMerge(_leftObj, _rightObj) {
             const merged = { ..._rightObj };
 

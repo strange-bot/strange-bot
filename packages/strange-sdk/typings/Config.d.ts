@@ -1,5 +1,4 @@
-import { Model } from "mongoose";
-import { DBClient } from "strange-db-client";
+import { DBClient, Model } from "strange-db-client";
 
 export interface ConfigData {
     [key: string]: any;
@@ -14,17 +13,10 @@ export interface SaveableConfig extends ConfigData {
  * Supports both local file and database storage with caching
  */
 export class Config {
-    private static configModel: Model<any>;
-    private static dbClient: DBClient;
-
     private pluginName: string;
-    private configKey: string;
-    private baseDir: string;
+    private cacheKey: string;
     private configPath: string;
-    private configData: ConfigData;
-    private initialized: boolean;
     private dbClient: DBClient | null;
-    private configModel: Model<any>;
 
     /**
      * Creates a new Config instance
@@ -36,21 +28,21 @@ export class Config {
 
     /**
      * Initializes the configuration by syncing with database
-     * Should be called before first use
+     * @param dbClient - Optional database client for syncing
      * @throws Error When initialization fails
      */
-    init(): Promise<void>;
+    init(dbClient?: DBClient | null): Promise<void>;
 
     /**
      * Retrieves the configuration data
-     * @throws Error When accessed before initialization
      * @returns Configuration object with save method
      */
     get(): Promise<SaveableConfig>;
 
     /**
-     * Saves the current configuration to database
-     * @throws Error When save operation fails
+     * Saves the configuration to database
+     * @param configToSave - Configuration data to save
+     * @throws Error When save operation fails or running in local mode
      */
-    save(): Promise<void>;
+    private save(configToSave: ConfigData): Promise<void>;
 }

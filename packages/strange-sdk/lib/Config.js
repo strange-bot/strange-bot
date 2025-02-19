@@ -14,7 +14,8 @@ class Config {
 
     async init(dbClient = null) {
         if (!dbClient) {
-            throw new Error("Database client is required");
+            Logger.debug("DBClient is not initialized: Local config will be used");
+            return;
         }
 
         this.dbClient = dbClient;
@@ -66,7 +67,7 @@ class Config {
                     const dbConfig = await configModel.findById(this.pluginName).lean();
                     if (dbConfig?.config) {
                         currentConfig = dbConfig.config;
-                        await this.dbClient.addToCache(this.cacheKey, currentConfig);
+                        await this.dbClient.addToCache(this.cacheKey, currentConfig, 0);
                     }
                 }
             } catch (error) {
@@ -103,7 +104,7 @@ class Config {
                 { $set: { config: configToSave } },
                 { upsert: true },
             );
-            await this.dbClient.addToCache(this.cacheKey, configToSave);
+            await this.dbClient.addToCache(this.cacheKey, configToSave, 0);
         } catch (error) {
             Logger.error(`Failed to save configuration: ${error.message}`);
             throw error;

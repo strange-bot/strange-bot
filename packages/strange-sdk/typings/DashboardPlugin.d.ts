@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { Guild } from "discord.js";
-import { Model, Document, Schema } from "mongoose";
 import { DBClient } from "strange-db-client";
 import { SaveableConfig } from "./Config";
+import { DBService } from "./DBService";
 
 interface PluginData {
     /**
@@ -25,7 +25,6 @@ interface PluginData {
 
     /**
      * Optional initialization function that runs when the plugin loads
-     * Use this to set up plugin-specific resources or configurations
      */
     init?: () => Promise<void>;
 
@@ -38,6 +37,11 @@ interface PluginData {
      * Express router for the plugin's admin page
      */
     adminRouter?: Router;
+
+    /**
+     * Database service implementation for the plugin
+     */
+    dbService?: DBService;
 }
 
 declare class DashboardPlugin {
@@ -68,14 +72,14 @@ declare class DashboardPlugin {
     /** Express router for plugin admin page */
     public readonly adminRouter: Router | null;
 
+    /** Database service instance */
+    public readonly dbService: DBService;
+
     /** Plugin configuration manager */
     public readonly config: SaveableConfig;
 
     /** Database client instance if available */
-    public readonly dbClient?: DBClient;
-
-    /** Map of registered MongoDB schemas */
-    public readonly schemas: Map<string, Schema | ((config: SaveableConfig) => Schema)>;
+    public readonly dbClient: DBClient | null;
 
     /**
      * Creates a new plugin instance
@@ -102,14 +106,7 @@ declare class DashboardPlugin {
      * @param guild The guild or guild ID
      * @returns The guild-specific settings
      */
-    public getSettings(guild: Guild | string): Promise<Document | null>;
-
-    /**
-     * Updates plugin settings for a specific guild
-     * @param guild The guild or guild ID
-     * @param settings New settings to apply
-     */
-    public updateSettings(guild: Guild | string, settings: any): Promise<void>;
+    public getSettings(guild: Guild | string): Promise<object>;
 
     /**
      * Retrieves the plugin's configuration
@@ -117,45 +114,7 @@ declare class DashboardPlugin {
      */
     public getConfig(): Promise<SaveableConfig>;
 
-    /**
-     * Updates the plugin's configuration
-     * @param newConfig New configuration object
-     */
-    public setConfig(newConfig: any): Promise<void>;
-
-    /**
-     * Retrieves a registered MongoDB model by name
-     * @param schema Name of the schema to get model for
-     * @returns The mongoose model
-     * @throws {Error} If model is not registered
-     */
-    public getModel(schema: string): Model<any>;
-
-    /**
-     * Reloads schemas with make use of config parameter
-     * @returns Promise that resolves when unloading is complete
-     */
-    public reloadConfigSchemas(): Promise<void>;
-
-    /**
-     * Adds a value to the cache.
-     * @param key The key to store the value under.
-     * @param value The value to store.
-     * @param [ttl] Time-to-live in seconds
-     */
-    public cache(key: string, value: string, ttl?: number): void;
-
-    /**
-     * Gets a value from the cache.
-     * @param key The key to get the value from.
-     * @param ttl The time-to-live in seconds. This is used to refresh the cache.
-     * @returns The cached value or null if not found
-     */
-    getFromCache(key: string, ttl?: number): string | null;
-
-    private registerSchemas(): Promise<void>;
     private static validate(data: PluginData): void;
-    private static validateSchema(schema: Schema): void;
 }
 
 export { DashboardPlugin };

@@ -9,9 +9,9 @@ import {
     ApplicationCommandOptionData,
     ContextMenuCommandInteraction,
 } from "discord.js";
-import { Model, Schema, Document } from "mongoose";
-import { DBClient } from "strange-db-client";
+import { DBClient, Model, Schema, Document } from "strange-db-client";
 import { Config, SaveableConfig } from "./Config";
+import { DBService } from "./DBService";
 
 interface IPCHandler {
     [key: string]: (message: any, client: Client) => Promise<any>;
@@ -50,6 +50,12 @@ interface PluginData {
      * Each key is a message type and the value is its handler function
      */
     ipcHandler?: IPCHandler;
+
+    /**
+     * Database service implementation for the plugin
+     * This is used to manage plugin-specific database schemas and settings
+     */
+    dbService?: DBService;
 }
 
 declare class BotPlugin {
@@ -74,8 +80,11 @@ declare class BotPlugin {
     /** Optional initialization function that runs when plugin loads */
     public readonly init: ((client: Client) => Promise<void>) | null;
 
-    /** Object containing IPC message handlers */
+    /** Object containing IPC message handlers for inter-process communication */
     public readonly ipcHandler: IPCHandler;
+
+    /** Database service instance */
+    public readonly dbService: DBService;
 
     /** Map of Discord.js event handlers */
     public readonly eventHandlers: Map<keyof typeof Events, Function>;
@@ -97,9 +106,6 @@ declare class BotPlugin {
 
     /** Database client instance if available */
     public readonly dbClient?: DBClient;
-
-    /** Map of registered MongoDB schemas */
-    public readonly schemas: Map<string, Schema | ((config: SaveableConfig) => Schema)>;
 
     /**
      * Creates a new plugin instance
@@ -126,14 +132,7 @@ declare class BotPlugin {
      * @param guild The guild or guild ID
      * @returns The guild-specific settings
      */
-    public getSettings(guild: Guild | string): Promise<Document | null>;
-
-    /**
-     * Updates plugin settings for a specific guild
-     * @param guild The guild or guild ID
-     * @param settings New settings to apply
-     */
-    public updateSettings(guild: Guild | string, settings: any): Promise<void>;
+    public getSettings(guild: Guild | string): Promise<Model | object>;
 
     /**
      * Retrieves the plugin's configuration
@@ -141,43 +140,6 @@ declare class BotPlugin {
      */
     public getConfig(): Promise<SaveableConfig>;
 
-    /**
-     * Updates the plugin's configuration
-     * @param newConfig New configuration object
-     */
-    public setConfig(newConfig: any): Promise<void>;
-
-    /**
-     * Retrieves a registered MongoDB model by name
-     * @param schema Name of the schema to get model for
-     * @returns The mongoose model
-     * @throws {Error} If model is not registered
-     */
-    public getModel(schema: string): Model<any>;
-
-    /**
-     * Reloads schemas with make use of config parameter
-     * @returns Promise that resolves when unloading is complete
-     */
-    public reloadConfigSchemas(): Promise<void>;
-
-    /**
-     * Adds a value to the cache.
-     * @param key The key to store the value under.
-     * @param value The value to store.
-     * @param [ttl] Time-to-live in seconds
-     */
-    public cache(key: string, value: string, ttl?: number): void;
-
-    /**
-     * Gets a value from the cache.
-     * @param key The key to get the value from.
-     * @param ttl The time-to-live in seconds. This is used to refresh the cache.
-     * @returns The cached value or null if not found
-     */
-    getFromCache(key: string, ttl?: number): string | null;
-
-    private registerSchemas(): Promise<void>;
     private loadEvents(): void;
     private loadCommands(): void;
     private loadContexts(): void;

@@ -1,8 +1,9 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const { DBClient, Schema } = require("strange-db-client");
+const { DBClient } = require("strange-db-client");
 const { Logger } = require("./utils");
 const Config = require("./Config");
+const DBService = require("./DBService");
 
 class DashboardPlugin {
     constructor(data) {
@@ -18,6 +19,7 @@ class DashboardPlugin {
         this.init = data.init || null;
         this.dashboardRouter = data.dashboardRouter || null;
         this.adminRouter = data.adminRouter || null;
+        this.dbService = data.dbService || new DBService(this.name);
         this.config = new Config(this.name, this.pluginDir);
         this.dbClient = null;
         this.schemas = new Map();
@@ -29,10 +31,11 @@ class DashboardPlugin {
             throw new TypeError("dbClient must be an instance of DBClient");
         }
         this.dbClient = dbClient;
-        if (dbClient) {
-            await this.config.init(this.dbClient);
-        }
-        await this.#registerSchemas();
+        await this.config.init(this.dbClient);
+
+        const config = await this.config.get();
+        await this.dbService?.init(this.dbClient, config);
+
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
@@ -41,95 +44,11 @@ class DashboardPlugin {
     }
 
     async getSettings(guild) {
-        const guildId = typeof guild === "string" ? guild : guild.id;
-        const cached = await this.getCache(`settings:${guildId}`, 5 * 60);
-
-        if (cached) {
-            return cached === "null"
-                ? this.getModel("settings")({ _id: guildId })
-                : this.getModel("settings").hydrate(cached);
-        }
-
-        const settings = await this.getModel("settings").findById(guildId);
-        await this.cache(`settings:${guildId}`, settings ? settings.toObject() : "null", 5 * 60);
-        return settings || this.getModel("settings")({ _id: guildId });
-    }
-
-    async updateSettings(guild, settings) {
-        const guildId = typeof guild === "string" ? guild : guild.id;
-        await this.getModel("settings").updateOne(
-            { _id: guildId },
-            { $set: settings },
-            { upsert: true },
-        );
+        return this.dbService?.getSettings(guild) || {};
     }
 
     async getConfig() {
         return await this.config.get();
-    }
-
-    async setConfig(newConfig) {
-        await this.config.save(newConfig);
-    }
-
-    getModel(schema) {
-        if (!this.schemas.has(schema)) {
-            throw new Error(`Schema ${schema} is not registered with plugin ${this.name}`);
-        }
-        const prefixedName = `${this.name}.${schema}`;
-        return this.dbClient.getModel(prefixedName);
-    }
-
-    async reloadConfigSchemas() {
-        const config = await this.config.get();
-        for (const [schemaName, schemaRequire] of this.schemas) {
-            if (typeof schemaRequire !== "function") {
-                continue;
-            }
-            const schema = schemaRequire(config);
-            const prefixedName = `${this.name}.${schemaName}`;
-            this.dbClient.reloadSchema(prefixedName, schema);
-        }
-    }
-
-    async cache(key, value, ttl) {
-        const prefixedKey = `${this.name}:${key}`;
-        return await this.dbClient.addToCache(prefixedKey, value, ttl);
-    }
-
-    async getCache(key, ttl) {
-        const prefixedKey = `${this.name}:${key}`;
-        return await this.dbClient.getFromCache(prefixedKey, ttl);
-    }
-
-    async #registerSchemas() {
-        const schemasDir = path.join(this.baseDir, "..", "schemas");
-        if (!fs.existsSync(schemasDir)) return;
-
-        const schemaFiles = fs.readdirSync(schemasDir).filter((file) => file.endsWith(".js"));
-        for (const file of schemaFiles) {
-            const schemaRequire = require(path.join(schemasDir, file));
-            const schemaName = file.split(".")[0];
-
-            let schema = schemaRequire;
-            if (typeof schemaRequire === "function") {
-                const config = await this.config.get();
-                schema = schemaRequire(config);
-            }
-
-            DashboardPlugin.#validateSchema(schema);
-            if (this.schemas.has(schemaName)) {
-                throw new Error(
-                    `Schema with name ${schemaName} is already registered with plugin ${this.name}`,
-                );
-            }
-
-            if (this.dbClient) {
-                const prefixedName = `${this.name}.${schemaName}`;
-                this.dbClient.registerSchema(prefixedName, schema);
-            }
-            this.schemas.set(schemaName, schemaRequire);
-        }
     }
 
     static #validate(data) {
@@ -141,7 +60,6 @@ class DashboardPlugin {
             throw new Error("DashboardPlugin baseDir must be a string");
         }
 
-        const fs = require("fs");
         if (!fs.existsSync(data.baseDir)) {
             throw new Error("DashboardPlugin baseDir does not exist");
         }
@@ -173,14 +91,10 @@ class DashboardPlugin {
         if (data.adminRouter && !data.adminRouter.stack) {
             throw new Error("DashboardPlugin adminRouter must be an instance of express.Router");
         }
-    }
 
-    static #validateSchema(schema) {
-        if (!(schema instanceof Schema)) {
-            throw new Error(`Schema must be an instance of Schema`);
+        if (data.dbService && !(data.dbService instanceof DBService)) {
+            throw new Error("DashboardPlugin dbService must be an instance of DBService");
         }
-
-        // TODO: Validate schema fields
     }
 }
 
