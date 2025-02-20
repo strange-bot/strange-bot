@@ -1,5 +1,4 @@
 const { Guild } = require("discord.js");
-const DBClient = require("strange-db-client");
 const { ChannelType } = require("discord.js");
 
 const ROLE_MENTION = /<?@?&?(\d{17,20})>?/;
@@ -12,25 +11,20 @@ const MEMBER_MENTION = /<?@?!?(\d{17,20})>?/;
  * @param {object} args - The translation arguments
  */
 Guild.prototype.getT = function (key, args) {
-    // TODO: Set this property on guild or fetch from client.locale
-    const locale = this.locale || "en-US";
+    const locale = this.locale || this.client.defaultLanguage;
     const tFunction = this.client.translations.get(locale);
     return tFunction(key, args);
 };
 
-Guild.prototype.getEnabledPlugins = async function () {
-    const allSettings = await DBClient.getInstance().getSettings(this.id);
-    return Object.entries(allSettings.plugins)
-        .filter(([_, value]) => value.enabled === true)
-        .map(([key]) => key);
-};
-
 Guild.prototype.getSettings = async function (pluginName) {
-    return await DBClient.getInstance().getPluginSettings(this.id, pluginName);
+    return await this.client.pluginManager.getPlugin(pluginName)?.getSettings(this);
 };
 
-Guild.prototype.updateSettings = async function (pluginName, settings) {
-    return await DBClient.getInstance().updatePluginSettings(this.id, pluginName, settings);
+Guild.prototype.getEnabledPlugins = async function () {
+    const plugins = this.client.pluginManager.plugins.map((plugin) => plugin.name);
+    const settings = await this.getSettings("core");
+    const disabled = settings.disabled_plugins || [];
+    return plugins.filter((plugin) => !disabled.includes(plugin));
 };
 
 /**

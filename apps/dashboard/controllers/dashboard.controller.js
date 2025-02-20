@@ -1,4 +1,3 @@
-const DBClient = require("strange-db-client");
 const { PermissionsBitField } = require("discord.js");
 
 /**
@@ -48,21 +47,24 @@ module.exports.serverSelector = async function (req, res) {
  * @param {import('express').Response} res
  */
 module.exports.homePage = async function (req, res) {
-    const [allSettings, coreConfig] = await Promise.all([
-        DBClient.getInstance().getSettings(req.params.guildId),
+    const [coreSettings, coreConfig] = await Promise.all([
+        req.app.pluginManager.getPlugin("core").getSettings(req.params.guildId),
         req.app.pluginManager.getPlugin("core").getConfig(),
     ]);
 
-    const enabledPlugins = Object.entries(allSettings.plugins)
-        .filter(([_, value]) => value.enabled === true)
-        .map(([key]) => key);
+    const enabledPlugins = req.app.pluginManager.plugins
+        .filter((p) => !coreSettings.disabled_plugins.includes(p.name))
+        .map((p) => p.name);
 
     const guild = req.session.user.guilds.find((g) => g.id === req.params.guildId);
-    const responses = await req.app.ipcServer.broadcast(
-        "dashboard:GET_GUILD_STATS",
-        req.params.guildId,
-    );
-    const stats = responses.find((r) => r.success && r.data)?.data;
+
+    const [statsResp, pluginCmdsResp] = await Promise.all([
+        req.app.ipcServer.broadcast("dashboard:GET_GUILD_STATS", req.params.guildId),
+        req.app.ipcServer.broadcastOne("dashboard:GET_CMDS_SUMMARY"),
+    ]);
+
+    const stats = statsResp.find((r) => r.success && r.data)?.data;
+    const pluginCmds = pluginCmdsResp.success ? pluginCmdsResp.data : {};
     const extendedGuild = { ...guild, ...stats };
 
     res.render("dashboard/home", {
@@ -73,6 +75,7 @@ module.exports.homePage = async function (req, res) {
 
         guild: extendedGuild,
         plugins: req.app.pluginManager.plugins,
+        pluginCmds,
         enabledPlugins,
 
         title: `${guild.name} | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
@@ -95,7 +98,7 @@ exports.postPlugins = async function (req, res) {
         const settings = await plugin.getSettings(guild);
         try {
             settings.enabled = true;
-            await plugin.updateSettings(guild.id, settings);
+            await settings.save();
         } catch (error) {
             console.error(error);
             return res.status(500).send(error.message);

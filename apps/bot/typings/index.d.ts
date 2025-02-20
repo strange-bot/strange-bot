@@ -1,65 +1,75 @@
 declare global {
-
-    declare module 'discord.js' {
-
+    declare module "discord.js" {
         interface Client {
+            prefixCommands: import("discord.js").Collection<
+                string,
+                import("strange-sdk").CommandType
+            >;
+            slashCommands: import("discord.js").Collection<
+                string,
+                import("strange-sdk").CommandType
+            >;
+            contextMenus: import("discord.js").Collection<
+                string,
+                import("strange-sdk").ContextType
+            >;
 
-            public prefixCommands: import('discord.js').Collection<string, import('strange-sdk').CommandType>;
-            public slashCommands: import('discord.js').Collection<string, import('strange-sdk').CommandType>;
-            public contextMenus: import('discord.js').Collection<string, import('strange-sdk').ContextType>;
+            logger: typeof import("strange-sdk/utils").Logger;
+            pluginManager: import("apps/bot/helpers/PluginManager");
 
-            public logger: typeof import('strange-sdk/utils').Logger;
-            public pluginManager : import('apps/bot/helpers/PluginManager');
+            translations: Map<string, import("i18next").TFunction> | undefined;
+            i18n: import("strange-i18n") | undefined;
 
-            public translations: Map<string, import('i18next').TFunction> | undefined;
-            public i18n: import('strange-i18n') | undefined;
+            wait: (ms: number) => Promise<void>;
 
-            public wait: (ms: number) => Promise<void>;
+            coreConfig(): Promise<object>;
 
-            public coreConfig(): Promise<object>;
-            public defaultLanguage(): Promise<string>;
+            get defaultLanguage(): string;
+            loadTranslations(): Promise<void>;
+            translate(key: string, args?: Object, locale?: string): string;
 
-            public loadTranslations(): Promise<void>;
-            public translate(key: string, args?: Object, locale?: string): string;
+            loadPluginCommands(): void;
+            loadPluginContexts(): void;
 
-            public loadPluginCommands(): void;
-            public loadPluginContexts(): void;
-            
-            public registerInteractions(guildId?: string): Promise<void>;
-            public resolveUsers(search: string, exact?: boolean): Promise<User[]>;
-            public getInvite(): string;
+            registerInteractions(guildId?: string): Promise<void>;
+            resolveUsers(search: string, exact?: boolean): Promise<User[]>;
+            getInvite(): string;
         }
-        
-        interface Guild {
-            public getT(key: string, args?: Object): string;
-            public getEnabledPlugins(): Promise<string[]>;
-            public getSettings(pluginName: string): Promise<any>;
-            public updateSettings(pluginName: string, settings: any): Promise<void>;
-            public canSendEmbeds(channel: import('discord.js').GuildChannel): boolean;
-            public findMatchingChannels(query: string, type?: import("discord.js").GuildChannelTypes[]): import("discord.js").GuildChannel[];
-            public findMatchingRoles(query: string): import("discord.js").Role[];
-            public resolveMember(query: string, exact?: boolean): Promise<import("discord.js").GuildMember>;
 
+        interface Guild {
+            locale: string | undefined;
+            getT(key: string, args?: Object): string;
+            getEnabledPlugins(): Promise<string[]>;
+            getSettings(pluginName: string): Promise<import("strange-db-client").Model | object>;
+            canSendEmbeds(channel: import("discord.js").GuildChannel): boolean;
+            findMatchingChannels(
+                query: string,
+                type?: import("discord.js").GuildChannelTypes[],
+            ): import("discord.js").GuildChannel[];
+            findMatchingRoles(query: string): import("discord.js").Role[];
+            resolveMember(
+                query: string,
+                exact?: boolean,
+            ): Promise<import("discord.js").GuildMember>;
         }
 
         interface Message {
-            public isCommand: boolean | undefined;
-            public commandName: string | undefined;
-            
-            public replyT(key: string, args?: Object): Promise<Message|undefined>;
+            isCommand: boolean | undefined;
+            commandName: string | undefined;
+
+            replyT(key: string, args?: Object): Promise<Message | undefined>;
         }
 
-        interface ChatInputCommandInteraction  {
-            public followUpT(key: string, args?: Object): Promise<Message|undefined>;
+        interface ChatInputCommandInteraction {
+            followUpT(key: string, args?: Object): Promise<Message | undefined>;
         }
 
-        interface ButtonInteraction  {
-            public followUpT(key: string, args?: Object): Promise<Message|undefined>;
+        interface ButtonInteraction {
+            followUpT(key: string, args?: Object): Promise<Message | undefined>;
         }
 
         interface ContextMenuCommandInteraction {
-            public followUpT(key: string, args?: Object): Promise<Message|undefined>;
+            followUpT(key: string, args?: Object): Promise<Message | undefined>;
         }
     }
 }
-

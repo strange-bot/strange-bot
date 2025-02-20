@@ -1,5 +1,3 @@
-const DBClient = require("strange-db-client");
-
 /**
  * Middleware to populate the request object
  * @param {import('express').Request} req
@@ -17,13 +15,22 @@ module.exports.dashboard = async (req, res, next) => {
     // PUT route
     if (req.method === "PUT") {
         const { guildId, pluginName } = req.params;
-        const settings = await DBClient.getInstance().getPluginSettings(guildId, pluginName);
+        const coreSettings = await req.app.pluginManager.getPlugin("core").getSettings(guildId);
 
         // Plugin Status Toggle
         if (req.query.operation && req.query.operation === "toggle") {
             try {
-                settings.enabled = Boolean(req.body.plugin_toggle);
-                await DBClient.getInstance().updatePluginSettings(guildId, pluginName, settings);
+                const shouldEnable = Boolean(req.body.plugin_toggle);
+                if (shouldEnable) {
+                    coreSettings.disabledPlugins = coreSettings.disabledPlugins.filter(
+                        (p) => p !== pluginName,
+                    );
+                } else {
+                    if (!coreSettings.disabledPlugins.includes(pluginName)) {
+                        coreSettings.disabledPlugins.push(pluginName);
+                    }
+                }
+                await coreSettings.save();
                 return res.sendStatus(200);
             } catch (error) {
                 console.error(error);
@@ -54,12 +61,12 @@ module.exports.dashboard = async (req, res, next) => {
                     }
                 });
 
-                const coreSettings = await DBClient.getInstance().getPluginSettings(
-                    guildId,
-                    "core",
-                );
+                const coreSettings = await req.app.pluginManager
+                    .getPlugin("core")
+                    .getSettings(guildId);
+
                 coreSettings.disabled_prefix = Array.from(disabled);
-                await DBClient.getInstance().updatePluginSettings(guildId, "core", coreSettings);
+                await coreSettings.save();
 
                 return res.sendStatus(200);
             } catch (error) {
@@ -90,12 +97,11 @@ module.exports.dashboard = async (req, res, next) => {
                     }
                 });
 
-                const coreSettings = await DBClient.getInstance().getPluginSettings(
-                    guildId,
-                    "core",
-                );
+                const coreSettings = await req.app.pluginManager
+                    .getPlugin("core")
+                    .getSettings(guildId);
                 coreSettings.disabled_slash = Array.from(disabled);
-                await DBClient.getInstance().updatePluginSettings(guildId, "core", coreSettings);
+                await coreSettings.save();
 
                 return res.sendStatus(200);
             } catch (error) {
@@ -112,8 +118,8 @@ module.exports.dashboard = async (req, res, next) => {
     };
 
     const [settings, coreSettings, config] = await Promise.all([
-        DBClient.getInstance().getPluginSettings(guildId, pluginName),
-        DBClient.getInstance().getPluginSettings(guildId, "core"),
+        req.app.pluginManager.getPlugin(pluginName).getSettings(guildId),
+        req.app.pluginManager.getPlugin("core").getSettings(guildId),
         plugin.getConfig(),
     ]);
 
@@ -168,14 +174,10 @@ module.exports.admin = async (req, res, next) => {
         " | " +
         coreConfig["DASHBOARD"]["LOGO_NAME"];
 
-    const plugins = req.app.pluginManager.plugins.filter(
-        (plugin) => plugin.enabled && plugin.adminRouter !== undefined,
-    );
-
     res.locals.tr = req.translate;
     res.locals.coreConfig = coreConfig;
     res.locals.user = req.session.user.info;
-    res.locals.plugins = plugins;
+    res.locals.plugins = req.app.pluginManager.plugins;
     res.locals.plugin = plugin;
     res.locals.config = await plugin.getConfig();
 

@@ -25,25 +25,23 @@ class Logger {
         }
 
         const streamArray = [];
-        if (process.env.NODE_ENV !== "production") {
-            streamArray.push({
-                level: "info",
-                stream: pino.transport({
-                    target: "pino-pretty",
-                    options: {
-                        colorize: true,
-                        translateTime: "yyyy-mm-dd HH:mm:ss",
-                        ignore: fields
-                            ? `pid,hostname,${Object.keys(fields).join(",")}`
-                            : "pid,hostname",
-                        singleLine: false,
-                        hideObject: false,
-                        customColors: "success:green,info:blue,warn:yellow,error:red",
-                        customLevels: { success: 35, info: 30, warn: 40, error: 50 },
-                    },
-                }),
-            });
-        }
+        streamArray.push({
+            level: "info",
+            stream: pino.transport({
+                target: "pino-pretty",
+                options: {
+                    colorize: true,
+                    translateTime: "yyyy-mm-dd HH:mm:ss",
+                    ignore: fields
+                        ? `pid,hostname,${Object.keys(fields).join(",")}`
+                        : "pid,hostname",
+                    singleLine: false,
+                    hideObject: false,
+                    customColors: "success:green,info:blue,warn:yellow,error:red",
+                    customLevels: { success: 35, info: 30, warn: 40, error: 50 },
+                },
+            }),
+        });
 
         if (dest) {
             streamArray.push({

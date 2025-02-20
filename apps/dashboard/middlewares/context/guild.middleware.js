@@ -1,5 +1,3 @@
-const DBClient = require("strange-db-client");
-
 /**
  * Middleware to populate the request object
  * @param {import('express').Request} req
@@ -24,7 +22,7 @@ module.exports = async (req, res, next) => {
     res.locals.guild = {
         ...guildData,
         getSettings: async (pluginName) => {
-            return await DBClient.getInstance().getPluginSettings(guildData.id, pluginName);
+            return await req.app.pluginManager.getPlugin(pluginName).getSettings(guildData.id);
         },
     };
     next();

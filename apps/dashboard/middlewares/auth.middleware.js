@@ -1,4 +1,4 @@
-const DBClient = require("strange-db-client");
+const db = require("../db.service");
 
 /**
  * Middleware to check if the user is logged in
@@ -13,7 +13,7 @@ module.exports.CheckAuth = async (req, res, next) => {
                 ? "/dashboard"
                 : req.originalUrl;
         const state = Math.random().toString(36).substring(5);
-        await DBClient.getInstance().addToCache(`dashboard:${state}`, redirectURL, 60 * 5);
+        await db.saveState(state, redirectURL);
         return res.redirect(`/auth/login?state=${state}`);
     }
     return next();

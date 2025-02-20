@@ -3,15 +3,14 @@
     "version": "1.0.0",
     "description": "Database client for the strange discord bot",
     "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {},
     "keywords": [],
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "ioredis": "^5.4.2",
-        "mongoose": "^7.8.6",
+        "ioredis": "^5.5.0",
+        "mongoose": "^8.0.0",
         "mongoose-lean-defaults": "^2.2.1"
-    },
-    "devDependencies": {},
-    "peerDependencies": {}
+    }
 }

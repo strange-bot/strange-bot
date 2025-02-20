@@ -1,5 +1,5 @@
-const DBClient = require("strange-db-client");
 const languages = require("strange-i18n/languages-meta.json");
+const db = require("../db.service");
 
 /**
  * @param {import('express').Request} req
@@ -21,21 +21,14 @@ module.exports.updateBotLocales = async function (req, res) {
 
     // TODO: Add validations
 
-    const response = await req.app.ipcServer.broadcastOne(
-        "dashboard:SET_LOCALE_BUNDLE",
-        {
-            plugin,
-            language,
-            keys,
-        },
-    );
+    const response = await req.app.ipcServer.broadcast("dashboard:SET_LOCALE_BUNDLE", {
+        plugin,
+        language,
+        keys,
+    });
 
-    if (response.success) {
-        await req.app.ipcServer.broadcast("dashboard:LOCALE_BUNDLE_SYNC", null, false);
-        return res.sendStatus(200);
-    }
-
-    return res.status(500);
+    if (response.some((r) => !r.success)) return res.sendStatus(500);
+    return res.sendStatus(200);
 };
 
 /**
@@ -54,8 +47,7 @@ module.exports.updateDashboardLanguage = async function (req, res) {
         return res.sendStatus(200);
     }
 
-    await DBClient.getInstance().dashboardLocale(req.session.user.info.id, lang);
-
+    await db.setLocale(req.session.user.info.id, lang);
     req.session.locale = lang;
     req.session.save(async (err) => {
         if (err) {

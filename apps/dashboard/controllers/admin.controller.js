@@ -14,9 +14,6 @@ module.exports.getHome = async function (_req, res) {
  */
 module.exports.getLocales = async function (req, res) {
     const coreConfig = res.locals.coreConfig;
-    const dashboardPlugins = req.app.pluginManager.plugins.filter(
-        (plugin) => plugin.enabled && plugin.adminRouter !== undefined,
-    );
 
     const availableLanguages = languages.map((l) => ({
         name: l.nativeName,
@@ -32,9 +29,7 @@ module.exports.getLocales = async function (req, res) {
         title: `Localization | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
         slug: "locales",
         breadcrumb: true,
-        plugins: dashboardPlugins,
-
-        availablePlugins: dashboardPlugins,
+        plugins: req.app.pluginManager.plugins,
         availableLanguages,
     });
 };

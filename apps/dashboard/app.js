@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("node:path");
-const DBClient = require("strange-db-client");
+const { DBClient } = require("strange-db-client");
 const MongoStore = require("connect-mongo");
 const { Logger } = require("strange-sdk/utils");
 const PluginManager = require("./helpers/PluginManager");
@@ -19,9 +19,6 @@ const adminRouter = require("./routes/admin.router");
 const apiRouter = require("./routes/api.router");
 
 module.exports = class App {
-    /**
-     * @param {import('veza').Server} ipcServer
-     */
     constructor(ipcServer) {
         this.app = express();
 
@@ -78,7 +75,7 @@ module.exports = class App {
                 store: MongoStore.create({
                     client: DBClient.getInstance().getMongoClient(),
                     dbName: DBClient.getInstance().getDatabaseName(),
-                    collectionName: "sessions",
+                    collectionName: "dashboard.sessions",
                     stringify: false,
                     autoRemove: "interval",
                 }),

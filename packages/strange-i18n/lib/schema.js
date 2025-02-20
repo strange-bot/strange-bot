@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const { Schema } = require("strange-db-client");
 
-const localizationSchema = new mongoose.Schema({
+const localizationSchema = new Schema({
     app: String,
     plugin: String,
     lang: String,
-    data: mongoose.Schema.Types.Mixed,
+    data: Schema.Types.Mixed,
     lastModified: Date,
 });
 
-module.exports = mongoose.model("Localization", localizationSchema);
+module.exports = localizationSchema;
