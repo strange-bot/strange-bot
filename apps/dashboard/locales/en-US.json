@@ -1,6 +1,9 @@
 {
     "BTN_SAVE": "Save",
     "BTN_SAVING": "Saving",
+    "BTN_ENABLE": "Enable",
+    "BTN_DISABLE": "Disable",
+    "BTN_CREATE": "Create",
 
     "SETTINGS_SAVE": "Guild settings saved",
     "SETTINGS_SAVE_ERROR": "Failed to save guild settings",

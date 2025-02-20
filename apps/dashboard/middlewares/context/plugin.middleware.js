@@ -22,12 +22,12 @@ module.exports.dashboard = async (req, res, next) => {
             try {
                 const shouldEnable = Boolean(req.body.plugin_toggle);
                 if (shouldEnable) {
-                    coreSettings.disabledPlugins = coreSettings.disabledPlugins.filter(
+                    coreSettings.disabled_plugins = coreSettings.disabled_plugins.filter(
                         (p) => p !== pluginName,
                     );
                 } else {
-                    if (!coreSettings.disabledPlugins.includes(pluginName)) {
-                        coreSettings.disabledPlugins.push(pluginName);
+                    if (!coreSettings.disabled_plugins.includes(pluginName)) {
+                        coreSettings.disabled_plugins.push(pluginName);
                     }
                 }
                 await coreSettings.save();

@@ -1,6 +1,9 @@
 {
     "BTN_SAVE": "Sauvegarder",
     "BTN_SAVING": "En cours de sauvegarde...",
+    "BTN_ENABLE": "Activer",
+    "BTN_DISABLE": "Désactiver",
+    "BTN_CREATE": "Créer",
 
     "SETTINGS_SAVE": "Paramètres de guilde enregistrés",
     "SETTINGS_SAVE_ERROR": "Échec de la sauvegarde des paramètres de guilde",

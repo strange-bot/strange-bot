@@ -216,7 +216,7 @@ class I18nManager {
     }
 
     getResourceBundle(language, plugin, flatten = false) {
-        const bundle = i18next.getResourceBundle(language, plugin);
+        const bundle = i18next.getResourceBundle(language, plugin) || {};
         return flatten ? flat.flatten(bundle) : bundle;
     }
 

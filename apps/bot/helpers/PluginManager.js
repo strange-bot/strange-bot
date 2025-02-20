@@ -200,11 +200,24 @@ class PluginManager {
      * @param  {...any} args
      */
     async emit(eventName, ...args) {
+        // TODO: Better logic for handling disabled plugins (possibly EventHandler?)
+        let disabled_plugins = [];
+        try {
+            const guild = args.find((arg) => arg && arg.guild)?.guild;
+            if (guild) {
+                const coreSettings = await guild.getSettings("core");
+                disabled_plugins = coreSettings.disabled_plugins;
+            }
+        } catch (error) {
+            Logger.debug("Error getting core settings for event", error);
+        }
         const results = await Promise.all(
             this.#plugins
                 .filter(
                     (plugin) =>
-                        plugin.eventHandlers.has(eventName) && plugin.dependencies.length === 0,
+                        !disabled_plugins.includes(plugin.name) &&
+                        plugin.eventHandlers.has(eventName) &&
+                        plugin.dependencies.length === 0,
                 )
                 .map(async (plugin) => {
                     try {
@@ -237,7 +250,10 @@ class PluginManager {
 
         // Call the plugins with dependencies in topological order
         for (const plugin of this.#plugins.filter(
-            (plugin) => plugin.eventHandlers.has(eventName) && plugin.dependencies.length > 0,
+            (plugin) =>
+                !disabled_plugins.includes(plugin.name) &&
+                plugin.eventHandlers.has(eventName) &&
+                plugin.dependencies.length > 0,
         )) {
             const depArgs = {};
             for (const dependency of plugin.dependencies) {
