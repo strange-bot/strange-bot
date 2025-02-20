@@ -74,7 +74,7 @@ class PluginManager {
         // Load the bot plugin
         const dashboardEntry = join(pluginDir, "dashboard");
         if (!existsSync(dashboardEntry)) {
-            Logger.debug(`Plugin ${pluginName} does not have a dashboard entry point. Skipping.`);
+            Logger.debug(`Plugin ${pluginDir} does not have a dashboard entry point. Skipping.`);
             return;
         }
         const plugin = require(dashboardEntry);

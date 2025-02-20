@@ -63,3 +63,11 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
 
     await client.login(process.env.BOT_TOKEN);
 })();
+
+process.on("unhandledRejection", (err) => {
+    Logger.error("Unhandled Rejection:", err);
+});
+
+process.on("uncaughtException", (err) => {
+    Logger.error("Uncaught Exception:", err);
+});

@@ -1,3 +1,5 @@
+const db = require("../db.service");
+
 /**
  * Middleware to check if the user is logged in
  * @param {import('express').Request} req
@@ -11,7 +13,7 @@ module.exports.CheckAuth = async (req, res, next) => {
                 ? "/dashboard"
                 : req.originalUrl;
         const state = Math.random().toString(36).substring(5);
-        await req.app.db.addToCache(`dashboard:states:${state}`, redirectURL, 60);
+        await db.saveState(state, redirectURL);
         return res.redirect(`/auth/login?state=${state}`);
     }
     return next();

@@ -98,7 +98,7 @@ exports.postPlugins = async function (req, res) {
         const settings = await plugin.getSettings(guild);
         try {
             settings.enabled = true;
-            await plugin.updateSettings(guild.id, settings);
+            await settings.save();
         } catch (error) {
             console.error(error);
             return res.status(500).send(error.message);

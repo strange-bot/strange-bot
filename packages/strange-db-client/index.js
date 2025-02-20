@@ -91,6 +91,10 @@ class DatabaseClient {
         return value;
     }
 
+    async deleteFromCache(key) {
+        await this.redis.del(key);
+    }
+
     async disconnect() {
         await mongoose.disconnect();
         await this.redis.quit();

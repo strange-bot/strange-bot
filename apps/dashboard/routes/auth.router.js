@@ -1,6 +1,7 @@
 const express = require("express");
 const DiscordOauth2 = require("discord-oauth2");
 const { encrypt } = require("../helpers/utils");
+const db = require("../db.service");
 
 const router = express.Router();
 const oauth = new DiscordOauth2();
@@ -24,8 +25,7 @@ router.get("/login", async function (req, res) {
 // Callback
 router.get("/callback", async (req, res) => {
     if (!req.query.code) return res.redirect(BASE_URL);
-    const db = req.app.db;
-    const cached = await db.getFromCache(`dashboard:states:${req.query.state}`);
+    const cached = await db.getState(req.query.state);
     const redirectURL = cached || "/dashboard";
 
     const tokens = await oauth
@@ -67,8 +67,8 @@ router.get("/callback", async (req, res) => {
 
     // Set locale
     const coreConfig = await req.app.pluginManager.getPlugin("core").getConfig();
-    const config = await db.getModel("dashboard").findOne({ _id: req.session.user.info.id }).lean();
-    req.session.locale = config?.locale || coreConfig["LOCALE"]["DEFAULT"];
+    const dbLocale = await db.getLocale(req.session.user.info.id);
+    req.session.locale = dbLocale || coreConfig["LOCALE"]["DEFAULT"];
 
     req.session.save((err) => {
         if (err) req.logger.error("Failed to save session", err);
@@ -80,14 +80,8 @@ router.get("/callback", async (req, res) => {
         refresh_token: encrypt(tokens.refresh_token),
         expires: Date.now() + tokens.expires_in * 1000,
     };
-    await db
-        .getModel("dashboard")
-        .updateOne(
-            { _id: req.session.user.info.id },
-            { $set: { logged_in: true, tokens: tokenData } },
-            { upsert: true },
-        );
 
+    await db.loginUser(req.session.user.info.id, tokenData);
     res.redirect(redirectURL);
 });
 
@@ -101,10 +95,7 @@ router.get("/logout", async function (req, res) {
             return res.redirect(BASE_URL);
         }
 
-        await req.app.db
-            .getModel("dashboard")
-            .updateOne({ _id: userId }, { $set: { logged_in: false } });
-
+        await db.logoutUser(userId);
         res.redirect(BASE_URL);
     });
 });

@@ -6,7 +6,7 @@
     "author": "Sai Teja M",
     "license": "AGPL-3.0-only",
     "scripts": {
-        "start": "node index.js",
+        "start": "pnpm build && node index.js",
         "dev": "pnpm --parallel run /^dev:.*/",
         "dev:server": "nodemon index.js",
         "dev:webpack": "webpack --mode=development --watch",

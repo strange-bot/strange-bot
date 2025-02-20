@@ -47,7 +47,7 @@
                     }
                   }">
                   <input type="checkbox" id="plugin-toggle" class="sr-only" 
-                    <%= settings.enabled ? 'checked' : '' %>
+                    <%= coreSettings.disabled_plugins.includes(plugin.name) ? '' : 'checked' %>
                     @change="togglePlugin($event)">
                   <span class="toggle-bg h-6 w-11 rounded-full border border-gray-200 bg-gray-200 dark:border-gray-600 dark:bg-gray-700"></span>
                 </label>

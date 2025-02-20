@@ -1,5 +1,6 @@
 const { Logger } = require("strange-sdk/utils");
 const languages = require("strange-i18n/languages-meta.json");
+const db = require("../../db.service");
 
 const OWNER_IDS = process.env.OWNER_IDS.split(",");
 
@@ -16,11 +17,10 @@ module.exports = async (req, res, next) => {
     // Set Locale
     if (!req.session.locale) {
         if (!req.session.user) {
-            req.session.locale = coreConfig["DASHBOARD"]["DEFAULT_LOCALE"];
+            req.session.locale = coreConfig["LOCALE"]["DEFAULT"];
         } else {
-            const Model = req.app.db.getModel("dashboard");
-            const dashConfig = await Model.findOne({ _id: req.session.user.info.id }).lean();
-            req.session.locale = dashConfig?.locale || coreConfig["DASHBOARD"]["DEFAULT_LOCALE"];
+            const dbLocale = await db.getLocale(req.session.user.info.id);
+            req.session.locale = dbLocale || coreConfig["LOCALE"]["DEFAULT"];
         }
         req.session.save((err) => {
             if (err) Logger.error("Failed to save session", err);

@@ -52,6 +52,12 @@ declare class DBService {
      * @param ttl Optional TTL override
      */
     getCache(key: string, ttl?: number): Promise<any>;
+
+    /**
+     * Removes a value from cache
+     * @param key Cache key
+     */
+    delCache(key: string): Promise<void>;
 }
 
 export { DBService };

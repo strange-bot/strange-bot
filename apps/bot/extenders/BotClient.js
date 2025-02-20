@@ -58,13 +58,16 @@ class BotClient extends Client {
         this.wait = require("util").promisify(setTimeout);
     }
 
-    async defaultLanguage() {
-        const coreConfig = await this.coreConfig();
-        return coreConfig["LOCALE"]["DEFAULT"];
-    }
-
     async coreConfig() {
         return this.pluginManager.getPlugin("core").getConfig();
+    }
+
+    get defaultLanguage() {
+        return "en-US";
+    }
+
+    translate(key, args, locale) {
+        return this.i18n.tr(key, args, locale || this.defaultLanguage);
     }
 
     async loadTranslations(baseDir, pluginsDir) {
@@ -72,17 +75,12 @@ class BotClient extends Client {
         this.i18n = new I18nManager("bot", {
             baseDir,
             pluginsDir,
-            fallbackLng: "en-US",
+            fallbackLng: this.defaultLanguage,
             useDatabase: process.env.NODE_ENV === "production",
         });
 
         this.translations = await this.i18n.initialize();
         this.logger.success("Loaded translations");
-    }
-
-    translate(key, args, locale) {
-        // TODO: fetch from config
-        return this.i18n.tr(key, args, locale || "en-US");
     }
 
     /**

@@ -1,29 +1,19 @@
 import "express";
 import "express-session";
 import "discord-oauth2";
-import { DBClient, Document } from "strange-db-client";
+import { Document } from "strange-db-client";
+import { SaveableConfig } from "strange-sdk";
 
 declare global {
     namespace Express {
         interface Application {
-            db: DBClient;
             ipcServer: import("../helpers/IPCServer");
             pluginManager: import("../helpers/PluginManager");
             i18n: import("strange-i18n");
             translations: Map<string, import("i18next").TFunction>;
         }
-    }
-}
 
-declare module "express" {
-    export interface Request {
-        logger: typeof import("strange-sdk/utils").Logger;
-        translate: import("i18next").TFunction;
-        broadcast: (event: string, data: any) => Promise<any[]>;
-    }
-
-    export interface Response {
-        locals: {
+        interface Locals {
             [key: string]: any;
 
             // Base Context
@@ -47,18 +37,26 @@ declare module "express" {
             // Plugin Context
             tr: import("i18next").TFunction;
             coreSettings: Document | null;
-            user: SessionUser | undefined;
-            plugins: import("strange-sdk").DashboardPlugin[] | undefined;
-            plugin: import("strange-sdk").DashboardPlugin | undefined;
-            pluginCmds: import("strange-sdk").DashboardCommand[] | undefined;
-            pluginCmds: any | undefined;
-            config: SaveableConfig | undefined;
-            settings: Document | null;
-            title: string | undefined;
-            slug: string | undefined;
-            layout: string | undefined;
-            breadcrumb: string | undefined;
-        };
+            user: SessionUser;
+            plugins: import("strange-sdk").DashboardPlugin[];
+            plugin: import("strange-sdk").DashboardPlugin;
+            pluginCmds: import("strange-sdk").DashboardCommand[];
+            pluginCmds: any;
+            config: SaveableConfig;
+            settings: import("strange-db-client").Document | null;
+            title: string;
+            slug: string;
+            layout: string;
+            breadcrumb: string;
+        }
+    }
+}
+
+declare module "express" {
+    export interface Request {
+        logger: typeof import("strange-sdk/utils").Logger;
+        translate: import("i18next").TFunction;
+        broadcast: (event: string, data: any) => Promise<any[]>;
     }
 }
 

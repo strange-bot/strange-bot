@@ -48,7 +48,7 @@ module.exports = class DBService {
         const prefixedName = `${this.name}.${schemaName}`;
         try {
             return this.dbClient.getModel(prefixedName);
-        } catch (error) {
+        } catch {
             throw new Error(
                 `Schema with name ${schemaName} is not registered with plugin ${this.name}`,
             );
@@ -64,14 +64,14 @@ module.exports = class DBService {
         const Model = this.getModel("settings");
 
         if (cached) {
-            const settings = JSON.parse(cached);
-            return Model.hydrate(settings);
+            return cached === "null"
+                ? new Model({ _id: guildId })
+                : Model.hydrate(JSON.parse(cached));
         }
 
-        const settings = (await Model.findById(guildId)) || new Model({ _id: guildId });
-
+        const settings = await Model.findById(guildId);
         await this.cache(`settings:${guildId}`, settings, 0);
-        return settings;
+        return settings || new Model({ _id: guildId });
     }
 
     async cache(key, value, ttl) {
@@ -82,5 +82,10 @@ module.exports = class DBService {
     async getCache(key, ttl) {
         const cacheKey = `${this.name}:${key}`;
         return await this.dbClient.getFromCache(cacheKey, ttl);
+    }
+
+    async deleteCache(key) {
+        const cacheKey = `${this.name}:${key}`;
+        await this.dbClient.deleteFromCache(cacheKey);
     }
 };

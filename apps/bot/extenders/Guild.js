@@ -11,8 +11,7 @@ const MEMBER_MENTION = /<?@?!?(\d{17,20})>?/;
  * @param {object} args - The translation arguments
  */
 Guild.prototype.getT = function (key, args) {
-    // TODO: Set this property on guild or fetch from client.locale
-    const locale = this.locale || "en-US";
+    const locale = this.locale || this.client.defaultLanguage;
     const tFunction = this.client.translations.get(locale);
     return tFunction(key, args);
 };
@@ -26,10 +25,6 @@ Guild.prototype.getEnabledPlugins = async function () {
     const settings = await this.getSettings("core");
     const disabled = settings.disabled_plugins || [];
     return plugins.filter((plugin) => !disabled.includes(plugin));
-};
-
-Guild.prototype.updateSettings = async function (pluginName, settings) {
-    return this.client.pluginManager.getPlugin(pluginName)?.updateSettings(this, settings);
 };
 
 /**

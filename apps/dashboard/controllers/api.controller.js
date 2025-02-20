@@ -1,4 +1,5 @@
 const languages = require("strange-i18n/languages-meta.json");
+const db = require("../db.service");
 
 /**
  * @param {import('express').Request} req
@@ -46,10 +47,7 @@ module.exports.updateDashboardLanguage = async function (req, res) {
         return res.sendStatus(200);
     }
 
-    await req.app.db
-        .getModel("dashboard")
-        .updateOne({ _id: req.session.user.info.id }, { $set: { locale: lang } }, { upsert: true });
-
+    await db.setLocale(req.session.user.info.id, lang);
     req.session.locale = lang;
     req.session.save(async (err) => {
         if (err) {

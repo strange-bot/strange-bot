@@ -13,6 +13,7 @@ const logsFile = `dashboard-${today.getFullYear()}.${today.getMonth() + 1}.${tod
 Logger.init(path.join(logsDir, logsFile));
 
 const { DBClient } = require("strange-db-client");
+const db = require("./db.service");
 const App = require("./app");
 const IPCServer = require("./helpers/IPCServer");
 
@@ -30,15 +31,23 @@ const IPCServer = require("./helpers/IPCServer");
 
     // Register Models
     dbClient.registerSchema("configs", require("./schemas/Config"));
-    dbClient.registerSchema("dashboard", require("./schemas/Dashboard"));
+    await db.init(dbClient);
 
     // Initialize IPC Server
     const ipcServer = new IPCServer();
     await ipcServer.initialize();
 
     // Initialize the Express App
-    const app = new App(dbClient, ipcServer);
+    const app = new App(ipcServer);
     app.loadTranslations(localesDir, pluginsDir);
     app.loadPlugins(pluginsDir);
     app.listen(process.env.DASHBOARD_PORT);
 })();
+
+process.on("unhandledRejection", (err) => {
+    Logger.error("Unhandled Rejection:", err);
+});
+
+process.on("uncaughtException", (err) => {
+    Logger.error("Uncaught Exception:", err);
+});

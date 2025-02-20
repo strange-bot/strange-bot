@@ -253,4 +253,4 @@ interface ContextType {
     run(ctx: ContextMenuCommandInteractionContext): Promise<any>;
 }
 
-export { BotPlugin, CommandType, ContextType };
+export { IPCHandler, BotPlugin, CommandType, ContextType };

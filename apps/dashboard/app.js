@@ -19,15 +19,10 @@ const adminRouter = require("./routes/admin.router");
 const apiRouter = require("./routes/api.router");
 
 module.exports = class App {
-    /**
-     * @param {DBClient} dbClient
-     * @param {import('veza').Server} ipcServer
-     */
-    constructor(dbClient, ipcServer) {
+    constructor(ipcServer) {
         this.app = express();
 
         // Set app properties
-        this.app.dbClient = dbClient;
         this.app.ipcServer = ipcServer;
         this.app.pluginManager = new PluginManager();
         this.app.i18n = null;
@@ -80,7 +75,7 @@ module.exports = class App {
                 store: MongoStore.create({
                     client: DBClient.getInstance().getMongoClient(),
                     dbName: DBClient.getInstance().getDatabaseName(),
-                    collectionName: "sessions",
+                    collectionName: "dashboard.sessions",
                     stringify: false,
                     autoRemove: "interval",
                 }),
