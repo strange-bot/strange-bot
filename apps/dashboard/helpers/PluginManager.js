@@ -88,11 +88,7 @@ class PluginManager {
         }
 
         this.#pluginMap.set(plugin.name, plugin);
-        await plugin.load(DBClient.getInstance());
-
-        if (plugin.init) {
-            plugin.init();
-        }
+        await plugin.init(DBClient.getInstance());
     }
 }
 

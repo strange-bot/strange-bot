@@ -39,13 +39,6 @@ interface PluginData {
     dependencies?: string[];
 
     /**
-     * Optional initialization function that runs when the plugin loads
-     * Use this to set up plugin-specific resources or configurations
-     * @param client - The Discord.js client instance
-     */
-    init?: (client: Client) => Promise<void>;
-
-    /**
      * Object containing IPC message handlers for inter-process communication
      * Each key is a message type and the value is its handler function
      */
@@ -56,6 +49,27 @@ interface PluginData {
      * This is used to manage plugin-specific database schemas and settings
      */
     dbService?: DBService;
+
+    /**
+     * Called when the plugin is first initialized
+     * Use this to set up plugin-specific resources or configurations
+     * @param client - The Discord.js client instance
+     */
+    onInit?: (client: Client) => Promise<void>;
+
+    /**
+     * Called when the plugin is enabled for a guild
+     * Use this to start any services or register event listeners
+     * @param guild - The guild where the plugin is enabled
+     */
+    onGuildEnable?: (guild: Guild) => Promise<any>;
+
+    /**
+     * Called when the plugin is disabled
+     * Use this to clean up resources and unregister event listeners
+     * @param guild - The guild where the plugin is disabled
+     */
+    onGuildDisable?: (guild: Guild) => Promise<void>;
 }
 
 declare class BotPlugin {
@@ -77,11 +91,17 @@ declare class BotPlugin {
     /** List of other plugins this plugin depends on */
     public readonly dependencies: string[];
 
-    /** Optional initialization function that runs when plugin loads */
-    public readonly init: ((client: Client) => Promise<void>) | null;
-
     /** Object containing IPC message handlers for inter-process communication */
     public readonly ipcHandler: IPCHandler;
+
+    /** Optional initialization function that runs when plugin loads */
+    public readonly onInit: ((client: Client) => Promise<void>) | null;
+
+    /** Optional function that runs when plugin is enabled for a guild */
+    public readonly onGuildEnable: ((guild: Guild) => Promise<void>) | null;
+
+    /** Optional function that runs when plugin is disabled for a guild */
+    public readonly onGuildDisable: ((guild: Guild) => Promise<void>) | null;
 
     /** Database service instance */
     public readonly dbService: DBService;
@@ -116,10 +136,11 @@ declare class BotPlugin {
 
     /**
      * Loads the plugin by registering events, commands, and schemas
+     * @param botClient Discord.js client instance
      * @param dbClient Database client instance if available
      * @returns Promise that resolves when loading is complete
      */
-    public load(dbClient?: DBClient): Promise<void>;
+    public init(botClient?: Client, dbClient?: DBClient): Promise<void>;
 
     /**
      * Unloads the plugin by clearing all registered handlers and commands

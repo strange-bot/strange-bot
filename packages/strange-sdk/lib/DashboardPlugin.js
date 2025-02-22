@@ -16,7 +16,7 @@ class DashboardPlugin {
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
-        this.init = data.init || null;
+        this.onInit = data.onInit || null;
         this.dashboardRouter = data.dashboardRouter || null;
         this.adminRouter = data.adminRouter || null;
         this.dbService = data.dbService || new DBService(this.name);
@@ -26,7 +26,7 @@ class DashboardPlugin {
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
-    async load(dbClient = null) {
+    async init(dbClient = null) {
         if (dbClient && !(dbClient instanceof DBClient)) {
             throw new TypeError("dbClient must be an instance of DBClient");
         }
@@ -79,8 +79,8 @@ class DashboardPlugin {
             throw new Error("DashboardPlugin icon must be a string");
         }
 
-        if (data.init && typeof data.init !== "function") {
-            throw new Error("DashboardPlugin init must be a function");
+        if (data.onInit && typeof data.onInit !== "function") {
+            throw new Error("DashboardPlugin onInit must be a function");
         }
 
         if (data.dashboardRouter && !data.dashboardRouter.stack) {

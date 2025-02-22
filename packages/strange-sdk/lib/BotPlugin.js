@@ -17,9 +17,11 @@ class BotPlugin {
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
-        this.init = data.init || null;
         this.ipcHandler = data.ipcHandler || {};
         this.dbService = data.dbService || new DBService(this.name);
+        this.onInit = data.onInit || null;
+        this.onGuildEnable = data.onGuildEnable || null;
+        this.onGuildDisable = data.onGuildDisable || null;
         this.eventHandlers = new Map();
         this.commands = new Set();
         this.contexts = new Set();
@@ -30,7 +32,7 @@ class BotPlugin {
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
-    async load(dbClient = null) {
+    async init(botClient = null, dbClient = null) {
         if (dbClient && !(dbClient instanceof DBClient)) {
             throw new TypeError("dbClient must be an instance of DBClient");
         }
@@ -49,7 +51,10 @@ class BotPlugin {
                 if (cmd.slashCommand?.enabled !== false) this.slashCount++;
             }
         });
-        Logger.debug(`Successfully Loaded plugin "${this.name}"`);
+
+        if (this.onInit) {
+            await this.onInit(botClient);
+        }
     }
 
     async unload() {
@@ -167,8 +172,16 @@ class BotPlugin {
             throw new Error("BotPlugin dependencies must be an array");
         }
 
-        if (data.init && typeof data.init !== "function") {
-            throw new Error("BotPlugin init must be a function");
+        if (data.onInit && typeof data.onInit !== "function") {
+            throw new Error("BotPlugin onInit must be a function");
+        }
+
+        if (data.onGuildEnable && typeof data.onGuildEnable !== "function") {
+            throw new Error("BotPlugin onGuildEnable must be a function");
+        }
+
+        if (data.onGuildDisable && typeof data.onGuildDisable !== "function") {
+            throw new Error("BotPlugin onGuildDisable must be a function");
         }
 
         if (data.ipcHandler && typeof data.ipcHandler !== "object") {

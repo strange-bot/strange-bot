@@ -120,7 +120,7 @@ class PluginManager {
         if (!this.#pluginMap.has(plugin.name)) {
             this.#pluginMap.set(plugin.name, plugin);
 
-            await plugin.load(DBClient.getInstance());
+            await plugin.init(this.client, DBClient.getInstance());
 
             if (plugin.eventHandlers.size > 0) {
                 plugin.eventHandlers.forEach((_, key) => {
@@ -130,9 +130,6 @@ class PluginManager {
                 });
             }
 
-            if (plugin.init) {
-                plugin.init(this.client);
-            }
             if (plugin.name !== "core" && !plugin.dependencies.includes("core")) {
                 plugin.dependencies.push("core");
             }

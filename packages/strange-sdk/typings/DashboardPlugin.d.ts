@@ -42,6 +42,12 @@ interface PluginData {
      * Database service implementation for the plugin
      */
     dbService?: DBService;
+
+    /**
+     * Called when the plugin is first initialized
+     * Use this to set up plugin-specific resources or configurations
+     */
+    onInit?: () => Promise<void>;
 }
 
 declare class DashboardPlugin {
@@ -63,9 +69,6 @@ declare class DashboardPlugin {
     /** FontAwesome icon class used in dashboard UI */
     public readonly icon: string;
 
-    /** Optional initialization function that runs when plugin loads */
-    public readonly init: (() => Promise<void>) | null;
-
     /** Express router for plugin settings page */
     public readonly dashboardRouter: Router | null;
 
@@ -74,6 +77,9 @@ declare class DashboardPlugin {
 
     /** Database service instance */
     public readonly dbService: DBService;
+
+    /** Optional initialization function that runs when plugin loads */
+    public readonly onInit: (() => Promise<void>) | null;
 
     /** Plugin configuration manager */
     public readonly config: SaveableConfig;
@@ -93,7 +99,7 @@ declare class DashboardPlugin {
      * @param dbClient Database client instance if available
      * @returns Promise that resolves when loading is complete
      */
-    public load(dbClient?: DBClient): Promise<void>;
+    public init(dbClient?: DBClient): Promise<void>;
 
     /**
      * Unloads the plugin by clearing all registered handlers and commands
