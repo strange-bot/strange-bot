@@ -1,5 +1,5 @@
 const { Logger } = require("strange-sdk/utils");
-const languages = require("strange-i18n/languages-meta.json");
+const { languagesMeta } = require("strange-core");
 const db = require("../../db.service");
 
 const OWNER_IDS = process.env.OWNER_IDS.split(",");
@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
 
     // Set translate
     req.translate = req.app.translations.get(req.session.locale);
-    res.locals.languages = languages;
+    res.locals.languages = languagesMeta;
     res.locals.locale = req.session.locale;
 
     next();

@@ -32,12 +32,12 @@ importers:
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
+      strange-core:
+        specifier: workspace:*
+        version: link:../../packages/strange-core
       strange-db-client:
         specifier: workspace:*
         version: link:../../packages/strange-db-client
-      strange-i18n:
-        specifier: workspace:*
-        version: link:../../packages/strange-i18n
       strange-sdk:
         specifier: workspace:*
         version: link:../../packages/strange-sdk
@@ -66,7 +66,7 @@ importers:
     dependencies:
       connect-mongo:
         specifier: ^5.1.0
-        version: 5.1.0(express-session@1.18.1)(mongodb@6.13.0(socks@2.8.4))
+        version: 5.1.0(express-session@1.18.1)(mongodb@6.13.0)
       cryptr:
         specifier: ^6.3.0
         version: 6.3.0
@@ -97,12 +97,12 @@ importers:
       isomorphic-dompurify:
         specifier: ^2.21.0
         version: 2.21.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      strange-core:
+        specifier: workspace:*
+        version: link:../../packages/strange-core
       strange-db-client:
         specifier: workspace:*
         version: link:../../packages/strange-db-client
-      strange-i18n:
-        specifier: workspace:*
-        version: link:../../packages/strange-i18n
       strange-sdk:
         specifier: workspace:*
         version: link:../../packages/strange-sdk
@@ -147,19 +147,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.97.1)
 
-  packages/strange-db-client:
-    dependencies:
-      ioredis:
-        specifier: ^5.5.0
-        version: 5.5.0
-      mongoose:
-        specifier: ^8.0.0
-        version: 8.10.1(socks@2.8.4)
-      mongoose-lean-defaults:
-        specifier: ^2.2.1
-        version: 2.2.1(mongoose@8.10.1(socks@2.8.4))
-
-  packages/strange-i18n:
+  packages/strange-core:
     dependencies:
       deepmerge:
         specifier: ^4.3.1
@@ -170,9 +158,30 @@ importers:
       i18next:
         specifier: ^24.2.2
         version: 24.2.2(typescript@5.6.3)
+      proper-lockfile:
+        specifier: ^4.1.2
+        version: 4.1.2
+      simple-git:
+        specifier: ^3.27.0
+        version: 3.27.0
       strange-db-client:
         specifier: workspace:*
         version: link:../strange-db-client
+      strange-sdk:
+        specifier: workspace:*
+        version: link:../strange-sdk
+
+  packages/strange-db-client:
+    dependencies:
+      ioredis:
+        specifier: ^5.5.0
+        version: 5.5.0
+      mongoose:
+        specifier: ^8.0.0
+        version: 8.10.1
+      mongoose-lean-defaults:
+        specifier: ^2.2.1
+        version: 2.2.1(mongoose@8.10.1)
 
   packages/strange-sdk:
     dependencies:
@@ -213,198 +222,6 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.6.3
-
-  plugins/anime:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      nekos.life:
-        specifier: ^3.0.0
-        version: 3.0.0
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/automod:
-    dependencies:
-      common-tags:
-        specifier: ^1.8.2
-        version: 1.8.2
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      fixedsize-map:
-        specifier: ^1.1.0
-        version: 1.1.0
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/core:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      express:
-        specifier: ^4.21.2
-        version: 4.21.2
-      strange-i18n:
-        specifier: workspace:*
-        version: link:../../packages/strange-i18n
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/economy:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      fixedsize-map:
-        specifier: ^1.1.0
-        version: 1.1.0
-      strange-db-client:
-        specifier: workspace:*
-        version: link:../../packages/strange-db-client
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/fun:
-    dependencies:
-      discord-together:
-        specifier: ^1.3.31
-        version: 1.3.31(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      snakecord:
-        specifier: ^1.0.9
-        version: 1.0.9(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/giveaways:
-    dependencies:
-      discord-giveaways:
-        specifier: ^6.0.1
-        version: 6.0.1(discord.js@14.18.0)
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      enhanced-ms:
-        specifier: ^2.3.0
-        version: 2.3.0
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/image:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/moderation:
-    dependencies:
-      common-tags:
-        specifier: ^1.8.2
-        version: 1.8.2
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      enhanced-ms:
-        specifier: ^2.3.0
-        version: 2.3.0
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/presence:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/social:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/stats:
-    dependencies:
-      common-tags:
-        specifier: 1.8.2
-        version: 1.8.2
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      fixedsize-map:
-        specifier: 1.0.1
-        version: 1.0.1
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/suggestion:
-    dependencies:
-      common-tags:
-        specifier: 1.8.2
-        version: 1.8.2
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/ticket:
-    dependencies:
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      short-unique-id:
-        specifier: ^5.0.3
-        version: 5.2.0
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-
-  plugins/utility:
-    dependencies:
-      common-tags:
-        specifier: ^1.8.2
-        version: 1.8.2
-      discord.js:
-        specifier: ^14.18.0
-        version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      moment:
-        specifier: ^2.29.4
-        version: 2.30.1
-      sourcebin_js:
-        specifier: ^0.0.3-ignore
-        version: 0.0.3-ignore
-      strange-sdk:
-        specifier: workspace:*
-        version: link:../../packages/strange-sdk
-      timestamp-to-date:
-        specifier: ^1.1.0
-        version: 1.1.0
-      twemoji-parser:
-        specifier: ^14.0.0
-        version: 14.0.0
 
 packages:
 
@@ -455,19 +272,9 @@ packages:
     resolution: {integrity: sha512-UJnjoFsmxfKUdNYdWgOB0mWUypuLvAfQPH1+pyvRJs6euowbFkFC6P13w1l8mJyi3vxYMxc9kld5jZEGRQs6bw==}
     engines: {node: '>=18'}
 
-  '@discordjs/builders@0.16.0':
-    resolution: {integrity: sha512-9/NCiZrLivgRub2/kBc0Vm5pMBE5AUdYbdXsLu/yg9ANgvnaJ0bZKTY8yYnLbsEc/LYUP79lEIdC73qEYhWq7A==}
-    engines: {node: '>=16.9.0'}
-    deprecated: no longer supported
-
   '@discordjs/builders@1.10.1':
     resolution: {integrity: sha512-OWo1fY4ztL1/M/DUyRPShB4d/EzVfuUvPTRRHRIt/YxBrUYSz0a+JicD5F5zHFoNs2oTuWavxCOVFV1UljHTng==}
     engines: {node: '>=16.11.0'}
-
-  '@discordjs/collection@0.7.0':
-    resolution: {integrity: sha512-R5i8Wb8kIcBAFEPLLf7LVBQKBDYUL+ekb23sOgpkpyGT+V4P7V83wTxcsqmX+PbqHt4cEHn053uMWfRqh/Z/nA==}
-    engines: {node: '>=16.9.0'}
-    deprecated: no longer supported
 
   '@discordjs/collection@1.5.3':
     resolution: {integrity: sha512-SVb428OMd3WO1paV3rm6tSjM4wC+Kecaa1EUGX7vc6/fddvw/6lg90z4QtCqm21zvVe92vMMDt9+DkIvjXImQQ==}
@@ -590,6 +397,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@kwsites/file-exists@1.1.1':
+    resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
+
+  '@kwsites/promise-deferred@1.1.1':
+    resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
   '@mongodb-js/saslprep@1.1.9':
     resolution: {integrity: sha512-tVkljjeEaAhCqTzajSdgbQ6gE6f3oneVwa3iXR6csiEwXXOFsiC6Uh9iAjAhXPtqa/XMDHWjjeNH/77m/Yq2dw==}
@@ -844,10 +657,6 @@ packages:
     resolution: {integrity: sha512-cvGzxbba6sav2zZkH8GPf2oGk9yYoD5qrNWdu9fRehifgnFZJMV+nuy2nON2roRO4yQQ+v7MK/Pktl/HgfsUXg==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
 
-  '@sapphire/shapeshift@3.9.7':
-    resolution: {integrity: sha512-4It2mxPSr4OGn4HSQWGmhFMsNFGfFVhWeRPCRwbH972Ek2pzfGRZtb0pJ4Ze6oIzcyh2jw7nUDa6qGlWofgd9g==}
-    engines: {node: '>=v16'}
-
   '@sapphire/shapeshift@4.0.0':
     resolution: {integrity: sha512-d9dUmWVA7MMiKobL3VpLF8P2aeanRTu6ypG2OIaEv/ZHH/SUQ2iHOVyi5wAPjQ+HmnMuL0whK9ez8I/raWbtIg==}
     engines: {node: '>=v16'}
@@ -877,9 +686,6 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-
-  '@sourcebin/linguist@0.0.3':
-    resolution: {integrity: sha512-VVkb/34pISdK+1tyqmwBac6crn8UhviKCRV5w/wc8iZyTCOoTrOu0Cgbqfh0bfMGxNlQuhaRy6cMmEmHxa5R3g==}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -1320,10 +1126,6 @@ packages:
     resolution: {integrity: sha512-buhp5kePrmda3vhc5B9t7pUQXAb2Tnd0qgpkIhPhkHXxJpiPJ11H0ZEU0oBpJ2QztSbzG/ZxMj/CHsYJqRHmyg==}
     engines: {node: '>= 12.0.0'}
 
-  common-tags@1.8.2:
-    resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
-    engines: {node: '>=4.0.0'}
-
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -1500,10 +1302,6 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
-  deepmerge-ts@4.3.0:
-    resolution: {integrity: sha512-if3ZYdkD2dClhnXR5reKtG98cwyaRT1NeugQoAPTTfsOpV9kqyeiBF9Qa5RHjemb3KzD5ulqygv6ED3t5j9eJw==}
-    engines: {node: '>=12.4.0'}
-
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
@@ -1527,33 +1325,14 @@ packages:
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
 
-  discord-api-types@0.33.5:
-    resolution: {integrity: sha512-dvO5M52v7m7Dy96+XUnzXNsQ/0npsYpU6dL205kAtEDueswoz3aU3bh1UMoK4cQmcGtB1YRyLKqp+DXi05lzFg==}
-
-  discord-api-types@0.36.3:
-    resolution: {integrity: sha512-bz/NDyG0KBo/tY14vSkrwQ/n3HKPf87a0WFW/1M9+tXYK+vp5Z5EksawfCWo2zkAc6o7CClc0eff1Pjrqznlwg==}
-
   discord-api-types@0.37.118:
     resolution: {integrity: sha512-MQkHHZcytmNQ3nQOBj6a0z38swsmHiROX7hdayfd0eWVrLxaQp/6tWBZ7FO2MCKKsc+W3QWnnfOJTbtyk8C4TQ==}
 
   discord-api-types@0.37.119:
     resolution: {integrity: sha512-WasbGFXEB+VQWXlo6IpW3oUv73Yuau1Ig4AZF/m13tXcTKnMpc/mHjpztIlz4+BM9FG9BHQkEXiPto3bKduQUg==}
 
-  discord-giveaways@6.0.1:
-    resolution: {integrity: sha512-hs6Vtb62VdlV7NfB93Phaxc8FW0cH4N1Nkb0bXVZ2npgn73yGOFVmdp8bBP5gsC2ady9OAXXI8Gb66t1IddkFw==}
-    engines: {node: '>=16.9.0'}
-    peerDependencies:
-      discord.js: '>=14.0.0'
-
   discord-oauth2@2.12.1:
     resolution: {integrity: sha512-/Um39bRxVjcGHUu1YaTLangZvZveXjsX4BNsa1Iyd6OQG0jL972IBQGKD0mYqQswxC3bT+hqWSouabfI2RdaZA==}
-
-  discord-together@1.3.31:
-    resolution: {integrity: sha512-BOHLmSkMw376qTvmDdKfgPQ83CYV9UR1YNRPVX9Cq57fu0PDCl9eGx/NfilThzJx7DdojRiliVyp17PlfKlR3w==}
-
-  discord.js@13.17.1:
-    resolution: {integrity: sha512-h13kUf+7ZaP5ZWggzooCxFutvJJvugcAO54oTEIdVr3zQWi0Sf/61S1kETtuY9nVAyYebXR/Ey4C+oWbsgEkew==}
-    engines: {node: '>=16.6.0', npm: '>=7.0.0'}
 
   discord.js@14.18.0:
     resolution: {integrity: sha512-SvU5kVUvwunQhN2/+0t55QW/1EHfB1lp0TtLZUSXVHDmyHTrdOj5LRKdR0zLcybaA15F+NtdWuWmGOX9lE+CAw==}
@@ -1616,9 +1395,6 @@ packages:
 
   end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
-
-  enhanced-ms@2.3.0:
-    resolution: {integrity: sha512-w+pgd9dKRpixmzJEIhpklx51UmhRLeCJSqBNQdmF1hNMR9kuNBYxHXYjonXRsViicl4Nov9nScLTxhaxOTx3lw==}
 
   enhanced-resolve@5.17.1:
     resolution: {integrity: sha512-LMHl3dXhTcfv8gM4kEzIUeTQ+7fpdA0l2tUf34BddXPkz2A5xJ5L/Pchd5BL6rdccM9QGvu0sWZzK1Z1t4wwyg==}
@@ -1806,12 +1582,6 @@ packages:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
 
-  fixedsize-map@1.0.1:
-    resolution: {integrity: sha512-ip1ywpWp+/ZUyDjmoPjLzmtal4ui5/KpBOU43pviQJiOGL+D9sI6V52nQkevtz370oWvoMnZol8+decHU+w8Jg==}
-
-  fixedsize-map@1.1.0:
-    resolution: {integrity: sha512-lTnOqG3vtfFa5UglxoVJfGyuBzAJ1ygG4bO/iXLU0gY+se5H8LN/P6VUXQYpRvO2PWQ05bkpiSxukd7keEZs2g==}
-
   flat-cache@4.0.1:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
     engines: {node: '>=16'}
@@ -1987,10 +1757,6 @@ packages:
     resolution: {integrity: sha512-7CutT89g23FfSa8MDoIFs2GYYa0PaNiW/OrT+nRyjRXHDZd17HmIgy+reOQ/yhh72NznNjGuS8kbCAcA4Ro4mw==}
     engines: {node: '>=12.22.0'}
 
-  ip-address@9.0.5:
-    resolution: {integrity: sha512-zHtQzGojZXTwZTHQqra+ETKd4Sn3vgi7uBmlPoXVWZqYvuKmtI0l/VZTjqGmJY9x88GGOaZ9+G9ES8hC4T4X8g==}
-    engines: {node: '>= 12'}
-
   ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
@@ -2081,9 +1847,6 @@ packages:
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
-
-  jsbn@1.1.0:
-    resolution: {integrity: sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==}
 
   jsdoc-type-pratt-parser@4.1.0:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
@@ -2264,9 +2027,6 @@ packages:
   module-details-from-path@1.0.3:
     resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
 
-  moment@2.30.1:
-    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
-
   mongodb-connection-string-url@3.0.2:
     resolution: {integrity: sha512-rMO7CGo/9BFwyZABcKAWL8UJwH/Kc2x0g72uhDWzG48URRax5TCIcJ7Rc3RZqffZzO/Gwff/jyKwCU9TN8gehA==}
 
@@ -2337,9 +2097,6 @@ packages:
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
-
-  nekos.life@3.0.0:
-    resolution: {integrity: sha512-7LbvSqLtfK4XRA91nJaGOWthrNADmG7Vx9d54TC77Hx5qFvRCssFUaHraI6bZGjVENBCUaF7CreisoFX+8mnKQ==}
 
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
@@ -2797,6 +2554,9 @@ packages:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
 
+  proper-lockfile@4.1.2:
+    resolution: {integrity: sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==}
+
   proxy-addr@2.0.7:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
     engines: {node: '>= 0.10'}
@@ -2895,6 +2655,10 @@ packages:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
     hasBin: true
 
+  retry@0.12.0:
+    resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
+    engines: {node: '>= 4'}
+
   reusify@1.0.4:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
@@ -2969,10 +2733,6 @@ packages:
   shimmer@1.2.1:
     resolution: {integrity: sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==}
 
-  short-unique-id@5.2.0:
-    resolution: {integrity: sha512-cMGfwNyfDZ/nzJ2k2M+ClthBIh//GlZl1JEf47Uoa9XR11bz8Pa2T2wQO4bVrRdH48LrIDWJahQziKo3MjhsWg==}
-    hasBin: true
-
   side-channel-list@1.0.0:
     resolution: {integrity: sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==}
     engines: {node: '>= 0.4'}
@@ -2992,9 +2752,15 @@ packages:
   sift@17.1.3:
     resolution: {integrity: sha512-Rtlj66/b0ICeFzYTuNvX/EF1igRbbnGSvEyT79McoZa/DeGhMyC5pWKOEsZKnpkqtSeovd5FL/bjHWC3CIIvCQ==}
 
+  signal-exit@3.0.7:
+    resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
+
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-git@3.27.0:
+    resolution: {integrity: sha512-ivHoFS9Yi9GY49ogc6/YAi3Fl9ROnF4VyubNylgCkA+RVqLaKWnDSzXOVzya8csELIaWaYNutsEuAhZrtOjozA==}
 
   simple-update-notifier@2.0.0:
     resolution: {integrity: sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==}
@@ -3002,19 +2768,6 @@ packages:
 
   slashes@3.0.12:
     resolution: {integrity: sha512-Q9VME8WyGkc7pJf6QEkj3wE+2CnvZMI+XJhwdTPR8Z/kWQRXi7boAWLDibRPyHRTUTPx5FaU7MsyrjI3yLB4HA==}
-
-  smart-buffer@4.2.0:
-    resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
-    engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
-
-  snakecord@1.0.9:
-    resolution: {integrity: sha512-FTQsKwyN8AqWslvorNA9rUHSA4BmDYuU++XzO8WwXrqHtpiuNmTE+kAKNvySL1FS0mDMAAzBNGOC5vLuDqwdMA==}
-    engines: {node: '>=16'}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-
-  socks@2.8.4:
-    resolution: {integrity: sha512-D3YaD0aRxR3mEcqnidIs7ReYJFVzWdd6fXJYUM8ixcQcJRGTka/b3saV0KflYhyVJXKhb947GndU35SxYNResQ==}
-    engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
 
   sonic-boom@3.8.1:
     resolution: {integrity: sha512-y4Z8LCDBuum+PBP3lSV7RHrXscqksve/bi0as7mhwVnBW+/wUqKT/2Kb7um8yqcFy0duYbbPxzt89Zy2nOCaxg==}
@@ -3029,9 +2782,6 @@ packages:
   source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
-
-  sourcebin_js@0.0.3-ignore:
-    resolution: {integrity: sha512-/W6zJeV13IRw4nZ7ByjmjqmQ3UpRqBafJrxLjSUUH8goG60T/1ze2hu87iP2ca5RXEqoTKr7057SJTXqrov3lA==}
 
   sparse-bitfield@3.0.3:
     resolution: {integrity: sha512-kvzhi7vqKTfkh0PZU+2D2PIllw2ymqJKujUcyPMd9Y75Nv4nPbGJZXNhxsgdQab2BmlDct1YnfQCguEvHr7VsQ==}
@@ -3048,9 +2798,6 @@ packages:
   split2@4.2.0:
     resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
     engines: {node: '>= 10.x'}
-
-  sprintf-js@1.1.3:
-    resolution: {integrity: sha512-Oo+0REFV59/rz3gfJNKQiBlwfHaSESl1pcGyABQsnnIfWOFt6JNj5gCog2U6MLZ//IGYD+nA8nI+mTShREReaA==}
 
   standard-as-callback@2.1.0:
     resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
@@ -3192,9 +2939,6 @@ packages:
   thread-stream@2.7.0:
     resolution: {integrity: sha512-qQiRWsU/wvNolI6tbbCKd9iKaTnCXsTwVxhhKM6nctPdujTyztjlbUkUTUymidWcMnZ5pWR0ej4a0tjsW021vw==}
 
-  timestamp-to-date@1.1.0:
-    resolution: {integrity: sha512-XYDA+h2TMKj/KJJ5wAkZ25AcBGu/dwZNDy3lkNWRbLUcosvhTuaZ0Or3VOzjYuZD4SuHrXARncmWZChXncMznw==}
-
   tldts-core@6.1.64:
     resolution: {integrity: sha512-uqnl8vGV16KsyflHOzqrYjjArjfXaU6rMPXYy2/ZWoRKCkXtghgB4VwTDXUG+t0OTGeSewNAG31/x1gCTfLt+Q==}
 
@@ -3233,9 +2977,6 @@ packages:
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
-
-  twemoji-parser@14.0.0:
-    resolution: {integrity: sha512-9DUOTGLOWs0pFWnh1p6NF+C3CkQ96PWmEFwhOVmT3WbecRC+68AIqpsnJXygfkFcp4aXbOp8Dwbhh/HQgvoRxA==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -3463,14 +3204,6 @@ snapshots:
 
   '@csstools/css-tokenizer@3.0.3': {}
 
-  '@discordjs/builders@0.16.0':
-    dependencies:
-      '@sapphire/shapeshift': 3.9.7
-      discord-api-types: 0.36.3
-      fast-deep-equal: 3.1.3
-      ts-mixer: 6.0.4
-      tslib: 2.8.1
-
   '@discordjs/builders@1.10.1':
     dependencies:
       '@discordjs/formatters': 0.6.0
@@ -3480,8 +3213,6 @@ snapshots:
       fast-deep-equal: 3.1.3
       ts-mixer: 6.0.4
       tslib: 2.8.1
-
-  '@discordjs/collection@0.7.0': {}
 
   '@discordjs/collection@1.5.3': {}
 
@@ -3628,6 +3359,14 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@kwsites/file-exists@1.1.1':
+    dependencies:
+      debug: 4.4.0(supports-color@5.5.0)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@kwsites/promise-deferred@1.1.1': {}
 
   '@mongodb-js/saslprep@1.1.9':
     dependencies:
@@ -3940,11 +3679,6 @@ snapshots:
 
   '@sapphire/async-queue@1.5.5': {}
 
-  '@sapphire/shapeshift@3.9.7':
-    dependencies:
-      fast-deep-equal: 3.1.3
-      lodash: 4.17.21
-
   '@sapphire/shapeshift@4.0.0':
     dependencies:
       fast-deep-equal: 3.1.3
@@ -4004,8 +3738,6 @@ snapshots:
       '@sentry/core': 9.1.0
 
   '@sinclair/typebox@0.27.8': {}
-
-  '@sourcebin/linguist@0.0.3': {}
 
   '@trysound/sax@0.2.0': {}
 
@@ -4484,16 +4216,14 @@ snapshots:
 
   comment-parser@1.4.1: {}
 
-  common-tags@1.8.2: {}
-
   concat-map@0.0.1: {}
 
-  connect-mongo@5.1.0(express-session@1.18.1)(mongodb@6.13.0(socks@2.8.4)):
+  connect-mongo@5.1.0(express-session@1.18.1)(mongodb@6.13.0):
     dependencies:
       debug: 4.3.7
       express-session: 1.18.1
       kruptein: 3.0.7
-      mongodb: 6.13.0(socks@2.8.4)
+      mongodb: 6.13.0
     transitivePeerDependencies:
       - supports-color
 
@@ -4655,8 +4385,6 @@ snapshots:
 
   deep-is@0.1.4: {}
 
-  deepmerge-ts@4.3.0: {}
-
   deepmerge@4.3.1: {}
 
   delayed-stream@1.0.0: {}
@@ -4669,46 +4397,11 @@ snapshots:
 
   didyoumean@1.2.2: {}
 
-  discord-api-types@0.33.5: {}
-
-  discord-api-types@0.36.3: {}
-
   discord-api-types@0.37.118: {}
 
   discord-api-types@0.37.119: {}
 
-  discord-giveaways@6.0.1(discord.js@14.18.0):
-    dependencies:
-      deepmerge-ts: 4.3.0
-      discord.js: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      serialize-javascript: 6.0.2
-
   discord-oauth2@2.12.1: {}
-
-  discord-together@1.3.31(bufferutil@4.0.9)(utf-8-validate@6.0.5):
-    dependencies:
-      discord.js: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-
-  discord.js@13.17.1(bufferutil@4.0.9)(utf-8-validate@6.0.5):
-    dependencies:
-      '@discordjs/builders': 0.16.0
-      '@discordjs/collection': 0.7.0
-      '@sapphire/async-queue': 1.5.5
-      '@types/node-fetch': 2.6.12
-      '@types/ws': 8.5.13
-      discord-api-types: 0.33.5
-      form-data: 4.0.1
-      node-fetch: 2.7.0
-      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
 
   discord.js@14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5):
     dependencies:
@@ -4781,8 +4474,6 @@ snapshots:
   end-of-stream@1.4.4:
     dependencies:
       once: 1.4.0
-
-  enhanced-ms@2.3.0: {}
 
   enhanced-resolve@5.17.1:
     dependencies:
@@ -5035,10 +4726,6 @@ snapshots:
       locate-path: 6.0.0
       path-exists: 4.0.0
 
-  fixedsize-map@1.0.1: {}
-
-  fixedsize-map@1.1.0: {}
-
   flat-cache@4.0.1:
     dependencies:
       flatted: 3.3.2
@@ -5229,12 +4916,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ip-address@9.0.5:
-    dependencies:
-      jsbn: 1.1.0
-      sprintf-js: 1.1.3
-    optional: true
-
   ipaddr.js@1.9.1: {}
 
   is-arrayish@0.2.1: {}
@@ -5327,9 +5008,6 @@ snapshots:
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
-
-  jsbn@1.1.0:
-    optional: true
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
@@ -5481,31 +5159,27 @@ snapshots:
 
   module-details-from-path@1.0.3: {}
 
-  moment@2.30.1: {}
-
   mongodb-connection-string-url@3.0.2:
     dependencies:
       '@types/whatwg-url': 11.0.5
       whatwg-url: 14.1.0
 
-  mongodb@6.13.0(socks@2.8.4):
+  mongodb@6.13.0:
     dependencies:
       '@mongodb-js/saslprep': 1.1.9
       bson: 6.10.3
       mongodb-connection-string-url: 3.0.2
-    optionalDependencies:
-      socks: 2.8.4
 
-  mongoose-lean-defaults@2.2.1(mongoose@8.10.1(socks@2.8.4)):
+  mongoose-lean-defaults@2.2.1(mongoose@8.10.1):
     dependencies:
-      mongoose: 8.10.1(socks@2.8.4)
+      mongoose: 8.10.1
       mpath: 0.9.0
 
-  mongoose@8.10.1(socks@2.8.4):
+  mongoose@8.10.1:
     dependencies:
       bson: 6.10.3
       kareem: 2.6.3
-      mongodb: 6.13.0(socks@2.8.4)
+      mongodb: 6.13.0
       mpath: 0.9.0
       mquery: 5.0.0
       ms: 2.1.3
@@ -5546,8 +5220,6 @@ snapshots:
   natural-compare@1.4.0: {}
 
   negotiator@0.6.3: {}
-
-  nekos.life@3.0.0: {}
 
   neo-async@2.6.2: {}
 
@@ -5971,6 +5643,12 @@ snapshots:
 
   process@0.11.10: {}
 
+  proper-lockfile@4.1.2:
+    dependencies:
+      graceful-fs: 4.2.11
+      retry: 0.12.0
+      signal-exit: 3.0.7
+
   proxy-addr@2.0.7:
     dependencies:
       forwarded: 0.2.0
@@ -6068,6 +5746,8 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
+  retry@0.12.0: {}
+
   reusify@1.0.4: {}
 
   rrweb-cssom@0.8.0: {}
@@ -6150,8 +5830,6 @@ snapshots:
 
   shimmer@1.2.1: {}
 
-  short-unique-id@5.2.0: {}
-
   side-channel-list@1.0.0:
     dependencies:
       es-errors: 1.3.0
@@ -6182,30 +5860,23 @@ snapshots:
 
   sift@17.1.3: {}
 
+  signal-exit@3.0.7: {}
+
   signal-exit@4.1.0: {}
+
+  simple-git@3.27.0:
+    dependencies:
+      '@kwsites/file-exists': 1.1.1
+      '@kwsites/promise-deferred': 1.1.1
+      debug: 4.4.0(supports-color@5.5.0)
+    transitivePeerDependencies:
+      - supports-color
 
   simple-update-notifier@2.0.0:
     dependencies:
       semver: 7.7.0
 
   slashes@3.0.12: {}
-
-  smart-buffer@4.2.0:
-    optional: true
-
-  snakecord@1.0.9(bufferutil@4.0.9)(utf-8-validate@6.0.5):
-    dependencies:
-      discord.js: 13.17.1(bufferutil@4.0.9)(utf-8-validate@6.0.5)
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-
-  socks@2.8.4:
-    dependencies:
-      ip-address: 9.0.5
-      smart-buffer: 4.2.0
-    optional: true
 
   sonic-boom@3.8.1:
     dependencies:
@@ -6219,13 +5890,6 @@ snapshots:
       source-map: 0.6.1
 
   source-map@0.6.1: {}
-
-  sourcebin_js@0.0.3-ignore:
-    dependencies:
-      '@sourcebin/linguist': 0.0.3
-      node-fetch: 2.7.0
-    transitivePeerDependencies:
-      - encoding
 
   sparse-bitfield@3.0.3:
     dependencies:
@@ -6241,9 +5905,6 @@ snapshots:
   spdx-license-ids@3.0.21: {}
 
   split2@4.2.0: {}
-
-  sprintf-js@1.1.3:
-    optional: true
 
   standard-as-callback@2.1.0: {}
 
@@ -6410,8 +6071,6 @@ snapshots:
     dependencies:
       real-require: 0.2.0
 
-  timestamp-to-date@1.1.0: {}
-
   tldts-core@6.1.64: {}
 
   tldts@6.1.64:
@@ -6441,8 +6100,6 @@ snapshots:
   ts-mixer@6.0.4: {}
 
   tslib@2.8.1: {}
-
-  twemoji-parser@14.0.0: {}
 
   type-check@0.4.0:
     dependencies:

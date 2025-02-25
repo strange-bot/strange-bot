@@ -6,10 +6,11 @@ const {
     ApplicationCommandType,
 } = require("discord.js");
 const PluginManager = require("../helpers/PluginManager");
+const path = require("node:path");
 const { Logger } = require("strange-sdk/utils");
 
 class BotClient extends Client {
-    constructor() {
+    constructor(pluginsDir) {
         super({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -48,7 +49,8 @@ class BotClient extends Client {
         this.logger = Logger;
 
         // Plugin Manager
-        this.pluginManager = new PluginManager(this);
+        const registry = path.join(pluginsDir, "registry.json");
+        this.pluginManager = new PluginManager(this, registry);
 
         // i18n stuff
         this.translations = null;
@@ -71,7 +73,7 @@ class BotClient extends Client {
     }
 
     async loadTranslations(baseDir, pluginsDir) {
-        const I18nManager = require("strange-i18n");
+        const { I18nManager } = require("strange-core");
         this.i18n = new I18nManager("bot", {
             baseDir,
             pluginsDir,

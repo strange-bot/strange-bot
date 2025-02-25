@@ -15,3 +15,7 @@ apps/dashboard/public/css
 # Extensions
 *.log
 *.tar.gz
+
+# Plugins
+plugins/*
+!plugins/registry.json

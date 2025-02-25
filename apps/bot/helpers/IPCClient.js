@@ -1,6 +1,6 @@
 const veza = require("veza");
 const { Logger } = require("strange-sdk/utils");
-const languages = require("strange-i18n/languages-meta.json");
+const { languagesMeta } = require("strange-core");
 const { ChannelType } = require("discord.js");
 
 class IPCClient {
@@ -147,7 +147,7 @@ class IPCClient {
 
         if (eventName === "GET_LOCALE_BUNDLE") {
             const resourceBundle = {};
-            const availableLanguages = languages.map((l) => l.name);
+            const availableLanguages = languagesMeta.map((l) => l.name);
             for (const plugin of this.discordClient.pluginManager.plugins) {
                 const pluginName = plugin.name;
                 for (const lang of availableLanguages) {

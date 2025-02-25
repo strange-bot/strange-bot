@@ -24,7 +24,9 @@ module.exports = class App {
 
         // Set app properties
         this.app.ipcServer = ipcServer;
-        this.app.pluginManager = new PluginManager();
+        this.app.pluginManager = new PluginManager(
+            path.join(__dirname, "../../plugins/registry.json"),
+        );
         this.app.i18n = null;
         this.app.translations = null;
 
@@ -35,7 +37,7 @@ module.exports = class App {
     }
 
     async loadTranslations(baseDir, pluginsDir) {
-        const I18nManager = require("strange-i18n");
+        const { I18nManager } = require("strange-core");
         this.app.i18n = new I18nManager("dashboard", {
             baseDir,
             pluginsDir,
@@ -46,8 +48,8 @@ module.exports = class App {
         Logger.success("Loaded translations");
     }
 
-    async loadPlugins(pluginsDir) {
-        await this.app.pluginManager.loadPlugins(pluginsDir);
+    async loadPlugins() {
+        await this.app.pluginManager.init();
     }
 
     listen(port) {

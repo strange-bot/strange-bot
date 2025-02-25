@@ -1,0 +1,202 @@
+<div
+  class="container mx-auto px-4 py-6 dark:bg-gray-900"
+  x-data="{
+  plugins: [],
+  loading: true,
+  selectedPlugin: null,
+  loadingPlugins: new Set(),
+  togglingPlugins: new Set(),
+  isLoading(pluginName) {
+    return this.loadingPlugins.has(pluginName);
+  },
+  isToggling(pluginName) {
+    return this.togglingPlugins.has(pluginName);
+  },
+  async init() {
+    try {
+      const response = await fetch('/admin/plugins');
+      this.plugins = await response.json();
+    } catch (error) {
+      console.error('Failed to load plugins:', error);
+    } finally {
+      this.loading = false;
+    }
+  },
+  async togglePlugin(plugin) {
+    if (this.isToggling(plugin.name)) return;
+    this.togglingPlugins.add(plugin.name);
+    try {
+      const action = plugin.enabled ? 'disable' : 'enable';
+      const response = await fetch(`/admin/plugins/${plugin.name}/${action}`, { method: 'POST' });
+      if (response.ok) {
+        plugin.enabled = !plugin.enabled;
+        Alpine.store('toast').show(`Plugin ${plugin.name} ${action}d successfully`, 'success');
+      } else {
+        throw new Error(`Failed to ${action} plugin`);
+      }
+    } catch (error) {
+      Alpine.store('toast').show(`Failed to ${plugin.enabled ? 'disable' : 'enable'} plugin`, 'error');
+    } finally {
+      this.togglingPlugins.delete(plugin.name);
+    }
+  },
+  async installPlugin(plugin) {
+    if (this.isLoading(plugin.name)) return;
+    this.loadingPlugins.add(plugin.name);
+    try {
+      const response = await fetch(`/admin/plugins/${plugin.name}/install`, { method: 'POST' });
+      if (response.ok) {
+        plugin.installed = true;
+        Alpine.store('toast').show(`Plugin ${plugin.name} installed successfully`, 'success');
+      }
+    } catch (error) {
+      Alpine.store('toast').show('Failed to install plugin', 'error');
+    } finally {
+      this.loadingPlugins.delete(plugin.name);
+    }
+  },
+  async uninstallPlugin(plugin) {
+    if (this.isLoading(plugin.name)) return;
+    this.loadingPlugins.add(plugin.name);
+    try {
+      const response = await fetch(`/admin/plugins/${plugin.name}/uninstall`, { method: 'POST' });
+      if (response.ok) {
+        plugin.installed = false;
+        plugin.enabled = false;
+        Alpine.store('toast').show(`Plugin ${plugin.name} uninstalled successfully`, 'success');
+      }
+    } catch (error) {
+      Alpine.store('toast').show('Failed to uninstall plugin', 'error');
+    } finally {
+      this.loadingPlugins.delete(plugin.name);
+    }
+  },
+  searchTerm: '',
+  get filteredPlugins() {
+    if (!this.searchTerm) return this.plugins;
+    const term = this.searchTerm.toLowerCase();
+    return this.plugins.filter(plugin => 
+      plugin.name.toLowerCase().includes(term) || 
+      (plugin.description && plugin.description.toLowerCase().includes(term)) ||
+      (plugin.author && plugin.author.toLowerCase().includes(term))
+    );
+  }
+}">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold dark:text-white">Plugins Management</h1>
+    <span class="text-sm text-gray-500 dark:text-gray-400" x-text="'Total plugins: ' + plugins.length"></span>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="mb-4">
+    <div class="relative">
+      <input
+        type="text"
+        x-model="searchTerm"
+        placeholder="Search plugins..."
+        class="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 focus:outline-none focus:border-primary-500 dark:focus:border-primary-500" />
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div x-show="loading" class="text-center py-8">
+    <div
+      class="animate-spin inline-block w-8 h-8 border-4 border-blue-600 dark:border-blue-500 border-t-transparent rounded-full"></div>
+    <p class="mt-2 dark:text-gray-300">Loading plugins...</p>
+  </div>
+
+  <!-- Plugins Grid -->
+  <div x-show="!loading" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+    <template x-for="plugin in filteredPlugins" :key="plugin.name">
+      <div
+        class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+        <div class="p-3">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h3 x-text="plugin.name" class="text-base font-semibold dark:text-white"></h3>
+              <div class="flex items-center mt-0.5 space-x-2">
+                <span
+                  class="text-xs text-gray-500 dark:text-gray-400"
+                  x-text="'by ' + (plugin.author || 'Unknown')"></span>
+                <span class="text-xs text-gray-500 dark:text-gray-400" x-text="'v' + plugin.version"></span>
+              </div>
+            </div>
+            <span
+              x-show="plugin.installed"
+              @click="togglePlugin(plugin)"
+              :class="[
+                plugin.enabled ? 
+                  'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
+                  'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+                isToggling(plugin.name) ? 'opacity-75' : 'cursor-pointer hover:opacity-80'
+              ]"
+              class="px-3 py-1 rounded-full text-xs font-medium select-none inline-flex items-center gap-1">
+              <template x-if="isToggling(plugin.name)">
+                <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </template>
+              <span x-text="plugin.enabled ? 'Enabled' : 'Disabled'"></span>
+            </span>
+          </div>
+
+          <div class="mt-2 space-y-1.5">
+            <p x-text="plugin.description" class="text-gray-600 dark:text-gray-300 text-xs"></p>
+            <div x-show="plugin.repository" class="text-xs">
+              <a
+                :href="plugin.repository + (plugin.repositoryPath ? '/tree/main/' + plugin.repositoryPath : '')"
+                target="_blank"
+                class="text-blue-600 dark:text-blue-400 hover:underline">
+                View Source
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-end pt-3 mt-3 border-t dark:border-gray-700">
+            <div class="space-x-2">
+              <button
+                @click="plugin.installed ? uninstallPlugin(plugin) : installPlugin(plugin)"
+                :disabled="isLoading(plugin.name)"
+                :class="plugin.installed ? 
+                        'bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600' : 
+                        'bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600'"
+                class="px-2.5 py-1 rounded-md text-xs font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed">
+                <template x-if="isLoading(plugin.name)">
+                  <svg
+                    class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </template>
+                <span x-text="plugin.installed ? 'Uninstall' : 'Install'"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- Empty State -->
+  <div x-show="!loading && filteredPlugins.length === 0" class="text-center py-8">
+    <p class="text-gray-500 dark:text-gray-400">No plugins found matching your search.</p>
+  </div>
+</div>

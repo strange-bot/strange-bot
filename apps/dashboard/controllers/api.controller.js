@@ -1,4 +1,4 @@
-const languages = require("strange-i18n/languages-meta.json");
+const { languagesMeta } = require("strange-core");
 const db = require("../db.service");
 
 /**
@@ -39,7 +39,7 @@ module.exports.updateDashboardLanguage = async function (req, res) {
     const lang = req.body.language_code;
 
     // check if language is valid
-    if (!languages.find((l) => l.name === lang)) {
+    if (!languagesMeta.find((l) => l.name === lang)) {
         return res.sendStatus(400);
     }
 

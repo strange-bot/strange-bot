@@ -24,8 +24,8 @@
         "express-session": "^1.18.1",
         "i18next": "^24.2.2",
         "isomorphic-dompurify": "^2.21.0",
+        "strange-core": "workspace:*",
         "strange-db-client": "workspace:*",
-        "strange-i18n": "workspace:*",
         "strange-sdk": "workspace:*",
         "veza": "^1.2.0"
     },

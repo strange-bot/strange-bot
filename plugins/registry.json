@@ -1,0 +1,130 @@
+[
+    {
+        "name": "core",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "core",
+        "dependencies": []
+    },
+    {
+        "name": "anime",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "anime",
+        "dependencies": []
+    },
+    {
+        "name": "automod",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "automod",
+        "dependencies": []
+    },
+    {
+        "name": "economy",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "economy",
+        "dependencies": []
+    },
+    {
+        "name": "fun",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "fun",
+        "dependencies": []
+    },
+    {
+        "name": "giveaways",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "giveaways",
+        "dependencies": []
+    },
+    {
+        "name": "greeting",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "greeting",
+        "dependencies": ["invites"]
+    },
+    {
+        "name": "image",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "image",
+        "dependencies": []
+    },
+    {
+        "name": "moderation",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "moderation",
+        "dependencies": []
+    },
+    {
+        "name": "presence",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "presence",
+        "dependencies": []
+    },
+    {
+        "name": "social",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "social",
+        "dependencies": []
+    },
+    {
+        "name": "stats",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "stats",
+        "dependencies": []
+    },
+    {
+        "name": "suggestion",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "suggestion",
+        "dependencies": []
+    },
+    {
+        "name": "ticket",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "ticket",
+        "dependencies": []
+    },
+    {
+        "name": "translation",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "translation",
+        "dependencies": []
+    },
+    {
+        "name": "utility",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "utility",
+        "dependencies": []
+    }
+]

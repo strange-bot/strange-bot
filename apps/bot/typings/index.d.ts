@@ -18,7 +18,7 @@ declare global {
             pluginManager: import("apps/bot/helpers/PluginManager");
 
             translations: Map<string, import("i18next").TFunction> | undefined;
-            i18n: import("strange-i18n") | undefined;
+            i18n: import("strange-core").I18nManager | undefined;
 
             wait: (ms: number) => Promise<void>;
 

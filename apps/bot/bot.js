@@ -16,7 +16,7 @@ const localesDir = path.join(__dirname, "locales");
 const pluginsDir = path.join(__dirname, "..", "..", "plugins");
 
 // Create a Discord & IPC Client
-const client = new BotClient();
+const client = new BotClient(pluginsDir);
 const ipcClient = new IPCClient(client);
 
 // Initialize the logger
@@ -44,7 +44,7 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
     await client.loadTranslations(localesDir, pluginsDir);
 
     // Initialize plugins
-    await client.pluginManager.loadPlugins(pluginsDir);
+    await client.pluginManager.init();
 
     // Load all plugin commands and contexts
     client.loadPluginCommands();

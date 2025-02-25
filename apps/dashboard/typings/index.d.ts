@@ -9,7 +9,7 @@ declare global {
         interface Application {
             ipcServer: import("../helpers/IPCServer");
             pluginManager: import("../helpers/PluginManager");
-            i18n: import("strange-i18n");
+            i18n: import("strange-core").I18nManager;
             translations: Map<string, import("i18next").TFunction>;
         }
 
