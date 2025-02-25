@@ -4,7 +4,7 @@ const i18next = require("i18next");
 const deepmerge = require("deepmerge");
 const flat = require("flat");
 const { DBClient } = require("strange-db-client");
-const localizationSchema = require("./schema");
+const localizationSchema = require("./schemas/i18n");
 
 class I18nManager {
     constructor(app, options = {}) {
@@ -155,7 +155,7 @@ class I18nManager {
         try {
             const plugins = readdirSync(pluginsDir).filter((dir) => {
                 const stats = statSync(join(pluginsDir, dir));
-                return stats.isDirectory() && !dir.startsWith(".");
+                return stats.isDirectory() && !dir.startsWith(".") && !dir.endsWith(".lock");
             });
 
             plugins.forEach((pluginDirName) => {

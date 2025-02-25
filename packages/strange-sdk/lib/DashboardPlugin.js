@@ -22,7 +22,6 @@ class DashboardPlugin {
         this.dbService = data.dbService || new DBService(this.name);
         this.config = new Config(this.name, this.pluginDir);
         this.dbClient = null;
-        this.schemas = new Map();
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
@@ -39,7 +38,8 @@ class DashboardPlugin {
         Logger.debug(`Successfully Loaded plugin "${this.name}"`);
     }
 
-    async unload() {
+    async destroy() {
+        await this.dbService?.destroy();
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 

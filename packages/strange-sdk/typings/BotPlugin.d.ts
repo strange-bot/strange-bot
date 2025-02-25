@@ -146,7 +146,7 @@ declare class BotPlugin {
      * Unloads the plugin by clearing all registered handlers and commands
      * @returns Promise that resolves when unloading is complete
      */
-    public unload(): Promise<void>;
+    public destroy(): Promise<void>;
 
     /**
      * Gets plugin settings for a specific guild

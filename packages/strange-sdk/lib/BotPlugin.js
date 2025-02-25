@@ -57,7 +57,7 @@ class BotPlugin {
         }
     }
 
-    async unload() {
+    async destroy() {
         this.eventHandlers.clear();
         this.commands.clear();
         this.contexts.clear();

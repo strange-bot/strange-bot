@@ -95,17 +95,17 @@ declare class DashboardPlugin {
     constructor(data: PluginData);
 
     /**
-     * Loads the plugin by registering events, commands, and schemas
+     * Loads the plugin by registering routes, schemas and other resources
      * @param dbClient Database client instance if available
      * @returns Promise that resolves when loading is complete
      */
     public init(dbClient?: DBClient): Promise<void>;
 
     /**
-     * Unloads the plugin by clearing all registered handlers and commands
+     * Unloads the plugin by removing routes, schemas and other resources
      * @returns Promise that resolves when unloading is complete
      */
-    public unload(): Promise<void>;
+    public destroy(): Promise<void>;
 
     /**
      * Gets plugin settings for a specific guild

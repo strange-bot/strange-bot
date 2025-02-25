@@ -40,6 +40,13 @@ module.exports = class DBService {
         }
     }
 
+    async destroy() {
+        for (const [schemaName] of this.schemas) {
+            this.schemas.delete(schemaName);
+            this.dbClient.deleteModel(`${this.name}.${schemaName}`);
+        }
+    }
+
     defineSchemas() {
         return {};
     }

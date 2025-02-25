@@ -51,6 +51,16 @@ declare class DatabaseClient {
     registerSchema<T>(name: string, schema: Schema): Model<T>;
 
     /**
+     * Deletes a model from the database.
+     */
+    deleteModel(name: string): void;
+
+    /**
+     * Reloads a model in the database with cache support.
+     */
+    reloadSchema<T>(name: string, schema: Schema): Model<T>;
+
+    /**
      * Gets a model from the database.
      * @param {string} name The name of the model.
      * @throws {Error} If the model is not found.

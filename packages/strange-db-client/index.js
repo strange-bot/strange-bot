@@ -59,12 +59,15 @@ class DatabaseClient {
         return model;
     }
 
-    reloadSchema(name, schema) {
-        if (!mongoose.models[name] || !this.models.has(name)) {
-            throw new Error(`Model with name ${name} is not registered`);
+    deleteModel(name) {
+        if (mongoose.models[name] && this.models.has(name)) {
+            delete mongoose.models[name];
+            this.models.delete(name);
         }
-        delete mongoose.models[name];
-        this.models.delete(name);
+    }
+
+    reloadSchema(name, schema) {
+        this.deleteModel(name);
         return this.registerSchema(name, schema);
     }
 
