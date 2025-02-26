@@ -37,46 +37,36 @@ module.exports.getPlugins = async function (req, res) {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-module.exports.togglePlugin = async function (req, res) {
-    const { pluginName, action } = req.params;
+module.exports.updatePlugins = async function (req, res) {
+    const { pluginName, action } = req.body;
     try {
-        if (action === "enable") {
-            await req.app.pluginManager.enablePlugin(pluginName);
-        } else {
-            await req.app.pluginManager.disablePlugin(pluginName);
+        switch (action) {
+            case "enable":
+                await req.app.pluginManager.enablePlugin(pluginName);
+                break;
+            case "disable":
+                await req.app.pluginManager.disablePlugin(pluginName);
+                break;
+            case "install":
+                await req.app.pluginManager.installPlugin(pluginName);
+                break;
+            case "uninstall":
+                await req.app.pluginManager.uninstallPlugin(pluginName);
+                break;
+            case "update":
+                if (req.app.pluginManager.isPluginEnabled(pluginName)) {
+                    await req.app.pluginManager.disablePlugin(pluginName);
+                }
+                await req.app.pluginManager.uninstallPlugin(pluginName);
+                await req.app.pluginManager.installPlugin(pluginName);
+                break;
+            default:
+                throw new Error("Invalid action");
         }
 
         res.json({ success: true });
     } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-module.exports.installPlugin = async function (req, res) {
-    const { pluginName } = req.params;
-    try {
-        await req.app.pluginManager.installPlugin(pluginName);
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-module.exports.uninstallPlugin = async function (req, res) {
-    const { pluginName } = req.params;
-    try {
-        await req.app.pluginManager.uninstallPlugin(pluginName);
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 

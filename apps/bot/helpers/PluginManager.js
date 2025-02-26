@@ -19,11 +19,7 @@ class PluginManager extends BasePluginManager {
         this.client = client;
     }
 
-    async enablePlugin(pluginName) {
-        if (this._pluginMap.has(pluginName)) {
-            throw new Error("Plugin is already enabled.");
-        }
-
+    async onEnable(pluginName) {
         const pluginDir = path.join(this.pluginsDir, pluginName);
         const botEntry = path.join(pluginDir, "bot");
 
@@ -46,7 +42,7 @@ class PluginManager extends BasePluginManager {
                 });
             }
 
-            this._pluginMap.set(plugin.name, plugin);
+            return plugin;
         } catch (error) {
             if (error.code === "MODULE_NOT_FOUND") {
                 Logger.debug(`Plugin ${pluginDir} does not have a bot entry point. Skipping.`);
@@ -56,11 +52,8 @@ class PluginManager extends BasePluginManager {
         }
     }
 
-    async disablePlugin(pluginName) {
-        const plugin = this._pluginMap.get(pluginName);
-        if (!plugin) {
-            throw new Error("Plugin is not enabled.");
-        }
+    async onDisable(pluginName) {
+        const plugin = this.getPlugin(pluginName);
 
         // Update event handlers
         plugin.eventHandlers.forEach((_, event) => {
@@ -77,7 +70,6 @@ class PluginManager extends BasePluginManager {
         });
 
         await plugin.destroy?.();
-        this._pluginMap.delete(pluginName);
     }
 
     /**

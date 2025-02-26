@@ -5,13 +5,10 @@ const os = require("node:os");
 const crypto = require("crypto");
 const lockfile = require("proper-lockfile");
 const { Logger } = require("strange-sdk/utils");
+const execa = require("execa");
 
 class BasePluginManager {
-    /**
-     * @type {Map<string, import('strange-sdk').BotPlugin|import('strange-sdk').DashboardPlugin>}
-     * @protected
-     */
-    _pluginMap = new Map();
+    #pluginMap = new Map();
     #repoCache = new Map();
 
     constructor(registryPath) {
@@ -25,15 +22,15 @@ class BasePluginManager {
     // ==============================
 
     get plugins() {
-        return Array.from(this._pluginMap.values());
+        return Array.from(this.#pluginMap.values()).filter((p) => p !== undefined);
     }
 
     isPluginEnabled(pluginName) {
-        return this._pluginMap.has(pluginName);
+        return this.#pluginMap.has(pluginName);
     }
 
     getPlugin(pluginName) {
-        return this._pluginMap.get(pluginName);
+        return this.#pluginMap.get(pluginName);
     }
 
     // ==============================
@@ -77,12 +74,74 @@ class BasePluginManager {
     }
 
     // Abstract methods to be implemented by derived classes
-    async enablePlugin(pluginName) {
+    async onEnable(pluginName) {
         throw new Error("Not implemented");
     }
 
-    async disablePlugin(pluginName) {
+    async onDisable(pluginName) {
         throw new Error("Not implemented");
+    }
+
+    async enablePlugin(pluginName) {
+        if (this.#pluginMap.has(pluginName)) {
+            throw new Error("Plugin is already enabled.");
+        }
+        const pluginDir = path.join(this.pluginsDir, pluginName);
+        try {
+            await fs.stat(pluginDir);
+        } catch {
+            throw new Error("Plugin is not installed.");
+        }
+
+        const plugin = await this.onEnable(pluginName);
+
+        if (pluginName !== "core") {
+            const corePlugin = this.getPlugin("core");
+            const config = await corePlugin.getConfig();
+            if (!config.ENABLED_PLUGINS.includes(pluginName)) {
+                config.ENABLED_PLUGINS.push(pluginName);
+            }
+            await config.save(config);
+        }
+
+        this.#pluginMap.set(pluginName, plugin);
+    }
+
+    async disablePlugin(pluginName) {
+        if (pluginName === "core") {
+            throw new Error("Cannot disable core plugin");
+        }
+
+        if (!this.#pluginMap.has(pluginName)) {
+            throw new Error("Plugin is not enabled.");
+        }
+
+        // Get all currently enabled plugins
+        const plugins = await this.getPluginsMeta();
+        const enabledPlugins = plugins.filter((p) => this.isPluginEnabled(p.name));
+
+        // Check if any enabled plugin depends on this one
+        const dependentPlugins = enabledPlugins
+            .filter((p) => (p.dependencies || []).includes(pluginName))
+            .map((p) => p.name);
+
+        if (dependentPlugins.length > 0) {
+            throw new Error(
+                `Cannot disable ${pluginName}. It is required by: ${dependentPlugins.join(", ")}`,
+            );
+        }
+
+        // Call implementation-specific disable logic
+        await this.onDisable(pluginName);
+
+        // Update the core config
+        const corePlugin = this.getPlugin("core");
+        const config = await corePlugin.getConfig();
+        config.ENABLED_PLUGINS = config.ENABLED_PLUGINS.filter((p) => p !== pluginName);
+        await config.save(config);
+
+        // Remove the plugin from the map
+        this.#pluginMap.delete(pluginName);
     }
 
     // ==============================
@@ -95,11 +154,38 @@ class BasePluginManager {
             const registry = JSON.parse(data);
             const installedPlugins = await fs.readdir(this.pluginsDir).catch(() => []);
 
-            return registry.map((plugin) => ({
-                ...plugin,
-                installed: installedPlugins.includes(plugin.name),
-                enabled: this.isPluginEnabled(plugin.name),
-            }));
+            const pluginsMeta = await Promise.all(
+                registry.map(async (plugin) => {
+                    let currentVersion;
+                    const isInstalled = installedPlugins.includes(plugin.name);
+                    if (isInstalled) {
+                        currentVersion = this.#pluginMap.get(plugin.name)?.version;
+                        if (!currentVersion) {
+                            const packageJsonPath = path.join(
+                                this.pluginsDir,
+                                plugin.name,
+                                "package.json",
+                            );
+                            const packageJsonData = await fs.readFile(packageJsonPath, "utf8");
+                            const packageJson = JSON.parse(packageJsonData);
+                            currentVersion = packageJson.version;
+                        }
+                    } else {
+                        currentVersion = plugin.version;
+                    }
+
+                    return {
+                        ...plugin,
+                        installed: installedPlugins.includes(plugin.name),
+                        enabled: this.isPluginEnabled(plugin.name),
+                        currentVersion,
+                        hasUpdate:
+                            currentVersion &&
+                            this.#compareVersions(currentVersion, plugin.version) < 0,
+                    };
+                }),
+            );
+            return pluginsMeta;
         } catch (error) {
             Logger.error("Failed to get plugins:", error);
             throw error;
@@ -135,7 +221,7 @@ class BasePluginManager {
             // Check dependencies
             const missingDeps = [];
             for (const dep of meta.dependencies || []) {
-                if (!this._pluginMap.has(dep)) {
+                if (!this.#pluginMap.has(dep)) {
                     missingDeps.push(dep);
                 }
             }
@@ -155,8 +241,27 @@ class BasePluginManager {
 
             await fs.rm(targetPath, { recursive: true, force: true }).catch(() => {});
             await fs.cp(sourcePath, targetPath, { recursive: true });
+
+            // Install npm dependencies
+            try {
+                await execa(
+                    "npm",
+                    ["install", "--no-save", "--ignore-scripts", "--legacy-peer-deps"],
+                    {
+                        cwd: targetPath,
+                        stdio: "inherit",
+                    },
+                );
+            } catch (error) {
+                Logger.error(`Failed to install dependencies for ${pluginName}:`, error);
+                // Cleanup on failed install
+                await fs.rm(targetPath, { recursive: true, force: true }).catch(() => {});
+                throw error;
+            }
         } finally {
             if (release) await release();
+            // Clean up the lock file
+            await fs.unlink(pluginDir + ".lock").catch(() => {});
         }
     }
 
@@ -176,7 +281,7 @@ class BasePluginManager {
                 },
             });
 
-            if (this._pluginMap.has(pluginName)) {
+            if (this.#pluginMap.has(pluginName)) {
                 throw new Error("Plugin is enabled. Disable it first.");
             }
             await fs.rm(pluginDir, { recursive: true, force: true });
@@ -325,6 +430,20 @@ class BasePluginManager {
 
     #createRepoHash(repository) {
         return crypto.createHash("md5").update(repository).digest("hex");
+    }
+
+    #compareVersions(current, target) {
+        const currentParts = current.split(".").map(Number);
+        const targetParts = target.split(".").map(Number);
+
+        for (let i = 0; i < 3; i++) {
+            const currentPart = currentParts[i] || 0;
+            const targetPart = targetParts[i] || 0;
+            if (currentPart !== targetPart) {
+                return currentPart - targetPart;
+            }
+        }
+        return 0;
     }
 }
 

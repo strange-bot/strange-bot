@@ -6,16 +6,8 @@ const { DashboardPlugin } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
 
 class PluginManager extends BasePluginManager {
-    async enablePlugin(pluginName) {
-        if (this._pluginMap.has(pluginName)) {
-            throw new Error("Plugin is already enabled.");
-        }
+    async onEnable(pluginName) {
         const pluginDir = path.join(this.pluginsDir, pluginName);
-        try {
-            await fs.stat(pluginDir);
-        } catch {
-            throw new Error("Plugin is not installed.");
-        }
         const dashboardEntry = path.join(pluginDir, "dashboard");
         try {
             await fs.access(dashboardEntry);
@@ -30,22 +22,12 @@ class PluginManager extends BasePluginManager {
         }
 
         await plugin.init(DBClient.getInstance());
-        this._pluginMap.set(plugin.name, plugin);
+        return plugin;
     }
 
-    async disablePlugin(pluginName) {
-        if (!this._pluginMap.has(pluginName)) {
-            throw new Error("Plugin is not enabled.");
-        }
-
-        const plugin = this._pluginMap.get(pluginName);
-        await plugin.destroy();
-        this._pluginMap.delete(pluginName);
-
-        const corePlugin = this.getPlugin("core");
-        const config = await corePlugin.getConfig();
-        config.ENABLED_PLUGINS = config.ENABLED_PLUGINS.filter((p) => p !== pluginName);
-        await config.save(config);
+    async onDisable(pluginName) {
+        const plugin = this.getPlugin(pluginName);
+        await plugin.destroy?.();
     }
 }
 
