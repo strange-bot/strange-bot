@@ -41,31 +41,60 @@ module.exports.updatePlugins = async function (req, res) {
     const { pluginName, action } = req.body;
     try {
         switch (action) {
-            case "enable":
+            case "enable": {
                 await req.app.pluginManager.enablePlugin(pluginName);
+                const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                    pluginName,
+                    action,
+                });
+                if (ipcResp.find((r) => !r.success)) {
+                    throw new Error("Failed to enable plugin");
+                }
                 break;
-            case "disable":
+            }
+
+            case "disable": {
                 await req.app.pluginManager.disablePlugin(pluginName);
+                const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                    pluginName,
+                    action,
+                });
+                if (ipcResp.find((r) => !r.success)) {
+                    throw new Error("Failed to disable plugin");
+                }
                 break;
+            }
+
             case "install":
                 await req.app.pluginManager.installPlugin(pluginName);
                 break;
+
             case "uninstall":
                 await req.app.pluginManager.uninstallPlugin(pluginName);
                 break;
+
             case "update":
                 if (req.app.pluginManager.isPluginEnabled(pluginName)) {
                     await req.app.pluginManager.disablePlugin(pluginName);
+                    const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                        pluginName,
+                        action: "disable",
+                    });
+                    if (ipcResp.find((r) => !r.success)) {
+                        throw new Error("Failed to disable plugin");
+                    }
                 }
                 await req.app.pluginManager.uninstallPlugin(pluginName);
                 await req.app.pluginManager.installPlugin(pluginName);
                 break;
+
             default:
-                throw new Error("Invalid action");
+                throw new Error(`Invalid action: ${action}`);
         }
 
         res.json({ success: true });
     } catch (error) {
+        req.logger.error("Failed to update plugin", error);
         return res.status(500).json({ error: error.message });
     }
 };

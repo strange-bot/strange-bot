@@ -63,6 +63,7 @@ class BotPlugin {
         this.contexts.clear();
         this.prefixCount = 0;
         this.slashCount = 0;
+        await this.dbService?.destroy();
         Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
     }
 

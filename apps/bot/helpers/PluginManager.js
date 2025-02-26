@@ -58,8 +58,8 @@ class PluginManager extends BasePluginManager {
         // Update event handlers
         plugin.eventHandlers.forEach((_, event) => {
             let isEventUsed = false;
-            for (const [name, p] of this._pluginMap.entries()) {
-                if (name !== pluginName && p.eventHandlers.has(event)) {
+            for (const p of this.plugins) {
+                if (p.name !== pluginName && p.eventHandlers.has(event)) {
                     isEventUsed = true;
                     break;
                 }

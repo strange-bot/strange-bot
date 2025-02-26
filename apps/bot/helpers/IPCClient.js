@@ -176,6 +176,36 @@ class IPCClient {
                 data: null,
             });
         }
+
+        if (eventName === "UPDATE_PLUGIN") {
+            const { pluginName, action } = message.data.payload;
+            const plugin = this.discordClient.pluginManager.getPlugin(pluginName);
+            if (!plugin) {
+                return message.reply({
+                    success: false,
+                    error: "Plugin not found",
+                });
+            }
+
+            switch (action) {
+                case "enable":
+                    await this.discordClient.pluginManager.enablePlugin(pluginName);
+                    break;
+                case "disable":
+                    await this.discordClient.pluginManager.disablePlugin(pluginName);
+                    break;
+                default:
+                    return message.reply({
+                        success: false,
+                        error: "Invalid action",
+                    });
+            }
+
+            return message.reply({
+                success: true,
+                data: null,
+            });
+        }
     }
 
     async handleMessage(message) {

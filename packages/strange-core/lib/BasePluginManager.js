@@ -22,7 +22,7 @@ class BasePluginManager {
     // ==============================
 
     get plugins() {
-        return Array.from(this.#pluginMap.values()).filter((p) => p !== undefined);
+        return Array.from(this.#pluginMap.values());
     }
 
     isPluginEnabled(pluginName) {
@@ -104,7 +104,9 @@ class BasePluginManager {
             await config.save(config);
         }
 
-        this.#pluginMap.set(pluginName, plugin);
+        if (plugin) this.#pluginMap.set(pluginName, plugin);
+
+        Logger.success(`Enabled plugin: ${pluginName}`);
     }
 
     async disablePlugin(pluginName) {
@@ -142,6 +144,8 @@ class BasePluginManager {
 
         // Remove the plugin from the map
         this.#pluginMap.delete(pluginName);
+
+        Logger.success(`Disabled plugin: ${pluginName}`);
     }
 
     // ==============================
@@ -249,7 +253,7 @@ class BasePluginManager {
                     ["install", "--no-save", "--ignore-scripts", "--legacy-peer-deps"],
                     {
                         cwd: targetPath,
-                        stdio: "inherit",
+                        stdio: "pipe",
                     },
                 );
             } catch (error) {
@@ -263,6 +267,8 @@ class BasePluginManager {
             // Clean up the lock file
             await fs.unlink(pluginDir + ".lock").catch(() => {});
         }
+
+        Logger.success(`Installed plugin: ${pluginName}`);
     }
 
     async uninstallPlugin(pluginName) {
@@ -289,6 +295,8 @@ class BasePluginManager {
         } finally {
             if (release) await release();
         }
+
+        Logger.success(`Uninstalled plugin: ${pluginName}`);
     }
 
     // ==============================

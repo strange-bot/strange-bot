@@ -174,6 +174,11 @@ module.exports.admin = async (req, res, next) => {
         " | " +
         coreConfig["DASHBOARD"]["LOGO_NAME"];
 
+    req.broadcast = function (eventName, data) {
+        const event = `${plugin.name}:${eventName}`;
+        return req.app.ipcServer.broadcast(event, data);
+    };
+
     res.locals.tr = req.translate;
     res.locals.coreConfig = coreConfig;
     res.locals.user = req.session.user.info;
