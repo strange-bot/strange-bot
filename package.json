@@ -15,8 +15,6 @@
         "dev": "pnpm --parallel run dev",
         "dev:bot": "pnpm --filter bot dev",
         "dev:dashboard": "pnpm --filter dashboard dev",
-        "plugins:init": "git submodule update --init --recursive",
-        "plugins:update": "git submodule update --remote plugins",
         "format": "prettier --write 'apps/**/*.js' 'plugins/**/*.{js,json}'",
         "lint": "eslint --fix .",
         "validate": "node scripts/validate-env.js",

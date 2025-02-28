@@ -102,7 +102,7 @@ class IPCClient {
             const data = {};
             if (!type || type === "prefix") {
                 const uniqueCommands = new Set();
-                const prefixCommands = this.discordClient.prefixCommands
+                const prefixCommands = this.discordClient.commandManager.prefixCommands
                     .filter((cmd) => {
                         if (cmd.plugin?.name === pluginName && !uniqueCommands.has(cmd.name)) {
                             uniqueCommands.add(cmd.name);
@@ -122,7 +122,7 @@ class IPCClient {
 
             if (!type || type === "slash") {
                 const uniqueCommands = new Set();
-                const slashCommands = this.discordClient.slashCommands
+                const slashCommands = this.discordClient.commandManager.slashCommands
                     .filter((cmd) => {
                         if (cmd.plugin?.name === pluginName && !uniqueCommands.has(cmd.name)) {
                             uniqueCommands.add(cmd.name);
@@ -178,22 +178,30 @@ class IPCClient {
         }
 
         if (eventName === "UPDATE_PLUGIN") {
-            const { pluginName, action } = message.data.payload;
-            const plugin = this.discordClient.pluginManager.getPlugin(pluginName);
-            if (!plugin) {
-                return message.reply({
-                    success: false,
-                    error: "Plugin not found",
-                });
-            }
+            const { pluginName, action, guildId } = message.data.payload;
 
             switch (action) {
                 case "enable":
                     await this.discordClient.pluginManager.enablePlugin(pluginName);
                     break;
+
                 case "disable":
                     await this.discordClient.pluginManager.disablePlugin(pluginName);
                     break;
+
+                case "guildEnable": {
+                    const guild = this.discordClient.guilds.cache.get(guildId);
+                    if (!guild) return message.reply({ success: true, data: null });
+                    await this.discordClient.pluginManager.enableInGuild(pluginName, guildId);
+                    break;
+                }
+
+                case "guildDisable": {
+                    const guild = this.discordClient.guilds.cache.get(guildId);
+                    if (!guild) return message.reply({ success: true, data: null });
+                    await this.discordClient.pluginManager.disableInGuild(pluginName, guildId);
+                    break;
+                }
                 default:
                     return message.reply({
                         success: false,

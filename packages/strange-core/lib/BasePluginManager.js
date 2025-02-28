@@ -6,14 +6,15 @@ const crypto = require("crypto");
 const lockfile = require("proper-lockfile");
 const { Logger } = require("strange-sdk/utils");
 const execa = require("execa");
+const fetch = require("node-fetch");
 
 class BasePluginManager {
     #pluginMap = new Map();
     #repoCache = new Map();
 
-    constructor(registryPath) {
-        this.registryPath = registryPath;
-        this.pluginsDir = path.dirname(registryPath);
+    constructor(registryPath, pluginsDir) {
+        this.registryPath = this.#isUrl(registryPath) ? registryPath : path.resolve(registryPath);
+        this.pluginsDir = path.resolve(pluginsDir);
         this.pluginsLockDir = path.join(this.pluginsDir, ".locks");
     }
 
@@ -22,7 +23,11 @@ class BasePluginManager {
     // ==============================
 
     get plugins() {
-        return Array.from(this.#pluginMap.values());
+        return Array.from(this.#pluginMap.values()).filter((p) => p !== undefined && p !== null);
+    }
+
+    get availablePlugins() {
+        return Array.from(this.#pluginMap.keys());
     }
 
     isPluginEnabled(pluginName) {
@@ -31,6 +36,14 @@ class BasePluginManager {
 
     getPlugin(pluginName) {
         return this.#pluginMap.get(pluginName);
+    }
+
+    setPlugin(pluginName, plugin) {
+        this.#pluginMap.set(pluginName, plugin);
+    }
+
+    removePlugin(pluginName) {
+        this.#pluginMap.delete(pluginName);
     }
 
     // ==============================
@@ -53,7 +66,46 @@ class BasePluginManager {
         // Get enabled plugins from core config
         const corePluginInstance = this.getPlugin("core");
         const config = await corePluginInstance.getConfig();
-        const enabled_plugins = config.ENABLED_PLUGINS || [];
+        let enabled_plugins = config.ENABLED_PLUGINS || [];
+
+        // Check dependencies and filter out plugins with missing dependencies
+        const pluginsToRemove = [];
+        const pluginMetaMap = Object.fromEntries(plugins.map((p) => [p.name, p]));
+
+        for (const pluginName of enabled_plugins) {
+            if (pluginName === "core") continue; // Skip core plugin
+
+            const plugin = pluginMetaMap[pluginName];
+            if (!plugin) {
+                Logger.warn(
+                    `Plugin ${pluginName} is in enabled list but not found in registry. Removing.`,
+                );
+                pluginsToRemove.push(pluginName);
+                continue;
+            }
+
+            // Check if all dependencies are in the enabled_plugins list
+            const missingDeps = (plugin.dependencies || []).filter(
+                (dep) => dep !== "core" && !enabled_plugins.includes(dep),
+            );
+
+            if (missingDeps.length > 0) {
+                Logger.warn(
+                    `Plugin ${pluginName} has unmet dependencies: ${missingDeps.join(", ")}. Removing from enabled plugins.`,
+                );
+                pluginsToRemove.push(pluginName);
+            }
+        }
+
+        // Remove plugins with missing dependencies
+        if (pluginsToRemove.length > 0) {
+            enabled_plugins = enabled_plugins.filter((p) => !pluginsToRemove.includes(p));
+            config.ENABLED_PLUGINS = enabled_plugins;
+            await config.save(config);
+            Logger.info(
+                `Removed ${pluginsToRemove.length} plugins with missing dependencies from enabled list.`,
+            );
+        }
 
         // Initialize other plugins in dependency order
         const pluginsToEnable = plugins.filter(
@@ -70,82 +122,27 @@ class BasePluginManager {
             await this.enablePlugin(pluginName);
         }
 
-        Logger.success(`Loaded ${this.plugins.length} plugins.`);
+        Logger.success(`Loaded ${this.availablePlugins.length} plugins.`);
     }
 
+    // ==============================
     // Abstract methods to be implemented by derived classes
-    async onEnable(pluginName) {
-        throw new Error("Not implemented");
-    }
-
-    async onDisable(pluginName) {
-        throw new Error("Not implemented");
-    }
+    // ==============================
 
     async enablePlugin(pluginName) {
-        if (this.#pluginMap.has(pluginName)) {
-            throw new Error("Plugin is already enabled.");
-        }
-        const pluginDir = path.join(this.pluginsDir, pluginName);
-        try {
-            await fs.stat(pluginDir);
-        } catch {
-            throw new Error("Plugin is not installed.");
-        }
-
-        const plugin = await this.onEnable(pluginName);
-
-        if (pluginName !== "core") {
-            const corePlugin = this.getPlugin("core");
-            const config = await corePlugin.getConfig();
-            if (!config.ENABLED_PLUGINS.includes(pluginName)) {
-                config.ENABLED_PLUGINS.push(pluginName);
-            }
-            await config.save(config);
-        }
-
-        if (plugin) this.#pluginMap.set(pluginName, plugin);
-
-        Logger.success(`Enabled plugin: ${pluginName}`);
+        throw new Error("Not implemented");
     }
 
-    async disablePlugin(pluginName) {
-        if (pluginName === "core") {
-            throw new Error("Cannot disable core plugin");
-        }
+    async disbalePlugin(pluginName) {
+        throw new Error("Not implemented");
+    }
 
-        if (!this.#pluginMap.has(pluginName)) {
-            throw new Error("Plugin is not enabled.");
-        }
+    async enableInGuild(pluginName, guildId) {
+        throw new Error("Not implemented");
+    }
 
-        // Get all currently enabled plugins
-        const plugins = await this.getPluginsMeta();
-        const enabledPlugins = plugins.filter((p) => this.isPluginEnabled(p.name));
-
-        // Check if any enabled plugin depends on this one
-        const dependentPlugins = enabledPlugins
-            .filter((p) => (p.dependencies || []).includes(pluginName))
-            .map((p) => p.name);
-
-        if (dependentPlugins.length > 0) {
-            throw new Error(
-                `Cannot disable ${pluginName}. It is required by: ${dependentPlugins.join(", ")}`,
-            );
-        }
-
-        // Call implementation-specific disable logic
-        await this.onDisable(pluginName);
-
-        // Update the core config
-        const corePlugin = this.getPlugin("core");
-        const config = await corePlugin.getConfig();
-        config.ENABLED_PLUGINS = config.ENABLED_PLUGINS.filter((p) => p !== pluginName);
-        await config.save(config);
-
-        // Remove the plugin from the map
-        this.#pluginMap.delete(pluginName);
-
-        Logger.success(`Disabled plugin: ${pluginName}`);
+    async disableInGuild(pluginName, guildId) {
+        throw new Error("Not implemented");
     }
 
     // ==============================
@@ -154,7 +151,21 @@ class BasePluginManager {
 
     async getPluginsMeta() {
         try {
-            const data = await fs.readFile(this.registryPath, "utf8");
+            let data;
+            if (this.#isUrl(this.registryPath)) {
+                // Fetch registry data from URL
+                const response = await fetch(this.registryPath);
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to fetch registry from ${this.registryPath}: ${response.status} ${response.statusText}`,
+                    );
+                }
+                data = await response.text();
+            } else {
+                // Read registry data from local file
+                data = await fs.readFile(this.registryPath, "utf8");
+            }
+
             const registry = JSON.parse(data);
             const installedPlugins = await fs.readdir(this.pluginsDir).catch(() => []);
 
@@ -216,8 +227,8 @@ class BasePluginManager {
                 throw new Error("Plugin is already installed.");
             }
 
-            const data = await fs.readFile(this.registryPath, "utf8");
-            const meta = JSON.parse(data).find((p) => p.name === pluginName);
+            const data = await this.getPluginsMeta();
+            const meta = data.find((p) => p.name === pluginName);
             if (!meta) {
                 throw new Error("Plugin not found in registry.");
             }
@@ -361,6 +372,7 @@ class BasePluginManager {
         // Build the graph
         plugins.forEach((plugin) => {
             (plugin.dependencies || []).forEach((dep) => {
+                if (dep === "core") return;
                 graph.get(dep).push(plugin.name);
                 inDegree.set(plugin.name, inDegree.get(plugin.name) + 1);
             });
@@ -452,6 +464,15 @@ class BasePluginManager {
             }
         }
         return 0;
+    }
+
+    #isUrl(str) {
+        try {
+            new URL(str);
+            return true;
+        } catch {
+            return false;
+        }
     }
 }
 

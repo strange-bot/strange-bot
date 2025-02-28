@@ -1,7 +1,6 @@
 const { Events, ApplicationCommandType } = require("discord.js");
 const fs = require("node:fs");
 const path = require("node:path");
-const { DBClient } = require("strange-db-client");
 const { MiscUtils, permissions, Logger } = require("./utils");
 const Config = require("./Config");
 const DBService = require("./DBService");
@@ -14,33 +13,33 @@ class BotPlugin {
         const packageJson = require(path.join(this.pluginDir, "package.json"));
         this.name = packageJson.name;
         this.version = packageJson.version;
+
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
         this.ipcHandler = data.ipcHandler || {};
         this.dbService = data.dbService || new DBService(this.name);
-        this.onInit = data.onInit || null;
+
+        this.onEnable = data.onEnable || null;
+        this.onDisable = data.onDisable || null;
         this.onGuildEnable = data.onGuildEnable || null;
         this.onGuildDisable = data.onGuildDisable || null;
+
         this.eventHandlers = new Map();
         this.commands = new Set();
         this.contexts = new Set();
         this.prefixCount = 0;
         this.slashCount = 0;
+        this.userContextsCount = 0;
+        this.messageContextsCount = 0;
         this.config = new Config(this.name, this.pluginDir);
-        this.dbClient = null;
+
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
-    async init(botClient = null, dbClient = null) {
-        if (dbClient && !(dbClient instanceof DBClient)) {
-            throw new TypeError("dbClient must be an instance of DBClient");
-        }
-        this.dbClient = dbClient;
-        await this.config.init(this.dbClient);
-
-        const config = await this.config.get();
-        await this.dbService?.init(this.dbClient, config);
+    async enable(botClient, dbClient) {
+        if (!botClient) throw new TypeError("botClient is required");
+        if (!dbClient) throw new TypeError("dbClient is required");
 
         this.#loadEvents();
         this.#loadCommands();
@@ -52,19 +51,26 @@ class BotPlugin {
             }
         });
 
-        if (this.onInit) {
-            await this.onInit(botClient);
+        await this.config.init(dbClient);
+        const config = await this.config.get();
+        await this.dbService?.init(dbClient, config);
+
+        if (this.onEnable) {
+            await this.onEnable(botClient);
         }
     }
 
-    async destroy() {
+    async disable() {
         this.eventHandlers.clear();
         this.commands.clear();
         this.contexts.clear();
         this.prefixCount = 0;
         this.slashCount = 0;
         await this.dbService?.destroy();
-        Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
+
+        if (this.onDisable) {
+            await this.onDisable();
+        }
     }
 
     async getSettings(guild) {
@@ -141,6 +147,11 @@ class BotPlugin {
                 const context = require(file);
                 BotPlugin.#validateContext(context);
                 context.plugin = this;
+                if (context.type === ApplicationCommandType.User) {
+                    this.userContextsCount++;
+                } else if (context.type === ApplicationCommandType.Message) {
+                    this.messageContextsCount++;
+                }
                 this.contexts.add(context);
             } catch (error) {
                 Logger.error(`Error loading context ${file}:`, error);
@@ -173,8 +184,12 @@ class BotPlugin {
             throw new Error("BotPlugin dependencies must be an array");
         }
 
-        if (data.onInit && typeof data.onInit !== "function") {
-            throw new Error("BotPlugin onInit must be a function");
+        if (data.onEnable && typeof data.onEnable !== "function") {
+            throw new Error("BotPlugin onEnable must be a function");
+        }
+
+        if (data.onDisable && typeof data.onDisable !== "function") {
+            throw new Error("BotPlugin onDisable must be a function");
         }
 
         if (data.onGuildEnable && typeof data.onGuildEnable !== "function") {

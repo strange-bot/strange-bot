@@ -1,37 +1,21 @@
 declare global {
     declare module "discord.js" {
         interface Client {
-            prefixCommands: import("discord.js").Collection<
-                string,
-                import("strange-sdk").CommandType
-            >;
-            slashCommands: import("discord.js").Collection<
-                string,
-                import("strange-sdk").CommandType
-            >;
-            contextMenus: import("discord.js").Collection<
-                string,
-                import("strange-sdk").ContextType
-            >;
+            commandManager: import("apps/bot/helpers/CommandManager");
 
             logger: typeof import("strange-sdk/utils").Logger;
             pluginManager: import("apps/bot/helpers/PluginManager");
 
-            translations: Map<string, import("i18next").TFunction> | undefined;
-            i18n: import("strange-core").I18nManager | undefined;
+            i18n: import("strange-core").I18nManager;
+            translations: Map<string, import("i18next").TFunction>;
 
             wait: (ms: number) => Promise<void>;
 
             coreConfig(): Promise<object>;
 
             get defaultLanguage(): string;
-            loadTranslations(): Promise<void>;
             translate(key: string, args?: Object, locale?: string): string;
 
-            loadPluginCommands(): void;
-            loadPluginContexts(): void;
-
-            registerInteractions(guildId?: string): Promise<void>;
             resolveUsers(search: string, exact?: boolean): Promise<User[]>;
             getInvite(): string;
         }

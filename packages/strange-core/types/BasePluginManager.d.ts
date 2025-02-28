@@ -12,15 +12,18 @@ declare class BasePluginManager {
     protected pluginsDir: string;
     /** Directory containing plugin lock files */
     protected pluginsLockDir: string;
-    /** Map of loaded plugins */
 
     /**
      * @param registryPath - Path to plugins registry file
+     * @param pluginsDir - Directory containing plugins
      */
-    constructor(registryPath: string);
+    constructor(registryPath: string, pluginsDir: string);
 
     /** List of loaded plugins */
     get plugins(): Array<BotPlugin | DashboardPlugin>;
+
+    /** List of available plugin names */
+    get availablePlugins(): string[];
 
     /**
      * Check if a plugin is enabled
@@ -37,6 +40,19 @@ declare class BasePluginManager {
     getPlugin(pluginName: string): BotPlugin | DashboardPlugin | undefined;
 
     /**
+     * Set plugin instance by name
+     * @param pluginName - Name of the plugin to set
+     * @param plugin - The plugin instance
+     */
+    setPlugin(pluginName: string, plugin: BotPlugin | DashboardPlugin): void;
+
+    /**
+     * Remove plugin instance by name
+     * @param pluginName - Name of the plugin to remove
+     */
+    removePlugin(pluginName: string): void;
+
+    /**
      * Initialize plugin manager and load enabled plugins
      * @throws Error if core plugin is not found
      */
@@ -50,13 +66,6 @@ declare class BasePluginManager {
     enablePlugin(pluginName: string): Promise<void>;
 
     /**
-     * Called when a plugin is enabled
-     * @param pluginName - Name of the plugin
-     * @returns The plugin instance
-     */
-    protected onEnable(pluginName: string): Promise<BotPlugin | DashboardPlugin>;
-
-    /**
      * Disable a specific plugin
      * @param pluginName - Name of the plugin to disable
      * @throws Error if plugin is core, not enabled, or has dependents
@@ -64,10 +73,18 @@ declare class BasePluginManager {
     disablePlugin(pluginName: string): Promise<void>;
 
     /**
-     * Called when a plugin is disabled
-     * @param pluginName - Name of the plugin
+     * Enable a plugin in a specific guild
+     * @param pluginName - Name of the plugin to enable
+     * @param guildId - ID of the guild
      */
-    protected onDisable(pluginName: string): Promise<void>;
+    enableInGuild(pluginName: string, guildId: string): Promise<void>;
+
+    /**
+     * Disable a plugin in a specific guild
+     * @param pluginName - Name of the plugin to disable
+     * @param guildId - ID of the guild
+     */
+    disableInGuild(pluginName: string, guildId: string): Promise<void>;
 
     /**
      * Get metadata for all plugins

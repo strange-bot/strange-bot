@@ -4,8 +4,6 @@ const { Logger } = require("strange-sdk/utils");
 
 // Setup Directories
 const logsDir = path.join(__dirname, "..", "..", "logs");
-const localesDir = path.join(__dirname, "locales");
-const pluginsDir = path.join(__dirname, "..", "..", "plugins");
 
 // Initialize the logger
 const today = new Date();
@@ -39,8 +37,8 @@ const IPCServer = require("./helpers/IPCServer");
 
     // Initialize the Express App
     const app = new App(ipcServer);
-    app.loadTranslations(localesDir, pluginsDir);
-    app.loadPlugins(pluginsDir);
+    app.loadTranslations();
+    app.loadPlugins();
     app.listen(process.env.DASHBOARD_PORT);
 })();
 

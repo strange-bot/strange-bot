@@ -4,6 +4,7 @@ const { DBClient } = require("strange-db-client");
 const MongoStore = require("connect-mongo");
 const { Logger } = require("strange-sdk/utils");
 const PluginManager = require("./helpers/PluginManager");
+const { I18nManager } = require("strange-core");
 
 // Middlewares
 const expressLayouts = require("express-ejs-layouts");
@@ -24,11 +25,21 @@ module.exports = class App {
 
         // Set app properties
         this.app.ipcServer = ipcServer;
+        this.app.logger = Logger;
+
         this.app.pluginManager = new PluginManager(
-            path.join(__dirname, "../../plugins/registry.json"),
+            this.app,
+            process.env.REGISTRY_PATH,
+            process.env.PLUGINS_DIR,
         );
-        this.app.i18n = null;
-        this.app.translations = null;
+
+        const baseDir = path.join(__dirname, "locales");
+        this.app.i18n = new I18nManager("dashboard", {
+            baseDir,
+            pluginsDir: process.env.PLUGINS_DIR,
+            fallbackLng: "en-US",
+        });
+        this.app.translations = new Map();
 
         this.#initializeMiddlewares();
         this.#initializeRoutes();
@@ -36,14 +47,7 @@ module.exports = class App {
         this.#initializeErrorHandling();
     }
 
-    async loadTranslations(baseDir, pluginsDir) {
-        const { I18nManager } = require("strange-core");
-        this.app.i18n = new I18nManager("dashboard", {
-            baseDir,
-            pluginsDir,
-            fallbackLng: "en-US",
-        });
-
+    async loadTranslations() {
         this.app.translations = await this.app.i18n.initialize();
         Logger.success("Loaded translations");
     }

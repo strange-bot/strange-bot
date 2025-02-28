@@ -43,16 +43,16 @@ declare class I18nManager {
     initialize(): Promise<Map<string, Function>>;
 
     /** Synchronize translations with database */
-    syncWithDatabase(): Promise<void>;
-
-    /** Get all local translation bundles */
-    getAllLocalTranslations(): Record<string, Record<string, any>>;
+    loadAndSyncTranslations(namespace: string): Promise<void>;
 
     /** Load translations from base directory */
     walkBaseDirectory(baseDir: string): void;
 
     /** Load translations from plugin directories */
-    walkPluginDirectory(pluginsDir: string): void;
+    loadPluginTranslations(pluginsDir: string): Promise<void>;
+
+    /** Remove translations for a plugin */
+    removePluginTranslations(pluginName: string): void;
 
     /** Translate a key to the target language
      * @param key The translation key to lookup

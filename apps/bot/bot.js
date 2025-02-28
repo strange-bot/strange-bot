@@ -12,11 +12,9 @@ const { DBClient } = require("strange-db-client");
 
 // Setup Directories
 const logsDir = path.join(__dirname, "..", "..", "logs");
-const localesDir = path.join(__dirname, "locales");
-const pluginsDir = path.join(__dirname, "..", "..", "plugins");
 
 // Create a Discord & IPC Client
-const client = new BotClient(pluginsDir);
+const client = new BotClient();
 const ipcClient = new IPCClient(client);
 
 // Initialize the logger
@@ -41,14 +39,10 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
     db.registerSchema("configs", ConfigSchema);
 
     // Initialize translations
-    await client.loadTranslations(localesDir, pluginsDir);
+    await client.i18n.initialize();
 
     // Initialize plugins
     await client.pluginManager.init();
-
-    // Load all plugin commands and contexts
-    client.loadPluginCommands();
-    client.loadPluginContexts();
 
     // Load all plugin events
     client.pluginManager.listeningEvents.forEach((event) => {

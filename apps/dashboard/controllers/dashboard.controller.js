@@ -94,11 +94,17 @@ exports.postPlugins = async function (req, res) {
     if (Object.prototype.hasOwnProperty.call(req.body, "plugin_enable")) {
         const plugin = req.app.pluginManager.plugins.find((p) => p.name === req.body.plugin_enable);
         if (!plugin) return res.status(404).send("Plugin not found");
-
-        const settings = await plugin.getSettings(guild);
         try {
-            settings.enabled = true;
-            await settings.save();
+            await req.app.pluginManager.enableInGuild(plugin.name, guild.id);
+            const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                pluginName: plugin.name,
+                action: "guildEnable",
+                guildId: guild.id,
+            });
+            if (ipcResp.find((r) => !r.success)) {
+                await req.app.pluginManager.disableInGuild(pluginName);
+                throw new Error("Failed to enable plugin on other instances");
+            }
         } catch (error) {
             console.error(error);
             return res.status(500).send(error.message);

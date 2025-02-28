@@ -36,6 +36,7 @@
                       try {
                         const response = await fetch(`/dashboard/<%= guild.id %>/<%= plugin.name %>?operation=toggle`, {
                           method: 'PUT',
+                          body: JSON.stringify({ plugin_toggle: $event.target.checked }),
                           headers: { 'Content-Type': 'application/json' }
                         });
                         if (!response.ok) throw new Error('Failed to toggle plugin');

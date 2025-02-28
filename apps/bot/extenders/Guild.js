@@ -12,7 +12,7 @@ const MEMBER_MENTION = /<?@?!?(\d{17,20})>?/;
  */
 Guild.prototype.getT = function (key, args) {
     const locale = this.locale || this.client.defaultLanguage;
-    const tFunction = this.client.translations.get(locale);
+    const tFunction = this.client.i18n.translations.get(locale);
     return tFunction(key, args);
 };
 

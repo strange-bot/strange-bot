@@ -5,6 +5,7 @@
     "files": [
         "lib",
         "types",
+        "index.js",
         "languages-meta.json"
     ],
     "dependencies": {
@@ -12,6 +13,7 @@
         "execa": "^5.1.1",
         "flat": "^5.0.2",
         "i18next": "^24.2.2",
+        "node-fetch": "^2.7.0",
         "proper-lockfile": "^4.1.2",
         "simple-git": "^3.27.0",
         "strange-db-client": "workspace:*",

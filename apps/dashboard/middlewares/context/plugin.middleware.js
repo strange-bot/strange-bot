@@ -15,22 +15,35 @@ module.exports.dashboard = async (req, res, next) => {
     // PUT route
     if (req.method === "PUT") {
         const { guildId, pluginName } = req.params;
-        const coreSettings = await req.app.pluginManager.getPlugin("core").getSettings(guildId);
 
         // Plugin Status Toggle
         if (req.query.operation && req.query.operation === "toggle") {
             try {
                 const shouldEnable = Boolean(req.body.plugin_toggle);
                 if (shouldEnable) {
-                    coreSettings.disabled_plugins = coreSettings.disabled_plugins.filter(
-                        (p) => p !== pluginName,
-                    );
+                    await req.app.pluginManager.enableInGuild(pluginName, guildId);
+                    const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                        pluginName: plugin.name,
+                        action: "guildEnable",
+                        guildId: guildId,
+                    });
+                    if (ipcResp.find((r) => !r.success)) {
+                        await req.app.pluginManager.disableInGuild(pluginName);
+                        throw new Error("Failed to enable plugin on other instances");
+                    }
                 } else {
-                    if (!coreSettings.disabled_plugins.includes(pluginName)) {
-                        coreSettings.disabled_plugins.push(pluginName);
+                    await req.app.pluginManager.disableInGuild(pluginName, guildId);
+                    const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                        pluginName: plugin.name,
+                        action: "guildDisable",
+                        guildId: guildId,
+                    });
+                    if (ipcResp.find((r) => !r.success)) {
+                        await req.app.pluginManager.enableInGuild(pluginName);
+                        throw new Error("Failed to disable plugin on other instances");
                     }
                 }
-                await coreSettings.save();
+
                 return res.sendStatus(200);
             } catch (error) {
                 console.error(error);

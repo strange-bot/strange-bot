@@ -51,11 +51,17 @@ interface PluginData {
     dbService?: DBService;
 
     /**
-     * Called when the plugin is first initialized
+     * Called when the plugin is enabled
      * Use this to set up plugin-specific resources or configurations
      * @param client - The Discord.js client instance
      */
-    onInit?: (client: Client) => Promise<void>;
+    onEnable?: (client: Client) => Promise<void>;
+
+    /**
+     * Called when the plugin is disabled
+     * Use this to clean up resources and unregister event listeners
+     */
+    onDisable?: () => Promise<void>;
 
     /**
      * Called when the plugin is enabled for a guild
@@ -94,8 +100,11 @@ declare class BotPlugin {
     /** Object containing IPC message handlers for inter-process communication */
     public readonly ipcHandler: IPCHandler;
 
-    /** Optional initialization function that runs when plugin loads */
-    public readonly onInit: ((client: Client) => Promise<void>) | null;
+    /** Optional function that runs when plugin is enabled */
+    public readonly onEnable: ((client: Client) => Promise<void>) | null;
+
+    /** Optional function that runs when plugin is disabled */
+    public readonly onDisable: (() => Promise<void>) | null;
 
     /** Optional function that runs when plugin is enabled for a guild */
     public readonly onGuildEnable: ((guild: Guild) => Promise<void>) | null;
@@ -121,11 +130,14 @@ declare class BotPlugin {
     /** Number of enabled slash commands */
     public readonly slashCount: number;
 
+    /** Number of enabled user context menu commands */
+    public readonly userContextsCount: number;
+
+    /** Number of enabled message context menu commands */
+    public readonly messageContextsCount: number;
+
     /** Plugin configuration manager */
     public readonly config: Config;
-
-    /** Database client instance if available */
-    public readonly dbClient?: DBClient;
 
     /**
      * Creates a new plugin instance
@@ -140,13 +152,13 @@ declare class BotPlugin {
      * @param dbClient Database client instance if available
      * @returns Promise that resolves when loading is complete
      */
-    public init(botClient?: Client, dbClient?: DBClient): Promise<void>;
+    public enable(botClient: Client, dbClient: DBClient): Promise<void>;
 
     /**
-     * Unloads the plugin by clearing all registered handlers and commands
+     * Unloads the plugin by unregistering events, commands, and schemas
      * @returns Promise that resolves when unloading is complete
      */
-    public destroy(): Promise<void>;
+    public disable(): Promise<void>;
 
     /**
      * Gets plugin settings for a specific guild
@@ -269,6 +281,9 @@ interface ContextType {
 
     /** Command cooldown in seconds */
     cooldown?: number;
+
+    /** The plugin that owns the context */
+    plugin: BotPlugin;
 
     /** The callback to be executed when the context is invoked */
     run(ctx: ContextMenuCommandInteractionContext): Promise<any>;

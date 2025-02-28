@@ -48,7 +48,8 @@ module.exports.updatePlugins = async function (req, res) {
                     action,
                 });
                 if (ipcResp.find((r) => !r.success)) {
-                    throw new Error("Failed to enable plugin");
+                    await req.app.pluginManager.disablePlugin(pluginName);
+                    throw new Error("Failed to enable plugin on other instances");
                 }
                 break;
             }
@@ -60,7 +61,8 @@ module.exports.updatePlugins = async function (req, res) {
                     action,
                 });
                 if (ipcResp.find((r) => !r.success)) {
-                    throw new Error("Failed to disable plugin");
+                    await req.app.pluginManager.enablePlugin(pluginName);
+                    throw new Error("Failed to disable plugin on other instances");
                 }
                 break;
             }
@@ -81,7 +83,8 @@ module.exports.updatePlugins = async function (req, res) {
                         action: "disable",
                     });
                     if (ipcResp.find((r) => !r.success)) {
-                        throw new Error("Failed to disable plugin");
+                        await req.app.pluginManager.enablePlugin(pluginName);
+                        throw new Error("Failed to disable plugin on other instances");
                     }
                 }
                 await req.app.pluginManager.uninstallPlugin(pluginName);
@@ -94,7 +97,7 @@ module.exports.updatePlugins = async function (req, res) {
 
         res.json({ success: true });
     } catch (error) {
-        req.logger.error("Failed to update plugin", error);
+        req.app.logger.error("Failed to update plugin", error);
         return res.status(500).json({ error: error.message });
     }
 };

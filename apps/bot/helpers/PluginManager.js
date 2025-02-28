@@ -5,33 +5,43 @@ const { BotPlugin } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
 
 class PluginManager extends BasePluginManager {
-    /**
-     * @type {Set<string>}
-     */
     #listeningEvents = new Set();
+
+    /**
+     * @param {import('discord.js').Client} client
+     * @param {string} registryPath
+     * @param {string} pluginDir
+     */
+    constructor(client, registryPath, pluginDir) {
+        super(registryPath, pluginDir);
+        this.client = client;
+    }
 
     get listeningEvents() {
         return this.#listeningEvents;
     }
 
-    constructor(client, registryPath) {
-        super(registryPath);
-        this.client = client;
-    }
-
-    async onEnable(pluginName) {
+    async enablePlugin(pluginName) {
         const pluginDir = path.join(this.pluginsDir, pluginName);
-        const botEntry = path.join(pluginDir, "bot");
+        const entry = path.join(pluginDir, "bot");
 
         try {
-            const plugin = require(botEntry);
+            // Load plugin translations first
+            await this.client.i18n.loadPluginTranslations(pluginName);
+
+            const plugin = require(entry);
             if (!(plugin instanceof BotPlugin)) {
                 throw new Error(
                     "Not a valid plugin (Does it export an instance of the BotPlugin class?)",
                 );
             }
 
-            await plugin.init(this.client, DBClient.getInstance());
+            await plugin.enable(this.client, DBClient.getInstance());
+
+            // Register commands
+            if (plugin.commands.size > 0) {
+                this.client.commandManager.registerPlugin(plugin);
+            }
 
             // Register event handlers
             if (plugin.eventHandlers.size > 0) {
@@ -42,7 +52,11 @@ class PluginManager extends BasePluginManager {
                 });
             }
 
-            return plugin;
+            // Update all guild commands to reflect the enabled plugin
+            await this.client.commandManager.updatePluginStatus(pluginName, true);
+
+            this.setPlugin(pluginName, plugin);
+            Logger.success(`Enabled plugin: ${pluginName}`);
         } catch (error) {
             if (error.code === "MODULE_NOT_FOUND") {
                 Logger.debug(`Plugin ${pluginDir} does not have a bot entry point. Skipping.`);
@@ -52,7 +66,7 @@ class PluginManager extends BasePluginManager {
         }
     }
 
-    async onDisable(pluginName) {
+    async disablePlugin(pluginName) {
         const plugin = this.getPlugin(pluginName);
 
         // Update event handlers
@@ -69,7 +83,42 @@ class PluginManager extends BasePluginManager {
             }
         });
 
-        await plugin.destroy?.();
+        // Remove plugin translations
+        this.client.i18n.removePluginTranslations(pluginName);
+
+        // Update all guild commands to reflect the disabled plugin
+        if (plugin.commands.size > 0) {
+            this.client.commandManager.unregisterPlugin(plugin);
+        }
+
+        await this.client.commandManager.updatePluginStatus(pluginName, false);
+        await plugin.disable();
+    }
+
+    async enableInGuild(pluginName, guildId) {
+        const guild = this.client.guilds.cache.get(guildId);
+        if (!guild) throw new Error(`Guild ${guildId} not found`);
+
+        // Update slash commands for this guild
+        await this.client.commandManager.updatePluginStatus(pluginName, true, guildId);
+
+        const plugin = this.getPlugin(pluginName);
+        if (plugin.onGuildEnable) {
+            await plugin.onGuildEnable(guild);
+        }
+    }
+
+    async disableInGuild(pluginName, guildId) {
+        const guild = this.client.guilds.cache.get(guildId);
+        if (!guild) throw new Error(`Guild ${guildId} not found`);
+
+        // Update slash commands for this guild
+        await this.client.commandManager.updatePluginStatus(pluginName, false, guildId);
+
+        const plugin = this.getPlugin(pluginName);
+        if (plugin.onGuildDisable) {
+            await plugin.onGuildDisable(guild);
+        }
     }
 
     /**
@@ -127,7 +176,7 @@ class PluginManager extends BasePluginManager {
             );
 
             try {
-                const data = await plugin.eventHandlers.get(eventName)(...args, plugin, depArgs);
+                const data = await plugin.eventHandlers.get(eventName)(...args, depArgs);
                 responseMap[plugin.name] = { success: true, data };
             } catch (error) {
                 Logger.error(`Error in plugin ${plugin.name}:`, error);

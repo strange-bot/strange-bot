@@ -1,6 +1,5 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const { DBClient } = require("strange-db-client");
 const { Logger } = require("./utils");
 const Config = require("./Config");
 const DBService = require("./DBService");
@@ -13,34 +12,38 @@ class DashboardPlugin {
         const packageJson = require(path.join(this.pluginDir, "package.json"));
         this.name = packageJson.name;
         this.version = packageJson.version;
+
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
-        this.onInit = data.onInit || null;
         this.dashboardRouter = data.dashboardRouter || null;
         this.adminRouter = data.adminRouter || null;
         this.dbService = data.dbService || new DBService(this.name);
+
+        this.onEnable = data.onEnable || null;
+        this.onDisable = data.onDisable || null;
+        this.onGuildEnable = data.onGuildEnable || null;
+        this.onGuildDisable = data.onGuildDisable || null;
+
         this.config = new Config(this.name, this.pluginDir);
-        this.dbClient = null;
         Logger.debug(`Initialized plugin "${this.name}"`);
     }
 
-    async init(dbClient = null) {
-        if (dbClient && !(dbClient instanceof DBClient)) {
-            throw new TypeError("dbClient must be an instance of DBClient");
-        }
-        this.dbClient = dbClient;
-        await this.config.init(this.dbClient);
-
+    async enable(dbClient) {
+        if (!dbClient) throw new TypeError("dbClient must be an instance of DBClient");
+        await this.config.init(dbClient);
         const config = await this.config.get();
-        await this.dbService?.init(this.dbClient, config);
-
-        Logger.debug(`Successfully Loaded plugin "${this.name}"`);
+        await this.dbService?.init(dbClient, config);
+        if (this.onEnable) {
+            await this.onEnable();
+        }
     }
 
-    async destroy() {
+    async disable() {
         await this.dbService?.destroy();
-        Logger.debug(`Successfully Unloaded plugin "${this.name}"`);
+        if (this.onDisable) {
+            await this.onDisable();
+        }
     }
 
     async getSettings(guild) {
@@ -79,8 +82,20 @@ class DashboardPlugin {
             throw new Error("DashboardPlugin icon must be a string");
         }
 
-        if (data.onInit && typeof data.onInit !== "function") {
-            throw new Error("DashboardPlugin onInit must be a function");
+        if (data.onEnable && typeof data.onEnable !== "function") {
+            throw new Error("DashboardPlugin onEnable must be a function");
+        }
+
+        if (data.onDisable && typeof data.onDisable !== "function") {
+            throw new Error("DashboardPlugin onDisable must be a function");
+        }
+
+        if (data.onGuildEnable && typeof data.onGuildEnable !== "function") {
+            throw new Error("DashboardPlugin onGuildEnable must be a function");
+        }
+
+        if (data.onGuildDisable && typeof data.onGuildDisable !== "function") {
+            throw new Error("DashboardPlugin onGuildDisable must be a function");
         }
 
         if (data.dashboardRouter && !data.dashboardRouter.stack) {

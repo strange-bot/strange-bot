@@ -1,4 +1,3 @@
-const fs = require("node:fs").promises;
 const path = require("node:path");
 const { BasePluginManager } = require("strange-core");
 const { DBClient } = require("strange-db-client");
@@ -6,28 +5,125 @@ const { DashboardPlugin } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
 
 class PluginManager extends BasePluginManager {
-    async onEnable(pluginName) {
+    /**
+     * @param {import('express').Application} app
+     * @param {string} registryPath
+     * @param {string} pluginDir
+     */
+    constructor(app, registryPath, pluginDir) {
+        super(registryPath, pluginDir);
+        this.app = app;
+    }
+
+    async enablePlugin(pluginName) {
         const pluginDir = path.join(this.pluginsDir, pluginName);
-        const dashboardEntry = path.join(pluginDir, "dashboard");
+        const entry = path.join(pluginDir, "dashboard");
+
         try {
-            await fs.access(dashboardEntry);
-        } catch (err) {
-            Logger.debug(`Plugin ${pluginDir} does not have a dashboard entry point. Skipping.`);
+            // Load plugin translations first
+            await this.app.i18n.loadPluginTranslations(pluginName);
+
+            const plugin = require(entry);
+            if (!(plugin instanceof DashboardPlugin)) {
+                throw new Error(
+                    "Not a valid plugin (Does it export an instance of the Plugin class?)",
+                );
+            }
+
+            await plugin.enable(DBClient.getInstance());
+
+            // Update the core config
+            if (pluginName !== "core") {
+                const corePlugin = this.getPlugin("core");
+                const config = await corePlugin.getConfig();
+                if (!config.ENABLED_PLUGINS.includes(pluginName)) {
+                    config.ENABLED_PLUGINS.push(pluginName);
+                }
+                await config.save(config);
+            }
+
+            this.setPlugin(pluginName, plugin);
+            Logger.success(`Enabled plugin: ${pluginName}`);
+        } catch (error) {
+            if (error.code === "MODULE_NOT_FOUND") {
+                Logger.debug(`Plugin ${pluginDir} does not have a bot entry point. Skipping.`);
+                return;
+            }
+            throw error;
+        }
+    }
+
+    async disablePlugin(pluginName) {
+        if (pluginName === "core") {
+            throw new Error("Cannot disable core plugin");
+        }
+
+        const meta = await this.getPluginsMeta();
+        const enabledPlugins = meta.filter((p) => this.isPluginEnabled(p.name)).map((p) => p.name);
+
+        if (!enabledPlugins.includes(pluginName)) {
+            Logger.debug(`Plugin ${pluginName} is not enabled.`);
             return;
         }
 
-        const plugin = require(dashboardEntry);
-        if (!(plugin instanceof DashboardPlugin)) {
-            throw new Error("Not a valid plugin (Does it export an instance of the Plugin class?)");
+        // Check if any enabled plugin depends on this one
+        const dependentPlugins = enabledPlugins
+            .filter((p) => (p.dependencies || []).includes(pluginName))
+            .map((p) => p.name);
+
+        if (dependentPlugins.length > 0) {
+            throw new Error(
+                `Cannot disable ${pluginName}. It is required by: ${dependentPlugins.join(", ")}`,
+            );
         }
 
-        await plugin.init(DBClient.getInstance());
-        return plugin;
+        const plugin = this.getPlugin(pluginName);
+        if (plugin) await plugin.disable();
+
+        // Update the core config
+        const corePlugin = this.getPlugin("core");
+        const config = await corePlugin.getConfig();
+        config.ENABLED_PLUGINS = config.ENABLED_PLUGINS.filter((p) => p !== pluginName);
+        await config.save(config);
+
+        this.removePlugin(pluginName);
+        Logger.success(`Disabled plugin: ${pluginName}`);
     }
 
-    async onDisable(pluginName) {
+    async enableInGuild(pluginName, guildId) {
         const plugin = this.getPlugin(pluginName);
-        await plugin.destroy?.();
+        if (plugin.onGuildEnable) {
+            await plugin.onGuildEnable(guildId);
+        }
+
+        const core = this.getPlugin("core");
+        const settings = await core.getSettings(guildId);
+        const disabledPlugins = settings.disabled_plugins || [];
+
+        if (disabledPlugins.includes(pluginName)) {
+            settings.disabled_plugins = disabledPlugins.filter((p) => p !== pluginName);
+            await settings.save();
+        }
+    }
+
+    async disableInGuild(pluginName, guildId) {
+        if (pluginName === "core") {
+            throw new Error("Cannot disable core plugin");
+        }
+
+        const plugin = this.getPlugin(pluginName);
+        if (plugin.onGuildDisable) {
+            await plugin.onGuildDisable(guildId);
+        }
+
+        const core = this.getPlugin("core");
+        const settings = await core.getSettings(guildId);
+        const disabledPlugins = settings.disabled_plugins || [];
+
+        if (!disabledPlugins.includes(pluginName)) {
+            settings.disabled_plugins = [...disabledPlugins, pluginName];
+            await settings.save();
+        }
     }
 }
 

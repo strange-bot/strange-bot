@@ -38,8 +38,7 @@ router.get("/callback", async (req, res) => {
             redirectUri: `${BASE_URL}/auth/callback`,
         })
         .catch((e) => {
-            req.logger.error("Failed to get tokens");
-            req.logger.error(e);
+            req.app.logger.error("Failed to get tokens", e);
             return res.redirect(`/api/login&state=${req.query.state}`);
         });
 
@@ -71,7 +70,7 @@ router.get("/callback", async (req, res) => {
     req.session.locale = dbLocale || coreConfig["LOCALE"]["DEFAULT"];
 
     req.session.save((err) => {
-        if (err) req.logger.error("Failed to save session", err);
+        if (err) req.app.logger.error("Failed to save session", err);
     });
 
     // Update DB Login
@@ -91,7 +90,7 @@ router.get("/logout", async function (req, res) {
     const userId = req.session.user.info.id;
     req.session.destroy(async (err) => {
         if (err) {
-            req.logger.error("Failed to destroy session: " + err);
+            req.app.logger.error("Failed to destroy session: " + err);
             return res.redirect(BASE_URL);
         }
 

@@ -1,16 +1,12 @@
-const {
-    Client,
-    Collection,
-    GatewayIntentBits,
-    Partials,
-    ApplicationCommandType,
-} = require("discord.js");
+const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const PluginManager = require("../helpers/PluginManager");
-const path = require("node:path");
+const CommandManager = require("../helpers/CommandManager");
+const { I18nManager } = require("strange-core");
 const { Logger } = require("strange-sdk/utils");
+const path = require("node:path");
 
 class BotClient extends Client {
-    constructor(pluginsDir) {
+    constructor() {
         super({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -31,30 +27,28 @@ class BotClient extends Client {
             restRequestTimeout: 20000,
         });
 
-        // Command Collections
-        /**
-         * @type {Collection<string, import("strange-sdk").CommandType>}
-         */
-        this.prefixCommands = new Collection();
-        /**
-         * @type {Collection<string, import("strange-sdk").CommandType>}
-         */
-        this.slashCommands = new Collection();
-        /**
-         * @type {Collection<string, import("strange-sdk").ContextType>}
-         */
-        this.contextMenus = new Collection();
+        // Command Manager
+        this.commandManager = new CommandManager(this);
 
         // Logger
         this.logger = Logger;
 
         // Plugin Manager
-        const registry = path.join(pluginsDir, "registry.json");
-        this.pluginManager = new PluginManager(this, registry);
+        this.pluginManager = new PluginManager(
+            this,
+            process.env.REGISTRY_PATH,
+            process.env.PLUGINS_DIR,
+        );
 
         // i18n stuff
-        this.translations = null;
-        this.i18n = null;
+        const baseDir = path.join(__dirname, "..", "locales");
+        this.i18n = new I18nManager("bot", {
+            baseDir,
+            pluginsDir: process.env.PLUGINS_DIR,
+            fallbackLng: this.defaultLanguage,
+            useDatabase: process.env.NODE_ENV === "production",
+        });
+        this.translations = new Map();
 
         // Helper wait
         this.wait = require("util").promisify(setTimeout);
@@ -70,149 +64,6 @@ class BotClient extends Client {
 
     translate(key, args, locale) {
         return this.i18n.tr(key, args, locale || this.defaultLanguage);
-    }
-
-    async loadTranslations(baseDir, pluginsDir) {
-        const { I18nManager } = require("strange-core");
-        this.i18n = new I18nManager("bot", {
-            baseDir,
-            pluginsDir,
-            fallbackLng: this.defaultLanguage,
-            useDatabase: process.env.NODE_ENV === "production",
-        });
-
-        this.translations = await this.i18n.initialize();
-        this.logger.success("Loaded translations");
-    }
-
-    /**
-     * Load all commands from plugins
-     */
-    loadPluginCommands() {
-        this.logger.info(`Loading commands...`);
-        for (const plugin of this.pluginManager.plugins) {
-            for (const cmd of plugin.commands) {
-                // Prefix Command
-                if (cmd.command?.enabled) {
-                    if (this.prefixCommands.has(cmd.name)) {
-                        throw new Error(`Command ${cmd.name} already registered`);
-                    }
-                    this.prefixCommands.set(cmd.name, cmd);
-                    if (Array.isArray(cmd.command.aliases)) {
-                        cmd.command.aliases.forEach((alias) => {
-                            if (this.prefixCommands.has(alias))
-                                throw new Error(`Alias ${alias} already registered`);
-                            this.prefixCommands.set(alias.toLowerCase(), cmd);
-                        });
-                    }
-                }
-
-                // Slash Command
-                if (cmd.slashCommand?.enabled) {
-                    if (this.slashCommands.has(cmd.name))
-                        throw new Error(`Slash Command ${cmd.name} already registered`);
-                    this.slashCommands.set(cmd.name, cmd);
-                } else {
-                    this.logger.debug(`Skipping slash command ${cmd.name}. Disabled!`);
-                }
-            }
-        }
-
-        this.logger.success(`Loaded ${this.prefixCommands.size} commands`);
-        this.logger.success(`Loaded ${this.slashCommands.size} slash commands`);
-    }
-
-    /**
-     * Load all contexts from plugins
-     */
-    loadPluginContexts() {
-        this.logger.info(`Loading contexts...`);
-        for (const plugin of this.pluginManager.plugins) {
-            for (const ctx of plugin.contexts) {
-                if (this.contextMenus.has(ctx.name))
-                    throw new Error(`Context ${ctx.name} already registered`);
-                this.contextMenus.set(ctx.name, ctx);
-            }
-        }
-
-        const userContexts = this.contextMenus.filter(
-            (ctx) => ctx.type === ApplicationCommandType.User,
-        ).size;
-        const messageContexts = this.contextMenus.filter(
-            (ctx) => ctx.type === ApplicationCommandType.Message,
-        ).size;
-
-        if (userContexts > 3) throw new Error("A maximum of 3 USER contexts can be enabled");
-        if (messageContexts > 3) throw new Error("A maximum of 3 MESSAGE contexts can be enabled");
-
-        this.logger.success(`Loaded ${userContexts} USER contexts`);
-        this.logger.success(`Loaded ${messageContexts} MESSAGE contexts`);
-    }
-
-    /**
-     * Register slash command on startup
-     * @param {string} [guildId] - Guild ID to register commands in
-     */
-    async registerInteractions(guildId) {
-        const toRegister = [];
-        const coreConfig = await this.coreConfig();
-
-        // filter slash commands
-        if (coreConfig["INTERACTIONS"]["SLASH"]) {
-            this.slashCommands
-                .map((cmd) => ({
-                    name: cmd.name,
-                    description: this.translate(cmd.description),
-                    descriptionLocalizations: this.i18n.getAllTr(cmd.description),
-                    type: ApplicationCommandType.ChatInput,
-                    options: cmd.slashCommand.options?.map((opt) => {
-                        if (opt.description) {
-                            opt.description = this.translate(opt.description);
-                            opt.descriptionLocalizations = this.i18n.getAllTr(opt.description);
-                        }
-                        if (opt.options) {
-                            opt.options = opt.options.map((o) => {
-                                if (o.description) {
-                                    o.description = this.translate(o.description);
-                                    o.descriptionLocalizations = this.i18n.getAllTr(o.description);
-                                }
-                                return o;
-                            });
-                        }
-                        return opt;
-                    }),
-                }))
-                .forEach((s) => toRegister.push(s));
-        }
-
-        // filter contexts
-        if (coreConfig["INTERACTIONS"]["CONTEXT"]) {
-            this.contextMenus
-                .map((ctx) => ({
-                    name: ctx.name,
-                    type: ctx.type,
-                }))
-                .forEach((c) => toRegister.push(c));
-        }
-
-        // Register for a specific guild
-        if (guildId && typeof guildId === "string") {
-            const guild = this.guilds.cache.get(guildId);
-            if (!guild) {
-                this.logger.error(
-                    `Failed to register interactions in guild ${guildId}`,
-                    new Error("No matching guild"),
-                );
-                return;
-            }
-            await guild.commands.set(toRegister);
-            this.logger.debug(`Registered interactions in guild ${guild.name}`);
-        }
-
-        // Throw an error
-        else {
-            throw new Error("Did you provide a valid guildId to register interactions");
-        }
     }
 
     /**

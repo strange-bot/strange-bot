@@ -10,6 +10,7 @@ declare global {
             ipcServer: import("../helpers/IPCServer");
             pluginManager: import("../helpers/PluginManager");
             i18n: import("strange-core").I18nManager;
+            logger: typeof import("strange-sdk/utils").Logger;
             translations: Map<string, import("i18next").TFunction>;
         }
 
@@ -54,7 +55,6 @@ declare global {
 
 declare module "express" {
     export interface Request {
-        logger: typeof import("strange-sdk/utils").Logger;
         translate: import("i18next").TFunction;
         broadcast: (event: string, data: any) => Promise<any[]>;
     }

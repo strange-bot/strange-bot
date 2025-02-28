@@ -99,13 +99,13 @@ declare class DashboardPlugin {
      * @param dbClient Database client instance if available
      * @returns Promise that resolves when loading is complete
      */
-    public init(dbClient?: DBClient): Promise<void>;
+    public enable(dbClient?: DBClient): Promise<void>;
 
     /**
      * Unloads the plugin by removing routes, schemas and other resources
      * @returns Promise that resolves when unloading is complete
      */
-    public destroy(): Promise<void>;
+    public disable(): Promise<void>;
 
     /**
      * Gets plugin settings for a specific guild
