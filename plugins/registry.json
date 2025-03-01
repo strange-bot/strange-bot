@@ -64,6 +64,14 @@
         "dependencies": []
     },
     {
+        "name": "information",
+        "version": "1.0.0",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repositoryPath": "information",
+        "dependencies": []
+    },
+    {
         "name": "moderation",
         "version": "1.0.0",
         "author": "Sai Teja Madha",
