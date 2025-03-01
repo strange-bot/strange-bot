@@ -14,7 +14,7 @@ class IPCServer {
     async broadcast(event, data, receptive = true) {
         const startTime = Date.now();
         Logger.debug(`[IPC] Broadcasting event '${event}' to all sockets`);
-        
+
         try {
             const sockets = this.getSockets();
             if (!sockets.length) {
@@ -43,7 +43,7 @@ class IPCServer {
 
             const endTime = Date.now();
             Logger.debug(`[IPC] Broadcast '${event}' completed in ${endTime - startTime}ms`);
-            
+
             return results
                 .filter((r) => r.status === "fulfilled" && r.value !== null)
                 .map((r) => r.value)
@@ -58,7 +58,7 @@ class IPCServer {
     async broadcastOne(event, data, receptive = true) {
         const startTime = Date.now();
         Logger.debug(`[IPC] Broadcasting event '${event}' to one socket`);
-        
+
         try {
             const sockets = this.getSockets();
             if (!sockets.length) {
@@ -81,7 +81,7 @@ class IPCServer {
 
             const endTime = Date.now();
             Logger.debug(`[IPC] BroadcastOne '${event}' completed in ${endTime - startTime}ms`);
-            
+
             return result;
         } catch (error) {
             const endTime = Date.now();

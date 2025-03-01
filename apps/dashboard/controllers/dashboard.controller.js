@@ -102,7 +102,7 @@ exports.postPlugins = async function (req, res) {
                 guildId: guild.id,
             });
             if (ipcResp.find((r) => !r.success)) {
-                await req.app.pluginManager.disableInGuild(pluginName);
+                await req.app.pluginManager.disableInGuild(plugin.name);
                 throw new Error("Failed to enable plugin on other instances");
             }
         } catch (error) {

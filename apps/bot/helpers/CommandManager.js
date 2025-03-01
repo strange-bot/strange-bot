@@ -371,26 +371,6 @@ class CommandManager {
     }
 
     /**
-     * Bulk update commands for all guilds (use sparingly due to rate limits)
-     */
-    async bulkUpdateAllGuilds() {
-        const guilds = this.client.guilds.cache.map((guild) => guild.id);
-        let updated = 0;
-
-        // Queue with staggered timing to prevent main thread blocking
-        guilds.forEach((guildId, index) => {
-            setTimeout(() => {
-                this.#queueGuildRegistration(guildId, true);
-                updated++;
-            }, index * 50);
-        });
-
-        // Start queue processing but don't wait for completion
-        this.#processRegistrationQueue();
-        return guilds.length; // Return expected update count
-    }
-
-    /**
      * Get a summary of registered commands
      */
     getSummary() {
