@@ -12,6 +12,9 @@ class IPCServer {
     }
 
     async broadcast(event, data, receptive = true) {
+        const startTime = Date.now();
+        Logger.debug(`[IPC] Broadcasting event '${event}' to all sockets`);
+        
         try {
             const sockets = this.getSockets();
             if (!sockets.length) {
@@ -38,17 +41,24 @@ class IPCServer {
                 ),
             );
 
+            const endTime = Date.now();
+            Logger.debug(`[IPC] Broadcast '${event}' completed in ${endTime - startTime}ms`);
+            
             return results
                 .filter((r) => r.status === "fulfilled" && r.value !== null)
                 .map((r) => r.value)
                 .flat();
         } catch (error) {
-            Logger.error("[IPC] Broadcast error:", error);
+            const endTime = Date.now();
+            Logger.error(`[IPC] Broadcast error (took ${endTime - startTime}ms):`, error);
             return [];
         }
     }
 
     async broadcastOne(event, data, receptive = true) {
+        const startTime = Date.now();
+        Logger.debug(`[IPC] Broadcasting event '${event}' to one socket`);
+        
         try {
             const sockets = this.getSockets();
             if (!sockets.length) {
@@ -69,9 +79,13 @@ class IPCServer {
                     return { success: false, data: null };
                 });
 
+            const endTime = Date.now();
+            Logger.debug(`[IPC] BroadcastOne '${event}' completed in ${endTime - startTime}ms`);
+            
             return result;
         } catch (error) {
-            Logger.error("[IPC] BroadcastOne error:", error);
+            const endTime = Date.now();
+            Logger.error(`[IPC] BroadcastOne error (took ${endTime - startTime}ms):`, error);
             return { success: false, data: null };
         }
     }

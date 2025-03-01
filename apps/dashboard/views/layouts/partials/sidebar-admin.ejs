@@ -18,6 +18,15 @@
 
           <li>
             <a
+              href="/admin"
+              class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug === "admin") { %>bg-gray-100 dark:bg-gray-700<% }%>">
+              <i class="fa-solid fa-gears text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              <span class="text-sm md:text-base ml-3" sidebar-toggle-item><%= tr('SIDEBAR.ADMIN') %></span>
+            </a>
+          </li>
+
+          <li>
+            <a
               href="/admin/locales"
               class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <% if (slug === "locales") { %>bg-gray-100 dark:bg-gray-700<% }%>">
               <i class="fa-solid fa-language text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>

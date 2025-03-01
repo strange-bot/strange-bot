@@ -13,8 +13,8 @@ module.exports.getHome = function (req, res) {
         user: req.session.user.info,
 
         layout: "layouts/admin",
-        title: `Localization | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
-        slug: "locales",
+        title: `Plugins | ${coreConfig["DASHBOARD"]["LOGO_NAME"]}`,
+        slug: "admin",
         breadcrumb: true,
         plugins: req.app.pluginManager.plugins,
     });

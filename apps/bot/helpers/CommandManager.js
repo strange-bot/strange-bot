@@ -143,8 +143,8 @@ class CommandManager {
     async registerInteractions(guildId, force = false) {
         try {
             // Add to queue and process
-            this.queueGuildRegistration(guildId, force);
-            return this.processRegistrationQueue();
+            this.#queueGuildRegistration(guildId, force);
+            return this.#processRegistrationQueue();
         } catch (error) {
             Logger.error("Failed to register interactions", error);
             throw error;
@@ -156,7 +156,7 @@ class CommandManager {
      * @param {string} guildId - The guild ID to register commands for
      * @param {boolean} force - Whether to force registration
      */
-    queueGuildRegistration(guildId, force = false) {
+    #queueGuildRegistration(guildId, force = false) {
         // Check if this guild is already in the queue
         if (!this.registrationQueue.some((item) => item.guildId === guildId)) {
             this.registrationQueue.push({ guildId, force, timestamp: Date.now() });
@@ -167,44 +167,69 @@ class CommandManager {
     /**
      * Process the registration queue with rate limit awareness
      */
-    async processRegistrationQueue() {
-        if (this.isProcessingQueue || this.registrationQueue.length === 0) {
+    async #processRegistrationQueue() {
+        // If already processing, don't start a new processing cycle
+        if (this.isProcessingQueue) {
             return;
         }
 
         this.isProcessingQueue = true;
 
         try {
-            // Discord rate limits are 5 command updates per guild per minute
-            // Process one at a time with a delay between each
-            while (this.registrationQueue.length > 0) {
-                const { guildId, force } = this.registrationQueue.shift();
+            // Process queue in chunks to avoid blocking the main thread
+            const processChunk = async () => {
+                if (this.registrationQueue.length === 0) {
+                    this.isProcessingQueue = false;
+                    return;
+                }
+
+                // Process a small number of items per tick
+                const item = this.registrationQueue.shift();
+                const { guildId, force } = item;
 
                 // Skip if this guild had a registration in the last 10 seconds
                 const lastRegistration = this.pendingRegistrations.get(guildId);
                 if (lastRegistration && Date.now() - lastRegistration < 10000 && !force) {
                     Logger.debug(`Skipping registration for guild ${guildId}, too recent`);
-                    continue;
+
+                    // Continue with next chunk after a small delay
+                    setTimeout(() => processChunk(), 10);
+                    return;
                 }
 
                 this.pendingRegistrations.set(guildId, Date.now());
 
                 try {
-                    await this.registerGuildCommands(guildId, force);
+                    await this.#registerGuildCommands(guildId, force);
                 } catch (error) {
                     Logger.error(`Failed to register commands for guild ${guildId}:`, error);
                 }
-            }
-        } finally {
+
+                // Continue with next chunk after a delay to respect rate limits
+                // Add more delay between operations (250ms) to avoid locking the main thread
+                setTimeout(() => processChunk(), 250);
+            };
+
+            // Start processing the first chunk
+            processChunk();
+        } catch (error) {
+            Logger.error("Error processing registration queue:", error);
             this.isProcessingQueue = false;
 
             // Clean up old pending registrations
-            const now = Date.now();
-            for (const [guildId, timestamp] of this.pendingRegistrations.entries()) {
-                if (now - timestamp > 60000) {
-                    // 1 minute
-                    this.pendingRegistrations.delete(guildId);
-                }
+            this.#cleanupPendingRegistrations();
+        }
+    }
+
+    /**
+     * Clean up old pending registrations
+     */
+    #cleanupPendingRegistrations() {
+        const now = Date.now();
+        for (const [guildId, timestamp] of this.pendingRegistrations.entries()) {
+            if (now - timestamp > 60000) {
+                // 1 minute
+                this.pendingRegistrations.delete(guildId);
             }
         }
     }
@@ -214,7 +239,7 @@ class CommandManager {
      * @param {string} guildId - The guild ID
      * @param {boolean} force - Whether to force registration
      */
-    async registerGuildCommands(guildId, force = false) {
+    async #registerGuildCommands(guildId, force = false) {
         const guild = this.client.guilds.cache.get(guildId);
         if (!guild) {
             throw new Error(`Guild ${guildId} not found`);
@@ -319,7 +344,7 @@ class CommandManager {
                 Logger.debug(
                     `Plugin ${pluginName} ${enabled ? "enabled" : "disabled"} for guild ${guildId}`,
                 );
-                this.queueGuildRegistration(guildId);
+                this.#queueGuildRegistration(guildId);
             } else {
                 // Global plugin status change - need to update all guilds
                 Logger.debug(`Plugin ${pluginName} ${enabled ? "enabled" : "disabled"} globally`);
@@ -327,13 +352,17 @@ class CommandManager {
                 // Get all guilds where bot is present
                 const guilds = this.client.guilds.cache.map((guild) => guild.id);
 
-                // Queue updates with a small delay between each to avoid hitting rate limits
-                for (const guildId of guilds) {
-                    this.queueGuildRegistration(guildId);
-                }
+                // Queue updates with priority balancing
+                guilds.forEach((guildId, index) => {
+                    // Stagger the queuing to avoid overwhelming the system
+                    setTimeout(() => {
+                        this.#queueGuildRegistration(guildId);
+                    }, index * 50); // Small delay between each queue addition
+                });
             }
 
-            await this.processRegistrationQueue();
+            // Start processing the queue but don't await its completion
+            this.#processRegistrationQueue();
             return true;
         } catch (error) {
             Logger.error(`Failed to update plugin status for ${pluginName}:`, error);
@@ -348,13 +377,17 @@ class CommandManager {
         const guilds = this.client.guilds.cache.map((guild) => guild.id);
         let updated = 0;
 
-        for (const guildId of guilds) {
-            this.queueGuildRegistration(guildId, true);
-            updated++;
-        }
+        // Queue with staggered timing to prevent main thread blocking
+        guilds.forEach((guildId, index) => {
+            setTimeout(() => {
+                this.#queueGuildRegistration(guildId, true);
+                updated++;
+            }, index * 50);
+        });
 
-        this.processRegistrationQueue();
-        return updated;
+        // Start queue processing but don't wait for completion
+        this.#processRegistrationQueue();
+        return guilds.length; // Return expected update count
     }
 
     /**

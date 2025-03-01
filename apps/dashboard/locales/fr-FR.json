@@ -17,6 +17,7 @@
         "DASHBOARD": "Tableau de bord",
         "SELECTOR": "Sélecteur",
         "LANDING": "Page d'accueil",
+        "ADMIN": "Administrateur",
         "LOCALES": "Localisation",
         "HOME": "Maison",
         "PLUGINS": "Plugins",
@@ -62,6 +63,13 @@
         "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
         "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
         "PLUGIN_CONFIRM_NO": "Non, annuler"
+    },
+
+    "ADMIN_PAGE": {
+        "PLUGINS": "Gestion des plugins",
+        "LOADING": "Chargement des plugins...",
+        "VIEW_SOURCE": "Afficher la source",
+        "NO_MATCH": "Aucun plugin trouvé correspondant au terme de recherche"
     },
 
     "LOCALES_PAGE": {
