@@ -175,12 +175,13 @@
             </div>
             <span
               x-show="plugin.installed"
-              @click="togglePlugin(plugin)"
+              @click="plugin.name !== 'core' && togglePlugin(plugin)"
               :class="[
                 plugin.enabled ? 
                   'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
                   'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                isToggling(plugin.name) ? 'opacity-75' : 'cursor-pointer hover:opacity-80'
+                isToggling(plugin.name) ? 'opacity-75' : 
+                  plugin.name === 'core' ? 'opacity-75' : 'cursor-pointer hover:opacity-80'
               ]"
               class="px-3 py-1 rounded-full text-xs font-medium select-none inline-flex items-center gap-1">
               <template x-if="isToggling(plugin.name)">
@@ -241,6 +242,7 @@
               </button>
               <!-- Install/Uninstall button -->
               <button
+                x-show="plugin.name !== 'core'"
                 @click="plugin.installed ? uninstallPlugin(plugin) : installPlugin(plugin)"
                 :disabled="isLoading(plugin.name)"
                 :class="plugin.installed ? 

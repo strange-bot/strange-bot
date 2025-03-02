@@ -23,8 +23,8 @@ Guild.prototype.getSettings = async function (pluginName) {
 Guild.prototype.getEnabledPlugins = async function () {
     const plugins = this.client.pluginManager.plugins.map((plugin) => plugin.name);
     const settings = await this.getSettings("core");
-    const disabled = settings.disabled_plugins || [];
-    return plugins.filter((plugin) => !disabled.includes(plugin));
+    const enabled = settings.enabled_plugins || [];
+    return plugins.filter((plugin) => enabled.includes(plugin));
 };
 
 /**

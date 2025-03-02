@@ -36,10 +36,12 @@ class PluginManager extends BasePluginManager {
             if (pluginName !== "core") {
                 const corePlugin = this.getPlugin("core");
                 const config = await corePlugin.getConfig();
-                if (!config.ENABLED_PLUGINS.includes(pluginName)) {
-                    config.ENABLED_PLUGINS.push(pluginName);
+                if (config.DISABLED_PLUGINS.includes(pluginName)) {
+                    config.DISABLED_PLUGINS = config.DISABLED_PLUGINS.filter(
+                        (p) => p !== pluginName,
+                    );
+                    await config.save(config);
                 }
-                await config.save(config);
             }
 
             this.setPlugin(pluginName, plugin);
@@ -83,7 +85,10 @@ class PluginManager extends BasePluginManager {
         // Update the core config
         const corePlugin = this.getPlugin("core");
         const config = await corePlugin.getConfig();
-        config.ENABLED_PLUGINS = config.ENABLED_PLUGINS.filter((p) => p !== pluginName);
+
+        if (!config.DISABLED_PLUGINS.includes(pluginName)) {
+            config.DISABLED_PLUGINS.push(pluginName);
+        }
         await config.save(config);
 
         this.removePlugin(pluginName);
@@ -98,10 +103,10 @@ class PluginManager extends BasePluginManager {
 
         const core = this.getPlugin("core");
         const settings = await core.getSettings(guildId);
-        const disabledPlugins = settings.disabled_plugins || [];
+        const enabledPlugins = settings.enabled_plugins || [];
 
-        if (disabledPlugins.includes(pluginName)) {
-            settings.disabled_plugins = disabledPlugins.filter((p) => p !== pluginName);
+        if (!enabledPlugins.includes(pluginName)) {
+            settings.enabled_plugins = [...enabledPlugins, pluginName];
             await settings.save();
         }
     }
@@ -118,10 +123,10 @@ class PluginManager extends BasePluginManager {
 
         const core = this.getPlugin("core");
         const settings = await core.getSettings(guildId);
-        const disabledPlugins = settings.disabled_plugins || [];
+        const enabledPlugins = settings.enabled_plugins || [];
 
-        if (!disabledPlugins.includes(pluginName)) {
-            settings.disabled_plugins = [...disabledPlugins, pluginName];
+        if (enabledPlugins.includes(pluginName)) {
+            settings.enabled_plugins = enabledPlugins.filter((p) => p !== pluginName);
             await settings.save();
         }
     }

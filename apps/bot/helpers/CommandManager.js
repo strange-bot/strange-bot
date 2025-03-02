@@ -253,14 +253,14 @@ class CommandManager {
 
         const toRegister = [];
 
-        // Get disabled plugins for this guild
-        let guildDisabledPlugins = [];
+        // Get enabled plugins for this guild
+        let guildEnabledPlugins = [];
         if (!force) {
             try {
                 const guildSettings = await guild.getSettings("core");
-                guildDisabledPlugins = guildSettings.disabled_plugins || [];
+                guildEnabledPlugins = guildSettings.enabled_plugins || [];
             } catch (error) {
-                Logger.debug(`Could not get disabled plugins for guild ${guild.name}:`, error);
+                Logger.debug(`Could not get enabled plugins for guild ${guild.name}:`, error);
             }
         }
 
@@ -268,12 +268,18 @@ class CommandManager {
         if (coreConfig["INTERACTIONS"]["SLASH"]) {
             this.slashCommands
                 .filter((cmd) => {
-                    // Check if the plugin is globally enabled AND not disabled for this guild
+                    // Check if the plugin is globally enabled AND enabled for this guild
                     const plugin = cmd.plugin;
                     const isGloballyEnabled = this.client.pluginManager.isPluginEnabled(
                         plugin.name,
                     );
-                    const isGuildEnabled = !guildDisabledPlugins.includes(plugin.name);
+
+                    // If force is true or no enabled plugins are set, consider all plugins enabled for the guild
+                    const isGuildEnabled =
+                        force ||
+                        guildEnabledPlugins.length === 0 ||
+                        guildEnabledPlugins.includes(plugin.name);
+
                     return isGloballyEnabled && isGuildEnabled;
                 })
                 .map((cmd) => ({
@@ -309,12 +315,18 @@ class CommandManager {
         if (coreConfig["INTERACTIONS"]["CONTEXT"]) {
             this.contextMenus
                 .filter((ctx) => {
-                    // Check if the plugin is globally enabled AND not disabled for this guild
+                    // Check if the plugin is globally enabled AND enabled for this guild
                     const plugin = ctx.plugin;
                     const isGloballyEnabled = this.client.pluginManager.isPluginEnabled(
                         plugin.name,
                     );
-                    const isGuildEnabled = !guildDisabledPlugins.includes(plugin.name);
+
+                    // If force is true or no enabled plugins are set, consider all plugins enabled for the guild
+                    const isGuildEnabled =
+                        force ||
+                        guildEnabledPlugins.length === 0 ||
+                        guildEnabledPlugins.includes(plugin.name);
+
                     return isGloballyEnabled && isGuildEnabled;
                 })
                 .map((ctx) => ({

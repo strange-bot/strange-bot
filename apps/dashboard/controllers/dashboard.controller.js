@@ -53,7 +53,7 @@ module.exports.homePage = async function (req, res) {
     ]);
 
     const enabledPlugins = req.app.pluginManager.plugins
-        .filter((p) => !coreSettings.disabled_plugins.includes(p.name))
+        .filter((p) => coreSettings.enabled_plugins.includes(p.name))
         .map((p) => p.name);
 
     const guild = req.session.user.guilds.find((g) => g.id === req.params.guildId);

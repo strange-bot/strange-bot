@@ -63,53 +63,67 @@ class BasePluginManager {
         }
         await this.enablePlugin("core");
 
-        // Get enabled plugins from core config
+        // Get disabled plugins from core config
         const corePluginInstance = this.getPlugin("core");
         const config = await corePluginInstance.getConfig();
-        let enabled_plugins = config.ENABLED_PLUGINS || [];
+        const disabled_plugins = config.DISABLED_PLUGINS || [];
+
+        // Get all available plugins from registry except disabled ones
+        const enableablePlugins = plugins.filter(
+            (p) => p.name !== "core" && !disabled_plugins.includes(p.name),
+        );
 
         // Check dependencies and filter out plugins with missing dependencies
-        const pluginsToRemove = [];
-        const pluginMetaMap = Object.fromEntries(plugins.map((p) => [p.name, p]));
+        const pluginsToDisable = [];
+        const pluginsToSkip = [];
 
-        for (const pluginName of enabled_plugins) {
-            if (pluginName === "core") continue; // Skip core plugin
-
-            const plugin = pluginMetaMap[pluginName];
-            if (!plugin) {
-                Logger.warn(
-                    `Plugin ${pluginName} is in enabled list but not found in registry. Removing.`,
-                );
-                pluginsToRemove.push(pluginName);
-                continue;
-            }
-
-            // Check if all dependencies are in the enabled_plugins list
+        for (const plugin of enableablePlugins) {
+            // Check if all dependencies are available in the registry
             const missingDeps = (plugin.dependencies || []).filter(
-                (dep) => dep !== "core" && !enabled_plugins.includes(dep),
+                (dep) => !plugins.some((p) => p.name === dep),
             );
 
             if (missingDeps.length > 0) {
                 Logger.warn(
-                    `Plugin ${pluginName} has unmet dependencies: ${missingDeps.join(", ")}. Removing from enabled plugins.`,
+                    `Plugin ${plugin.name} has dependencies that are not in registry: ${missingDeps.join(", ")}. Skipping this plugin.`,
                 );
-                pluginsToRemove.push(pluginName);
+                pluginsToSkip.push(plugin.name);
+                continue;
+            }
+
+            // Check if all dependencies are not in the disabled_plugins list
+            const disabledDeps = (plugin.dependencies || []).filter(
+                (dep) => dep !== "core" && disabled_plugins.includes(dep),
+            );
+
+            if (disabledDeps.length > 0) {
+                Logger.warn(
+                    `Plugin ${plugin.name} has dependencies that are disabled: ${disabledDeps.join(", ")}. Adding to disabled plugins.`,
+                );
+                pluginsToDisable.push(plugin.name);
             }
         }
 
-        // Remove plugins with missing dependencies
-        if (pluginsToRemove.length > 0) {
-            enabled_plugins = enabled_plugins.filter((p) => !pluginsToRemove.includes(p));
-            config.ENABLED_PLUGINS = enabled_plugins;
+        // Update disabled plugins list if needed
+        if (pluginsToDisable.length > 0) {
+            for (const pluginName of pluginsToDisable) {
+                if (!disabled_plugins.includes(pluginName)) {
+                    disabled_plugins.push(pluginName);
+                }
+            }
+            config.DISABLED_PLUGINS = disabled_plugins;
             await config.save(config);
             Logger.info(
-                `Removed ${pluginsToRemove.length} plugins with missing dependencies from enabled list.`,
+                `Added ${pluginsToDisable.length} plugins with disabled dependencies to disabled list.`,
             );
         }
 
-        // Initialize other plugins in dependency order
+        // Filter plugins to enable (all plugins except core, disabled ones and ones with missing dependencies)
         const pluginsToEnable = plugins.filter(
-            (p) => enabled_plugins.includes(p.name) && p.name !== "core",
+            (p) =>
+                p.name !== "core" &&
+                !disabled_plugins.includes(p.name) &&
+                !pluginsToSkip.includes(p.name),
         );
 
         const loadOrder = this.#getTopologicalOrder(pluginsToEnable);
@@ -364,6 +378,9 @@ class BasePluginManager {
         const graph = new Map();
         const inDegree = new Map();
 
+        // Get all plugin names for easy lookup
+        const pluginNames = new Set(plugins.map((p) => p.name));
+
         plugins.forEach((plugin) => {
             graph.set(plugin.name, []);
             inDegree.set(plugin.name, 0);
@@ -373,8 +390,11 @@ class BasePluginManager {
         plugins.forEach((plugin) => {
             (plugin.dependencies || []).forEach((dep) => {
                 if (dep === "core") return;
-                graph.get(dep).push(plugin.name);
-                inDegree.set(plugin.name, inDegree.get(plugin.name) + 1);
+                // Only process dependencies that exist in our plugin list
+                if (pluginNames.has(dep)) {
+                    graph.get(dep).push(plugin.name);
+                    inDegree.set(plugin.name, inDegree.get(plugin.name) + 1);
+                }
             });
         });
 

@@ -128,12 +128,12 @@ class PluginManager extends BasePluginManager {
      */
     async emit(eventName, ...args) {
         // Get disabled plugins from guild settings if available
-        let disabled_plugins = [];
+        let enabled_plugins = [];
         try {
             const guild = args.find((arg) => arg && arg.guild)?.guild;
             if (guild) {
                 const coreSettings = await guild.getSettings("core");
-                disabled_plugins = coreSettings.disabled_plugins;
+                enabled_plugins = coreSettings.enabled_plugins;
             }
         } catch (error) {
             Logger.debug("Error getting core settings for event", error);
@@ -144,7 +144,7 @@ class PluginManager extends BasePluginManager {
             this.plugins
                 .filter(
                     (plugin) =>
-                        !disabled_plugins.includes(plugin.name) &&
+                        enabled_plugins.includes(plugin.name) &&
                         plugin.eventHandlers.has(eventName) &&
                         plugin.dependencies.length === 0,
                 )
@@ -167,7 +167,7 @@ class PluginManager extends BasePluginManager {
         // Handle plugins with dependencies in order
         for (const plugin of this.plugins.filter(
             (p) =>
-                !disabled_plugins.includes(p.name) &&
+                enabled_plugins.includes(p.name) &&
                 p.eventHandlers.has(eventName) &&
                 p.dependencies.length > 0,
         )) {
