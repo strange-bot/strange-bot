@@ -1,6 +1,6 @@
 {
     "name": "strange-core",
-    "version": "1.0.0",
+    "version": "0.1.0-beta",
     "description": "Core package for strange bot",
     "files": [
         "lib",
@@ -15,6 +15,7 @@
         "i18next": "^24.2.2",
         "node-fetch": "^2.7.0",
         "proper-lockfile": "^4.1.2",
+        "semver": "^7.7.0",
         "simple-git": "^3.27.0",
         "strange-db-client": "workspace:*",
         "strange-sdk": "workspace:*"

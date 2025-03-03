@@ -1,6 +1,6 @@
 {
     "name": "dashboard",
-    "version": "1.0.0",
+    "version": "0.1.0-beta",
     "description": "Dashboard for strange discord bot",
     "main": "index.js",
     "author": "Sai Teja M",
@@ -23,7 +23,6 @@
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.18.1",
         "i18next": "^24.2.2",
-        "isomorphic-dompurify": "^2.21.0",
         "strange-core": "workspace:*",
         "strange-db-client": "workspace:*",
         "strange-sdk": "workspace:*",

@@ -1,6 +1,6 @@
 {
     "name": "strange-db-client",
-    "version": "1.0.0",
+    "version": "0.1.0-beta",
     "description": "Database client for the strange discord bot",
     "main": "index.js",
     "types": "index.d.ts",

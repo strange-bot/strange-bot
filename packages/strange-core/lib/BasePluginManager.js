@@ -7,6 +7,7 @@ const lockfile = require("proper-lockfile");
 const { Logger } = require("strange-sdk/utils");
 const execa = require("execa");
 const fetch = require("node-fetch");
+const semver = require("semver");
 
 class BasePluginManager {
     #pluginMap = new Map();
@@ -208,9 +209,7 @@ class BasePluginManager {
                         installed: installedPlugins.includes(plugin.name),
                         enabled: this.isPluginEnabled(plugin.name),
                         currentVersion,
-                        hasUpdate:
-                            currentVersion &&
-                            this.#compareVersions(currentVersion, plugin.version) < 0,
+                        hasUpdate: currentVersion && semver.lt(currentVersion, plugin.version),
                     };
                 }),
             );
@@ -470,20 +469,6 @@ class BasePluginManager {
 
     #createRepoHash(repository) {
         return crypto.createHash("md5").update(repository).digest("hex");
-    }
-
-    #compareVersions(current, target) {
-        const currentParts = current.split(".").map(Number);
-        const targetParts = target.split(".").map(Number);
-
-        for (let i = 0; i < 3; i++) {
-            const currentPart = currentParts[i] || 0;
-            const targetPart = targetParts[i] || 0;
-            if (currentPart !== targetPart) {
-                return currentPart - targetPart;
-            }
-        }
-        return 0;
     }
 
     #isUrl(str) {
