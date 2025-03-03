@@ -3,6 +3,11 @@
 node_modules/
 logs/
 
+# Dashboard
+apps/dashboard/public/js
+apps/dashboard/public/css
+
+
 # Files
 .DS_Store
 .env
@@ -11,6 +16,6 @@ logs/
 *.log
 *.tar.gz
 
-# Dashboard build
-src/dashboard/public/css/
-src/dashboard/public/js/
+# Plugins
+plugins/*
+!plugins/registry.json

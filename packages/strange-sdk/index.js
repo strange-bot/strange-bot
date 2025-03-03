@@ -1,7 +1,14 @@
+const BotPlugin = require("./lib/BotPlugin");
 const Config = require("./lib/Config");
-const Plugin = require("./lib/Plugin");
+const DashboardPlugin = require("./lib/DashboardPlugin");
+const DBService = require("./lib/DBService");
+const { Schema, SchemaTypes } = require("strange-db-client");
 
 module.exports = {
+    BotPlugin,
     Config,
-    Plugin,
+    DashboardPlugin,
+    DBService,
+    Schema,
+    SchemaTypes,
 };

@@ -1,36 +1,47 @@
-const { EmbedBuilder, WebhookClient } = require("discord.js");
 const pino = require("pino");
+const Sentry = require("@sentry/node");
 
 class Logger {
-    static #pinoLogger = pino({
-        level: "debug",
-        transport: {
-            target: "pino-pretty",
-        },
-    });
-    static #webhookLogger;
+    /** @private */
+    static #pinoLogger;
 
     /**
-     * Initialize the pinoLogger and webhookLogger during bot startup
-     * @param {string} [dest] - The destination to store the logs
+     * Initialize the logger with file destination and optional fields
+     * @param {string} [dest] - File path for logs. If empty, only console logging is enabled
+     * @param {object} [fields] - Additional fields to include in all log entries
+     * @example
+     * Logger.init('./logs/app.log', { shardId: '1', service: 'bot' })
      */
-    static init(dest = "") {
-        const streamArray = [
-            {
-                level: "info",
-                stream: pino.transport({
-                    target: "pino-pretty",
-                    options: {
-                        colorize: true,
-                        translateTime: "yyyy-mm-dd HH:mm:ss",
-                        ignore: "pid,hostname",
-                        singleLine: false,
-                        hideObject: false,
-                        customColors: "info:blue,warn:yellow,error:red",
-                    },
-                }),
-            },
-        ];
+    static init(dest = "", fields = {}) {
+        if (process.env.SENTRY_DSN) {
+            Sentry.init({
+                dsn: process.env.SENTRY_DSN,
+                environment: process.env.NODE_ENV,
+                beforeSend(event) {
+                    event.tags = { ...event.tags, ...fields };
+                    return event;
+                },
+            });
+        }
+
+        const streamArray = [];
+        streamArray.push({
+            level: "info",
+            stream: pino.transport({
+                target: "pino-pretty",
+                options: {
+                    colorize: true,
+                    translateTime: "yyyy-mm-dd HH:mm:ss",
+                    ignore: fields
+                        ? `pid,hostname,${Object.keys(fields).join(",")}`
+                        : "pid,hostname",
+                    singleLine: false,
+                    hideObject: false,
+                    customColors: "success:green,info:blue,warn:yellow,error:red",
+                    customLevels: { success: 35, info: 30, warn: 40, error: 50 },
+                },
+            }),
+        });
 
         if (dest) {
             streamArray.push({
@@ -43,73 +54,79 @@ class Logger {
             });
         }
 
-        // Initialize the pinoLogger with the streamArray
-        Logger.#pinoLogger = pino.default({ level: "info" }, pino.multistream(streamArray));
+        const baseLogger = pino(
+            {
+                level: process.env.LOG_LEVEL || "info",
+                customLevels: { success: 35 },
+            },
+            pino.multistream(streamArray),
+        );
 
-        // Check for environment variable ERROR_LOGS and initialize webhookLogger accordingly
-        Logger.#webhookLogger = process.env.ERROR_LOGS
-            ? new WebhookClient({ url: process.env.ERROR_LOGS })
-            : undefined;
-    }
-
-    static #sendWebhook(content, err) {
-        if (!content && !err) return;
-        const errString = err?.stack || err;
-
-        const embed = new EmbedBuilder()
-            .setColor("#D61A3C")
-            .setAuthor({ name: err?.name || "Error" });
-
-        if (errString)
-            embed.setDescription(
-                "```js\n" +
-                    (errString.length > 4096 ? `${errString.substr(0, 4000)}...` : errString) +
-                    "\n```",
-            );
-
-        embed.addFields({ name: "Description", value: content || err?.message || "NA" });
-        Logger.#webhookLogger.send({ username: "Logs", embeds: [embed] }).catch((ex) => {});
+        Logger.#pinoLogger = Object.keys(fields).length > 0 ? baseLogger.child(fields) : baseLogger;
     }
 
     /**
-     * @param {string} msg
-     * @param  {...any} args
+     * Log a success message with optional arguments
+     * @param {string} msg - The message to log
+     * @param {object} args - Additional arguments to include
+     * @example
+     * Logger.success('Operation completed', { userId: '123' })
      */
-    static success(msg, ...args) {
+    static success(msg, args) {
+        Logger.#pinoLogger.success(args, msg);
+    }
+
+    /**
+     * Log an info message with optional arguments
+     * @param {string} msg - The message to log
+     * @param {object} args - Additional arguments to include
+     * @example
+     * Logger.info('Processing request', { requestId: '456' })
+     */
+    static info(msg, args) {
         Logger.#pinoLogger.info(args, msg);
     }
 
     /**
-     * @param {string} msg
-     * @param  {...any} args
+     * Log a warning message with optional arguments
+     * @param {string} msg - The message to log
+     * @param {object} args - Additional arguments to include
+     * @example
+     * Logger.warn('Rate limit approaching', { current: 80, limit: 100 })
      */
-    static info(msg, ...args) {
-        Logger.#pinoLogger.info(args, msg);
-    }
-
-    /**
-     * @param {string} msg
-     * @param  {...any} args
-     */
-    static warn(msg, ...args) {
+    static warn(msg, args) {
         Logger.#pinoLogger.warn(args, msg);
     }
 
     /**
-     * @param {string} msg
-     * @param {object} ex
+     * Log an error message with optional error object
+     * @param {string} msg - The error message
+     * @param {Error} [ex] - Optional Error object
+     * @example
+     * Logger.error('Failed to process', new Error('Invalid input'))
      */
     static error(msg, ex) {
-        if (ex) Logger.#pinoLogger.error(ex, `${msg}: ${ex?.message}`);
-        else Logger.#pinoLogger.error(msg);
-        if (Logger.#webhookLogger) Logger.#sendWebhook(msg, ex);
+        if (ex) {
+            Logger.#pinoLogger.error(ex, `${msg}: ${ex?.message}`);
+
+            if (process.env.SENTRY_DSN) {
+                Sentry.captureException(ex, {
+                    extra: { message: msg },
+                });
+            }
+        } else {
+            Logger.#pinoLogger.error(msg);
+        }
     }
 
     /**
-     * @param {string} msg
-     * @param  {...any} args
+     * Log a debug message with optional arguments
+     * @param {string} msg - The message to log
+     * @param {object} args - Additional arguments to include
+     * @example
+     * Logger.debug('Variable state', { count: 5, active: true })
      */
-    static debug(msg, ...args) {
+    static debug(msg, args) {
         Logger.#pinoLogger.debug(args, msg);
     }
 }

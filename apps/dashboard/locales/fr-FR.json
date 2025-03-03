@@ -1,0 +1,87 @@
+{
+    "BTN_SAVE": "Sauvegarder",
+    "BTN_SAVING": "En cours de sauvegarde...",
+    "BTN_ENABLE": "Activer",
+    "BTN_DISABLE": "Désactiver",
+    "BTN_CREATE": "Créer",
+
+    "SETTINGS_SAVE": "Paramètres de guilde enregistrés",
+    "SETTINGS_SAVE_ERROR": "Échec de la sauvegarde des paramètres de guilde",
+    "CONFIG_SAVE": "Configuration enregistrée",
+    "CONFIG_SAVE_ERROR": "Échec de la sauvegarde de la configuration",
+
+    "CHANNEL_SELECT": "Sélectionner une chaîne",
+    "ROLE_SELECT": "Sélectionner un rôle",
+
+    "SIDEBAR": {
+        "DASHBOARD": "Tableau de bord",
+        "SELECTOR": "Sélecteur",
+        "LANDING": "Page d'accueil",
+        "ADMIN": "Administrateur",
+        "LOCALES": "Localisation",
+        "HOME": "Maison",
+        "PLUGINS": "Plugins",
+        "PLUGIN_CONFIGS": "Configuration du plugin",
+        "TIP_DOCUMENTATION": "Documentation",
+        "TIP_GITHUB": "Dépôt GitHub"
+    },
+
+    "NAV": {
+        "ADMIN": "Administrateur",
+        "LOGOUT": "Déconnexion",
+        "TIP_DARK_MODE": "Activer le mode sombre",
+        "SR_USER_MENU": "Ouvrir le menu utilisateur"
+    },
+
+    "BREADCRUMB": {
+        "ADMIN": "Administrateur"
+    },
+
+    "TABS": {
+        "SETTINGS": "Paramètres",
+        "PREFIX": "Commandes de préfixe",
+        "SLASH": "Commandes barre oblique"
+    },
+
+    "SELECTOR": {
+        "BTN_MANAGE": "Gérer",
+        "BTN_INVITE": "Inviter"
+    },
+
+    "HOME": {
+        "MEMBERS": "Membres",
+        "ROLES": "Rôles",
+        "TXT_CHANNELS": "Canaux de texte",
+        "VC_CHANNELS": "Canaux vocaux",
+        "SUB_PLUGINS": "Plugins",
+        "LABEL_PREFIX": "Préfixe",
+        "LABEL_SLASH": "Barre oblique",
+
+        "BTN_PLUGIN_ACTIVE": "Actif",
+        "BTN_PLUGIN_ENABLE": "Activer",
+
+        "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
+        "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
+        "PLUGIN_CONFIRM_NO": "Non, annuler"
+    },
+
+    "ADMIN_PAGE": {
+        "PLUGINS": "Gestion des plugins",
+        "LOADING": "Chargement des plugins...",
+        "VIEW_SOURCE": "Afficher la source",
+        "NO_MATCH": "Aucun plugin trouvé correspondant au terme de recherche"
+    },
+
+    "LOCALES_PAGE": {
+        "TITLE": "Localisations",
+        "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
+        "APP_SELECT": "Sélectionnez l'application",
+        "PLUGIN_SELECT": "Sélectionner un plugin",
+        "LOCALE_SELECT": "Sélectionner une langue",
+        "FETCH_FAIL": "Échec de la récupération des clés de localisation",
+        "UPDATE_SUCCESS": "Localisation du bot mise à jour avec succès",
+        "UPDATE_ERROR": "Échec de la mise à jour de la localisation du bot"
+    },
+
+    "NO_SETTINGS": "Ce plugin n'a aucun paramètre."
+}

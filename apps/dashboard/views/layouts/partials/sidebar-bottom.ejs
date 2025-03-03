@@ -1,0 +1,90 @@
+<div
+  class="absolute bottom-0 left-0 hidden w-full justify-center space-x-4 bg-white p-4 dark:bg-gray-800 lg:flex"
+  sidebar-bottom-menu>
+  <a
+    href="#"
+    data-tooltip-target="tooltip-documentation"
+    class="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">
+    <i
+      class="fa-solid fa-book h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+  </a>
+  <div
+    id="tooltip-documentation"
+    role="tooltip"
+    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
+    sidebar-bottom-tooltip>
+    <%= tr('SIDEBAR.TIP_DOCUMENTATION') %>
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
+  <a
+    href="https://github.com/strange-bot/strange-bot"
+    target="_blank"
+    data-tooltip-target="tooltip-settings"
+    class="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">
+    <i
+      class="fa-brands fa-github h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+  </a>
+  <div
+    id="tooltip-settings"
+    role="tooltip"
+    class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+    <%= tr('SIDEBAR.TIP_GITHUB') %>
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
+  <!-- Language Button -->
+    <button
+      type="button"
+      data-dropdown-toggle="language-dropdown"
+      class="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">
+      <img 
+        src="https://cdn.jsdelivr.net/npm/country-flag-icons/3x2/<%= languages.find(l => l.name === locale)?.svg_code %>.svg"
+        class="mt-0.5 h-5 w-5 rounded-full"
+        alt="Current language flag"
+      />
+    </button>
+  
+    <!-- Dropdown -->
+    <div
+      class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:bg-gray-700"
+      id="language-dropdown"
+      x-data="{
+        async changeLanguage(languageCode) {
+          try {
+            const response = await fetch('/api/language', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ language_code: languageCode })
+            });
+            
+            if (!response.ok) {
+              throw new Error('Failed to change language');
+            }
+            
+            window.location.reload();
+          } catch (error) {
+            Alpine.store('toast').show(error.message, 'error');
+          }
+        }
+      }">
+      <ul class="py-1" role="none">
+        <% languages.forEach(function(lang) { %>
+          <li>
+            <a
+              href="#"
+              @click.prevent="changeLanguage('<%= lang.name %>')"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white <%= locale === lang.name ? 'bg-gray-100 dark:bg-gray-600' : '' %>"
+              role="menuitem">
+              <div class="inline-flex items-center">
+                <img
+                  src="https://cdn.jsdelivr.net/npm/country-flag-icons/3x2/<%= lang.svg_code %>.svg"
+                  class="mr-2 h-3.5 w-3.5 rounded-full"
+                  alt="<%= lang.nativeName %> flag"
+                />
+                <%= lang.nativeName %>
+              </div>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+</div>

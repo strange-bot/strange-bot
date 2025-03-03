@@ -1,0 +1,24 @@
+{
+    "name": "strange-core",
+    "version": "0.1.0-beta",
+    "description": "Core package for strange bot",
+    "files": [
+        "lib",
+        "types",
+        "index.js",
+        "languages-meta.json"
+    ],
+    "dependencies": {
+        "deepmerge": "^4.3.1",
+        "execa": "^5.1.1",
+        "flat": "^5.0.2",
+        "i18next": "^24.2.2",
+        "node-fetch": "^2.7.0",
+        "proper-lockfile": "^4.1.2",
+        "semver": "^7.7.0",
+        "simple-git": "^3.27.0",
+        "strange-db-client": "workspace:*",
+        "strange-sdk": "workspace:*"
+    },
+    "types": "types/index.d.ts"
+}

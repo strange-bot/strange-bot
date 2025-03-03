@@ -1,0 +1,87 @@
+{
+    "BTN_SAVE": "Save",
+    "BTN_SAVING": "Saving",
+    "BTN_ENABLE": "Enable",
+    "BTN_DISABLE": "Disable",
+    "BTN_CREATE": "Create",
+
+    "SETTINGS_SAVE": "Guild settings saved",
+    "SETTINGS_SAVE_ERROR": "Failed to save guild settings",
+    "CONFIG_SAVE": "Configuration saved",
+    "CONFIG_SAVE_ERROR": "Failed to save configuration",
+
+    "CHANNEL_SELECT": "Select Channel",
+    "ROLE_SELECT": "Select Role",
+
+    "SIDEBAR": {
+        "DASHBOARD": "Dashboard",
+        "SELECTOR": "Selector",
+        "LANDING": "Landing Page",
+        "ADMIN": "Admin",
+        "LOCALES": "Localization",
+        "HOME": "Home",
+        "PLUGINS": "Plugins",
+        "PLUGIN_CONFIGS": "Plugin Config",
+        "TIP_DOCUMENTATION": "Documentation",
+        "TIP_GITHUB": "GitHub Repository"
+    },
+
+    "NAV": {
+        "ADMIN": "Admin",
+        "LOGOUT": "Logout",
+        "TIP_DARK_MODE": "Toggle Dark Mode",
+        "SR_USER_MENU": "Open User Menu"
+    },
+
+    "BREADCRUMB": {
+        "ADMIN": "Admin"
+    },
+
+    "TABS": {
+        "SETTINGS": "Settings",
+        "PREFIX": "Prefix Commands",
+        "SLASH": "Slash Commands"
+    },
+
+    "SELECTOR": {
+        "BTN_MANAGE": "Manage",
+        "BTN_INVITE": "Invite"
+    },
+
+    "HOME": {
+        "MEMBERS": "Members",
+        "ROLES": "Roles",
+        "TXT_CHANNELS": "Text Channels",
+        "VC_CHANNELS": "Voice Channels",
+        "SUB_PLUGINS": "Plugins",
+        "LABEL_PREFIX": "Prefix",
+        "LABEL_SLASH": "Slash",
+
+        "BTN_PLUGIN_ACTIVE": "Active",
+        "BTN_PLUGIN_ENABLE": "Enable",
+
+        "PLUGIN_ENABLE_CONFIRM": "Are you sure you want to enable this plugin?",
+        "PLUGIN_CONFIRM_YES": "Yes, I'm sure",
+        "PLUGIN_CONFIRM_NO": "No, cancel"
+    },
+
+    "ADMIN_PAGE": {
+        "PLUGINS": "Plugin Management",
+        "LOADING": "Loading plugins...",
+        "VIEW_SOURCE": "View Source",
+        "NO_MATCH": "No plugins found matching the search term"
+    },
+
+    "LOCALES_PAGE": {
+        "TITLE": "Localizations",
+        "DESCRIPTION": "Manage localization keys for different plugins and languages.",
+        "APP_SELECT": "Select Application",
+        "PLUGIN_SELECT": "Select Plugin",
+        "LOCALE_SELECT": "Select Language",
+        "FETCH_FAIL": "Failed to fetch localization keys",
+        "UPDATE_SUCCESS": "Bot Localization updated successfully",
+        "UPDATE_ERROR": "Failed to update bot localization"
+    },
+
+    "NO_SETTINGS": "This plugin does not have any settings."
+}

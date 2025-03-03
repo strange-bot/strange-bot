@@ -1,11 +1,15 @@
 const fetch = require("node-fetch");
 const { error, debug } = require("./Logger");
 
+/**
+ * Utility class for making HTTP requests
+ */
 class HttpUtils {
     /**
-     * Returns JSON response from url
-     * @param {string} url
-     * @param {object} options
+     * Fetches and returns JSON data from a URL
+     * @param {string} url - The URL to fetch from
+     * @param {import('node-fetch').RequestInit} [options] - Fetch options
+     * @returns {Promise<{success: boolean, status?: number, data?: any}>} Response object
      */
     static async getJson(url, options) {
         try {
@@ -27,9 +31,10 @@ class HttpUtils {
     }
 
     /**
-     * Returns buffer from url
-     * @param {string} url
-     * @param {object} options
+     * Fetches and returns buffer data from a URL
+     * @param {string} url - The URL to fetch from
+     * @param {import('node-fetch').RequestInit} [options] - Fetch options
+     * @returns {Promise<{success: boolean, status?: number, buffer?: Buffer}>} Response object
      */
     static async getBuffer(url, options) {
         try {

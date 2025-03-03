@@ -1,0 +1,16 @@
+[
+    {
+        "name": "en-US",
+        "nativeName": "English",
+        "discord": "en-US",
+        "svg_code": "US",
+        "aliases": ["English", "en", "en-us", "en_us", "en_US"]
+    },
+    {
+        "name": "fr-FR",
+        "nativeName": "Français",
+        "discord": "fr",
+        "svg_code": "FR",
+        "aliases": ["Français", "fr", "fr-eu", "fr_eu", "fr_FR"]
+    }
+]

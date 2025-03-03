@@ -1,0 +1,16 @@
+{
+    "name": "strange-db-client",
+    "version": "0.1.0-beta",
+    "description": "Database client for the strange discord bot",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "scripts": {},
+    "keywords": [],
+    "author": "Sai Teja Madha",
+    "license": "ISC",
+    "dependencies": {
+        "ioredis": "^5.5.0",
+        "mongoose": "^8.0.0",
+        "mongoose-lean-defaults": "^2.2.1"
+    }
+}

@@ -4,8 +4,9 @@
         "target": "es6",
         "baseUrl": "./",
         "paths": {
-            "typings": [
-                "typings"
+            "typings/*": [
+                "apps/bot/typings/*",
+                "apps/dashboard/typings/*"
             ]
         }
     },

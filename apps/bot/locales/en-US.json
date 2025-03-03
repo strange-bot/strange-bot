@@ -1,0 +1,21 @@
+{
+    "REQUESTED_BY": "Requested By {{user}}",
+    "INVALID_SUBCOMMAND": "Invalid subcommand: {{sub}}",
+    "COLLECT_TIMEOUT": "Oops! You took too long to respond. Please try again.",
+    "NO_EMBED_PERM": "I don't have permission to embed links in this channel. Please give me the `Embed Links` permission and try again.",
+
+    "NO_MATCH_USER": "No user found matching {{query}}",
+    "NO_MATCH_CHANNEL": "No matching channels found for {{query}}",
+    "MULTIPLE_MATCH_CHANNELS": "Multiple channels found for {{query}}. Please be more specific.",
+
+    "NO_MATCH_ROLE": "No matching roles found for {{query}}",
+    "MULTIPLE_MATCH_ROLES": "Multiple roles found for {{query}}. Please be more specific.",
+
+    "API_ERROR": "Unexpected Backend Error! Try again later or contact support server",
+
+    "YES": "Yes",
+    "NO": "No",
+
+    "ENABLED": "Enabled",
+    "DISABLED": "Disabled"
+}

@@ -1,7 +1,9 @@
 const { ChannelType } = require("discord.js");
 
 /**
- * @param {number} type
+ * Converts a Discord channel type to a readable string format
+ * @param {import('discord.js').ChannelType} type - The Discord channel type
+ * @returns {string} Human readable channel type string
  */
 module.exports = (type) => {
     switch (type) {

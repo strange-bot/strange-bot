@@ -1,0 +1,21 @@
+{
+    "REQUESTED_BY": "Demandé par {{user}}",
+    "INVALID_SUBCOMMAND": "Sous-commande invalide : {{sub}}",
+    "COLLECT_TIMEOUT": "Oops ! Vous avez mis trop de temps à répondre. Veuillez réessayer.",
+    "NO_EMBED_PERM": "Je n'ai pas la permission d'intégrer des liens dans ce canal. Veuillez me donner la permission `Intégrer des liens` et réessayer.",
+
+    "NO_MATCH_USER": "Aucun utilisateur trouvé correspondant à {{query}}",
+    "NO_MATCH_CHANNEL": "Aucun canal correspondant trouvé pour {{query}}",
+    "MULTIPLE_MATCH_CHANNELS": "Plusieurs canaux trouvés pour {{query}}. Veuillez être plus précis.",
+
+    "NO_MATCH_ROLE": "Aucun rôle correspondant trouvé pour {{query}}",
+    "MULTIPLE_MATCH_ROLES": "Plusieurs rôles trouvés pour {{query}}. Veuillez être plus précis.",
+
+    "API_ERROR": "Erreur inattendue du serveur ! Réessayez plus tard ou contactez le support.",
+
+    "YES": "Oui",
+    "NO": "Non",
+
+    "ENABLED": "Activé",
+    "DISABLED": "Désactivé"
+}
