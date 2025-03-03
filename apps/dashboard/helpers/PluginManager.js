@@ -36,10 +36,8 @@ class PluginManager extends BasePluginManager {
             if (pluginName !== "core") {
                 const corePlugin = this.getPlugin("core");
                 const config = await corePlugin.getConfig();
-                if (config.DISABLED_PLUGINS.includes(pluginName)) {
-                    config.DISABLED_PLUGINS = config.DISABLED_PLUGINS.filter(
-                        (p) => p !== pluginName,
-                    );
+                if (!config.ENABLED_PLUGINS.includes(pluginName)) {
+                    config.ENABLED_PLUGINS.push(pluginName);
                     await config.save(config);
                 }
             }
@@ -86,8 +84,8 @@ class PluginManager extends BasePluginManager {
         const corePlugin = this.getPlugin("core");
         const config = await corePlugin.getConfig();
 
-        if (!config.DISABLED_PLUGINS.includes(pluginName)) {
-            config.DISABLED_PLUGINS.push(pluginName);
+        if (config.ENABLED_PLUGINS.includes(pluginName)) {
+            config.ENABLED_PLUGINS = config.ENABLED_PLUGINS.filter((p) => p !== pluginName);
         }
         await config.save(config);
 

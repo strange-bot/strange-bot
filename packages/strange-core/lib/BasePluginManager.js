@@ -64,14 +64,14 @@ class BasePluginManager {
         }
         await this.enablePlugin("core");
 
-        // Get disabled plugins from core config
+        // Get enabled plugins from core config
         const corePluginInstance = this.getPlugin("core");
         const config = await corePluginInstance.getConfig();
-        const disabled_plugins = config.DISABLED_PLUGINS || [];
+        const enabled_plugins = config.ENABLED_PLUGINS || [];
 
         // Get all available plugins from registry except disabled ones
         const enableablePlugins = plugins.filter(
-            (p) => p.name !== "core" && !disabled_plugins.includes(p.name),
+            (p) => p.name !== "core" && enabled_plugins.includes(p.name),
         );
 
         // Check dependencies and filter out plugins with missing dependencies
@@ -92,30 +92,31 @@ class BasePluginManager {
                 continue;
             }
 
-            // Check if all dependencies are not in the disabled_plugins list
+            // Check if all dependencies are in the enabled_plugins list
             const disabledDeps = (plugin.dependencies || []).filter(
-                (dep) => dep !== "core" && disabled_plugins.includes(dep),
+                (dep) => dep !== "core" && !enabled_plugins.includes(dep),
             );
 
             if (disabledDeps.length > 0) {
                 Logger.warn(
-                    `Plugin ${plugin.name} has dependencies that are disabled: ${disabledDeps.join(", ")}. Adding to disabled plugins.`,
+                    `Plugin ${plugin.name} has dependencies that are not enabled: ${disabledDeps.join(", ")}. Adding to disabled plugins.`,
                 );
                 pluginsToDisable.push(plugin.name);
             }
         }
 
-        // Update disabled plugins list if needed
+        // Update enabled plugins list if needed
         if (pluginsToDisable.length > 0) {
             for (const pluginName of pluginsToDisable) {
-                if (!disabled_plugins.includes(pluginName)) {
-                    disabled_plugins.push(pluginName);
+                const index = enabled_plugins.indexOf(pluginName);
+                if (index !== -1) {
+                    enabled_plugins.splice(index, 1);
                 }
             }
-            config.DISABLED_PLUGINS = disabled_plugins;
+            config.ENABLED_PLUGINS = enabled_plugins;
             await config.save(config);
             Logger.info(
-                `Added ${pluginsToDisable.length} plugins with disabled dependencies to disabled list.`,
+                `Removed ${pluginsToDisable.length} plugins with disabled dependencies from enabled list.`,
             );
         }
 
@@ -123,7 +124,7 @@ class BasePluginManager {
         const pluginsToEnable = plugins.filter(
             (p) =>
                 p.name !== "core" &&
-                !disabled_plugins.includes(p.name) &&
+                enabled_plugins.includes(p.name) &&
                 !pluginsToSkip.includes(p.name),
         );
 
