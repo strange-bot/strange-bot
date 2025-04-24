@@ -19,3 +19,8 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(74, 85, 104, 0.9) transparent;
 }
+
+/* Hide elements with the x-cloak attribute until Alpine.js is ready */
+[x-cloak] { 
+    display: none !important; 
+}

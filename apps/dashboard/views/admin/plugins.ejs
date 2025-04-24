@@ -1,5 +1,5 @@
 <div
-  class="container mx-auto px-4 py-6 dark:bg-gray-900"
+  class="container mx-auto px-4 py-6 dark:bg-gray-900 lg:px-6"
   x-data="{
   plugins: [],
   loading: true,
@@ -158,114 +158,47 @@
   </div>
 
   <!-- Plugins Grid -->
-  <div x-show="!loading" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+  <div x-show="!loading" class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
     <template x-for="plugin in filteredPlugins" :key="plugin.name">
-      <div
-        class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-        <div class="p-3">
-          <div class="flex items-center justify-between mb-2">
-            <div>
-              <h3 x-text="plugin.name" class="text-base font-semibold dark:text-white"></h3>
-              <div class="flex items-center mt-0.5 space-x-2">
-                <span
-                  class="text-xs text-gray-500 dark:text-gray-400"
-                  x-text="'by ' + (plugin.author || 'Unknown')"></span>
-                <span class="text-xs text-gray-500 dark:text-gray-400" x-text="'v' + plugin.currentVersion"></span>
-              </div>
-            </div>
-            <span
-              x-show="plugin.installed"
-              @click="plugin.name !== 'core' && togglePlugin(plugin)"
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-lg transition-shadow min-w-[240px] p-6 flex flex-col justify-between h-full">
+        <div>
+          <div class="flex items-start justify-between mb-2">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">
+              <span x-text="plugin.name"></span>
+            </h3>
+            <span x-show="plugin.installed"
               :class="[
-                plugin.enabled ? 
-                  'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
-                  'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                isToggling(plugin.name) ? 'opacity-75' : 
-                  plugin.name === 'core' ? 'opacity-75' : 'cursor-pointer hover:opacity-80'
+                plugin.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
+                isToggling(plugin.name) ? 'opacity-60 pointer-events-none' : 'cursor-pointer hover:opacity-80 transition'
               ]"
-              class="px-3 py-1 rounded-full text-xs font-medium select-none inline-flex items-center gap-1">
-              <template x-if="isToggling(plugin.name)">
-                <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              </template>
+              class="px-2 py-0.5 rounded-full text-xs font-semibold ml-2 border border-transparent flex items-center min-w-[70px] justify-center"
+              @click="!isToggling(plugin.name) && togglePlugin(plugin)">
+              <i class="fa-solid fa-spinner fa-spin mr-1" x-show="isToggling(plugin.name)"></i>
               <span x-text="plugin.enabled ? 'Enabled' : 'Disabled'"></span>
             </span>
           </div>
-
-          <div class="mt-2 space-y-1.5">
-            <p x-text="plugin.description" class="text-gray-600 dark:text-gray-300 text-xs"></p>
-            <div x-show="plugin.repository" class="text-xs">
-              <a
-                :href="plugin.repository + (plugin.repositoryPath ? '/tree/main/' + plugin.repositoryPath : '')"
-                target="_blank"
-                class="text-blue-600 dark:text-blue-400 hover:underline">
-                <%=tr("ADMIN_PAGE.VIEW_SOURCE")%>
-              </a>
-            </div>
+          <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-1">
+            <span>
+              by <span x-text="plugin.author || 'Unknown'"></span>
+            </span>
+            <span class="font-mono text-xs" x-text="'v' + plugin.currentVersion"></span>
           </div>
-
-          <div class="flex items-center justify-end pt-3 mt-3 border-t dark:border-gray-700">
-            <div class="space-x-2 flex">
-              <!-- Show update button if update available -->
-              <button
-                x-show="plugin.hasUpdate"
-                @click="updatePlugin(plugin)"
-                :disabled="isUpdating(plugin.name)"
-                class="px-2.5 py-1 rounded-md text-xs font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1">
-                <template x-if="isUpdating(plugin.name)">
-                  <svg
-                    class="animate-spin h-4 w-4 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                </template>
-                <template x-if="!isUpdating(plugin.name)">
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd" />
-                  </svg>
-                </template>
-                <span>Update</span>
-              </button>
-              <!-- Install/Uninstall button -->
-              <button
-                x-show="plugin.name !== 'core'"
-                @click="plugin.installed ? uninstallPlugin(plugin) : installPlugin(plugin)"
-                :disabled="isLoading(plugin.name)"
-                :class="plugin.installed ? 
-                        'bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600' : 
-                        'bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600'"
-                class="px-2.5 py-1 rounded-md text-xs font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1">
-                <template x-if="isLoading(plugin.name)">
-                  <svg
-                    class="animate-spin h-4 w-4 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                </template>
-                <span x-text="plugin.installed ? 'Uninstall' : 'Install'"></span>
-              </button>
-            </div>
-          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-300 mb-3" x-text="plugin.description"></p>
+          <template x-if="plugin.repository">
+            <a :href="plugin.repository + (plugin.repositoryPath ? '/tree/main/' + plugin.repositoryPath : '')" target="_blank" class="inline-flex items-center gap-1 text-primary-600 dark:text-primary-400 font-medium hover:underline text-sm">
+              <i class="fa-brands fa-github"></i> View Source
+            </a>
+          </template>
+        </div>
+        <div class="border-t border-gray-200 dark:border-gray-700 mt-4 pt-4 flex justify-end">
+          <button
+            x-show="plugin.name !== 'core'"
+            @click="plugin.installed ? uninstallPlugin(plugin) : installPlugin(plugin)"
+            :disabled="isLoading(plugin.name)"
+            :class="plugin.installed ? 'bg-red-600 hover:bg-red-700' : 'bg-primary-600 hover:bg-primary-700'"
+            class="px-3 py-1.5 rounded-md text-xs font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-colors min-w-[80px]">
+            <span x-text="plugin.installed ? 'Uninstall' : 'Install'"></span>
+          </button>
         </div>
       </div>
     </template>
