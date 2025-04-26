@@ -12,14 +12,16 @@
 
       <div id="main-content" class="relative h-full w-full overflow-y-auto bg-gray-50 dark:bg-gray-900 lg:ml-64">
         <main>
-          <% if (locals.breadcrumb && locals.breadcrumb === true) { %> 
-            <%- include('./partials/breadcrumb-admin.ejs') %> 
-          <% } %> 
-          
+          <% if (locals.breadcrumb && locals.breadcrumb === true) { %>
+          <%- include('./partials/breadcrumb-admin.ejs') %>
+          <% } %>
+
           <%- body %>
         </main>
 
-        <% if (locals.footer && locals.footer === true) { %> <%- include('./partials/footer.ejs') %> <% } %>
+        <% if (locals.footer && locals.footer === true) { %>
+        <%- include('./partials/footer.ejs') %>
+        <% } %>
       </div>
     </div>
 

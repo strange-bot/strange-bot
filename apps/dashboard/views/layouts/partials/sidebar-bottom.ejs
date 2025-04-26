@@ -32,22 +32,21 @@
     <div class="tooltip-arrow" data-popper-arrow></div>
   </div>
   <!-- Language Button -->
-    <button
-      type="button"
-      data-dropdown-toggle="language-dropdown"
-      class="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">
-      <img 
-        src="https://cdn.jsdelivr.net/npm/country-flag-icons/3x2/<%= languages.find(l => l.name === locale)?.svg_code %>.svg"
-        class="mt-0.5 h-5 w-5 rounded-full"
-        alt="Current language flag"
-      />
-    </button>
-  
-    <!-- Dropdown -->
-    <div
-      class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:bg-gray-700"
-      id="language-dropdown"
-      x-data="{
+  <button
+    type="button"
+    data-dropdown-toggle="language-dropdown"
+    class="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white">
+    <img
+      src="https://cdn.jsdelivr.net/npm/country-flag-icons/3x2/<%= languages.find(l => l.name === locale)?.svg_code %>.svg"
+      class="mt-0.5 h-5 w-5 rounded-full"
+      alt="Current language flag" />
+  </button>
+
+  <!-- Dropdown -->
+  <div
+    class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:bg-gray-700"
+    id="language-dropdown"
+    x-data="{
         async changeLanguage(languageCode) {
           try {
             const response = await fetch('/api/language', {
@@ -66,25 +65,24 @@
           }
         }
       }">
-      <ul class="py-1" role="none">
-        <% languages.forEach(function(lang) { %>
-          <li>
-            <a
-              href="#"
-              @click.prevent="changeLanguage('<%= lang.name %>')"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white <%= locale === lang.name ? 'bg-gray-100 dark:bg-gray-600' : '' %>"
-              role="menuitem">
-              <div class="inline-flex items-center">
-                <img
-                  src="https://cdn.jsdelivr.net/npm/country-flag-icons/3x2/<%= lang.svg_code %>.svg"
-                  class="mr-2 h-3.5 w-3.5 rounded-full"
-                  alt="<%= lang.nativeName %> flag"
-                />
-                <%= lang.nativeName %>
-              </div>
-            </a>
-          </li>
-        <% }); %>
-      </ul>
-    </div>
+    <ul class="py-1" role="none">
+      <% languages.forEach(function(lang) { %>
+      <li>
+        <a
+          href="#"
+          @click.prevent="changeLanguage('<%= lang.name %>')"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white <%= locale === lang.name ? 'bg-gray-100 dark:bg-gray-600' : '' %>"
+          role="menuitem">
+          <div class="inline-flex items-center">
+            <img
+              src="https://cdn.jsdelivr.net/npm/country-flag-icons/3x2/<%= lang.svg_code %>.svg"
+              class="mr-2 h-3.5 w-3.5 rounded-full"
+              alt="<%= lang.nativeName %> flag" />
+            <%= lang.nativeName %>
+          </div>
+        </a>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
 </div>

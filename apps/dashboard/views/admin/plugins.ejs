@@ -158,15 +158,17 @@
   </div>
 
   <!-- Plugins Grid -->
-  <div x-show="!loading" class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+  <div x-show="!loading" class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))">
     <template x-for="plugin in filteredPlugins" :key="plugin.name">
-      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-lg transition-shadow min-w-[240px] p-6 flex flex-col justify-between h-full">
+      <div
+        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md hover:shadow-lg transition-shadow min-w-[240px] p-6 flex flex-col justify-between h-full">
         <div>
           <div class="flex items-start justify-between mb-2">
             <h3 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">
               <span x-text="plugin.name"></span>
             </h3>
-            <span x-show="plugin.installed"
+            <span
+              x-show="plugin.installed"
               :class="[
                 plugin.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
                 isToggling(plugin.name) ? 'opacity-60 pointer-events-none' : 'cursor-pointer hover:opacity-80 transition'
@@ -178,14 +180,15 @@
             </span>
           </div>
           <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-1">
-            <span>
-              by <span x-text="plugin.author || 'Unknown'"></span>
-            </span>
+            <span> by <span x-text="plugin.author || 'Unknown'"></span> </span>
             <span class="font-mono text-xs" x-text="'v' + plugin.currentVersion"></span>
           </div>
           <p class="text-sm text-gray-600 dark:text-gray-300 mb-3" x-text="plugin.description"></p>
           <template x-if="plugin.repository">
-            <a :href="plugin.repository + (plugin.repositoryPath ? '/tree/main/' + plugin.repositoryPath : '')" target="_blank" class="inline-flex items-center gap-1 text-primary-600 dark:text-primary-400 font-medium hover:underline text-sm">
+            <a
+              :href="plugin.repository + (plugin.repositoryPath ? '/tree/main/' + plugin.repositoryPath : '')"
+              target="_blank"
+              class="inline-flex items-center gap-1 text-primary-600 dark:text-primary-400 font-medium hover:underline text-sm">
               <i class="fa-brands fa-github"></i> View Source
             </a>
           </template>

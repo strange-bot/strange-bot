@@ -11,8 +11,13 @@
           <i id="toggleSidebarMobileClose" class="fas fa-times hidden h-6 w-6"></i>
         </button>
         <a href="/dashboard" class="ml-2 flex items-center md:mr-24">
-          <img src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>" class="mr-2 h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8" alt="Strange Logo" />
-          <span class="self-center whitespace-nowrap text-lg font-semibold dark:text-white sm:text-xl md:text-2xl"><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></span>
+          <img
+            src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>"
+            class="mr-2 h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
+            alt="Strange Logo" />
+          <span class="self-center whitespace-nowrap text-lg font-semibold dark:text-white sm:text-xl md:text-2xl"
+            ><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></span
+          >
         </a>
       </div>
       <div class="flex items-center">
@@ -43,7 +48,10 @@
               aria-expanded="false"
               data-dropdown-toggle="dropdown-2">
               <span class="sr-only"><%= tr('NAV.SR_USER_MENU') %></span>
-              <img class="h-8 w-8 rounded-full" src="<%= `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` %>" alt="user photo" />
+              <img
+                class="h-8 w-8 rounded-full"
+                src="<%= `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` %>"
+                alt="user photo" />
             </button>
           </div>
           <!-- Dropdown menu -->
@@ -52,9 +60,7 @@
             id="dropdown-2">
             <div class="px-4 py-3" role="none">
               <p class="text-sm text-gray-900 dark:text-white" role="none"><%= user.username %></p>
-              <p class="truncate text-sm font-medium text-gray-900 dark:text-gray-300" role="none">
-                <%= user.email %>
-              </p>
+              <p class="truncate text-sm font-medium text-gray-900 dark:text-gray-300" role="none"><%= user.email %></p>
             </div>
             <ul class="py-1" role="none">
               <% if (user.isOwner) { %>

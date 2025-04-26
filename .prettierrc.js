@@ -2,7 +2,9 @@
 
 /** @type {import("prettier").Config} */
 module.exports = {
-    plugins: [],
+    plugins: [
+        require("prettier-plugin-ejs"),
+    ],
     printWidth: 100,
     tabWidth: 4,
     useTabs: false,
