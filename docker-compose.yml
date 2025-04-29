@@ -1,0 +1,59 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: apps/bot/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - dashboard
+      - mongodb
+      - redis
+    env_file:
+      - ./.env.docker
+    networks:
+      - strange-network
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/dashboard/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - redis
+    env_file:
+      - ./.env.docker
+    ports:
+      - "${DASHBOARD_PORT}:${DASHBOARD_PORT}"
+    networks:
+      - strange-network
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    volumes:
+      - mongodb-data:/data/db
+    env_file:
+      - ./.env.docker
+    expose:
+      - "27017"
+    networks:
+      - strange-network
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    expose:
+      - "6379"
+    networks:
+      - strange-network
+
+networks:
+  strange-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:
+  redis-data:

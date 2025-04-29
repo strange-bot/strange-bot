@@ -11,6 +11,7 @@ apps/dashboard/public/css
 # Files
 .DS_Store
 .env
+.env.docker
 
 # Extensions
 *.log

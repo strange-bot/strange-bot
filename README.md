@@ -24,7 +24,7 @@ A premium Discord bot with a plugin-based architecture that allows for easy exte
 └── plugins/               # Bot plugins
 ```
 
-## Installation
+## Installation (Without Docker)
 
 ### Prerequisites
 
@@ -68,9 +68,50 @@ pnpm start:bot
 pnpm start:dashboard
 ```
 
+## Installation (With Docker)
+
+### Prerequisites
+
+- Docker and Docker Compose
+
+### Setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/strange-bot/strange-bot.git
+cd strange-bot
+```
+
+2. Copy the example environment file
+
+```bash
+cp .env.docker.example .env.docker
+```
+
+3. Edit the `.env.docker` file to set your environment variables.
+
+4. Build and run the Docker containers
+
+```bash
+docker compose --env-file .env.docker up -d
+```
+
+5. Stop the containers when you're done
+
+```bash
+docker compose --env-file .env.docker down
+```
+
+
 ## Environment Variables
 
 Before running the bot and dashboard, you need to configure the environment variables. Here's a breakdown of the required variables:
+
+### Mongo Variables (Docker Only)
+
+- `MONGO_INITDB_ROOT_USERNAME`: MongoDB root username.
+- `MONGO_INITDB_ROOT_PASSWORD`: MongoDB root password.
 
 ### Shared Variables
 

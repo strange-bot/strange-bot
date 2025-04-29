@@ -34,8 +34,11 @@ class IPCClient {
     }
 
     connect() {
+        const host = process.env.DOCKER_ENV === 'true' ? 'dashboard' : 'localhost';
+        const port = parseInt(process.env.IPC_SERVER_PORT, 10);
+
         this.node
-            .connectTo(process.env.IPC_SERVER_PORT)
+            .connectTo(port, host)
             .then(() => (this.firstConnect = true))
             .catch((error) => {
                 if (error.message.includes("ECONNREFUSED")) return;
