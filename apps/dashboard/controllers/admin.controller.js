@@ -67,13 +67,31 @@ module.exports.updatePlugins = async function (req, res) {
                 break;
             }
 
-            case "install":
+            case "install":{
                 await req.app.pluginManager.installPlugin(pluginName);
+                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
+                    pluginName,
+                    action,
+                });
+                if (!ipcResp?.success) {
+                    await req.app.pluginManager.enablePlugin(pluginName);
+                    throw new Error("Failed to disable plugin on other instances");
+                }
                 break;
+            }
 
-            case "uninstall":
+            case "uninstall":{
                 await req.app.pluginManager.uninstallPlugin(pluginName);
+                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
+                    pluginName,
+                    action,
+                });
+                if (!ipcResp?.success) {
+                    await req.app.pluginManager.enablePlugin(pluginName);
+                    throw new Error("Failed to disable plugin on other instances");
+                }
                 break;
+            }
 
             case "update":
                 if (req.app.pluginManager.isPluginEnabled(pluginName)) {

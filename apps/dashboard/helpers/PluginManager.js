@@ -19,34 +19,30 @@ class PluginManager extends BasePluginManager {
         const pluginDir = path.join(this.pluginsDir, pluginName);
         const entry = path.join(pluginDir, "dashboard");
 
-        try {
-            // Load plugin translations first
-            await this.app.i18n.loadPluginTranslations(pluginName);
+        // Load plugin translations first
+        await this.app.i18n.loadPluginTranslations(pluginName);
 
-            const plugin = require(entry);
-            if (!(plugin instanceof DashboardPlugin)) {
-                throw new Error(
-                    "Not a valid plugin (Does it export an instance of the Plugin class?)",
-                );
-            }
-
-            await plugin.enable(DBClient.getInstance());
-
-            // Update the core config
-            if (pluginName !== "core") {
-                const corePlugin = this.getPlugin("core");
-                const config = await corePlugin.getConfig();
-                if (!config.ENABLED_PLUGINS.includes(pluginName)) {
-                    config.ENABLED_PLUGINS.push(pluginName);
-                    await config.save(config);
-                }
-            }
-
-            this.setPlugin(pluginName, plugin);
-            Logger.success(`Enabled plugin: ${pluginName}`);
-        } catch (error) {
-            throw error;
+        const plugin = require(entry);
+        if (!(plugin instanceof DashboardPlugin)) {
+            throw new Error(
+                "Not a valid plugin (Does it export an instance of the Plugin class?)",
+            );
         }
+
+        await plugin.enable(DBClient.getInstance());
+
+        // Update the core config
+        if (pluginName !== "core") {
+            const corePlugin = this.getPlugin("core");
+            const config = await corePlugin.getConfig();
+            if (!config.ENABLED_PLUGINS.includes(pluginName)) {
+                config.ENABLED_PLUGINS.push(pluginName);
+                await config.save(config);
+            }
+        }
+
+        this.setPlugin(pluginName, plugin);
+        Logger.success(`Enabled plugin: ${pluginName}`);
     }
 
     async disablePlugin(pluginName) {

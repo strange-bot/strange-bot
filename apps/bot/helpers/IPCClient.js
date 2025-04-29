@@ -192,6 +192,14 @@ class IPCClient {
                     await this.discordClient.pluginManager.disablePlugin(pluginName);
                     break;
 
+                case "install":
+                    await this.discordClient.pluginManager.installPlugin(pluginName);
+                    break;
+
+                case "uninstall":
+                    await this.discordClient.pluginManager.uninstallPlugin(pluginName);
+                    break;
+
                 case "guildEnable": {
                     const guild = this.discordClient.guilds.cache.get(guildId);
                     if (!guild) return message.reply({ success: true, data: null });

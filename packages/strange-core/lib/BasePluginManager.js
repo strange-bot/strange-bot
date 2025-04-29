@@ -223,18 +223,18 @@ class BasePluginManager {
 
     async installPlugin(pluginName) {
         const pluginDir = path.join(this.pluginsDir, pluginName);
-        // Create an empty file for locking if it doesn't exist
-        await fs.writeFile(pluginDir + ".lock", "", { flag: "a" });
+        const lockPath = pluginDir + ".lock";
 
         let release;
         try {
-            release = await lockfile.lock(pluginDir + ".lock", {
+            release = await lockfile.lock(lockPath, {
                 retries: {
                     retries: 60,
                     factor: 1,
                     minTimeout: 1000,
                     maxTimeout: 5000,
                 },
+                realpath: false,
             });
 
             if (await fs.access(pluginDir).catch(() => false)) {
@@ -293,8 +293,6 @@ class BasePluginManager {
             }
         } finally {
             if (release) await release();
-            // Clean up the lock file
-            await fs.unlink(pluginDir + ".lock").catch(() => {});
         }
 
         Logger.success(`Installed plugin: ${pluginName}`);
