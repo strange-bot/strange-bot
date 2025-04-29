@@ -274,11 +274,15 @@ class BasePluginManager {
             // Install npm dependencies
             try {
                 await execa(
-                    "npm",
-                    ["install", "--no-save", "--ignore-scripts", "--legacy-peer-deps"],
+                    "pnpm",
+                    ["install", "--no-frozen-lockfile", "--ignore-scripts"],
                     {
                         cwd: targetPath,
                         stdio: "pipe",
+                        env: {
+                            ...process.env,
+                            PNPM_WORKSPACE_DIR: path.resolve(__dirname, "../../../..")
+                        }
                     },
                 );
             } catch (error) {

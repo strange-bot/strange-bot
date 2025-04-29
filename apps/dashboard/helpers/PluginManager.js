@@ -45,10 +45,6 @@ class PluginManager extends BasePluginManager {
             this.setPlugin(pluginName, plugin);
             Logger.success(`Enabled plugin: ${pluginName}`);
         } catch (error) {
-            if (error.code === "MODULE_NOT_FOUND") {
-                Logger.debug(`Plugin ${pluginDir} does not have a bot entry point. Skipping.`);
-                return;
-            }
             throw error;
         }
     }

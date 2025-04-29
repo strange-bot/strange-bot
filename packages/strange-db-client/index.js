@@ -14,7 +14,10 @@ class DatabaseClient {
             throw new Error("MongoDB and Redis URIs are required");
         }
 
-        this.options = options;
+        this.options = {
+            emitRedisErrors: true,
+            ...options
+        };
         this.redis = null;
         this.models = new Map();
         DatabaseClient.instance = this;
@@ -31,11 +34,18 @@ class DatabaseClient {
         try {
             await mongoose.connect(this.options.mongoUri);
             this.redis = new Redis(`${this.options.redisUri}?keyPrefix=strange:`);
-            this.redis.on("error", (error) => {
-                console.error("Redis connection error:", error);
+            
+            await new Promise((resolve, reject) => {
+                this.redis.once("ready", resolve);
+                this.redis.once("error", reject);
             });
+            
+            if (this.options.emitRedisErrors) {
+                this.redis.on("error", (error) => {
+                    process.emit('uncaughtException', error);
+                });
+            }
         } catch (error) {
-            console.error("Database connection error:", error);
             throw error;
         }
     }

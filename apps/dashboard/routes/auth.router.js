@@ -39,7 +39,7 @@ router.get("/callback", async (req, res) => {
         })
         .catch((e) => {
             req.app.logger.error("Failed to get tokens", e);
-            return res.redirect(`/api/login&state=${req.query.state}`);
+            return res.redirect(`/auth/login?state=${req.query.state}`);
         });
 
     if (!tokens) return;
