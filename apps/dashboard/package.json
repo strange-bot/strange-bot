@@ -16,17 +16,19 @@
         "connect-mongo": "^5.1.0",
         "cryptr": "^6.3.0",
         "discord-oauth2": "^2.12.1",
-        "discord.js": "^14.18.0",
-        "dotenv": "^16.4.7",
+        "discord.js": "^14.19.0",
+        "dotenv": "^16.5.0",
         "ejs": "^3.1.10",
         "express": "^4.21.2",
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.18.1",
-        "i18next": "^24.2.2",
         "strange-core": "workspace:*",
         "strange-db-client": "workspace:*",
         "strange-sdk": "workspace:*",
         "veza": "^1.2.0"
+    },
+    "peerDependencies": {
+        "i18next": "^24.2.2"
     },
     "devDependencies": {
         "apexcharts": "^3.54.1",

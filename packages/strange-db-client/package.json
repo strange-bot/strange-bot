@@ -9,7 +9,7 @@
     "author": "Sai Teja Madha",
     "license": "ISC",
     "dependencies": {
-        "ioredis": "^5.5.0",
+        "ioredis": "^5.6.0",
         "mongoose": "^8.0.0",
         "mongoose-lean-defaults": "^2.2.1"
     }
