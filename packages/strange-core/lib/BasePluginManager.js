@@ -275,7 +275,7 @@ class BasePluginManager {
             try {
                 await execa(
                     "pnpm",
-                    ["install", "--no-frozen-lockfile", "--ignore-scripts"],
+                    ["install", "--no-frozen-lockfile"], // Removed the --ignore-scripts flag to allow lifecycle scripts to run during dependency installation.
                     {
                         cwd: targetPath,
                         stdio: "pipe",
