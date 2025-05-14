@@ -1,5 +1,5 @@
 const { readdirSync, readFileSync, existsSync } = require("node:fs");
-const { join } = require("node:path");
+const { join, resolve } = require("node:path");
 const i18next = require("i18next");
 const deepmerge = require("deepmerge");
 const flat = require("flat");
@@ -14,7 +14,7 @@ class I18nManager {
         this.availableLanguages = this.languagesMeta.map((lng) => lng.name);
         this.fallbackLng = options.fallbackLng || "en-US";
         this.baseDir = options.baseDir;
-        this.pluginsDir = options.pluginsDir;
+        this.pluginsDir = resolve(options.pluginsDir);
         this.useDatabase = options.useDatabase || false;
     }
 

@@ -476,8 +476,8 @@ class BasePluginManager {
 
     #isUrl(str) {
         try {
-            new URL(str);
-            return true;
+            const url = new URL(str);
+            return url.protocol === "http:" || url.protocol === "https:";
         } catch {
             return false;
         }
