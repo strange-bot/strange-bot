@@ -2,6 +2,7 @@ const express = require("express");
 const DiscordOauth2 = require("discord-oauth2");
 const { encrypt } = require("../helpers/utils");
 const db = require("../db.service");
+const { URL } = require("url");
 
 const router = express.Router();
 const oauth = new DiscordOauth2();
@@ -13,11 +14,16 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 // Login page
 router.get("/login", async function (req, res) {
     if (!req.session.user?.info?.id || !req.session.user?.guilds) {
-        return res.redirect(
-            `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify%20guilds%20email&response_type=code&redirect_uri=${encodeURIComponent(
-                BASE_URL + "/auth/callback",
-            )}&state=${req.query.state || "no"}`,
-        );
+        const params = new URLSearchParams({
+            client_id: CLIENT_ID,
+            scope: "identify guilds email",
+            response_type: "code",
+            redirect_uri: new URL("/auth/callback", BASE_URL).toString(),
+            state: req.query.state || "no",
+        });
+        const url = new URL("https://discord.com/api/oauth2/authorize");
+        url.search = params.toString();
+        return res.redirect(url.toString());
     }
     res.redirect("/dashboard");
 });
@@ -35,7 +41,7 @@ router.get("/callback", async (req, res) => {
             code: req.query.code,
             scope: "identify guilds email",
             grantType: "authorization_code",
-            redirectUri: `${BASE_URL}/auth/callback`,
+            redirectUri: new URL("/auth/callback", BASE_URL).toString(),
         })
         .catch((e) => {
             req.app.logger.error("Failed to get tokens", e);
