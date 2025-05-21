@@ -21,7 +21,7 @@
         "author": "Sai Teja Madha",
         "repository": "https://github.com/strange-bot/strange-plugins",
         "repositoryPath": "automod",
-        "dependencies": ["core"]
+        "dependencies": []
     },
     {
         "name": "economy",
@@ -53,7 +53,7 @@
         "author": "Sai Teja Madha",
         "repository": "https://github.com/strange-bot/strange-plugins",
         "repositoryPath": "greeting",
-        "dependencies": ["invites"]
+        "dependencies": []
     },
     {
         "name": "image",
