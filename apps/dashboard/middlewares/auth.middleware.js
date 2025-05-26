@@ -1,4 +1,5 @@
 const db = require("../db.service");
+const crypto = require("node:crypto");
 
 /**
  * Middleware to check if the user is logged in
@@ -8,13 +9,14 @@ const db = require("../db.service");
  */
 module.exports.CheckAuth = async (req, res, next) => {
     if (!req.session.user?.info?.id) {
-        const redirectURL =
-            req.originalUrl.includes("login") || req.originalUrl === "/"
-                ? "/dashboard"
-                : req.originalUrl;
-        const state = Math.random().toString(36).substring(5);
-        await db.saveState(state, redirectURL);
-        return res.redirect(`/auth/login?state=${state}`);
+        const redirectURL = req.originalUrl;
+        const state = crypto.randomBytes(16).toString("hex");
+        try {
+            await db.saveState(state, redirectURL);
+            return res.redirect(`/auth/login?state=${state}`);
+        } catch (err) {
+            return res.status(500).send("Internal Server Error");
+        }
     }
     return next();
 };

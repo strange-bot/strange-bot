@@ -69,7 +69,13 @@
         "PLUGINS": "Gestion des plugins",
         "LOADING": "Chargement des plugins...",
         "VIEW_SOURCE": "Afficher la source",
-        "NO_MATCH": "Aucun plugin trouvé correspondant au terme de recherche"
+        "NO_MATCH": "Aucun plugin trouvé correspondant au terme de recherche",
+        "INSTALL": "Installer",
+        "INSTALLING": "Installation",
+        "UNINSTALL": "Désinstaller",
+        "UNINSTALLING": "Désinstaller",
+        "INSTALLED": "Installé",
+        "TOTAL": "Total"
     },
 
     "LOCALES_PAGE": {

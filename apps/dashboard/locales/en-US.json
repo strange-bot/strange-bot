@@ -69,7 +69,13 @@
         "PLUGINS": "Plugin Management",
         "LOADING": "Loading plugins...",
         "VIEW_SOURCE": "View Source",
-        "NO_MATCH": "No plugins found matching the search term"
+        "NO_MATCH": "No plugins found matching the search term",
+        "INSTALL": "Install",
+        "INSTALLING": "Installing",
+        "UNINSTALL": "Uninstall",
+        "UNINSTALLING": "Uninstalling",
+        "INSTALLED": "Installed",
+        "TOTAL": "Total"
     },
 
     "LOCALES_PAGE": {

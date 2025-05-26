@@ -44,10 +44,10 @@ interface PluginData {
     dbService?: DBService;
 
     /**
-     * Called when the plugin is first initialized
+     * Called when the plugin is enabled
      * Use this to set up plugin-specific resources or configurations
      */
-    onInit?: () => Promise<void>;
+    onEnable?: () => Promise<void>;
 }
 
 declare class DashboardPlugin {
@@ -79,7 +79,7 @@ declare class DashboardPlugin {
     public readonly dbService: DBService;
 
     /** Optional initialization function that runs when plugin loads */
-    public readonly onInit: (() => Promise<void>) | null;
+    public readonly onEnable: (() => Promise<void>) | null;
 
     /** Plugin configuration manager */
     public readonly config: SaveableConfig;

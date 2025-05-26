@@ -73,7 +73,8 @@ class Logger {
      * Logger.success('Operation completed', { userId: '123' })
      */
     static success(msg, args) {
-        Logger.#pinoLogger.success(args, msg);
+        if (args) Logger.#pinoLogger.success(args, msg);
+        else Logger.#pinoLogger.success(msg);
     }
 
     /**
@@ -84,7 +85,8 @@ class Logger {
      * Logger.info('Processing request', { requestId: '456' })
      */
     static info(msg, args) {
-        Logger.#pinoLogger.info(args, msg);
+        if (args) Logger.#pinoLogger.info(args, msg);
+        else Logger.#pinoLogger.info(msg);
     }
 
     /**
@@ -95,7 +97,8 @@ class Logger {
      * Logger.warn('Rate limit approaching', { current: 80, limit: 100 })
      */
     static warn(msg, args) {
-        Logger.#pinoLogger.warn(args, msg);
+        if (args) Logger.#pinoLogger.warn(args, msg);
+        else Logger.#pinoLogger.warn(msg);
     }
 
     /**
@@ -127,7 +130,8 @@ class Logger {
      * Logger.debug('Variable state', { count: 5, active: true })
      */
     static debug(msg, args) {
-        Logger.#pinoLogger.debug(args, msg);
+        if (args) Logger.#pinoLogger.debug(args, msg);
+        else Logger.#pinoLogger.debug(msg);
     }
 }
 

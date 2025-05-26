@@ -54,19 +54,13 @@ router.get("/callback", async (req, res) => {
         info: null,
         guilds: null,
     };
-    while (!userData.info || !userData.guilds) {
-        /* User info */
-        if (!userData.info) {
-            const user = await oauth.getUser(tokens.access_token);
-            userData.info = user;
-        }
-        /* User guilds */
-        if (!userData.guilds) {
-            const guilds = await oauth.getUserGuilds(tokens.access_token);
-            userData.guilds = guilds;
-        }
+    try {
+        userData.info = await oauth.getUser(tokens.access_token);
+        userData.guilds = await oauth.getUserGuilds(tokens.access_token);
+    } catch (err) {
+        req.app.logger.error("Failed to fetch user info or guilds", err);
+        return res.redirect(`/auth/login?state=${req.query.state}`);
     }
-
     // Update session
     req.session.user = userData;
 
