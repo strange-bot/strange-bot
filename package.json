@@ -26,8 +26,9 @@
         "eslint": "^9.0.0",
         "eslint-plugin-jsdoc": "^50.0.0",
         "pnpm": "^10.2.0",
-        "prettier": "^3.2.5",
-        "prettier-plugin-ejs": "^1.0.3"
+        "prettier": "^3.5.3",
+        "prettier-plugin-ejs": "^1.0.3",
+        "prettier-plugin-tailwindcss": "^0.6.11"
     },
     "keywords": [
         "discord",
