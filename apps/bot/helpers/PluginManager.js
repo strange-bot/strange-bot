@@ -62,7 +62,7 @@ class PluginManager extends BasePluginManager {
                 Logger.debug(`Plugin ${pluginDir} does not have a bot entry point. Skipping.`);
                 return;
             }
-            throw error;
+            Logger.error(`Error enabling plugin ${pluginName}:`, error);
         }
     }
 
@@ -129,7 +129,7 @@ class PluginManager extends BasePluginManager {
     async emit(eventName, ...args) {
         // Get disabled plugins from guild settings if available.
         // Default: all plugins enabled
-        let enabled_plugins = this.plugins.map(p => p.name);
+        let enabled_plugins = this.plugins.map((p) => p.name);
         try {
             const guild = args.find((arg) => arg && arg.guild)?.guild;
             if (guild) {

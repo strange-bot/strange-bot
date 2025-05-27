@@ -24,9 +24,7 @@ class PluginManager extends BasePluginManager {
 
         const plugin = require(entry);
         if (!(plugin instanceof DashboardPlugin)) {
-            throw new Error(
-                "Not a valid plugin (Does it export an instance of the Plugin class?)",
-            );
+            throw new Error("Not a valid plugin (Does it export an instance of the Plugin class?)");
         }
 
         await plugin.enable(DBClient.getInstance());

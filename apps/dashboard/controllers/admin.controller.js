@@ -67,7 +67,7 @@ module.exports.updatePlugins = async function (req, res) {
                 break;
             }
 
-            case "install":{
+            case "install": {
                 await req.app.pluginManager.installPlugin(pluginName);
                 const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
                     pluginName,
@@ -80,7 +80,7 @@ module.exports.updatePlugins = async function (req, res) {
                 break;
             }
 
-            case "uninstall":{
+            case "uninstall": {
                 await req.app.pluginManager.uninstallPlugin(pluginName);
                 const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
                     pluginName,

@@ -31,22 +31,18 @@ class DatabaseClient {
     }
 
     async connect() {
-        try {
-            await mongoose.connect(this.options.mongoUri);
-            this.redis = new Redis(`${this.options.redisUri}?keyPrefix=strange:`);
-            
-            await new Promise((resolve, reject) => {
-                this.redis.once("ready", resolve);
-                this.redis.once("error", reject);
+        await mongoose.connect(this.options.mongoUri);
+        this.redis = new Redis(`${this.options.redisUri}?keyPrefix=strange:`);
+        
+        await new Promise((resolve, reject) => {
+            this.redis.once("ready", resolve);
+            this.redis.once("error", reject);
+        });
+        
+        if (this.options.emitRedisErrors) {
+            this.redis.on("error", (error) => {
+                process.emit('uncaughtException', error);
             });
-            
-            if (this.options.emitRedisErrors) {
-                this.redis.on("error", (error) => {
-                    process.emit('uncaughtException', error);
-                });
-            }
-        } catch (error) {
-            throw error;
         }
     }
 
