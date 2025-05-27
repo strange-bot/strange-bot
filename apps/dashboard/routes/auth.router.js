@@ -67,7 +67,7 @@ router.get("/callback", async (req, res) => {
     // Set locale
     const coreConfig = await req.app.pluginManager.getPlugin("core").getConfig();
     const dbLocale = await db.getLocale(req.session.user.info.id);
-    req.session.locale = dbLocale || coreConfig["LOCALE"]["DEFAULT"];
+    req.session.locale = dbLocale || coreConfig["LOCALE"]["DEFAULT"] || "en-US";
 
     req.session.save((err) => {
         if (err) req.app.logger.error("Failed to save session", err);
