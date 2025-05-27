@@ -1,4 +1,4 @@
-<section class="container mx-auto px-4 py-8 text-center dark:bg-gray-900 lg:px-6 lg:py-8">
+<section class="container mx-auto px-4 py-8 text-center lg:px-6 lg:py-8 dark:bg-gray-900">
   <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
     <!-- Card -->
     <div class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
@@ -8,7 +8,7 @@
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 dark:text-neutral-200 sm:text-2xl"><%= guild.members %></h3>
+          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200"><%= guild.members %></h3>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 dark:text-neutral-200 sm:text-2xl"><%= guild.roles %></h3>
+          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200"><%= guild.roles %></h3>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 dark:text-neutral-200 sm:text-2xl">
+          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200">
             <%= guild.channels.text %>
           </h3>
         </div>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 dark:text-neutral-200 sm:text-2xl">
+          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200">
             <%= guild.channels.voice %>
           </h3>
         </div>
@@ -78,14 +78,14 @@
           type="button"
           @click="setView('grid')"
           :class="view === 'grid' ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white border border-primary-600 dark:border-primary-500 shadow' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600'"
-          class="btn px-3 py-1 rounded text-sm font-medium flex items-center">
+          class="btn flex items-center rounded px-3 py-1 text-sm font-medium">
           <i class="fa-solid fa-th mr-1"></i> Grid
         </button>
         <button
           type="button"
           @click="setView('list')"
           :class="view === 'list' ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white border border-primary-600 dark:border-primary-500 shadow' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600'"
-          class="btn px-3 py-1 rounded text-sm font-medium flex items-center">
+          class="btn flex items-center rounded px-3 py-1 text-sm font-medium">
           <i class="fa-solid fa-list mr-1"></i> List
         </button>
       </div>
@@ -96,29 +96,27 @@
   <div x-show="view === 'grid'" x-cloak :class="'grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'">
     <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
     <div
-      class="plugin-card flex flex-row items-center rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 p-6 gap-6">
-      <div class="flex items-center justify-center w-16 h-16 flex-shrink-0">
-        <i class="<%= plugin.icon %> h-10 w-10 text-primary-600 dark:text-primary-400"></i>
+      class="plugin-card flex flex-row items-center gap-6 rounded-xl border bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center">
+        <i class="<%= plugin.icon %> text-primary-600 dark:text-primary-400 h-10 w-10"></i>
       </div>
-      <div class="flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-bold text-gray-900 dark:text-white mb-1">
+      <div class="flex flex-1 flex-col justify-center">
+        <h3 class="mb-1 text-base font-bold text-gray-900 dark:text-white">
           <%= plugin.name[0].toUpperCase() + plugin.name.slice(1) %>
         </h3>
-        <p class="text-xs text-gray-600 dark:text-gray-300 mb-1"><%= plugin.description %></p>
-        <div class="flex gap-2 mb-2">
+        <p class="mb-1 text-xs text-gray-600 dark:text-gray-300"><%= plugin.description %></p>
+        <div class="mb-2 flex gap-2">
           <span class="text-xs text-gray-500 dark:text-gray-400"
-            ><%= tr('HOME.LABEL_PREFIX') %>:
-            <%= pluginCmds[plugin.name].prefixCount %></span
+            ><%= tr('HOME.LABEL_PREFIX') %>: <%= pluginCmds[plugin.name].prefixCount %></span
           >
           <span class="text-xs text-gray-500 dark:text-gray-400"
-            ><%= tr('HOME.LABEL_SLASH') %>:
-            <%= pluginCmds[plugin.name].slashCount %></span
+            ><%= tr('HOME.LABEL_SLASH') %>: <%= pluginCmds[plugin.name].slashCount %></span
           >
         </div>
         <% if(enabledPlugins.includes(plugin.name)) { %>
         <a
           href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
-          class="inline-flex items-center rounded-lg border border-primary-700 px-3 py-1 text-xs font-medium text-primary-700 hover:bg-primary-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:hover:text-white dark:focus:ring-primary-800 w-auto">
+          class="border-primary-700 text-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:focus:ring-primary-800 inline-flex w-auto items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white focus:outline-none focus:ring-4 dark:hover:text-white">
           <i class="fa-regular fa-circle-check text-blue me-2 h-3 w-3"></i>
           <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
         </a>
@@ -126,7 +124,7 @@
         <button
           data-modal-target="modal-<%= plugin.name %>"
           data-modal-toggle="modal-<%= plugin.name %>"
-          class="inline-flex items-center rounded-lg border border-green-700 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800 w-auto">
+          class="inline-flex w-auto items-center rounded-lg border border-green-700 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800">
           <i class="fa-solid fa-plus text-green me-2 h-3 w-3"></i>
           <%= tr('HOME.BTN_PLUGIN_ENABLE') %>
         </button>
@@ -139,7 +137,7 @@
   <table
     x-show="view === 'list'"
     x-cloak
-    class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow">
+    class="min-w-full divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow dark:divide-gray-700 dark:bg-gray-800">
     <thead class="bg-gray-50 dark:bg-gray-700">
       <tr>
         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Name</th>
@@ -153,7 +151,7 @@
     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
       <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
       <tr>
-        <td class="px-4 py-2 font-body text-gray-900 dark:text-white">
+        <td class="font-body px-4 py-2 text-gray-900 dark:text-white">
           <span class="text-sm font-medium text-gray-800 dark:text-gray-200">
             <%= plugin.name[0].toUpperCase() + plugin.name.slice(1) %>
           </span>
@@ -166,7 +164,7 @@
           <% if(enabledPlugins.includes(plugin.name)) { %>
           <a
             href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
-            class="inline-flex items-center rounded-lg border border-primary-700 px-3 py-1 text-xs font-medium text-primary-700 hover:bg-primary-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:hover:text-white dark:focus:ring-primary-800">
+            class="border-primary-700 text-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:focus:ring-primary-800 inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white focus:outline-none focus:ring-4 dark:hover:text-white">
             <i class="fa-regular fa-circle-check text-blue me-2 h-3 w-3"></i>
             <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
           </a>
@@ -186,8 +184,7 @@
   </table>
 </section>
 
-<% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
-<% if(!enabledPlugins.includes(plugin.name)) { %>
+<% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %> <% if(!enabledPlugins.includes(plugin.name)) { %>
 <div
   id="modal-<%= plugin.name %>"
   tabindex="-1"
@@ -211,13 +208,13 @@
           <button
             data-modal-hide="modal-<%= plugin.name %>"
             type="submit"
-            class="inline-flex items-center rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800">
+            class="bg-primary-600 hover:bg-primary-800 focus:ring-primary-300 dark:focus:ring-primary-800 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4">
             <%= tr('HOME.PLUGIN_CONFIRM_YES') %>
           </button>
           <button
             data-modal-hide="modal-<%= plugin.name %>"
             type="button"
-            class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            class="hover:text-primary-700 ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
             <%= tr('HOME.PLUGIN_CONFIRM_NO') %>
           </button>
         </form>
@@ -225,5 +222,4 @@
     </div>
   </div>
 </div>
-<% } %>
-<% }) %>
+<% } %> <% }) %>

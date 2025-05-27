@@ -1,5 +1,5 @@
 <div
-  class="absolute bottom-0 left-0 hidden w-full justify-center space-x-4 bg-white p-4 dark:bg-gray-800 lg:flex"
+  class="absolute bottom-0 left-0 hidden w-full justify-center space-x-4 bg-white p-4 lg:flex dark:bg-gray-800"
   sidebar-bottom-menu>
   <a
     href="#"
@@ -71,7 +71,7 @@
         <a
           href="#"
           @click.prevent="changeLanguage('<%= lang.name %>')"
-          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white <%= locale === lang.name ? 'bg-gray-100 dark:bg-gray-600' : '' %>"
+          class="<%= locale === lang.name ? 'bg-gray-100 dark:bg-gray-600' : '' %> block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
           role="menuitem">
           <div class="inline-flex items-center">
             <img

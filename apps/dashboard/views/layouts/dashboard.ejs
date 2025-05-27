@@ -12,18 +12,13 @@
 
       <div
         id="main-content"
-        class="relative h-[calc(100vh-4rem)] w-full overflow-y-auto bg-gray-50 dark:bg-gray-900 lg:ml-64">
+        class="relative h-[calc(100vh-4rem)] w-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
-          <% if (locals.breadcrumb && locals.breadcrumb === true) { %>
-          <%- include('./partials/breadcrumb.ejs') %>
-          <% } %>
-
-          <%- body %>
+          <% if (locals.breadcrumb && locals.breadcrumb === true) { %> <%- include('./partials/breadcrumb.ejs') %> <% }
+          %> <%- body %>
         </main>
 
-        <% if (locals.footer && locals.footer === true) { %>
-        <%- include('./partials/footer.ejs') %>
-        <% } %>
+        <% if (locals.footer && locals.footer === true) { %> <%- include('./partials/footer.ejs') %> <% } %>
       </div>
     </div>
 

@@ -2,13 +2,13 @@
   <!-- With admin rights -->
   <% guilds.filter(g => g.admin && !g.settingsUrl.includes('discord.com')).forEach(guild => { %>
   <div
-    class="relative flex w-full max-w-[24rem] min-w-[220px] flex-col rounded-2xl bg-white shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-100">
+    class="relative flex w-full min-w-[220px] max-w-[24rem] flex-col rounded-2xl border border-gray-100 bg-white shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
     <img
-      class="rounded-full mx-auto mt-4 mb-2 w-20 h-20 object-cover shadow-sm border-4 border-white dark:border-gray-700"
+      class="mx-auto mb-2 mt-4 h-20 w-20 rounded-full border-4 border-white object-cover shadow-sm dark:border-gray-700"
       src="<%= guild.iconURL %>"
       alt="" />
     <div class="flex flex-1 flex-col items-center justify-center p-6">
-      <h4 class="mb-2 flex-1 font-semibold tracking-tight text-gray-900 dark:text-white text-lg text-center">
+      <h4 class="mb-2 flex-1 text-center text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
         <%= guild.name %>
       </h4>
       <a
@@ -24,18 +24,18 @@
   <!-- Without admin rights -->
   <% guilds.filter(g => g.admin && g.settingsUrl.includes('discord.com')).forEach(guild => { %>
   <div
-    class="relative flex w-full max-w-[24rem] min-w-[220px] flex-col rounded-2xl bg-white shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-100">
+    class="relative flex w-full min-w-[220px] max-w-[24rem] flex-col rounded-2xl border border-gray-100 bg-white shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
     <img
-      class="rounded-full mx-auto mt-4 mb-2 w-20 h-20 object-cover shadow-sm border-4 border-white dark:border-gray-700"
+      class="mx-auto mb-2 mt-4 h-20 w-20 rounded-full border-4 border-white object-cover shadow-sm dark:border-gray-700"
       src="<%= guild.iconURL %>"
       alt="" />
     <div class="flex flex-1 flex-col items-center justify-center p-6">
-      <h4 class="mb-2 flex-1 font-semibold tracking-tight text-gray-900 dark:text-white text-lg text-center">
+      <h4 class="mb-2 flex-1 text-center text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
         <%= guild.name %>
       </h4>
       <a
         href="<%= guild.settingsUrl %>"
-        class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+        class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 flex w-full items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4">
         <i class="fa-solid fa-paper-plane mr-2 h-4 w-4"></i>
         <%= tr('SELECTOR.BTN_INVITE') %>
       </a>

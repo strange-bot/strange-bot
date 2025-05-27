@@ -6,7 +6,7 @@
           id="toggleSidebarMobile"
           aria-expanded="true"
           aria-controls="sidebar"
-          class="cursor-pointer rounded p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700 lg:hidden">
+          class="cursor-pointer rounded p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700">
           <i id="toggleSidebarMobileHamburger" class="fas fa-bars h-6 w-6"></i>
           <i id="toggleSidebarMobileClose" class="fas fa-times hidden h-6 w-6"></i>
         </button>
@@ -15,7 +15,7 @@
             src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>"
             class="mr-2 h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
             alt="Strange Logo" />
-          <span class="self-center whitespace-nowrap text-lg font-semibold dark:text-white sm:text-xl md:text-2xl"
+          <span class="self-center whitespace-nowrap text-lg font-semibold sm:text-xl md:text-2xl dark:text-white"
             ><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></span
           >
         </a>
@@ -27,8 +27,8 @@
           data-tooltip-target="tooltip-toggle"
           type="button"
           class="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
-          <i id="theme-toggle-dark-icon" class="hidden fas fa-moon h-5 w-5"></i>
-          <i id="theme-toggle-light-icon" class="hidden fas fa-sun h-5 w-5"></i>
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden h-5 w-5"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden h-5 w-5"></i>
         </button>
         <div
           id="tooltip-toggle"

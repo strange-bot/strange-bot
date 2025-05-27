@@ -10,18 +10,13 @@
     <div class="flex overflow-hidden bg-gray-50 pt-16 dark:bg-gray-900">
       <%- include('./partials/sidebar-admin.ejs') %>
 
-      <div id="main-content" class="relative h-full w-full overflow-y-auto bg-gray-50 dark:bg-gray-900 lg:ml-64">
+      <div id="main-content" class="relative h-full w-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
-          <% if (locals.breadcrumb && locals.breadcrumb === true) { %>
-          <%- include('./partials/breadcrumb-admin.ejs') %>
-          <% } %>
-
-          <%- body %>
+          <% if (locals.breadcrumb && locals.breadcrumb === true) { %> <%- include('./partials/breadcrumb-admin.ejs') %>
+          <% } %> <%- body %>
         </main>
 
-        <% if (locals.footer && locals.footer === true) { %>
-        <%- include('./partials/footer.ejs') %>
-        <% } %>
+        <% if (locals.footer && locals.footer === true) { %> <%- include('./partials/footer.ejs') %> <% } %>
       </div>
     </div>
 

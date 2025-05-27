@@ -1,19 +1,19 @@
 <aside
   id="sidebar"
-  class="fixed left-0 top-0 z-20 flex hidden h-full w-64 flex-shrink-0 flex-col pt-16 font-normal transition-width duration-75 lg:flex overflow-y-auto"
+  class="transition-width fixed left-0 top-0 z-20 flex hidden h-full w-64 flex-shrink-0 flex-col overflow-y-auto pt-16 font-normal duration-75 lg:flex"
   aria-label="Sidebar">
   <div
     class="relative flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white pt-0 dark:border-gray-700 dark:bg-gray-800">
-    <div class="flex flex-1 flex-col overflow-y-auto pb-4 pt-5 mb-[50px]">
+    <div class="mb-[50px] flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
       <div class="flex-1 space-y-1 divide-y divide-gray-200 bg-white px-3 dark:divide-gray-700 dark:bg-gray-800">
         <ul class="space-y-2 pb-2">
           <li>
             <a
               href="/dashboard"
-              class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <%= slug === 'selector' ? 'bg-gray-100 dark:bg-gray-700' : '' %>">
+              class="<%= slug === 'selector' ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700">
               <i
                 class="fa-solid fa-chart-pie text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
-              <span class="text-sm md:text-base ml-3" sidebar-toggle-item><%= tr('SIDEBAR.SELECTOR') %></span>
+              <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.SELECTOR') %></span>
             </a>
           </li>
 
@@ -21,15 +21,13 @@
           <li>
             <a
               href="/dashboard/<%=guild.id%>"
-              class="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <%= slug === 'home' ? 'bg-gray-100 dark:bg-gray-700' : '' %>">
+              class="<%= slug === 'home' ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700">
               <i
                 class="fa-solid fa-house text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
               <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.HOME') %></span>
             </a>
           </li>
-          <% } %>
-
-          <% if (locals.guild && locals.plugins) { %>
+          <% } %> <% if (locals.guild && locals.plugins) { %>
 
           <li>
             <button
@@ -38,19 +36,19 @@
               aria-controls="dropdown-plugins"
               data-collapse-toggle="dropdown-plugins">
               <i
-                class="fa-solid fa-plug text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white text-xl"></i>
-              <span class="ml-3 text-sm md:text-base flex-1 whitespace-nowrap text-left" sidebar-toggle-item
+                class="fa-solid fa-plug text-xl text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              <span class="ml-3 flex-1 whitespace-nowrap text-left text-sm md:text-base" sidebar-toggle-item
                 ><%= tr('SIDEBAR.PLUGINS') %></span
               >
               <i class="fa-solid fa-angle-down"></i>
             </button>
-            <ul id="dropdown-plugins" class="space-y-2 py-2 <%= slug.includes('plugins') ? '' : 'hidden' %>">
+            <ul id="dropdown-plugins" class="<%= slug.includes('plugins') ? '' : 'hidden' %> space-y-2 py-2">
               <% for (let i = 0; i < plugins.length; i++) { %> <% let urlName = plugins[i].name %> <% let name
               =plugins[i].name.charAt(0).toUpperCase() + plugins[i].name.slice(1).toLowerCase() %>
               <li id="<%= slug.includes(plugins[i].name) ? 'aside-active-item' : '' %>">
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="text-sm md:text-base group flex items-center rounded-lg p-2 pl-11 text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 <%= slug.includes(plugins[i].name) ? 'bg-gray-100 dark:bg-gray-700' : '' %>"
+                  class="<%= slug.includes(plugins[i].name) ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 pl-11 text-sm text-gray-900 transition duration-75 hover:bg-gray-100 md:text-base dark:text-gray-200 dark:hover:bg-gray-700"
                   ><%=name%></a
                 >
               </li>

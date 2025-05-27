@@ -6,7 +6,7 @@
       <li class="inline-flex items-center">
         <a
           href="/dashboard"
-          class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-white">
+          class="hover:text-primary-600 inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 dark:hover:text-white">
           <i class="fas fa-home me-2.5 h-3 w-3" aria-hidden="true"></i>
           <%= tr('SIDEBAR.SELECTOR') %>
         </a>
@@ -18,18 +18,17 @@
           <i class="fas fa-chevron-right mx-1 h-3 w-3 text-gray-400" aria-hidden="true"></i>
           <a
             href="/dashboard/<%=guild.id%>"
-            class="ms-1 text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-white md:ms-2"
+            class="hover:text-primary-600 ms-1 text-sm font-medium text-gray-700 md:ms-2 dark:text-gray-400 dark:hover:text-white"
             ><%=guild.name%></a
           >
         </div>
       </li>
-      <% } %>
-      <% if (locals.plugin) { %>
+      <% } %> <% if (locals.plugin) { %>
       <li aria-current="page">
         <div class="flex items-center">
           <i class="fas fa-chevron-right mx-1 h-3 w-3 text-gray-400" aria-hidden="true"></i>
           <% const name = plugin.name.charAt(0).toUpperCase() + plugin.name.slice(1); %>
-          <span class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400 md:ms-2"><%=name%></span>
+          <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%=name%></span>
         </div>
       </li>
       <% } %>
