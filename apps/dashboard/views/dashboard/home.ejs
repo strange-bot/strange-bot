@@ -1,9 +1,11 @@
-<section class="container mx-auto px-4 py-8 text-center lg:px-6 lg:py-8 dark:bg-gray-900">
+<section class="mb-6 py-3 text-center dark:bg-gray-900">
   <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
     <!-- Card -->
-    <div class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div
+      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
+          <i class="fa-solid fa-users text-primary-600 dark:text-primary-400 mr-1"></i>
           <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200"><%= tr('HOME.MEMBERS') %></p>
         </div>
 
@@ -13,9 +15,11 @@
       </div>
     </div>
 
-    <div class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div
+      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
+          <i class="fa-solid fa-tags text-primary-600 dark:text-primary-400 mr-1"></i>
           <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200"><%= tr('HOME.ROLES') %></p>
         </div>
 
@@ -25,9 +29,11 @@
       </div>
     </div>
 
-    <div class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div
+      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
+          <i class="fa-solid fa-hashtag text-primary-600 dark:text-primary-400 mr-1"></i>
           <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200">
             <%= tr('HOME.TXT_CHANNELS') %>
           </p>
@@ -41,9 +47,11 @@
       </div>
     </div>
 
-    <div class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div
+      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
+          <i class="fa-solid fa-microphone text-primary-600 dark:text-primary-400 mr-1"></i>
           <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200">
             <%= tr('HOME.VC_CHANNELS') %>
           </p>
@@ -61,31 +69,32 @@
 </section>
 
 <section
-  class="container mx-auto px-4 py-8 lg:px-6 lg:py-8"
   x-data="{
   view: localStorage.getItem('home-plugin-view') || 'grid',
   setView(v) {
+    if (this.view === v) return; // Avoid unnecessary re-renders
     this.view = v;
     localStorage.setItem('home-plugin-view', v);
   }
-}">
+}"
+  x-cloak>
   <div class="mb-6">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap items-center justify-between gap-4">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white"><%= tr('HOME.SUB_PLUGINS') %></h2>
       <div class="flex gap-2">
         <button
           type="button"
           @click="setView('grid')"
           :class="view === 'grid' ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white border border-primary-600 dark:border-primary-500 shadow' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600'"
-          class="btn flex items-center rounded px-3 py-1 text-sm font-medium">
+          class="btn flex items-center rounded px-3 py-1 text-sm font-medium transition-all duration-200">
           <i class="fa-solid fa-th mr-1"></i> Grid
         </button>
         <button
           type="button"
           @click="setView('list')"
           :class="view === 'list' ? 'bg-primary-600 text-white dark:bg-primary-500 dark:text-white border border-primary-600 dark:border-primary-500 shadow' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600'"
-          class="btn flex items-center rounded px-3 py-1 text-sm font-medium">
+          class="btn flex items-center rounded px-3 py-1 text-sm font-medium transition-all duration-200">
           <i class="fa-solid fa-list mr-1"></i> List
         </button>
       </div>
@@ -93,95 +102,138 @@
   </div>
 
   <!-- Grid/List for plugin information -->
-  <div x-show="view === 'grid'" x-cloak :class="'grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'">
+  <div
+    x-show="view === 'grid'"
+    x-transition:enter="transition-opacity ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition-opacity ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
     <div
-      class="plugin-card flex flex-row items-center gap-6 rounded-xl border bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-      <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center">
-        <i class="<%= plugin.icon %> text-primary-600 dark:text-primary-400 h-10 w-10"></i>
-      </div>
-      <div class="flex flex-1 flex-col justify-center">
-        <h3 class="mb-1 text-base font-bold text-gray-900 dark:text-white">
-          <%= plugin.name[0].toUpperCase() + plugin.name.slice(1) %>
-        </h3>
-        <p class="mb-1 text-xs text-gray-600 dark:text-gray-300"><%= plugin.description %></p>
-        <div class="mb-2 flex gap-2">
-          <span class="text-xs text-gray-500 dark:text-gray-400"
-            ><%= tr('HOME.LABEL_PREFIX') %>: <%= pluginCmds[plugin.name].prefixCount %></span
-          >
-          <span class="text-xs text-gray-500 dark:text-gray-400"
-            ><%= tr('HOME.LABEL_SLASH') %>: <%= pluginCmds[plugin.name].slashCount %></span
-          >
+      class="plugin-card flex h-full flex-col rounded-xl border bg-white shadow-sm transition-all duration-300 hover:scale-[1.01] hover:transform hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
+      <div class="flex items-center justify-center border-b border-gray-100 p-4 dark:border-gray-700">
+        <div
+          class="bg-primary-50 flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full dark:bg-gray-700">
+          <i class="<%= plugin.icon %> text-primary-600 dark:text-primary-400 h-8 w-8"></i>
         </div>
-        <% if(enabledPlugins.includes(plugin.name)) { %>
-        <a
-          href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
-          class="border-primary-700 text-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:focus:ring-primary-800 inline-flex w-auto items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white focus:outline-none focus:ring-4 dark:hover:text-white">
-          <i class="fa-regular fa-circle-check text-blue me-2 h-3 w-3"></i>
-          <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
-        </a>
-        <% } else { %>
-        <button
-          data-modal-target="modal-<%= plugin.name %>"
-          data-modal-toggle="modal-<%= plugin.name %>"
-          class="inline-flex w-auto items-center rounded-lg border border-green-700 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800">
-          <i class="fa-solid fa-plus text-green me-2 h-3 w-3"></i>
-          <%= tr('HOME.BTN_PLUGIN_ENABLE') %>
-        </button>
-        <% } %>
       </div>
-    </div>
-    <% }) %>
-  </div>
-
-  <table
-    x-show="view === 'list'"
-    x-cloak
-    class="min-w-full divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow dark:divide-gray-700 dark:bg-gray-800">
-    <thead class="bg-gray-50 dark:bg-gray-700">
-      <tr>
-        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Name</th>
-        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Description</th>
-        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Prefix</th>
-        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Slash</th>
-        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Version</th>
-        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Action</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-      <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
-      <tr>
-        <td class="font-body px-4 py-2 text-gray-900 dark:text-white">
-          <span class="text-sm font-medium text-gray-800 dark:text-gray-200">
+      <div class="flex flex-1 flex-col justify-between p-4">
+        <div>
+          <h3 class="mb-2 text-center text-lg font-bold text-gray-900 dark:text-white">
             <%= plugin.name[0].toUpperCase() + plugin.name.slice(1) %>
-          </span>
-        </td>
-        <td class="px-4 py-2 text-gray-600 dark:text-gray-300"><%= plugin.description %></td>
-        <td class="px-4 py-2 text-gray-500 dark:text-gray-400"><%= pluginCmds[plugin.name].prefixCount %></td>
-        <td class="px-4 py-2 text-gray-500 dark:text-gray-400"><%= pluginCmds[plugin.name].slashCount %></td>
-        <td class="px-4 py-2 text-xs text-gray-800 dark:text-gray-300">v<%= plugin.version %></td>
-        <td class="px-4 py-2">
+          </h3>
+          <p class="mb-3 text-sm text-gray-600 dark:text-gray-300"><%= plugin.description %></p>
+          <div class="mb-4 flex flex-wrap justify-center gap-2">
+            <span
+              class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+              <i class="fa-solid fa-terminal mr-1 text-xs"></i>
+              <%= pluginCmds[plugin.name].prefixCount %>
+            </span>
+            <span
+              class="inline-flex items-center rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+              <i class="fa-solid fa-slash mr-1 text-xs"></i>
+              <%= pluginCmds[plugin.name].slashCount %>
+            </span>
+          </div>
+        </div>
+        <div class="mt-3 border-t border-gray-100 pt-3 dark:border-gray-700">
           <% if(enabledPlugins.includes(plugin.name)) { %>
           <a
             href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
-            class="border-primary-700 text-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:focus:ring-primary-800 inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white focus:outline-none focus:ring-4 dark:hover:text-white">
-            <i class="fa-regular fa-circle-check text-blue me-2 h-3 w-3"></i>
+            class="border-primary-700 bg-primary-600 hover:bg-primary-800 focus:ring-primary-300 dark:border-primary-500 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex w-full items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium text-white transition-colors duration-200 hover:text-white focus:outline-none focus:ring-4 dark:hover:text-white">
+            <i class="fa-regular fa-circle-check me-1.5 h-4 w-4"></i>
             <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
           </a>
           <% } else { %>
           <button
             data-modal-target="modal-<%= plugin.name %>"
             data-modal-toggle="modal-<%= plugin.name %>"
-            class="inline-flex items-center rounded-lg border border-green-700 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800">
-            <i class="fa-solid fa-plus text-green me-2 h-3 w-3"></i>
+            class="inline-flex w-full items-center justify-center rounded-lg border border-green-700 px-3 py-1.5 text-sm font-medium text-green-700 transition-colors duration-200 hover:bg-green-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800">
+            <i class="fa-solid fa-plus me-1.5 h-4 w-4"></i>
             <%= tr('HOME.BTN_PLUGIN_ENABLE') %>
           </button>
           <% } %>
-        </td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+
+  <div
+    x-show="view === 'list'"
+    x-transition:enter="transition-opacity ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition-opacity ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    x-cloak
+    class="overflow-x-auto">
+    <table
+      class="min-w-full divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow dark:divide-gray-700 dark:bg-gray-800">
+      <thead class="bg-gray-50 dark:bg-gray-700">
+        <tr>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Name</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Description</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Prefix</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Slash</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Version</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %>
+        <tr class="transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700">
+          <td class="font-body px-4 py-2 text-gray-900 dark:text-white">
+            <div class="flex items-center">
+              <i class="<%= plugin.icon %> text-primary-600 dark:text-primary-400 mr-2 h-4 w-4"></i>
+              <span class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                <%= plugin.name[0].toUpperCase() + plugin.name.slice(1) %>
+              </span>
+            </div>
+          </td>
+          <td class="max-w-xs truncate px-4 py-2 text-gray-600 dark:text-gray-300"><%= plugin.description %></td>
+          <td class="px-4 py-2">
+            <span
+              class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+              <i class="fa-solid fa-terminal mr-1 text-xs"></i>
+              <%= pluginCmds[plugin.name].prefixCount %>
+            </span>
+          </td>
+          <td class="px-4 py-2">
+            <span
+              class="inline-flex items-center rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+              <i class="fa-solid fa-slash mr-1 text-xs"></i>
+              <%= pluginCmds[plugin.name].slashCount %>
+            </span>
+          </td>
+          <td class="px-4 py-2 text-xs text-gray-800 dark:text-gray-300">v<%= plugin.version %></td>
+          <td class="whitespace-nowrap px-4 py-2">
+            <% if(enabledPlugins.includes(plugin.name)) { %>
+            <a
+              href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
+              class="border-primary-700 text-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:border-primary-500 dark:text-primary-500 dark:hover:bg-primary-500 dark:focus:ring-primary-800 inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white focus:outline-none focus:ring-4 dark:hover:text-white">
+              <i class="fa-regular fa-circle-check me-1.5 h-3 w-3"></i>
+              <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
+            </a>
+            <% } else { %>
+            <button
+              data-modal-target="modal-<%= plugin.name %>"
+              data-modal-toggle="modal-<%= plugin.name %>"
+              class="inline-flex items-center rounded-lg border border-green-700 px-3 py-1 text-xs font-medium text-green-700 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-300 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-white dark:focus:ring-green-800">
+              <i class="fa-solid fa-plus me-1.5 h-3 w-3"></i>
+              <%= tr('HOME.BTN_PLUGIN_ENABLE') %>
+            </button>
+            <% } %>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <% plugins.filter(p => !p.ownerOnly).forEach(plugin => { %> <% if(!enabledPlugins.includes(plugin.name)) { %>
@@ -190,31 +242,38 @@
   tabindex="-1"
   class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
   <div class="relative max-h-full w-full max-w-md p-4">
-    <div class="relative rounded-lg bg-white shadow dark:bg-gray-700">
+    <div class="relative rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-700">
       <button
         type="button"
-        class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+        class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
         data-modal-hide="modal-<%= plugin.name %>">
         <i class="fa-solid fa-xmark h-4 w-4"></i>
         <span class="sr-only">Close modal</span>
       </button>
-      <div class="p-4 text-center md:p-5">
-        <i class="fa-regular fa-circle-exclamation mb-3 h-12 w-12 dark:text-gray-200"></i>
-        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-          <%= tr('HOME.PLUGIN_ENABLE_CONFIRM') %>
+      <div class="p-6 text-center">
+        <div class="mb-4 flex justify-center">
+          <div class="rounded-full bg-blue-50 p-3 dark:bg-gray-600">
+            <i class="fa-regular fa-circle-question text-primary-600 dark:text-primary-400 h-10 w-10"></i>
+          </div>
+        </div>
+        <h3 class="mb-5 text-lg font-semibold text-gray-800 dark:text-gray-200">
+          Enable <%= plugin.name[0].toUpperCase() + plugin.name.slice(1) %> Plugin
         </h3>
-        <form method="post">
+        <p class="mb-5 text-gray-600 dark:text-gray-300"><%= tr('HOME.PLUGIN_ENABLE_CONFIRM') %></p>
+        <form method="post" class="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
           <input type="hidden" name="plugin_enable" value="<%= plugin.name %>" />
           <button
             data-modal-hide="modal-<%= plugin.name %>"
             type="submit"
-            class="bg-primary-600 hover:bg-primary-800 focus:ring-primary-300 dark:focus:ring-primary-800 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4">
+            class="bg-primary-600 hover:bg-primary-700 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white transition-colors duration-200 focus:outline-none focus:ring-4">
+            <i class="fa-solid fa-check mr-1.5"></i>
             <%= tr('HOME.PLUGIN_CONFIRM_YES') %>
           </button>
           <button
             data-modal-hide="modal-<%= plugin.name %>"
             type="button"
-            class="hover:text-primary-700 ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+            class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-700">
+            <i class="fa-solid fa-xmark mr-1.5"></i>
             <%= tr('HOME.PLUGIN_CONFIRM_NO') %>
           </button>
         </form>
