@@ -67,6 +67,7 @@
 
     "ADMIN_PAGE": {
         "PLUGINS": "Gestion des plugins",
+        "DESCRIPTION": "Gérer les plugins installés et leurs configurations.",
         "LOADING": "Chargement des plugins...",
         "VIEW_SOURCE": "Afficher la source",
         "NO_MATCH": "Aucun plugin trouvé correspondant au terme de recherche",
@@ -80,7 +81,7 @@
 
     "LOCALES_PAGE": {
         "TITLE": "Localisations",
-        "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
+        "DESCRIPTION": "Gérer les plugins installés/activés.",
         "APP_SELECT": "Sélectionnez l'application",
         "PLUGIN_SELECT": "Sélectionner un plugin",
         "LOCALE_SELECT": "Sélectionner une langue",

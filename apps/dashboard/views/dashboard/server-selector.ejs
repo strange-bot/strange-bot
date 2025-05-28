@@ -1,4 +1,4 @@
-<div class="grid gap-8 p-6" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
+<div class="grid gap-8" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
   <!-- With admin rights -->
   <% guilds.filter(g => g.admin && !g.settingsUrl.includes('discord.com')).forEach(guild => { %>
   <div

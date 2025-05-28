@@ -10,14 +10,12 @@
     <div class="flex overflow-hidden bg-gray-50 pt-16 dark:bg-gray-900">
       <%- include('./partials/sidebar.ejs') %>
 
-      <div
-        id="main-content"
-        class="relative h-[calc(100vh-4rem)] w-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
-        <main>
+      <div id="main-content" class="relative h-full w-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
+        <main class="container mx-auto px-4 py-4 sm:px-6 sm:py-6">
           <% if (locals.breadcrumb && locals.breadcrumb === true) { %> <%- include('./partials/breadcrumb.ejs') %> <% }
           %>
 
-          <section class="px-4 pt-6">
+          <section class="mb-6">
             <div
               class="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white">
               <div class="flex items-center">
@@ -65,7 +63,7 @@
             </div>
           </section>
 
-          <section class="mb-6 px-4 pt-4">
+          <section class="mb-6">
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
               <ul
                 class="-mb-px flex flex-wrap text-center text-sm font-medium"
@@ -213,7 +211,7 @@
                         type="submit"
                         :disabled="saving"
                         class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 disabled:opacity-50">
-                        <span x-text="saving ? '<%= tr('SAVING') %>' : '<%= tr('SAVE') %>'"></span>
+                        <span x-text="saving ? '<%= tr('SAVING') %>' : '<%= tr('BTN_SAVE') %>'"></span>
                       </button>
                     </div>
                   </div>
@@ -288,7 +286,7 @@
                         type="submit"
                         :disabled="saving"
                         class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 disabled:opacity-50">
-                        <span x-text="saving ? '<%= tr('SAVING') %>' : '<%= tr('SAVE') %>'"></span>
+                        <span x-text="saving ? '<%= tr('SAVING') %>' : '<%= tr('BTN_SAVE') %>'"></span>
                       </button>
                     </div>
                   </div>

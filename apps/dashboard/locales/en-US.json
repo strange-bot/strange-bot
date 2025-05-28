@@ -67,6 +67,7 @@
 
     "ADMIN_PAGE": {
         "PLUGINS": "Plugin Management",
+        "DESCRIPTION": "Manage installed/enabled plugins.",
         "LOADING": "Loading plugins...",
         "VIEW_SOURCE": "View Source",
         "NO_MATCH": "No plugins found matching the search term",

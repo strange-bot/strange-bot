@@ -11,7 +11,7 @@
       <%- include('./partials/sidebar-admin.ejs') %>
 
       <div id="main-content" class="relative h-full w-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
-        <main>
+        <main class="container mx-auto px-4 py-4 sm:px-6 sm:py-6">
           <% if (locals.breadcrumb && locals.breadcrumb === true) { %> <%- include('./partials/breadcrumb-admin.ejs') %>
           <% } %> <%- body %>
         </main>
