@@ -43,8 +43,9 @@
               <i class="fa-solid fa-angle-down"></i>
             </button>
             <ul id="dropdown-plugins" class="<%= slug.includes('plugins') ? '' : 'hidden' %> space-y-2 py-2">
-              <% for (let i = 0; i < plugins.length; i++) { %> <% let urlName = plugins[i].name %> <% let name
-              =plugins[i].name.charAt(0).toUpperCase() + plugins[i].name.slice(1).toLowerCase() %>
+              <% for (let i = 0; i < plugins.length; i++) { if (plugins[i].ownerOnly) continue; let urlName =
+              plugins[i].name; let name = plugins[i].name.charAt(0).toUpperCase() +
+              plugins[i].name.slice(1).toLowerCase(); %>
               <li id="<%= slug.includes(plugins[i].name) ? 'aside-active-item' : '' %>">
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
