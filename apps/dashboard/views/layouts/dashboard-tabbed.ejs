@@ -71,6 +71,7 @@
                 data-tabs-toggle="#default-tab-content"
                 role="tablist">
                 <!-- Settings Tab -->
+                <% if (locals.settingsTab !== false) { %>
                 <li class="me-2" role="presentation">
                   <button
                     class="inline-block rounded-t-lg border-b-2 p-4"
@@ -83,8 +84,7 @@
                     <%= tr("TABS.SETTINGS") %>
                   </button>
                 </li>
-
-                <% if (locals.tabs && locals.tabs.length > 0) { %>
+                <% } %> <% if (locals.tabs && locals.tabs.length > 0) { %>
                 <!-- Custom Tabs -->
                 <% locals.tabs.forEach((tab) => { %> <% const tabId = tab.replace(/ /g, "-").toLowerCase() %>
                 <li class="me-2" role="presentation">
