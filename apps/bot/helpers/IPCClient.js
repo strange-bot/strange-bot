@@ -41,7 +41,7 @@ class IPCClient {
             .connectTo(port, host)
             .then(() => (this.firstConnect = true))
             .catch((error) => {
-                if (error.message.includes("ECONNREFUSED")) return;
+                if (error.code == "ECONNREFUSED") return;
                 Logger.error("[IPC] Connection failed:", error);
             });
     }

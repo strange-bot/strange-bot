@@ -23,7 +23,6 @@ declare global {
         interface Guild {
             locale: string | undefined;
             getT(key: string, args?: Object): string;
-            getEnabledPlugins(): Promise<string[]>;
             getSettings(pluginName: string): Promise<import("strange-db-client").Model | object>;
             canSendEmbeds(channel: import("discord.js").GuildChannel): boolean;
             findMatchingChannels(

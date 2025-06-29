@@ -74,8 +74,8 @@ module.exports.updatePlugins = async function (req, res) {
                     action,
                 });
                 if (!ipcResp?.success) {
-                    await req.app.pluginManager.enablePlugin(pluginName);
-                    throw new Error("Failed to disable plugin on other instances");
+                    await req.app.pluginManager.uninstallPlugin(pluginName);
+                    throw new Error("Failed to install plugin on other instances");
                 }
                 break;
             }
@@ -87,8 +87,8 @@ module.exports.updatePlugins = async function (req, res) {
                     action,
                 });
                 if (!ipcResp?.success) {
-                    await req.app.pluginManager.enablePlugin(pluginName);
-                    throw new Error("Failed to disable plugin on other instances");
+                    await req.app.pluginManager.installPlugin(pluginName);
+                    throw new Error("Failed to uninstall plugin on other instances");
                 }
                 break;
             }

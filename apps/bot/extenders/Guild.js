@@ -20,13 +20,6 @@ Guild.prototype.getSettings = async function (pluginName) {
     return await this.client.pluginManager.getPlugin(pluginName)?.getSettings(this);
 };
 
-Guild.prototype.getEnabledPlugins = async function () {
-    const plugins = this.client.pluginManager.plugins.map((plugin) => plugin.name);
-    const settings = await this.getSettings("core");
-    const enabled = settings.enabled_plugins || [];
-    return plugins.filter((plugin) => enabled.includes(plugin));
-};
-
 /**
  * Checks if the bot can send embeds in the specified channel
  * @param {import('discord.js').GuildChannel} channel - The channel to check permissions for
