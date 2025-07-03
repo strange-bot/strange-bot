@@ -238,7 +238,8 @@ class BasePluginManager {
             });
 
             if (await fs.access(pluginDir).catch(() => false)) {
-                throw new Error("Plugin is already installed.");
+                Logger.debug(`Plugin ${pluginName} is already installed. Skipping installation.`);
+                return;
             }
 
             const data = await this.getPluginsMeta();
@@ -314,8 +315,8 @@ class BasePluginManager {
                 },
             });
 
-            if (this.#pluginMap.has(pluginName)) {
-                throw new Error("Plugin is enabled. Disable it first.");
+            if (this.#pluginMap.has()) {
+                throw new Error(`Plugin: ${pluginName} is enabled. Disable it first.`);
             }
             await fs.rm(pluginDir, { recursive: true, force: true });
             await fs.unlink(pluginDir + ".lock").catch(() => {});

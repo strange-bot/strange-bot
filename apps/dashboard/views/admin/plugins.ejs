@@ -184,10 +184,10 @@
               x-show="plugin.installed && plugin.name !== 'core'"
               :class="[
                 plugin.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
-                isToggling(plugin.name) ? 'opacity-60 pointer-events-none' : 'cursor-pointer hover:opacity-80 transition'
+                (isToggling(plugin.name) || installingPlugin === plugin.name || unInstallingPlugin === plugin.name) ? 'opacity-60 pointer-events-none' : 'cursor-pointer hover:opacity-80 transition'
               ]"
               class="ml-2 flex min-w-[70px] items-center justify-center rounded-full border border-transparent px-2 py-0.5 text-xs font-semibold"
-              @click="!isToggling(plugin.name) && togglePlugin(plugin)">
+              @click="!(isToggling(plugin.name) || installingPlugin === plugin.name || unInstallingPlugin === plugin.name) && togglePlugin(plugin)">
               <i class="fa-solid fa-spinner fa-spin mr-1" x-show="isToggling(plugin.name)"></i>
               <span x-text="plugin.enabled ? 'Enabled' : 'Disabled'"></span>
             </span>

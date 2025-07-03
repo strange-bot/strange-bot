@@ -68,28 +68,26 @@ module.exports.updatePlugins = async function (req, res) {
             }
 
             case "install": {
-                await req.app.pluginManager.installPlugin(pluginName);
-                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
+                const botResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
                     pluginName,
-                    action,
+                    action: "install",
                 });
-                if (!ipcResp?.success) {
-                    await req.app.pluginManager.uninstallPlugin(pluginName);
-                    throw new Error("Failed to install plugin on other instances");
+                if (!botResp?.success) {
+                    throw new Error("Failed to install plugin on bot instance");
                 }
+                await req.app.pluginManager.installPlugin(pluginName);
                 break;
             }
 
             case "uninstall": {
-                await req.app.pluginManager.uninstallPlugin(pluginName);
                 const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
                     pluginName,
                     action,
                 });
                 if (!ipcResp?.success) {
-                    await req.app.pluginManager.installPlugin(pluginName);
                     throw new Error("Failed to uninstall plugin on other instances");
                 }
+                await req.app.pluginManager.uninstallPlugin(pluginName);
                 break;
             }
 
