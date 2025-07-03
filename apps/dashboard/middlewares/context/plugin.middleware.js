@@ -153,6 +153,9 @@ module.exports.dashboard = async (req, res, next) => {
     res.locals.coreSettings = coreSettings;
     res.locals.user = req.session.user.info;
     res.locals.plugins = req.app.pluginManager.plugins;
+    res.locals.enabledPlugins = req.app.pluginManager.plugins.filter((p) =>
+        coreSettings.enabled_plugins.includes(p.name),
+    );
     res.locals.plugin = plugin;
     res.locals.pluginCmds = pluginCmds;
     res.locals.config = config;

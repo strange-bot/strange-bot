@@ -90,5 +90,29 @@
         "UPDATE_ERROR": "Failed to update bot localization"
     },
 
+    "EMBED_PREVIEW": {
+        "HEADER": "Embed Preview",
+        "CLOSE_BTN": "Close modal",
+        "CONTENT": "Content",
+        "OPTIONS": "Embed Options",
+        "TITLE": "Title",
+        "DESCRIPTION": "Description",
+        "COLOR": "Color",
+        "AUTHOR_NAME": "Author Name",
+        "AUTHOR_ICON": "Author Icon",
+        "FIELDS": "Fields",
+        "FIELD_NAME": "Field Name",
+        "FIELD_VALUE": "Field Value",
+        "FIELD_INLINE": "Inline?",
+        "ADD_FIELD": "Add Field",
+        "REMOVE_FIELD": "Remove Field",
+        "FOOTER_TEXT": "Footer Text",
+        "FOOTER_ICON": "Footer Icon",
+        "THUMBNAIL": "Thumbnail",
+        "TIMESTAMP": "Show Timestamp",
+        "URL_PLACEHOLDER": "https://...",
+        "PREVIEW_PLACEHOLDER": "Embed preview will be shown here"
+    },
+
     "NO_SETTINGS": "This plugin does not have any settings."
 }

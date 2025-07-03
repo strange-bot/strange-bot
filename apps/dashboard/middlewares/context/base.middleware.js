@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
     // Set translate
     if (!req.session.locale) req.session.locale = "en-US";
     req.translate = req.app.translations.get(req.session.locale);
-    res.locals.languages = languagesMeta;
+    res.locals.languagesMeta = languagesMeta;
     res.locals.locale = req.session.locale;
 
     next();

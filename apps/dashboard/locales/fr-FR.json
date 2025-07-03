@@ -90,5 +90,29 @@
         "UPDATE_ERROR": "Échec de la mise à jour de la localisation du bot"
     },
 
+    "EMBED_PREVIEW": {
+        "HEADER": "Aperçu de l'embed",
+        "CLOSE_BTN": "Fermer la fenêtre",
+        "CONTENT": "Contenu",
+        "OPTIONS": "Options de l'embed",
+        "TITLE": "Titre",
+        "DESCRIPTION": "Description",
+        "COLOR": "Couleur",
+        "AUTHOR_NAME": "Nom de l'auteur",
+        "AUTHOR_ICON": "Icône de l'auteur",
+        "FIELDS": "Champs",
+        "FIELD_NAME": "Nom du champ",
+        "FIELD_VALUE": "Valeur du champ",
+        "FIELD_INLINE": "En ligne ?",
+        "ADD_FIELD": "Ajouter un champ",
+        "REMOVE_FIELD": "Supprimer le champ",
+        "FOOTER_TEXT": "Texte du pied de page",
+        "FOOTER_ICON": "Icône du pied de page",
+        "THUMBNAIL": "Miniature",
+        "TIMESTAMP": "Afficher l'horodatage",
+        "URL_PLACEHOLDER": "https://...",
+        "PREVIEW_PLACEHOLDER": "L'aperçu de l'embed sera affiché ici"
+    },
+
     "NO_SETTINGS": "Ce plugin n'a aucun paramètre."
 }

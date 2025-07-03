@@ -27,7 +27,7 @@
               <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.HOME') %></span>
             </a>
           </li>
-          <% } %> <% if (locals.guild && locals.plugins) { %>
+          <% } %> <% if (locals.guild && locals.enabledPlugins) { %>
 
           <li>
             <button
@@ -43,17 +43,16 @@
               <i class="fa-solid fa-angle-down"></i>
             </button>
             <ul id="dropdown-plugins" class="<%= slug.includes('plugins') ? '' : 'hidden' %> space-y-2 py-2">
-              <% for (let i = 0; i < plugins.length; i++) { if (plugins[i].ownerOnly) continue; let urlName =
-              plugins[i].name; let name = plugins[i].name.charAt(0).toUpperCase() +
-              plugins[i].name.slice(1).toLowerCase(); %>
-              <li id="<%= slug.includes(plugins[i].name) ? 'aside-active-item' : '' %>">
+              <% enabledPlugins.forEach(function(plugin) { if (plugin.ownerOnly) return; let urlName = plugin.name; let
+              name = plugin.name.charAt(0).toUpperCase() + plugin.name.slice(1).toLowerCase(); %>
+              <li id="<%= slug.includes(plugin.name) ? 'aside-active-item' : '' %>">
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="<%= slug.includes(plugins[i].name) ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 pl-11 text-sm text-gray-900 transition duration-75 hover:bg-gray-100 md:text-base dark:text-gray-200 dark:hover:bg-gray-700"
+                  class="<%= slug.includes(plugin.name) ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 pl-11 text-sm text-gray-900 transition duration-75 hover:bg-gray-100 md:text-base dark:text-gray-200 dark:hover:bg-gray-700"
                   ><%=name%></a
                 >
               </li>
-              <% } %>
+              <% }); %>
             </ul>
           </li>
 

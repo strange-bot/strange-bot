@@ -3,6 +3,7 @@ const { BasePluginManager } = require("strange-core");
 const { DBClient } = require("strange-db-client");
 const { DashboardPlugin } = require("strange-sdk");
 const { Logger } = require("strange-sdk/utils");
+const execa = require("execa");
 
 class PluginManager extends BasePluginManager {
     /**
@@ -13,6 +14,38 @@ class PluginManager extends BasePluginManager {
     constructor(app, registryPath, pluginDir) {
         super(registryPath, pluginDir);
         this.app = app;
+    }
+
+    async installPlugin(pluginName) {
+        await super.installPlugin(pluginName);
+
+        try {
+            // Run Tailwind build
+            await execa(
+                "pnpm",
+                [
+                    "exec",
+                    "tailwindcss",
+                    "-i",
+                    "src/plugin.css",
+                    "-o",
+                    `public/css/${pluginName}.css`,
+                    "--content",
+                    `../../plugins/${pluginName}/dashboard/**/*.ejs`,
+                    "--minify",
+                ],
+                {
+                    cwd: path.resolve(__dirname, "../"), // points to apps/dashboard
+                    stdio: "pipe",
+                    env: {
+                        ...process.env,
+                    },
+                },
+            );
+        } catch (error) {
+            Logger.error(`Failed to build Tailwind CSS for plugin ${pluginName}:`, error);
+            throw error;
+        }
     }
 
     async enablePlugin(pluginName) {

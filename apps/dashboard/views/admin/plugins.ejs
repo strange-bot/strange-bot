@@ -181,7 +181,7 @@
               <span x-text="plugin.name"></span>
             </h3>
             <span
-              x-show="plugin.installed"
+              x-show="plugin.installed && plugin.name !== 'core'"
               :class="[
                 plugin.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
                 isToggling(plugin.name) ? 'opacity-60 pointer-events-none' : 'cursor-pointer hover:opacity-80 transition'

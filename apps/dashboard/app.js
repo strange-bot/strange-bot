@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("node:fs");
 const path = require("node:path");
 const { DBClient } = require("strange-db-client");
 const MongoStore = require("connect-mongo");
@@ -99,6 +100,12 @@ module.exports = class App {
 
     #initializeViewEngine() {
         this.app.set("views", path.join(__dirname, "views"));
+        this.app.locals.includePartial = function (filename, data = {}) {
+            const ejs = require("ejs");
+            const filePath = path.join(__dirname, "views", "shared", filename + ".ejs");
+            const template = fs.readFileSync(filePath, "utf8");
+            return ejs.render(template, { ...this, ...data });
+        };
         this.app.set("layout", "./layouts/dashboard");
         this.app.set("view engine", "ejs");
         this.app.engine("html", require("ejs").renderFile);

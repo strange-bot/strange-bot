@@ -52,9 +52,9 @@ module.exports.homePage = async function (req, res) {
         req.app.pluginManager.getPlugin("core").getConfig(),
     ]);
 
-    const enabledPlugins = req.app.pluginManager.plugins
-        .filter((p) => coreSettings.enabled_plugins.includes(p.name))
-        .map((p) => p.name);
+    const enabledPlugins = req.app.pluginManager.plugins.filter((p) =>
+        coreSettings.enabled_plugins.includes(p.name),
+    );
 
     const guild = req.session.user.guilds.find((g) => g.id === req.params.guildId);
 
