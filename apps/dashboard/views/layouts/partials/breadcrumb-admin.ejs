@@ -1,12 +1,10 @@
 <div class="pb-6">
-  <nav
-    class="flex rounded-lg border border-gray-200 bg-white px-5 py-3 text-gray-700 dark:border-gray-700 dark:bg-gray-800"
-    aria-label="Breadcrumb">
+  <nav class="border-border bg-bg-panel text-text-muted flex rounded-lg border px-5 py-3" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
       <li class="inline-flex items-center">
         <a
           href="/admin"
-          class="hover:text-primary-600 inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 dark:hover:text-white">
+          class="hover:text-primary-600 text-text-muted hover:text-text inline-flex items-center text-sm font-medium">
           <i class="fas fa-home me-2.5 h-3 w-3" aria-hidden="true"></i>
           <%= tr('BREADCRUMB.ADMIN') %>
         </a>
@@ -15,9 +13,9 @@
       <% if (locals.plugin) { %>
       <li aria-current="page">
         <div class="flex items-center">
-          <i class="fas fa-chevron-right mx-1 h-3 w-3 text-gray-400" aria-hidden="true"></i>
+          <i class="fas fa-chevron-right text-text-muted mx-1 h-3 w-3" aria-hidden="true"></i>
           <% const name = plugin.name.charAt(0).toUpperCase() + plugin.name.slice(1); %>
-          <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%=name%></span>
+          <span class="text-text-muted ms-1 text-sm font-medium md:ms-2"><%=name%></span>
         </div>
       </li>
       <% } %>

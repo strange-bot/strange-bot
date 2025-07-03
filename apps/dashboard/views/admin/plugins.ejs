@@ -127,15 +127,14 @@
   }
 }">
   <section class="mb-6">
-    <div
-      class="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+    <div class="border-border bg-bg-panel flex items-center justify-between rounded-lg border p-4 shadow-sm">
       <div>
-        <h2 class="text-lg font-semibold text-gray-800 dark:text-white"><%= tr("ADMIN_PAGE.PLUGINS") %></h2>
-        <p class="text-sm text-gray-500"><%= tr("ADMIN_PAGE.DESCRIPTION") %></p>
+        <h2 class="text-text text-lg font-semibold"><%= tr("ADMIN_PAGE.PLUGINS") %></h2>
+        <p class="text-text-muted text-sm"><%= tr("ADMIN_PAGE.DESCRIPTION") %></p>
       </div>
       <div class="flex items-center space-x-4">
         <span
-          class="text-sm text-gray-500 dark:text-gray-400"
+          class="text-text-muted text-sm"
           x-text="'<%=tr(`ADMIN_PAGE.INSTALLED`)%>: ' + installedPluginsCount + ' / <%=tr(`ADMIN_PAGE.TOTAL`)%>: ' + plugins.length">
         </span>
       </div>
@@ -149,9 +148,9 @@
         type="text"
         x-model="searchTerm"
         placeholder="Search plugins..."
-        class="focus:border-primary-500 dark:focus:border-primary-500 w-full rounded-lg border py-2 pl-10 pr-4 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300" />
+        class="focus:border-primary border-border bg-bg-interactive text-text w-full rounded-lg border py-2 pl-10 pr-4 focus:outline-none" />
       <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <svg class="text-text-muted h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path
             fill-rule="evenodd"
             d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -163,27 +162,26 @@
 
   <!-- Loading State -->
   <div x-show="loading" class="py-8 text-center">
-    <div
-      class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent dark:border-blue-500"></div>
-    <p class="mt-2 dark:text-gray-300"><%=tr("ADMIN_PAGE.LOADING")%></p>
+    <div class="border-primary inline-block h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
+    <p class="text-text-muted mt-2"><%=tr("ADMIN_PAGE.LOADING")%></p>
   </div>
 
   <!-- Plugins Grid -->
   <div x-show="!loading" class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))">
     <template x-for="plugin in filteredPlugins" :key="plugin.name">
       <div
-        class="flex h-full min-w-[240px] flex-col justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-shadow hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
+        class="border-border bg-bg-panel flex h-full min-w-[240px] flex-col justify-between rounded-2xl border p-6 shadow-md transition-shadow hover:shadow-lg">
         <div>
           <div class="mb-2 flex items-start justify-between">
-            <h3 class="flex items-center text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-              <i class="fas fa-puzzle-piece mr-2 text-gray-500 dark:text-gray-400"></i>
+            <h3 class="text-text flex items-center text-lg font-bold tracking-tight">
+              <i class="fas fa-puzzle-piece text-text-muted mr-2"></i>
               <!-- Added Font Awesome icon -->
               <span x-text="plugin.name"></span>
             </h3>
             <span
               x-show="plugin.installed && plugin.name !== 'core'"
               :class="[
-                plugin.enabled ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
+                plugin.enabled ? 'bg-success-dark text-white' : 'bg-border text-text-muted',
                 (isToggling(plugin.name) || installingPlugin === plugin.name || unInstallingPlugin === plugin.name) ? 'opacity-60 pointer-events-none' : 'cursor-pointer hover:opacity-80 transition'
               ]"
               class="ml-2 flex min-w-[70px] items-center justify-center rounded-full border border-transparent px-2 py-0.5 text-xs font-semibold"
@@ -192,27 +190,27 @@
               <span x-text="plugin.enabled ? 'Enabled' : 'Disabled'"></span>
             </span>
           </div>
-          <div class="mb-1 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <div class="text-text-muted mb-1 flex items-center justify-between text-sm">
             <span> by <span x-text="plugin.author || 'Unknown'"></span> </span>
             <span class="font-mono text-xs" x-text="'v' + plugin.currentVersion"></span>
           </div>
-          <p class="mb-3 text-sm text-gray-600 dark:text-gray-300" x-text="plugin.description"></p>
+          <p class="text-text-muted mb-3 text-sm" x-text="plugin.description"></p>
           <template x-if="plugin.repository">
             <a
               :href="plugin.repository + (plugin.repositoryPath ? '/tree/main/' + plugin.repositoryPath : '')"
               target="_blank"
-              class="text-primary-600 dark:text-primary-400 inline-flex items-center gap-1 text-sm font-medium hover:underline">
+              class="text-primary-light inline-flex items-center gap-1 text-sm font-medium hover:underline">
               <i class="fa-brands fa-github"></i>
               <%=tr("ADMIN_PAGE.VIEW_SOURCE")%>
             </a>
           </template>
         </div>
-        <div class="mt-4 flex justify-end border-t border-gray-200 pt-4 dark:border-gray-700">
+        <div class="border-border mt-4 flex justify-end border-t pt-4">
           <button
             x-show="plugin.installed && plugin.name !== 'core'"
             @click="uninstallPlugin(plugin)"
             :disabled="(unInstallingPlugin && unInstallingPlugin !== plugin.name) || plugin.enabled"
-            class="min-w-[80px] rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50">
+            class="bg-error-dark hover:bg-error-dark min-w-[80px] rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50">
             <span x-show="unInstallingPlugin === plugin.name"><%=tr("ADMIN_PAGE.UNINSTALLING")%></span>
             <span x-show="unInstallingPlugin !== plugin.name" x-text="'<%=tr(`ADMIN_PAGE.UNINSTALL`)%>'"></span>
           </button>
@@ -220,7 +218,7 @@
             x-show="!plugin.installed && plugin.name !== 'core'"
             @click="installPlugin(plugin)"
             :disabled="installingPlugin && installingPlugin !== plugin.name"
-            class="bg-primary-600 hover:bg-primary-700 min-w-[80px] rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50">
+            class="bg-primary hover:bg-primary-dark min-w-[80px] rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50">
             <span x-show="installingPlugin === plugin.name"><%=tr("ADMIN_PAGE.INSTALLING")%></span>
             <span x-show="installingPlugin !== plugin.name" x-text="'<%=tr(`ADMIN_PAGE.INSTALL`)%>'"></span>
           </button>
@@ -231,6 +229,6 @@
 
   <!-- Empty State -->
   <div x-show="!loading && filteredPlugins.length === 0" class="py-8 text-center">
-    <p class="text-gray-500 dark:text-gray-400"><%=tr("ADMIN_PAGE.NO_MATCH")%></p>
+    <p class="text-text-muted"><%=tr("ADMIN_PAGE.NO_MATCH")%></p>
   </div>
 </div>

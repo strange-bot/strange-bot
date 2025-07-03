@@ -2,17 +2,15 @@
   id="sidebar"
   class="transition-width fixed left-0 top-0 z-20 flex hidden h-full w-64 flex-shrink-0 flex-col overflow-y-auto pt-16 font-normal duration-75 lg:flex"
   aria-label="Sidebar">
-  <div
-    class="relative flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white pt-0 dark:border-gray-700 dark:bg-gray-800">
+  <div class="border-border bg-bg-panel relative flex min-h-0 flex-1 flex-col border-r pt-0">
     <div class="mb-[50px] flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
-      <div class="flex-1 space-y-1 divide-y divide-gray-200 bg-white px-3 dark:divide-gray-700 dark:bg-gray-800">
+      <div class="divide-border bg-bg-panel flex-1 space-y-1 divide-y px-3">
         <ul class="space-y-2 pb-2">
           <li>
             <a
               href="/dashboard"
-              class="<%= slug === 'selector' ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700">
-              <i
-                class="fa-solid fa-chart-pie text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              class="<%= slug === 'selector' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-2 text-base">
+              <i class="fa-solid fa-chart-pie text-text-muted group-hover:text-text"></i>
               <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.SELECTOR') %></span>
             </a>
           </li>
@@ -21,9 +19,8 @@
           <li>
             <a
               href="/dashboard/<%=guild.id%>"
-              class="<%= slug === 'home' ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700">
-              <i
-                class="fa-solid fa-house text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              class="<%= slug === 'home' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-2 text-base">
+              <i class="fa-solid fa-house text-text-muted group-hover:text-text"></i>
               <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.HOME') %></span>
             </a>
           </li>
@@ -32,11 +29,10 @@
           <li>
             <button
               type="button"
-              class="group flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+              class="text-text hover:bg-bg-surface group flex w-full items-center rounded-lg p-2 text-base transition duration-75"
               aria-controls="dropdown-plugins"
               data-collapse-toggle="dropdown-plugins">
-              <i
-                class="fa-solid fa-plug text-xl text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"></i>
+              <i class="fa-solid fa-plug text-text-muted group-hover:text-text text-xl"></i>
               <span class="ml-3 flex-1 whitespace-nowrap text-left text-sm md:text-base" sidebar-toggle-item
                 ><%= tr('SIDEBAR.PLUGINS') %></span
               >
@@ -48,8 +44,8 @@
               <li id="<%= slug.includes(plugin.name) ? 'aside-active-item' : '' %>">
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="<%= slug.includes(plugin.name) ? 'bg-gray-100 dark:bg-gray-700' : '' %> group flex items-center rounded-lg p-2 pl-11 text-sm text-gray-900 transition duration-75 hover:bg-gray-100 md:text-base dark:text-gray-200 dark:hover:bg-gray-700"
-                  ><%=name%></a
+                  class="<%= slug.includes(plugin.name) ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-2 pl-11 text-sm transition duration-75 md:text-base">
+                  <%=name%></a
                 >
               </li>
               <% }); %>

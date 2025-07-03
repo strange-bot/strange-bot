@@ -26,16 +26,33 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    50: "#eff6ff",
-                    100: "#dbeafe",
-                    200: "#bfdbfe",
-                    300: "#93c5fd",
-                    400: "#60a5fa",
-                    500: "#3b82f6",
-                    600: "#2563eb",
-                    700: "#1d4ed8",
-                    800: "#1e40af",
-                    900: "#1e3a8a",
+                    light: "var(--c-primary-light)", // Light shade of primary
+                    DEFAULT: "var(--c-primary)", // Default primary color
+                    dark: "var(--c-primary-dark)", // Dark shade of primary (used for hover)
+                },
+                success: {
+                    light: "var(--c-success-light)", // Light shade of success
+                    DEFAULT: "var(--c-success)", // Default success color
+                    dark: "var(--c-success-dark)", // Dark shade of success (used for hover)
+                },
+                error: {
+                    light: "var(--c-error-light)", // Light shade of error
+                    DEFAULT: "var(--c-error)", // Default error color
+                    dark: "var(--c-error-dark)", // Dark shade of error (used for hover)
+                },
+
+                border: "var(--c-border)", // borders and separators
+
+                bg: {
+                    page: "var(--c-bg)", // Page background
+                    panel: "var(--c-bg-alt)", // Cards, panels, sidebar
+                    interactive: "var(--c-bg-active)", // Active sidebar, inputs, textareas
+                    surface: "var(--c-surface)", // Overlays like dropdowns, tooltips
+                },
+
+                text: {
+                    DEFAULT: "var(--c-text)", // Default text color
+                    muted: "var(--c-text-muted)", // Muted or secondary text color
                 },
             },
             fontFamily: {

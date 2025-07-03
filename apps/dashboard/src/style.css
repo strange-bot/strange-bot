@@ -7,7 +7,7 @@
     width: 8px; /* Set the width of the scrollbar */
 }
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(74, 85, 104, 0.9); /* Customize the thumb color */
+    background-color: var(--c-border); /* Use border variable */
     border-radius: 4px; /* Round the corners */
 }
 ::-webkit-scrollbar-track {
@@ -17,10 +17,72 @@
 /* For Firefox */
 * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(74, 85, 104, 0.9) transparent;
+    scrollbar-color: var(--c-border) transparent; /* Use border variable */
 }
 
 /* Hide elements with the x-cloak attribute until Alpine.js is ready */
 [x-cloak] { 
     display: none !important; 
+}
+
+:root {
+  --c-primary-light: #3b82f6; /* Slightly brighter blue for better contrast */
+  --c-primary: #2563eb; /* Default primary blue */
+  --c-primary-dark: #1e40af; /* Darker blue for hover states */
+
+  --c-success-light: #22c55e; /* Brighter green for success */
+  --c-success: #16a34a; /* Default success green */
+  --c-success-dark: #15803d; /* Darker green for hover states */
+
+  --c-error-light: #f87171; /* Brighter red for error */
+  --c-error: #ef4444; /* Default error red */
+  --c-error-dark: #dc2626; /* Darker red for hover states */
+
+  --c-warning-light: #facc15; /* Brighter yellow for warning */
+  --c-warning: #f59e0b; /* Default warning yellow */
+  --c-warning-dark: #d97706; /* Darker yellow for hover states */
+
+  --c-info-light: #93c5fd; /* Brighter blue for info */
+  --c-info: #60a5fa; /* Default info blue */
+  --c-info-dark: #3b82f6; /* Darker blue for hover states */
+
+  --c-bg: #f8fafc; /* Light mode page background */
+  --c-bg-alt: #e2e8f0; /* Light mode panel background */
+  --c-bg-active: #cbd5e1; /* Light mode active background */
+  --c-surface: #e2e8f0; /* Light mode surface background */
+  --c-border: #cbd5e1; /* Light mode border */
+
+  --c-text: #1e293b; /* Light mode text */
+  --c-text-muted: #64748b; /* Light mode muted text */
+}
+
+.dark {
+  --c-primary-light: #2563eb; /* bg-gray-600 */
+  --c-primary: #1d4ed8; /* bg-gray-700 */
+  --c-primary-dark: #1e40af; /* bg-gray-800 */
+
+  --c-success-light: #16a34a; /* green-600 */
+  --c-success: #15803d; /* green-700 */
+  --c-success-dark: #166534; /* green-800 */
+
+  --c-error-light: #f87171; /* red-600 */
+  --c-error: #ef4444; /* red-700 */
+  --c-error-dark: #dc2626; /* red-800 */
+
+  --c-warning-light: #fbbf24; /* yellow-600 */
+  --c-warning: #f59e0b; /* yellow-700 */
+  --c-warning-dark: #d97706; /* yellow-800 */
+
+  --c-info-light: #60a5fa; /* blue-600 */
+  --c-info: #3b82f6; /* blue-700 */
+  --c-info-dark: #2563eb; /* blue-800 */
+
+  --c-bg: #111827; /* bg-gray-900 */
+  --c-bg-alt: #1f2937; /* bg-gray-800 */
+  --c-bg-active: #374151; /* bg-gray-700 */
+  --c-surface: #334155;  /* bg-gray-600 */
+  --c-border: #475569;
+
+  --c-text: #f8fafc;
+  --c-text-muted: #94a3b8;
 }
