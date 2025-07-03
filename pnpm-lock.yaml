@@ -88,6 +88,9 @@ importers:
       ejs:
         specifier: ^3.1.10
         version: 3.1.10
+      execa:
+        specifier: ^5.1.1
+        version: 5.1.1
       express:
         specifier: ^4.21.2
         version: 4.21.2
