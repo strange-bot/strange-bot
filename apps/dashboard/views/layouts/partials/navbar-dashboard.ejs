@@ -21,21 +21,32 @@
         </a>
       </div>
       <div class="flex items-center">
-        <!-- Search mobile -->
-        <button
-          id="theme-toggle"
-          data-tooltip-target="tooltip-toggle"
-          type="button"
-          class="text-text-muted hover:bg-bg-surface focus:ring-surface rounded-lg p-2.5 text-sm focus:outline-none focus:ring-4">
-          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden h-5 w-5"></i>
-          <i id="theme-toggle-light-icon" class="fas fa-sun hidden h-5 w-5"></i>
-        </button>
+        <!-- Dark Mode Toggle -->
         <div
-          id="tooltip-toggle"
-          role="tooltip"
-          class="tooltip bg-bg-surface text-text invisible absolute z-10 inline-block rounded-lg px-3 py-2 text-sm font-medium opacity-0 shadow-sm transition-opacity duration-300">
-          <%= tr('NAV.TIP_DARK_MODE') %>
-          <div class="tooltip-arrow" data-popper-arrow></div>
+          x-data="{
+  darkMode: localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches),
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    localStorage.setItem('color-theme', this.darkMode ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', this.darkMode);
+  }
+}"
+          x-init="document.documentElement.classList.toggle('dark', darkMode)"
+          class="ml-4 flex items-center">
+          <button
+            @click="toggleDarkMode"
+            data-tooltip-target="tooltip-toggle-dark-mode"
+            class="text-text-muted hover:bg-bg-surface focus:ring-surface rounded-lg p-2.5 text-sm focus:outline-none focus:ring-4">
+            <i x-show="!darkMode" x-cloak class="fas fa-moon h-5 w-5"></i>
+            <i x-show="darkMode" x-cloak class="fas fa-sun h-5 w-5"></i>
+          </button>
+          <div
+            id="tooltip-toggle-dark-mode"
+            role="tooltip"
+            class="tooltip bg-bg-surface text-text invisible absolute z-10 inline-block rounded-lg px-3 py-2 text-sm font-medium opacity-0 shadow-sm transition-opacity duration-300">
+            <%= tr('NAV.TIP_DARK_MODE') %>
+            <div class="tooltip-arrow" data-popper-arrow></div>
+          </div>
         </div>
 
         <!-- Profile -->
