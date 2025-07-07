@@ -2,7 +2,13 @@
 <nav class="border-border bg-bg-page border-b">
   <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
     <a href="/" class="flex items-center space-x-3">
-      <span class="text-text self-center whitespace-nowrap text-2xl font-semibold">Strange Bot</span>
+      <img
+        src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>"
+        class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
+        alt="Strange Logo" />
+      <span class="text-text self-center whitespace-nowrap text-lg font-semibold sm:text-xl md:text-2xl">
+        <%= coreConfig['DASHBOARD']['LOGO_NAME'] %>
+      </span>
     </a>
     <button
       data-collapse-toggle="navbar-default"
@@ -97,12 +103,10 @@
       <a
         href="https://github.com/strange-bot/strange-bot"
         target="_blank"
-        class="border-border text-text hover:bg-bg-panel focus:ring-bg-interactive inline-flex items-center justify-center rounded-lg border px-6 py-3 text-base font-medium transition-all duration-300 focus:ring-4 hover:border-primary"
-      >
+        class="border-border text-text hover:bg-bg-panel focus:ring-bg-interactive hover:border-primary inline-flex items-center justify-center rounded-lg border px-6 py-3 text-base font-medium transition-all duration-300 focus:ring-4">
         <svg class="mr-2 h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
           <path
-            d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.16-.01-2.11-3.2.69-3.88-1.39-3.88-1.39-.53-1.34-1.3-1.7-1.3-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.45.11-3.02 0 0 .97-.31 3.18 1.18a11.1 11.1 0 012.9-.39c.98.01 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.57.23 2.73.11 3.02.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.41-5.27 5.7.42.37.8 1.1.8 2.22 0 1.6-.01 2.89-.01 3.28 0 .31.2.68.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z"
-          />
+            d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.16-.01-2.11-3.2.69-3.88-1.39-3.88-1.39-.53-1.34-1.3-1.7-1.3-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.45.11-3.02 0 0 .97-.31 3.18 1.18a11.1 11.1 0 012.9-.39c.98.01 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.57.23 2.73.11 3.02.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.41-5.27 5.7.42.37.8 1.1.8 2.22 0 1.6-.01 2.89-.01 3.28 0 .31.2.68.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z" />
         </svg>
         View on GitHub
       </a>
@@ -113,7 +117,7 @@
 
 <!-- Features Section -->
 <section id="features" class="fade-in mx-auto max-w-5xl translate-y-6 px-4 py-12 opacity-0 transition duration-700">
-  <h2 class="mb-10 text-center text-3xl font-bold text-white md:text-4xl">
+  <h2 class="mb-10 text-center text-3xl font-bold text-text md:text-4xl">
     Why Developers & Communities Choose Strange Bot
   </h2>
   <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">

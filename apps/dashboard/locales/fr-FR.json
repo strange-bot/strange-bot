@@ -40,7 +40,9 @@
     "TABS": {
         "SETTINGS": "Paramètres",
         "PREFIX": "Commandes de préfixe",
-        "SLASH": "Commandes barre oblique"
+        "SLASH": "Commandes barre oblique",
+        "PREFIX_SHORT": "Préfixe",
+        "SLASH_SHORT": "Barre oblique"
     },
 
     "SELECTOR": {

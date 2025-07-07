@@ -40,7 +40,9 @@
     "TABS": {
         "SETTINGS": "Settings",
         "PREFIX": "Prefix Commands",
-        "SLASH": "Slash Commands"
+        "PREFIX_SHORT": "Prefix",
+        "SLASH": "Slash Commands",
+        "SLASH_SHORT": "Slash"
     },
 
     "SELECTOR": {

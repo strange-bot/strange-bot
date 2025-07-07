@@ -2,47 +2,43 @@
   <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
     <!-- Card -->
     <div
-      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+      class="border-border bg-bg-panel hover:bg-bg-interactive flex flex-col rounded-xl border shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
           <i class="fa-solid fa-users text-primary dark:text-primary-light mr-1"></i>
-          <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200"><%= tr('HOME.MEMBERS') %></p>
+          <p class="text-text-muted text-xs uppercase tracking-wide"><%= tr('HOME.MEMBERS') %></p>
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200"><%= guild.members %></h3>
+          <h3 class="text-text text-xl font-medium sm:text-2xl"><%= guild.members %></h3>
         </div>
       </div>
     </div>
 
     <div
-      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+      class="border-border bg-bg-panel hover:bg-bg-interactive flex flex-col rounded-xl border shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
           <i class="fa-solid fa-tags text-primary dark:text-primary-light mr-1"></i>
-          <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200"><%= tr('HOME.ROLES') %></p>
+          <p class="text-text-muted text-xs uppercase tracking-wide"><%= tr('HOME.ROLES') %></p>
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200"><%= guild.roles %></h3>
+          <h3 class="text-text text-xl font-medium sm:text-2xl"><%= guild.roles %></h3>
         </div>
       </div>
     </div>
 
     <div
-      class="flex flex-col rounded-xl border bg-white shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+      class="border-border bg-bg-panel hover:bg-bg-interactive flex flex-col rounded-xl border shadow-sm transition-all duration-200 hover:scale-[1.02] hover:transform hover:shadow-md">
       <div class="p-4 md:p-5">
         <div class="flex items-center gap-x-2">
           <i class="fa-solid fa-hashtag text-primary dark:text-primary-light mr-1"></i>
-          <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-200">
-            <%= tr('HOME.TXT_CHANNELS') %>
-          </p>
+          <p class="text-text-muted text-xs uppercase tracking-wide"><%= tr('HOME.TXT_CHANNELS') %></p>
         </div>
 
         <div class="mt-1 flex items-center gap-x-2">
-          <h3 class="text-xl font-medium text-gray-800 sm:text-2xl dark:text-neutral-200">
-            <%= guild.channels.text %>
-          </h3>
+          <h3 class="text-text text-xl font-medium sm:text-2xl"><%= guild.channels.text %></h3>
         </div>
       </div>
     </div>
