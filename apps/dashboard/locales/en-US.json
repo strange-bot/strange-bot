@@ -15,9 +15,11 @@
 
     "SIDEBAR": {
         "DASHBOARD": "Dashboard",
-        "SELECTOR": "Selector",
-        "LANDING": "Landing Page",
-        "ADMIN": "Admin",
+        "SERVERS": "Servers",
+        "BACK_TO_SERVERS": "Back to Servers",
+
+        "BACK_TO_DASH": "Back to Dashboard",
+        "PLUGIN_MANAGEMENT": "Plugin Management",
         "LOCALES": "Localization",
         "HOME": "Home",
         "PLUGINS": "Plugins",

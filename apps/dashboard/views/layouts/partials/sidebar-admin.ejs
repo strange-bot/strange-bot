@@ -7,11 +7,9 @@
       <div class="divide-border bg-bg-panel flex-1 space-y-1 divide-y px-3">
         <ul class="space-y-2 pb-2">
           <li>
-            <a
-              href="/dashboard"
-              class="<%- slug === 'dashboard' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-2 text-base">
-              <i class="fa-solid fa-chart-pie text-text-muted group-hover:text-text"></i>
-              <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.DASHBOARD') %></span>
+            <a href="/dashboard" class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-2 text-base">
+              <i class="fa-solid fa-arrow-left text-text-muted group-hover:text-text"></i>
+              <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.BACK_TO_DASH') %></span>
             </a>
           </li>
 
@@ -20,7 +18,7 @@
               href="/admin"
               class="<%- slug === 'admin' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-2 text-base">
               <i class="fa-solid fa-gears text-text-muted group-hover:text-text"></i>
-              <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.ADMIN') %></span>
+              <span class="ml-3 text-sm md:text-base" sidebar-toggle-item><%= tr('SIDEBAR.PLUGIN_MANAGEMENT') %></span>
             </a>
           </li>
 

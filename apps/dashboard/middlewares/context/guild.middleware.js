@@ -19,6 +19,7 @@ module.exports = async (req, res, next) => {
     }
 
     const guildData = req.session.user.guilds.find((guild) => guild.id === req.params.guildId);
+    res.locals.guilds = req.session.user.guilds;
     res.locals.guild = {
         ...guildData,
         getSettings: async (pluginName) => {

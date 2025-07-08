@@ -15,9 +15,11 @@
 
     "SIDEBAR": {
         "DASHBOARD": "Tableau de bord",
-        "SELECTOR": "Sélecteur",
-        "LANDING": "Page d'accueil",
-        "ADMIN": "Administrateur",
+        "SERVERS": "Serveurs",
+        "BACK_TO_SERVERS": "Retour aux serveurs",
+
+        "BACK_TO_DASH": "Retour au tableau de bord",
+        "PLUGIN_MANAGEMENT": "Gestion des plugins",
         "LOCALES": "Localisation",
         "HOME": "Maison",
         "PLUGINS": "Plugins",
