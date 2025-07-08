@@ -78,24 +78,34 @@ class BotClient extends Client {
         const patternMatch = search.match(/(\d{17,20})/);
         if (patternMatch) {
             const id = patternMatch[1];
-            const fetched = await this.users.fetch(id, { cache: true }).catch(() => {}); // check if mentions contains the ID
-            if (fetched) {
-                users.push(fetched);
+            try {
+                const fetched = await this.users.fetch(id, { cache: true }); // check if mentions contains the ID
+                if (fetched) {
+                    users.push(fetched);
+                    return users;
+                }
+            } catch (error) {
+                this.logger.error(`Failed to fetch user by ID (${id}):`, error);
                 return users;
             }
         }
 
         // check if exact tag is matched in cache
-        const matchingTags = this.users.cache.filter((user) => user.tag === search);
-        if (exact && matchingTags.size === 1) users.push(matchingTags.first());
-        else matchingTags.forEach((match) => users.push(match));
+        if (exact) {
+            const exactMatch = this.users.cache.find((user) => user.tag === search);
+            if (exactMatch) users.push(exactMatch);
+        } else {
+            this.users.cache
+                .filter((user) => user.tag === search)
+                .forEach((match) => users.push(match));
+        }
 
         // check matching username
         if (!exact) {
             this.users.cache
                 .filter(
                     (x) =>
-                        x.username === search ||
+                        x.username.toLowerCase() === search.toLowerCase() ||
                         x.username.toLowerCase().includes(search.toLowerCase()) ||
                         x.tag.toLowerCase().includes(search.toLowerCase()),
                 )

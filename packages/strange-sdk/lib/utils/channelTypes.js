@@ -1,4 +1,5 @@
 const { ChannelType } = require("discord.js");
+const Logger = require("./Logger");
 
 /**
  * Converts a Discord channel type to a readable string format
@@ -6,6 +7,11 @@ const { ChannelType } = require("discord.js");
  * @returns {string} Human readable channel type string
  */
 module.exports = (type) => {
+    if (!Object.values(ChannelType).includes(type)) {
+        Logger.warn(`Unknown channel type encountered: ${type}`);
+        return "Unknown";
+    }
+
     switch (type) {
         case ChannelType.GuildText:
             return "Guild Text";

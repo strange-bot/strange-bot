@@ -12,22 +12,25 @@ class BotUtils {
      */
     static async checkForUpdates() {
         const response = await HttpUtils.getJson(
-            "https://api.github.com/repos/saiteja-madha/discord-js-bot/releases/latest",
+            process.env.UPDATE_CHECK_URL ||
+                "https://api.github.com/repos/strange-bot/strange-bot/releases/latest",
         );
-        if (!response.success) return Logger.error("VersionCheck: Failed to check for bot updates");
+        if (!response.success) {
+            Logger.error("VersionCheck: Failed to check for bot updates");
+            return false;
+        }
         if (response.data) {
-            if (
-                require("../package.json").version.replace(/[^0-9]/g, "") >=
-                response.data.tag_name.replace(/[^0-9]/g, "")
-            ) {
+            const currentVersion = require("../package.json").version;
+            const latestVersion = response.data.tag_name;
+            if (require("semver").gte(currentVersion, latestVersion)) {
                 Logger.success("VersionCheck: Your discord bot is up to date");
             } else {
-                Logger.warn(`VersionCheck: ${response.data.tag_name} update is available`);
-                Logger.warn(
-                    "download: https://github.com/saiteja-madha/discord-js-bot/releases/latest",
-                );
+                Logger.warn(`VersionCheck: ${latestVersion} update is available`);
+                Logger.warn("download: https://github.com/strange-bot/strange-bot/releases/latest");
             }
+            return true;
         }
+        return false;
     }
 
     /**
@@ -37,8 +40,13 @@ class BotUtils {
      * @returns {Promise<import('discord.js').Message>} The sent message
      */
     static async sendWebhookMessage(webhookUrl, payload) {
-        const webhook = new WebhookClient({ url: webhookUrl });
-        return webhook.send(payload);
+        try {
+            const webhook = new WebhookClient({ url: webhookUrl });
+            return await webhook.send(payload);
+        } catch (error) {
+            Logger.error("Failed to send webhook message", error);
+            throw error;
+        }
     }
 }
 

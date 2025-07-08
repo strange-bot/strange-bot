@@ -142,9 +142,9 @@ class IPCClient {
                 data.slash = slashCommands;
             }
 
-            message.reply({
+            return message.reply({
                 success: true,
-                data,
+                data: data,
             });
         }
 

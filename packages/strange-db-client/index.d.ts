@@ -1,9 +1,10 @@
-import { Schema, Model, Document, Connection } from "mongoose";
+import { Schema, Model, Document, Connection, mongo } from "mongoose";
 import { Redis } from "ioredis";
 
 interface DatabaseOptions {
     mongoUri: string;
     redisUri: string;
+    emitRedisErrors?: boolean; // Optional property added to match implementation
 }
 
 declare class DatabaseClient {
@@ -32,8 +33,9 @@ declare class DatabaseClient {
 
     /**
      * Gets the MongoDB client.
+     * @returns {mongo.MongoClient} The MongoDB client instance.
      */
-    getMongoClient(): any;
+    getMongoClient(): mongo.MongoClient;
 
     /**
      * Gets the name of the MongoDB database.
@@ -87,6 +89,7 @@ declare class DatabaseClient {
      * Gets a value from the cache.
      * @param {string} key The key to get the value from.
      * @param {number} [ttl] The time-to-live in seconds. This is used to refresh the cache.
+     * @returns {Promise<any | undefined>} The cached value or undefined if not found.
      */
     getFromCache(key: string, ttl?: number): Promise<any | undefined>;
 

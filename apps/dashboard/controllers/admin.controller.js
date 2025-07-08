@@ -91,7 +91,7 @@ module.exports.updatePlugins = async function (req, res) {
                 break;
             }
 
-            case "update":
+            case "update": {
                 if (req.app.pluginManager.isPluginEnabled(pluginName)) {
                     await req.app.pluginManager.disablePlugin(pluginName);
                     const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
@@ -100,21 +100,21 @@ module.exports.updatePlugins = async function (req, res) {
                     });
                     if (ipcResp.find((r) => !r.success)) {
                         await req.app.pluginManager.enablePlugin(pluginName);
-                        throw new Error("Failed to disable plugin on other instances");
+                        throw new Error("Failed to disable plugin for update");
                     }
                 }
-                await req.app.pluginManager.uninstallPlugin(pluginName);
-                await req.app.pluginManager.installPlugin(pluginName);
+                await req.app.pluginManager.updatePlugin(pluginName);
                 break;
+            }
 
             default:
-                throw new Error(`Invalid action: ${action}`);
+                throw new Error("Invalid action");
         }
 
-        res.json({ success: true });
+        res.sendStatus(200);
     } catch (error) {
-        req.app.logger.error("Failed to update plugin", error);
-        return res.status(500).json({ error: error.message });
+        req.app.logger.error("updatePlugins", error);
+        res.status(500).json({ error: error.message });
     }
 };
 

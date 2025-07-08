@@ -64,7 +64,7 @@
         "BTN_PLUGIN_ACTIVE": "Actif",
         "BTN_PLUGIN_ENABLE": "Activer",
 
-        "PLUGIN_ENABLE_CONFIRM": "Etes-vous sûr de vouloir activer ce plugin ?",
+        "PLUGIN_ENABLE_CONFIRM": "Êtes-vous sûr de vouloir activer ce plugin ?",
         "PLUGIN_CONFIRM_YES": "Oui, j'en suis sûr",
         "PLUGIN_CONFIRM_NO": "Non, annuler"
     },
@@ -85,7 +85,7 @@
 
     "LOCALES_PAGE": {
         "TITLE": "Localisations",
-        "DESCRIPTION": "Gérer les plugins installés/activés.",
+        "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
         "APP_SELECT": "Sélectionnez l'application",
         "PLUGIN_SELECT": "Sélectionner un plugin",
         "LOCALE_SELECT": "Sélectionner une langue",

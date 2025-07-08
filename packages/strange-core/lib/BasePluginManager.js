@@ -282,8 +282,8 @@ class BasePluginManager {
                         stdio: "pipe",
                         env: {
                             ...process.env,
-                            PNPM_WORKSPACE_DIR: path.resolve(__dirname, "../../../..")
-                        }
+                            PNPM_WORKSPACE_DIR: path.resolve(__dirname, "../../../.."),
+                        },
                     },
                 );
             } catch (error) {
