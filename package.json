@@ -15,7 +15,7 @@
         "dev": "pnpm --parallel run dev",
         "dev:bot": "pnpm --filter bot dev",
         "dev:dashboard": "pnpm --filter dashboard dev",
-        "format": "prettier --write 'apps/**/*.{js,json,ejs}' 'plugins/**/*.{js,json,ejs}'",
+        "format": "prettier --write 'apps/**/*.{js,json,ejs}' 'plugins/**/*.{js,json,ejs}' 'packages/**/*.{js,json}'",
         "lint": "eslint --fix ."
     },
     "homepage": "",
