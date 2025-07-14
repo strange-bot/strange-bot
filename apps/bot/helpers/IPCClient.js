@@ -244,12 +244,13 @@ class IPCClient {
         }
 
         const plugin = this.discordClient.pluginManager.getPlugin(pluginName);
-        if (!plugin?.ipcHandler?.[eventName]) {
+        if (!plugin?.ipcEvents?.has(eventName)) {
             return message.reply({ success: false, error: "Handler not found" });
         }
 
         try {
-            const data = await plugin.ipcHandler[eventName](payload, this.discordClient);
+            const handler = plugin.ipcEvents.get(eventName);
+            const data = await handler(payload, this.discordClient);
             return message.reply({
                 success: true,
                 data: data,

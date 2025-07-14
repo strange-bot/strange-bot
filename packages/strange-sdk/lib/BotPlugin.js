@@ -17,7 +17,6 @@ class BotPlugin {
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
-        this.ipcHandler = data.ipcHandler || {};
         this.dbService = data.dbService || new DBService(this.name);
 
         this.onEnable = data.onEnable || null;
@@ -26,6 +25,7 @@ class BotPlugin {
         this.onGuildDisable = data.onGuildDisable || null;
 
         this.eventHandlers = new Map();
+        this.ipcEvents = new Map();
         this.commands = new Set();
         this.contexts = new Set();
         this.prefixCount = 0;
@@ -60,7 +60,7 @@ class BotPlugin {
         }
     }
 
-    async disable() {
+    async disable(botClient) {
         this.eventHandlers.clear();
         this.commands.clear();
         this.contexts.clear();
@@ -69,7 +69,7 @@ class BotPlugin {
         await this.dbService?.destroy();
 
         if (this.onDisable) {
-            await this.onDisable();
+            await this.onDisable(botClient);
         }
     }
 
@@ -100,6 +100,25 @@ class BotPlugin {
             }
 
             this.eventHandlers.set(event, eventHandler);
+        }
+
+        // Load IPC events
+        const ipcEventHandlerPath = `${this.baseDir}/events/ipc`;
+        this.ipcEvents = new Map();
+        if (fs.existsSync(ipcEventHandlerPath)) {
+            const ipcEventFiles = fs
+                .readdirSync(ipcEventHandlerPath)
+                .filter((file) => file.endsWith(".js"));
+            for (const file of ipcEventFiles) {
+                const event = file.split(".")[0];
+                const eventHandler = require(`${ipcEventHandlerPath}/${file}`);
+                if (typeof eventHandler !== "function" && typeof eventHandler !== "object") {
+                    throw new Error(
+                        `IPC event handler for event ${event} must be a function or object`,
+                    );
+                }
+                this.ipcEvents.set(event, eventHandler);
+            }
         }
     }
 
@@ -198,10 +217,6 @@ class BotPlugin {
 
         if (data.onGuildDisable && typeof data.onGuildDisable !== "function") {
             throw new Error("BotPlugin onGuildDisable must be a function");
-        }
-
-        if (data.ipcHandler && typeof data.ipcHandler !== "object") {
-            throw new Error("BotPlugin ipcHandler must be an object");
         }
 
         if (data.dbService && !(data.dbService instanceof DBService)) {

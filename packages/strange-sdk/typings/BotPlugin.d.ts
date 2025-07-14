@@ -13,9 +13,6 @@ import { DBClient, Model, Schema, Document } from "strange-db-client";
 import { Config, SaveableConfig } from "./Config";
 import { DBService } from "./DBService";
 
-interface IPCHandler {
-    [key: string]: (message: any, client: Client) => Promise<any>;
-}
 
 interface PluginData {
     /**
@@ -37,12 +34,6 @@ interface PluginData {
      * @example ["moderation", "logging"]
      */
     dependencies?: string[];
-
-    /**
-     * Object containing IPC message handlers for inter-process communication
-     * Each key is a message type and the value is its handler function
-     */
-    ipcHandler?: IPCHandler;
 
     /**
      * Database service implementation for the plugin
@@ -96,9 +87,6 @@ declare class BotPlugin {
 
     /** List of other plugins this plugin depends on */
     public readonly dependencies: string[];
-
-    /** Object containing IPC message handlers for inter-process communication */
-    public readonly ipcHandler: IPCHandler;
 
     /** Optional function that runs when plugin is enabled */
     public readonly onEnable: ((client: Client) => Promise<void>) | null;
@@ -156,9 +144,10 @@ declare class BotPlugin {
 
     /**
      * Unloads the plugin by unregistering events, commands, and schemas
+     * @param botClient Discord.js client instance
      * @returns Promise that resolves when unloading is complete
      */
-    public disable(): Promise<void>;
+    public disable(botClient: Client): Promise<void>;
 
     /**
      * Gets plugin settings for a specific guild
@@ -289,4 +278,4 @@ interface ContextType {
     run(ctx: ContextMenuCommandInteractionContext): Promise<any>;
 }
 
-export { IPCHandler, BotPlugin, CommandType, ContextType };
+export { BotPlugin, CommandType, ContextType };

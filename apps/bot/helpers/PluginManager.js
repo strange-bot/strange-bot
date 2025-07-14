@@ -92,7 +92,7 @@ class PluginManager extends BasePluginManager {
         }
 
         await this.client.commandManager.updatePluginStatus(pluginName, false);
-        await plugin.disable();
+        await plugin.disable(this.client);
     }
 
     async enableInGuild(pluginName, guildId) {
