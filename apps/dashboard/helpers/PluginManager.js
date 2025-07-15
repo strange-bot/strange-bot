@@ -52,28 +52,40 @@ class PluginManager extends BasePluginManager {
         const pluginDir = path.join(this.pluginsDir, pluginName);
         const entry = path.join(pluginDir, "dashboard");
 
-        // Load plugin translations first
-        await this.app.i18n.loadPluginTranslations(pluginName);
+        try {
+            // Load plugin translations first
+            await this.app.i18n.loadPluginTranslations(pluginName);
 
-        const plugin = require(entry);
-        if (!(plugin instanceof DashboardPlugin)) {
-            throw new Error("Not a valid plugin (Does it export an instance of the Plugin class?)");
-        }
-
-        await plugin.enable(DBClient.getInstance());
-
-        // Update the core config
-        if (pluginName !== "core") {
-            const corePlugin = this.getPlugin("core");
-            const config = await corePlugin.getConfig();
-            if (!config.ENABLED_PLUGINS.includes(pluginName)) {
-                config.ENABLED_PLUGINS.push(pluginName);
-                await config.save(config);
+            const plugin = require(entry);
+            if (!(plugin instanceof DashboardPlugin)) {
+                throw new Error(
+                    "Not a valid plugin (Does it export an instance of the Plugin class?)",
+                );
             }
-        }
 
-        this.setPlugin(pluginName, plugin);
-        Logger.success(`Enabled plugin: ${pluginName}`);
+            await plugin.enable(DBClient.getInstance());
+
+            // Update the core config
+            if (pluginName !== "core") {
+                const corePlugin = this.getPlugin("core");
+                const config = await corePlugin.getConfig();
+                if (!config.ENABLED_PLUGINS.includes(pluginName)) {
+                    config.ENABLED_PLUGINS.push(pluginName);
+                    await config.save(config);
+                }
+            }
+
+            this.setPlugin(pluginName, plugin);
+            Logger.success(`Enabled plugin: ${pluginName}`);
+        } catch (error) {
+            if (error.code === "MODULE_NOT_FOUND") {
+                Logger.debug(
+                    `Plugin ${pluginDir} does not have a dashboard entry point. Skipping.`,
+                );
+                return;
+            }
+            Logger.error(`Error enabling plugin ${pluginName}:`, error);
+        }
     }
 
     async disablePlugin(pluginName) {

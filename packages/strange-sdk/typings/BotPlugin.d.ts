@@ -101,7 +101,7 @@ declare class BotPlugin {
     public readonly onGuildDisable: ((guild: Guild) => Promise<void>) | null;
 
     /** Database service instance */
-    public readonly dbService: DBService;
+    public readonly dbService: DBService | null;
 
     /** Map of Discord.js event handlers */
     public readonly eventHandlers: Map<keyof typeof Events, Function>;

@@ -17,7 +17,7 @@ class BotPlugin {
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
-        this.dbService = data.dbService || new DBService(this.name);
+        this.dbService = data.dbService || null;
 
         this.onEnable = data.onEnable || null;
         this.onDisable = data.onDisable || null;

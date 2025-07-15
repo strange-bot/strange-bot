@@ -76,7 +76,7 @@ declare class DashboardPlugin {
     public readonly adminRouter: Router | null;
 
     /** Database service instance */
-    public readonly dbService: DBService;
+    public readonly dbService: DBService | null;
 
     /** Optional initialization function that runs when plugin loads */
     public readonly onEnable: (() => Promise<void>) | null;

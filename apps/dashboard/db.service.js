@@ -1,8 +1,8 @@
 const { DBService, Schema } = require("strange-sdk");
 
 class DashboardService extends DBService {
-    constructor(pluginName) {
-        super(pluginName);
+    constructor() {
+        super(__dirname);
     }
 
     defineSchemas() {
@@ -62,4 +62,4 @@ class DashboardService extends DBService {
     }
 }
 
-module.exports = new DashboardService("dashboard");
+module.exports = new DashboardService();

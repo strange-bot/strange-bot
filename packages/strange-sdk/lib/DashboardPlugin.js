@@ -18,7 +18,7 @@ class DashboardPlugin {
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
         this.dashboardRouter = data.dashboardRouter || null;
         this.adminRouter = data.adminRouter || null;
-        this.dbService = data.dbService || new DBService(this.name);
+        this.dbService = data.dbService || null;
 
         this.onEnable = data.onEnable || null;
         this.onDisable = data.onDisable || null;

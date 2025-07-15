@@ -1,8 +1,10 @@
+const path = require("path");
 const { Logger } = require("./utils");
 
 module.exports = class DBService {
-    constructor(pluginName) {
-        this.name = pluginName;
+    constructor(dirName) {
+        const packageJson = require(path.join(dirName, "package.json"));
+        this.name = packageJson.name;
         this.schemas = new Map();
         this.config = null;
         this.dbClient = null;
