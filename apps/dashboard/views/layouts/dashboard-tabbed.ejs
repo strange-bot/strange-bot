@@ -71,13 +71,13 @@
                 <% if (locals.settingsTab !== false) { %>
                 <li class="me-2" role="presentation">
                   <button
-                    class="inline-block rounded-t-lg border-b-2 p-4"
+                    class="text-text-muted hover:text-text inline-block rounded-t-lg border-b-2 border-transparent p-4"
                     id="settings-tab"
                     data-tabs-target="#settings"
                     type="button"
                     role="tab"
                     aria-controls="settings"
-                    aria-selected="false">
+                    aria-selected="true">
                     <%= tr("TABS.SETTINGS") %>
                   </button>
                 </li>
@@ -86,7 +86,7 @@
                 <% locals.tabs.forEach((tab) => { %> <% const tabId = tab.replace(/ /g, "-").toLowerCase() %>
                 <li class="me-2" role="presentation">
                   <button
-                    class="hover:border-border hover:text-text-muted inline-block rounded-t-lg border-b-2 p-4"
+                    class="text-text-muted hover:text-text inline-block rounded-t-lg border-b-2 border-transparent p-4"
                     id="<%= tabId %>-tab"
                     data-tabs-target="#<%= tabId %>"
                     type="button"
@@ -99,9 +99,10 @@
                 <% }) %> <% } %>
 
                 <!-- Prefix Commands Tab -->
+                <% if (pluginCmds.prefix && pluginCmds.prefix.length > 0) { %>
                 <li class="me-2" role="presentation">
                   <button
-                    class="hover:border-border hover:text-text-muted inline-block rounded-t-lg border-b-2 p-4"
+                    class="text-text-muted hover:text-text inline-block rounded-t-lg border-b-2 border-transparent p-4"
                     id="prefix-commands-tab"
                     data-tabs-target="#prefix-commands"
                     type="button"
@@ -112,11 +113,13 @@
                     <span class="sm:hidden"><%= tr("TABS.PREFIX_SHORT") %></span>
                   </button>
                 </li>
+                <% } %>
 
                 <!-- Slash Commands Tab -->
+                <% if (pluginCmds.slash && pluginCmds.slash.length > 0) { %>
                 <li class="me-2" role="presentation">
                   <button
-                    class="hover:border-border hover:text-text-muted inline-block rounded-t-lg border-b-2 p-4"
+                    class="text-text-muted hover:text-text inline-block rounded-t-lg border-b-2 border-transparent p-4"
                     id="slash-commands-tab"
                     data-tabs-target="#slash-commands"
                     type="button"
@@ -127,6 +130,7 @@
                     <span class="sm:hidden"><%= tr("TABS.SLASH_SHORT") %></span>
                   </button>
                 </li>
+                <% } %>
               </ul>
             </div>
             <div id="default-tab-content">
@@ -142,6 +146,7 @@
               <% }) %> <% } %>
 
               <!-- Prefix Commands Tab Content -->
+              <% if (pluginCmds.prefix && pluginCmds.prefix.length > 0) { %>
               <div
                 class="border-border bg-bg-panel hidden rounded-lg border p-4 shadow-sm"
                 id="prefix-commands"
@@ -208,13 +213,15 @@
                         type="submit"
                         :disabled="saving"
                         class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 disabled:opacity-50">
-                        <span x-text="saving ? '<%= tr('SAVING') %>' : '<%= tr('BTN_SAVE') %>'"></span>
+                        <span x-text="saving ? '<%= tr('BTN_SAVING') %>' : '<%= tr('BTN_SAVE') %>'"></span>
                       </button>
                     </div>
                   </div>
                 </form>
               </div>
+              <% } %>
               <!-- Slash Commands Tab Content -->
+              <% if (pluginCmds.slash && pluginCmds.slash.length > 0) { %>
               <div
                 class="border-border bg-bg-panel hidden rounded-lg border p-4 shadow-sm"
                 id="slash-commands"
@@ -279,12 +286,13 @@
                         type="submit"
                         :disabled="saving"
                         class="bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 disabled:opacity-50">
-                        <span x-text="saving ? '<%= tr('SAVING') %>' : '<%= tr('BTN_SAVE') %>'"></span>
+                        <span x-text="saving ? '<%= tr('BTN_SAVING') %>' : '<%= tr('BTN_SAVE') %>'"></span>
                       </button>
                     </div>
                   </div>
                 </form>
               </div>
+              <% } %>
             </div>
           </section>
         </main>
