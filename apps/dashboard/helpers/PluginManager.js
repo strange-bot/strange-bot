@@ -135,7 +135,7 @@ class PluginManager extends BasePluginManager {
         }
 
         const core = this.getPlugin("core");
-        const settings = await core.getSettings(guildId);
+        const settings = await core.dbService.getSettings(guildId);
         const enabledPlugins = settings.enabled_plugins || [];
 
         if (!enabledPlugins.includes(pluginName)) {
@@ -155,7 +155,7 @@ class PluginManager extends BasePluginManager {
         }
 
         const core = this.getPlugin("core");
-        const settings = await core.getSettings(guildId);
+        const settings = await core.dbService.getSettings(guildId);
         const enabledPlugins = settings.enabled_plugins || [];
 
         if (enabledPlugins.includes(pluginName)) {

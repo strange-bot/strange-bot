@@ -255,9 +255,10 @@ class CommandManager {
 
         // Get enabled plugins for this guild
         let guildEnabledPlugins = [];
+        const corePlugin = this.client.pluginManager.getPlugin("core");
         if (!force) {
             try {
-                const guildSettings = await guild.getSettings("core");
+                const guildSettings = await corePlugin.dbService.getSettings(guildId);
                 guildEnabledPlugins = guildSettings.enabled_plugins || [];
             } catch (error) {
                 Logger.debug(`Could not get enabled plugins for guild ${guild.name}:`, error);

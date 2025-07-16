@@ -73,10 +73,6 @@ class BotPlugin {
         }
     }
 
-    async getSettings(guild) {
-        return this.dbService?.getSettings(guild) || {};
-    }
-
     async getConfig() {
         return await this.config.get();
     }

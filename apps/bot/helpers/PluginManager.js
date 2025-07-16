@@ -143,7 +143,7 @@ class PluginManager extends BasePluginManager {
         try {
             const guild = args.find((arg) => arg && arg.guild)?.guild;
             if (guild) {
-                const coreSettings = await guild.getSettings("core");
+                const coreSettings = await this.getPlugin("core").dbService.getSettings(guild);
                 if (coreSettings && Array.isArray(coreSettings.enabled_plugins)) {
                     enabled_plugins = coreSettings.enabled_plugins;
                 }

@@ -47,9 +47,10 @@ module.exports.serverSelector = async function (req, res) {
  * @param {import('express').Response} res
  */
 module.exports.homePage = async function (req, res) {
+    const corePlugin = req.app.pluginManager.getPlugin("core");
     const [coreSettings, coreConfig] = await Promise.all([
-        req.app.pluginManager.getPlugin("core").getSettings(req.params.guildId),
-        req.app.pluginManager.getPlugin("core").getConfig(),
+        corePlugin.dbService.getSettings(req.params.guildId),
+        corePlugin.getConfig(),
     ]);
 
     const enabledPlugins = req.app.pluginManager.plugins.filter((p) =>

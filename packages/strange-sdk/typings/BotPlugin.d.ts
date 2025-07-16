@@ -150,13 +150,6 @@ declare class BotPlugin {
     public disable(botClient: Client): Promise<void>;
 
     /**
-     * Gets plugin settings for a specific guild
-     * @param guild The guild or guild ID
-     * @returns The guild-specific settings
-     */
-    public getSettings(guild: Guild | string): Promise<Model | object>;
-
-    /**
      * Retrieves the plugin's configuration
      * @returns Configuration object with save method
      */

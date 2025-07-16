@@ -16,8 +16,17 @@ Guild.prototype.getT = function (key, args) {
     return tFunction(key, args);
 };
 
+/**
+ * Get settings for a specific plugin
+ * @param {string} pluginName
+ * @returns {Promise<object>} - The settings object for the plugin
+ */
 Guild.prototype.getSettings = async function (pluginName) {
-    return await this.client.pluginManager.getPlugin(pluginName)?.getSettings(this);
+    const plugin = this.client.pluginManager.getPlugin(pluginName);
+    if (!plugin || !plugin.dbService || typeof plugin.dbService.getSettings !== "function") {
+        return null;
+    }
+    return plugin.dbService.getSettings(this);
 };
 
 /**

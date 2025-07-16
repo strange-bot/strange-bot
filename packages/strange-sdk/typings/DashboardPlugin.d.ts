@@ -108,13 +108,6 @@ declare class DashboardPlugin {
     public disable(): Promise<void>;
 
     /**
-     * Gets plugin settings for a specific guild
-     * @param guild The guild or guild ID
-     * @returns The guild-specific settings
-     */
-    public getSettings(guild: Guild | string): Promise<object>;
-
-    /**
      * Retrieves the plugin's configuration
      * @returns Configuration object with save method
      */

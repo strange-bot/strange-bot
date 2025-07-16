@@ -76,7 +76,7 @@ module.exports.dashboard = async (req, res, next) => {
 
                 const coreSettings = await req.app.pluginManager
                     .getPlugin("core")
-                    .getSettings(guildId);
+                    .dbService.getSettings(guildId);
 
                 coreSettings.disabled_prefix = Array.from(disabled);
                 await coreSettings.save();
@@ -112,7 +112,7 @@ module.exports.dashboard = async (req, res, next) => {
 
                 const coreSettings = await req.app.pluginManager
                     .getPlugin("core")
-                    .getSettings(guildId);
+                    .dbService.getSettings(guildId);
                 coreSettings.disabled_slash = Array.from(disabled);
                 await coreSettings.save();
 
@@ -130,9 +130,8 @@ module.exports.dashboard = async (req, res, next) => {
         return req.app.ipcServer.broadcast(event, data);
     };
 
-    const [settings, coreSettings, config] = await Promise.all([
-        req.app.pluginManager.getPlugin(pluginName).getSettings(guildId),
-        req.app.pluginManager.getPlugin("core").getSettings(guildId),
+    const [coreSettings, config] = await Promise.all([
+        req.app.pluginManager.getPlugin("core").dbService.getSettings(guildId),
         plugin.getConfig(),
     ]);
 
@@ -159,7 +158,6 @@ module.exports.dashboard = async (req, res, next) => {
     res.locals.plugin = plugin;
     res.locals.pluginCmds = pluginCmds;
     res.locals.config = config;
-    res.locals.settings = settings;
 
     res.locals.title = title;
     res.locals.slug = `/plugins/${plugin.name}`;

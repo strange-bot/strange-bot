@@ -23,7 +23,9 @@ module.exports = async (req, res, next) => {
     res.locals.guild = {
         ...guildData,
         getSettings: async (pluginName) => {
-            return await req.app.pluginManager.getPlugin(pluginName).getSettings(guildData.id);
+            return await req.app.pluginManager
+                .getPlugin(pluginName)
+                .dbService.getSettings(guildData.id);
         },
     };
     next();
