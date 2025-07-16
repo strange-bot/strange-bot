@@ -1,15 +1,13 @@
 const express = require("express");
 const fs = require("node:fs");
 const path = require("node:path");
-const { DBClient } = require("strange-db-client");
-const MongoStore = require("connect-mongo");
 const { Logger } = require("strange-sdk/utils");
 const PluginManager = require("./helpers/PluginManager");
 const { I18nManager } = require("strange-core");
 
 // Middlewares
 const expressLayouts = require("express-ejs-layouts");
-const session = require("express-session");
+const sessionMiddleware = require("./middlewares/session.middleware");
 const baseMiddleware = require("./middlewares/context/base.middleware");
 const { CheckAuth, CheckAdmin } = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
@@ -73,22 +71,7 @@ module.exports = class App {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(expressLayouts);
         this.app.use(express.static(path.join(__dirname, "/public")));
-        this.app.use(
-            session({
-                secret: process.env.SESSION_SECRET,
-                cookie: { maxAge: 336 * 60 * 60 * 1000 },
-                name: process.env.SESSION_COOKIE,
-                resave: true,
-                saveUninitialized: false,
-                store: MongoStore.create({
-                    client: DBClient.getInstance().getMongoClient(),
-                    dbName: DBClient.getInstance().getDatabaseName(),
-                    collectionName: "dashboard.sessions",
-                    stringify: false,
-                    autoRemove: "interval",
-                }),
-            }),
-        );
+        this.app.use(sessionMiddleware());
         this.app.use(baseMiddleware);
     }
 
