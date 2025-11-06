@@ -18,11 +18,13 @@ COPY apps/bot/ ./apps/bot/
 COPY packages/ ./packages/
 COPY plugins/ ./plugins/
 
+# TODO: Temporarily link local packages for development
+RUN cd packages/strange-core && yarn link && \
+    cd ../strange-db-client && yarn link && \
+    cd ../strange-sdk && yarn link
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Set working directory to the bot app
-WORKDIR /app/apps/bot
-
 # Run the bot
-CMD ["pnpm", "start"]
+CMD ["pnpm", "start:bot"]
