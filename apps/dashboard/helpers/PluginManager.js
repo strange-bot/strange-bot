@@ -16,11 +16,9 @@ class PluginManager extends BasePluginManager {
         this.app = app;
     }
 
-    async installPlugin(pluginName) {
-        await super.installPlugin(pluginName);
-
+    async postInstall(pluginName, _targetPath, _meta) {
+        // Run Tailwind build
         try {
-            // Run Tailwind build
             await execa(
                 "pnpm",
                 [
@@ -48,7 +46,13 @@ class PluginManager extends BasePluginManager {
         }
     }
 
+    async preUninstall(_pluginName) {}
+
     async enablePlugin(pluginName) {
+        if (this.isPluginEnabled(pluginName)) {
+            throw new Error(`Plugin ${pluginName} is already enabled.`);
+        }
+
         const pluginDir = path.join(this.pluginsDir, pluginName);
         const entry = path.join(pluginDir, "dashboard");
 
@@ -113,7 +117,7 @@ class PluginManager extends BasePluginManager {
         }
 
         const plugin = this.getPlugin(pluginName);
-        if (plugin) await plugin.disable();
+        await plugin.disable();
 
         // Update the core config
         const corePlugin = this.getPlugin("core");

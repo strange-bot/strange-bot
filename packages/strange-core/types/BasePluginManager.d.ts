@@ -44,7 +44,7 @@ declare class BasePluginManager {
      * @param pluginName - Name of the plugin to set
      * @param plugin - The plugin instance
      */
-    setPlugin(pluginName: string, plugin: BotPlugin | DashboardPlugin): void;
+    setPlugin(pluginName: string, pluginInstance: BotPlugin | DashboardPlugin): void;
 
     /**
      * Remove plugin instance by name
@@ -59,16 +59,41 @@ declare class BasePluginManager {
     init(): Promise<void>;
 
     /**
-     * Enable a specific plugin
+     * Hook invoked after files are in place and dependencies installed.
+     * Override in derived classes to run plugin-specific post-install tasks
+     * (e.g. asset builds). By default it's a no-op.
      * @param pluginName - Name of the plugin to enable
-     * @throws Error if plugin is already enabled or not installed
+     * @param targetPath - Path where the plugin is installed
+     * @param meta - Metadata of the plugin
+     * @protected
      */
-    enablePlugin(pluginName: string): Promise<void>;
+    postInstall(pluginName: string, targetPath: string, meta: object): Promise<void>;
 
     /**
-     * Disable a specific plugin
+     * Hook invoked before uninstalling a plugin. Override in derived classes to run
+     * plugin-specific pre-uninstall tasks. By default it's a no-op.
      * @param pluginName - Name of the plugin to disable
      * @throws Error if plugin is core, not enabled, or has dependents
+     */
+    preUninstall(pluginName: string): Promise<void>;
+
+    /**
+     * Called after installation to enable the plugin. Override in derived classes to run
+     * plugin-specific enable tasks. By default it's a no-op.
+     * @param pluginName - Name of the plugin to enable
+     * @param targetPath - Path where the plugin is installed
+     * @param meta - Metadata of the plugin
+     */
+    enablePlugin(
+        pluginName: string,
+        targetPath: string,
+        meta: object,
+    ): Promise<BotPlugin | DashboardPlugin | void>;
+
+    /**
+     * Called before uninstallation to disable the plugin. Override in derived classes to run
+     * plugin-specific disable tasks. By default it's a no-op.
+     * @param pluginName - Name of the plugin to disable
      */
     disablePlugin(pluginName: string): Promise<void>;
 
@@ -98,8 +123,8 @@ declare class BasePluginManager {
             repository: string;
             repositoryPath?: string;
             dependencies?: string[];
-            installed: boolean;
-            enabled: boolean;
+            isInstalled: boolean;
+            isEnabled: boolean;
             currentVersion?: string;
             hasUpdate?: boolean;
         }>

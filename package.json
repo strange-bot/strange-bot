@@ -38,7 +38,14 @@
         "multipurpose",
         "multi-purpose-bot"
     ],
+    "resolutions": {
+        "discord.js": "14.19.3"
+    },
     "pnpm": {
+        "overrides": {
+                "discord.js": "14.19.3"
+            }
+        ,
         "onlyBuiltDependencies": [
             "bufferutil",
             "erlpack",

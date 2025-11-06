@@ -192,7 +192,7 @@
           </div>
           <div class="text-text-muted mb-1 flex items-center justify-between text-sm">
             <span> by <span x-text="plugin.author || 'Unknown'"></span> </span>
-            <span class="font-mono text-xs" x-text="'v' + plugin.currentVersion"></span>
+            <span class="font-mono text-xs" x-text="'v' + (plugin.installed ? plugin.currentVersion : plugin.version)"></span>
           </div>
           <p class="text-text-muted mb-3 text-sm" x-text="plugin.description"></p>
           <template x-if="plugin.repository">

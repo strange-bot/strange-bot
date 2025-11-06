@@ -17,7 +17,7 @@ class CommandManager {
      * @param {import("strange-sdk").BotPlugin} plugin - The plugin to register commands from
      */
     registerPlugin(plugin) {
-        Logger.info(`Registering commands from ${plugin.name}...`);
+        Logger.debug(`Registering commands from ${plugin.name}...`);
 
         // Register commands
         for (const cmd of plugin.commands) {
@@ -70,12 +70,13 @@ class CommandManager {
             this.contextMenus.set(ctx.name, ctx);
         }
 
-        Logger.success(
-            `Loaded ${plugin.prefixCount + plugin.slashCount} commands [${plugin.prefixCount} prefix, ${plugin.slashCount} slash]`,
-        );
-        Logger.success(
-            `Loaded ${plugin.contexts.size} contexts [${plugin.userContextsCount} user, ${plugin.messageContextsCount} message]`,
-        );
+        Logger.debug(`Plugin loaded`, {
+            name: plugin.name,
+            prefixCommands: plugin.prefixCount,
+            slashCommands: plugin.slashCount,
+            userContexts: plugin.userContextsCount,
+            messageContexts: plugin.messageContextsCount,
+        });
     }
 
     /**
@@ -105,7 +106,7 @@ class CommandManager {
                 this.contextMenus.delete(ctx.name);
             });
 
-        Logger.success(`Unloaded commands and contexts from ${plugin.name}`);
+        Logger.debug(`Unloaded commands and contexts from ${plugin.name}`);
     }
 
     /**

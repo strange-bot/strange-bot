@@ -121,12 +121,12 @@
             <span
               class="bg-primary-light inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium text-white">
               <i class="fa-solid fa-terminal mr-1 text-xs"></i>
-              <%= pluginCmds[plugin.name].prefixCount %>
+              <%= pluginCmds[plugin.name]?.prefixCount || 0 %>
             </span>
             <span
               class="bg-primary-light inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium text-white">
               <i class="fa-solid fa-slash mr-1 text-xs"></i>
-              <%= pluginCmds[plugin.name].slashCount %>
+              <%= pluginCmds[plugin.name]?.slashCount || 0 %>
             </span>
           </div>
         </div>
@@ -190,14 +190,14 @@
             <span
               class="bg-primary-light text-text inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
               <i class="fa-solid fa-terminal mr-1 text-xs"></i>
-              <%= pluginCmds[plugin.name].prefixCount %>
+              <%= pluginCmds[plugin.name]?.prefixCount || 0 %>
             </span>
           </td>
           <td class="px-4 py-2">
             <span
               class="bg-primary-light inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium text-white">
               <i class="fa-solid fa-slash mr-1 text-xs"></i>
-              <%= pluginCmds[plugin.name].slashCount %>
+              <%= pluginCmds[plugin.name]?.slashCount || 0 %>
             </span>
           </td>
           <td class="text-text px-4 py-2 text-xs">v<%= plugin.version %></td>

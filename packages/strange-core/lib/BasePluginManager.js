@@ -1,7 +1,7 @@
-const fs = require("node:fs").promises;
+const fs = require("node:fs");
+const fsp = fs.promises;
 const path = require("node:path");
 const simpleGit = require("simple-git");
-const os = require("node:os");
 const crypto = require("crypto");
 const lockfile = require("proper-lockfile");
 const { Logger } = require("strange-sdk/utils");
@@ -10,13 +10,15 @@ const fetch = require("node-fetch");
 const semver = require("semver");
 
 class BasePluginManager {
-    #pluginMap = new Map();
-    #repoCache = new Map();
-
-    constructor(registryPath, pluginsDir) {
-        this.registryPath = this.#isUrl(registryPath) ? registryPath : path.resolve(registryPath);
+    constructor(registryPath, pluginsDir, options = {}) {
+        this.registryPath = this._isUrl(registryPath) ? registryPath : path.resolve(registryPath);
         this.pluginsDir = path.resolve(pluginsDir);
         this.pluginsLockDir = path.join(this.pluginsDir, ".locks");
+        this.repoCacheDir = options.repoCacheDir
+            ? path.resolve(options.repoCacheDir)
+            : path.join(this.pluginsDir, ".repo_cache");
+
+        this._pluginMap = new Map();
     }
 
     // ==============================
@@ -24,27 +26,27 @@ class BasePluginManager {
     // ==============================
 
     get plugins() {
-        return Array.from(this.#pluginMap.values()).filter((p) => p !== undefined && p !== null);
+        return Array.from(this._pluginMap.values()).filter((p) => p !== undefined && p !== null);
     }
 
     get availablePlugins() {
-        return Array.from(this.#pluginMap.keys());
+        return Array.from(this._pluginMap.keys());
     }
 
     isPluginEnabled(pluginName) {
-        return this.#pluginMap.has(pluginName);
+        return this._pluginMap.has(pluginName);
     }
 
     getPlugin(pluginName) {
-        return this.#pluginMap.get(pluginName);
+        return this._pluginMap.get(pluginName);
     }
 
-    setPlugin(pluginName, plugin) {
-        this.#pluginMap.set(pluginName, plugin);
+    setPlugin(pluginName, pluginInstance) {
+        this._pluginMap.set(pluginName, pluginInstance);
     }
 
     removePlugin(pluginName) {
-        this.#pluginMap.delete(pluginName);
+        this._pluginMap.delete(pluginName);
     }
 
     // ==============================
@@ -58,10 +60,15 @@ class BasePluginManager {
             throw new Error("Core plugin not found in registry.");
         }
 
-        // Initialize core plugin first
         if (!corePlugin.installed) {
-            await this.installPlugin("core");
+            try {
+                await this.installPlugin(corePlugin, true);
+            } catch (err) {
+                Logger.error("Failed to install core plugin. Aborting initialization.", err);
+                process.exit(1);
+            }
         }
+
         await this.enablePlugin("core");
 
         // Get enabled plugins from core config
@@ -128,14 +135,23 @@ class BasePluginManager {
                 !pluginsToSkip.includes(p.name),
         );
 
-        const loadOrder = this.#getTopologicalOrder(pluginsToEnable);
-
+        const loadOrder = this._getTopologicalOrder(pluginsToEnable);
         for (const pluginName of loadOrder) {
-            const meta = plugins.find((p) => p.name === pluginName);
+            const meta = pluginsToEnable.find((p) => p.name === pluginName);
             if (!meta.installed) {
-                await this.installPlugin(pluginName);
+                try {
+                    await this.installPlugin(pluginName, true);
+                } catch (err) {
+                    Logger.error(`Failed to install plugin ${pluginName}. Skipping.`, err);
+                    continue;
+                }
             }
-            await this.enablePlugin(pluginName);
+
+            try {
+                await this.enablePlugin(pluginName);
+            } catch (err) {
+                Logger.error(`Failed to enable plugin ${pluginName}. Skipping.`, err);
+            }
         }
 
         Logger.success(`Loaded ${this.availablePlugins.length} plugins.`);
@@ -145,11 +161,19 @@ class BasePluginManager {
     // Abstract methods to be implemented by derived classes
     // ==============================
 
+    async postInstall(pluginName, targetPath, meta) {
+        // no-op in base
+    }
+
+    async preUninstall(pluginName) {
+        // no-op in base
+    }
+
     async enablePlugin(pluginName) {
         throw new Error("Not implemented");
     }
 
-    async disbalePlugin(pluginName) {
+    async disablePlugin(pluginName) {
         throw new Error("Not implemented");
     }
 
@@ -168,7 +192,7 @@ class BasePluginManager {
     async getPluginsMeta() {
         try {
             let data;
-            if (this.#isUrl(this.registryPath)) {
+            if (this._isUrl(this.registryPath)) {
                 // Fetch registry data from URL
                 const response = await fetch(this.registryPath);
                 if (!response.ok) {
@@ -179,38 +203,25 @@ class BasePluginManager {
                 data = await response.text();
             } else {
                 // Read registry data from local file
-                data = await fs.readFile(this.registryPath, "utf8");
+                data = await fsp.readFile(this.registryPath, "utf8");
             }
 
             const registry = JSON.parse(data);
-            const installedPlugins = await fs.readdir(this.pluginsDir).catch(() => []);
+            const localMeta = await this._localPluginMeta();
 
             const pluginsMeta = await Promise.all(
                 registry.map(async (plugin) => {
-                    let currentVersion;
-                    const isInstalled = installedPlugins.includes(plugin.name);
-                    if (isInstalled) {
-                        currentVersion = this.#pluginMap.get(plugin.name)?.version;
-                        if (!currentVersion) {
-                            const packageJsonPath = path.join(
-                                this.pluginsDir,
-                                plugin.name,
-                                "package.json",
-                            );
-                            const packageJsonData = await fs.readFile(packageJsonPath, "utf8");
-                            const packageJson = JSON.parse(packageJsonData);
-                            currentVersion = packageJson.version;
-                        }
-                    } else {
-                        currentVersion = plugin.version;
-                    }
+                    const installedVersion = localMeta[plugin.name]
+                        ? localMeta[plugin.name].installedVersion
+                        : null;
 
                     return {
                         ...plugin,
-                        installed: installedPlugins.includes(plugin.name),
                         enabled: this.isPluginEnabled(plugin.name),
-                        currentVersion,
-                        hasUpdate: currentVersion && semver.lt(currentVersion, plugin.version),
+                        installed: installedVersion !== null,
+                        currentVersion: installedVersion,
+                        hasUpdate:
+                            !!installedVersion && semver.lt(installedVersion, plugin.version),
                     };
                 }),
             );
@@ -221,9 +232,9 @@ class BasePluginManager {
         }
     }
 
-    async installPlugin(pluginName) {
-        const pluginDir = path.join(this.pluginsDir, pluginName);
-        const lockPath = pluginDir + ".lock";
+    async installPlugin(pluginName, _skipVerify = false) {
+        const targetPath = path.join(this.pluginsDir, pluginName);
+        const lockPath = targetPath + ".lock";
 
         let release;
         try {
@@ -237,60 +248,71 @@ class BasePluginManager {
                 realpath: false,
             });
 
-            if (await fs.access(pluginDir).catch(() => false)) {
-                Logger.debug(`Plugin ${pluginName} is already installed. Skipping installation.`);
-                return;
-            }
+            // Fetch metadata AFTER acquiring the lock
+            const pluginsMeta = await this.getPluginsMeta();
+            const meta = pluginsMeta.find((p) => p.name === pluginName);
 
-            const data = await this.getPluginsMeta();
-            const meta = data.find((p) => p.name === pluginName);
-            if (!meta) {
-                throw new Error("Plugin not found in registry.");
-            }
+            if (!_skipVerify) {
+                if (!meta) {
+                    throw new Error("Plugin not found in registry.");
+                }
 
-            // Check dependencies
-            const missingDeps = [];
-            for (const dep of meta.dependencies || []) {
-                if (!this.#pluginMap.has(dep)) {
-                    missingDeps.push(dep);
+                const missingDeps = [];
+                for (const dep of meta.dependencies || []) {
+                    if (!this._pluginMap.has(dep)) {
+                        missingDeps.push(dep);
+                    }
+                }
+
+                if (missingDeps.length > 0) {
+                    throw new Error(
+                        `Missing dependencies for ${pluginName}: ${missingDeps.join(", ")}. Please install them first.`,
+                    );
                 }
             }
 
-            if (missingDeps.length > 0) {
-                throw new Error(
-                    `Missing dependencies for ${pluginName}: ${missingDeps.join(", ")}. Please install them first.`,
-                );
-            }
+            if (!meta.installed) {
+                await fsp.mkdir(path.dirname(lockPath), { recursive: true });
+                await fsp.rm(targetPath, { recursive: true, force: true }).catch(() => {});
+                const repoDir = await this._syncRepo(meta.repository);
+                const sourcePath = meta.repositoryPath
+                    ? path.join(repoDir, meta.repositoryPath)
+                    : repoDir;
+                await fsp.cp(sourcePath, targetPath, { recursive: true });
 
-            // Clone and copy plugin files
-            const repoDir = await this.#cloneOrUpdateRepo(meta.repository);
-            const sourcePath = meta.repositoryPath
-                ? path.join(repoDir, meta.repositoryPath)
-                : repoDir;
-            const targetPath = path.join(this.pluginsDir, meta.name);
-
-            await fs.rm(targetPath, { recursive: true, force: true }).catch(() => {});
-            await fs.cp(sourcePath, targetPath, { recursive: true });
-
-            // Install npm dependencies
-            try {
-                await execa(
-                    "pnpm",
-                    ["install", "--no-frozen-lockfile"], // Removed the --ignore-scripts flag to allow lifecycle scripts to run during dependency installation.
-                    {
+                try {
+                    // TODO: Temporary: link strange-sdk and strange-core for local dev
+                    await execa("yarn", ["link", "strange-sdk"], {
                         cwd: targetPath,
                         stdio: "pipe",
-                        env: {
-                            ...process.env,
-                            PNPM_WORKSPACE_DIR: path.resolve(__dirname, "../../../.."),
-                        },
-                    },
-                );
-            } catch (error) {
-                Logger.error(`Failed to install dependencies for ${pluginName}:`, error);
-                // Cleanup on failed install
-                await fs.rm(targetPath, { recursive: true, force: true }).catch(() => {});
-                throw error;
+                        env: { ...process.env },
+                    });
+                    await execa("yarn", ["link", "strange-core"], {
+                        cwd: targetPath,
+                        stdio: "pipe",
+                        env: { ...process.env },
+                    });
+                    await execa("yarn", ["install", "--production"], {
+                        cwd: targetPath,
+                        stdio: "pipe",
+                        env: { ...process.env },
+                    });
+                } catch (error) {
+                    Logger.error(`Failed to install dependencies for ${pluginName}:`, error);
+                    await fsp.rm(targetPath, { recursive: true, force: true }).catch(() => {});
+                    throw error;
+                }
+            } else {
+                Logger.warn(`Plugin ${pluginName} is already installed. Skipping installation.`);
+            }
+
+            // run post-install tasks (dashboard builds, etc.)
+            try {
+                await this.postInstall(pluginName, targetPath, meta);
+            } catch (err) {
+                Logger.error(`postInstall hook failed for ${pluginName}:`, err);
+                await fsp.rm(targetPath, { recursive: true, force: true }).catch(() => {});
+                throw err;
             }
         } finally {
             if (release) await release();
@@ -300,9 +322,17 @@ class BasePluginManager {
     }
 
     async uninstallPlugin(pluginName) {
+        if (this.isPluginEnabled(pluginName)) {
+            throw new Error(
+                `Cannot uninstall enabled plugin ${pluginName}. Please disable it first.`,
+            );
+        }
+
+        await this.preUninstall(pluginName);
+
         const pluginDir = path.join(this.pluginsDir, pluginName);
         // Create an empty file for locking if it doesn't exist
-        await fs.writeFile(pluginDir + ".lock", "", { flag: "a" });
+        await fsp.writeFile(pluginDir + ".lock", "", { flag: "a" });
 
         let release;
         try {
@@ -315,11 +345,8 @@ class BasePluginManager {
                 },
             });
 
-            if (this.#pluginMap.has()) {
-                throw new Error(`Plugin: ${pluginName} is enabled. Disable it first.`);
-            }
-            await fs.rm(pluginDir, { recursive: true, force: true });
-            await fs.unlink(pluginDir + ".lock").catch(() => {});
+            await fsp.rm(pluginDir, { recursive: true, force: true });
+            await fsp.unlink(pluginDir + ".lock").catch(() => {});
         } finally {
             if (release) await release();
         }
@@ -331,7 +358,7 @@ class BasePluginManager {
     // Private Utility Methods
     // ==============================
 
-    #findCycle(plugins) {
+    _findCycle(plugins) {
         const visited = new Set();
         const stack = new Set();
         const graph = new Map();
@@ -376,7 +403,7 @@ class BasePluginManager {
         return null;
     }
 
-    #getTopologicalOrder(plugins) {
+    _getTopologicalOrder(plugins) {
         // Create adjacency list and in-degree count
         const graph = new Map();
         const inDegree = new Map();
@@ -421,7 +448,7 @@ class BasePluginManager {
         }
 
         if (result.length !== plugins.length) {
-            const cycle = this.#findCycle(plugins);
+            const cycle = this._findCycle(plugins);
             throw new Error(
                 `Circular dependency detected in plugins: ${cycle.join(" -> ")} -> ${cycle[0]}`,
             );
@@ -430,14 +457,14 @@ class BasePluginManager {
         return result;
     }
 
-    async #cloneOrUpdateRepo(repository, branch = "main") {
-        const repoHash = this.#createRepoHash(repository);
-        const repoDir = path.join(os.tmpdir(), "strange-plugins", repoHash);
+    async _syncRepo(repository) {
+        const repoHash = this._createRepoHash(repository);
+        const repoDir = path.join(this.repoCacheDir, repoHash);
         const lockPath = repoDir + ".lock";
 
         // Create an empty file for locking if it doesn't exist
-        await fs.mkdir(path.dirname(repoDir), { recursive: true });
-        await fs.writeFile(lockPath, "", { flag: "a" });
+        await fsp.mkdir(path.dirname(repoDir), { recursive: true });
+        await fsp.writeFile(lockPath, "", { flag: "a" });
 
         let release;
         try {
@@ -451,37 +478,60 @@ class BasePluginManager {
             });
 
             const git = simpleGit();
-
-            if (this.#repoCache.has(repository)) {
-                try {
-                    await git.cwd(repoDir).pull("origin", branch);
-                    return repoDir;
-                } catch (error) {
-                    Logger.error(`Failed to update repo ${repository}:`, error);
-                    this.#repoCache.delete(repository);
-                }
+            if (fs.existsSync(repoDir)) {
+                await git.cwd(repoDir).pull("origin", "main");
+            } else {
+                await git.clone(repository, repoDir, ["--depth", "1", "--branch", "main"]);
             }
 
-            await fs.rm(repoDir, { recursive: true, force: true }).catch(() => {});
-            await git.clone(repository, repoDir, ["--depth", "1", "--branch", branch]);
-            this.#repoCache.set(repository, repoDir);
             return repoDir;
         } finally {
             if (release) await release();
         }
     }
 
-    #createRepoHash(repository) {
+    _createRepoHash(repository) {
         return crypto.createHash("md5").update(repository).digest("hex");
     }
 
-    #isUrl(str) {
+    _isUrl(str) {
         try {
             const url = new URL(str);
             return url.protocol === "http:" || url.protocol === "https:";
         } catch {
             return false;
         }
+    }
+
+    async _localPluginMeta() {
+        const entries = await fsp.readdir(this.pluginsDir, { withFileTypes: true });
+        const installedPlugins = entries
+            .filter((entry) => entry.isDirectory())
+            .filter((entry) => {
+                const yarnLockPath = path.join(this.pluginsDir, entry.name, "yarn.lock");
+                return fs.existsSync(yarnLockPath);
+            })
+            .map((entry) => entry.name);
+
+        const pluginMeta = {};
+        for (const pluginName of installedPlugins) {
+            let installedVersion = null;
+            try {
+                const packageJsonPath = path.join(this.pluginsDir, pluginName, "package.json");
+                const packageData = await fsp.readFile(packageJsonPath, "utf8");
+                const packageJson = JSON.parse(packageData);
+                installedVersion = packageJson.version || null;
+            } catch (error) {
+                Logger.warn(`Failed to read version for plugin ${pluginName}:`, error);
+            }
+
+            pluginMeta[pluginName] = {
+                installed: true,
+                installedVersion,
+            };
+        }
+
+        return pluginMeta;
     }
 }
 

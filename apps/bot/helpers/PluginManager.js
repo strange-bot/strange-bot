@@ -21,7 +21,15 @@ class PluginManager extends BasePluginManager {
         return this.#listeningEvents;
     }
 
+    async postInstall(_pluginName, _targetPath, _meta) {}
+
+    async preUninstall(_pluginName) {}
+
     async enablePlugin(pluginName) {
+        if (this.isPluginEnabled(pluginName)) {
+            throw new Error(`Plugin ${pluginName} is already enabled.`);
+        }
+
         const pluginDir = path.join(this.pluginsDir, pluginName);
         const entry = path.join(pluginDir, "bot");
 
@@ -77,6 +85,8 @@ class PluginManager extends BasePluginManager {
     }
 
     async disablePlugin(pluginName) {
+        // other checks & config update is handled in dashboard PluginManager
+
         const plugin = this.getPlugin(pluginName);
 
         // Update event handlers
@@ -103,6 +113,9 @@ class PluginManager extends BasePluginManager {
 
         await this.client.commandManager.updatePluginStatus(pluginName, false);
         await plugin.disable(this.client);
+
+        this.removePlugin(pluginName);
+        Logger.success(`Disabled plugin: ${pluginName}`);
     }
 
     async enableInGuild(pluginName, guildId) {

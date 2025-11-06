@@ -264,7 +264,7 @@
               alt="Bot Avatar" />
             <div>
               <div class="font-bold text-white"><%= coreConfig['DASHBOARD']['LOGO_NAME'] %></div>
-              <div class="text-[#dcddde]" x-text="<%= content %>"></div>
+              <div class="whitespace-pre-wrap text-[#dcddde]" x-text="<%= content %>"></div>
             </div>
           </div>
           <!-- Embed -->
@@ -288,7 +288,7 @@
               </template>
               <!-- Description -->
               <template x-if="<%= locals.embed?.description %>">
-                <div class="mb-3 text-[#dcddde]" x-text="<%= locals.embed?.description %>"></div>
+                <div class="mb-3 whitespace-pre-wrap text-[#dcddde]" x-text="<%= locals.embed?.description %>"></div>
               </template>
               <!-- Thumbnail -->
               <template x-if="<%= locals.embed?.thumbnail %>">
@@ -302,7 +302,7 @@
                   <template x-for="field in <%= locals.embed?.fields %>">
                     <div class="mb-2" :class="field.inline ? 'inline-block w-full' : 'col-span-2'">
                       <div class="font-bold text-white" x-text="field.name || 'Field title'"></div>
-                      <div class="text-[#dcddde]" x-text="field.value || 'Field content'"></div>
+                      <div class="whitespace-pre-wrap text-[#dcddde]" x-text="field.value || 'Field content'"></div>
                     </div>
                   </template>
                 </div>
