@@ -26,34 +26,34 @@
 }
 
 :root {
-  --c-primary-light: #3b82f6; /* Slightly brighter blue for better contrast */
-  --c-primary: #2563eb; /* Default primary blue */
-  --c-primary-dark: #1e40af; /* Darker blue for hover states */
+  --c-primary-light: #6366f1; /* Indigo-500 */
+  --c-primary: #4f46e5;       /* Indigo-600 */
+  --c-primary-dark: #4338ca;  /* Indigo-700 */
 
-  --c-success-light: #22c55e; /* Brighter green for success */
-  --c-success: #16a34a; /* Default success green */
-  --c-success-dark: #15803d; /* Darker green for hover states */
+  --c-success-light: #34d399; /* Emerald-400 */
+  --c-success: #10b981;       /* Emerald-500 */
+  --c-success-dark: #059669;  /* Emerald-600 */
 
-  --c-error-light: #f87171; /* Brighter red for error */
-  --c-error: #ef4444; /* Default error red */
-  --c-error-dark: #dc2626; /* Darker red for hover states */
+  --c-error-light: #f87171;   /* Red-400 */
+  --c-error: #ef4444;         /* Red-500 */
+  --c-error-dark: #dc2626;    /* Red-600 */
 
-  --c-warning-light: #facc15; /* Brighter yellow for warning */
-  --c-warning: #f59e0b; /* Default warning yellow */
-  --c-warning-dark: #d97706; /* Darker yellow for hover states */
+  --c-warning-light: #fde68a; /* Yellow-300 */
+  --c-warning: #fbbf24;       /* Yellow-400 */
+  --c-warning-dark: #f59e0b;  /* Yellow-500 */
 
-  --c-info-light: #93c5fd; /* Brighter blue for info */
-  --c-info: #60a5fa; /* Default info blue */
-  --c-info-dark: #3b82f6; /* Darker blue for hover states */
+  --c-info-light: #60a5fa;    /* Blue-400 */
+  --c-info: #2563eb;          /* Blue-600 */
+  --c-info-dark: #1d4ed8;     /* Blue-700 */
 
-  --c-bg: #f8fafc; /* Light mode page background */
-  --c-bg-alt: #e2e8f0; /* Light mode panel background */
-  --c-bg-active: #cbd5e1; /* Light mode active background */
-  --c-surface: #e2e8f0; /* Light mode surface background */
-  --c-border: #cbd5e1; /* Light mode border */
+  --c-bg: #f8fafc;           /* Flowbite dashboard background */
+  --c-bg-alt: #ffffff;       /* Card/panel background: pure white */
+  --c-bg-active: #f3f4f6;    /* Slightly gray for active/hover */
+  --c-surface: #ffffff;      /* Pure white for overlays */
+  --c-border: #e5e7eb;       /* Light gray for borders */
 
-  --c-text: #1e293b; /* Light mode text */
-  --c-text-muted: #64748b; /* Light mode muted text */
+  --c-text: #1e293b;         /* Gray-800, readable */
+  --c-text-muted: #6b7280;   /* Gray-500, muted */
 }
 
 .dark {

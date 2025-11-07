@@ -1,14 +1,9 @@
 <!-- Navbar -->
-<nav class="border-border bg-bg-page border-b">
+<nav class="border-border bg-bg-page sticky top-0 z-50 border-b shadow-md">
   <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
     <a href="/" class="flex items-center space-x-3">
-      <img
-        src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>"
-        class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
-        alt="Strange Logo" />
-      <span class="text-text self-center whitespace-nowrap text-lg font-semibold sm:text-xl md:text-2xl">
-        <%= coreConfig['DASHBOARD']['LOGO_NAME'] %>
-      </span>
+      <img src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>" class="h-8 w-8" alt="Nexcord Logo" />
+      <span class="text-text self-center whitespace-nowrap text-2xl font-bold"> Nexcord </span>
     </a>
     <button
       data-collapse-toggle="navbar-default"
@@ -32,31 +27,31 @@
         class="border-border bg-bg-page md:bg-bg-page mt-4 flex flex-col rounded-lg border p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0">
         <li>
           <a
-            href="/dashboard"
-            class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
-            >Dashboard</a
-          >
-        </li>
-        <li>
-          <a
             href="#features"
             class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
             >Features</a
           >
         </li>
+        <li>
+          <a
+            href="#plans"
+            class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
+            >Plans</a
+          >
+        </li>
+        <li>
+          <a
+            href="/dashboard"
+            class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
+            >Dashboard</a
+          >
+        </li>
       </ul>
       <!-- Dark Mode Toggle -->
       <div
-        x-data="{
-  darkMode: localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches),
-  toggleDarkMode() {
-    this.darkMode = !this.darkMode;
-    localStorage.setItem('color-theme', this.darkMode ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', this.darkMode);
-  }
-}"
+        x-data="{ darkMode: localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches), toggleDarkMode() { this.darkMode = !this.darkMode; localStorage.setItem('color-theme', this.darkMode ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', this.darkMode); } }"
         x-init="document.documentElement.classList.toggle('dark', darkMode)"
-        class="ml-4 flex items-center">
+        class="ml-4 flex items-center gap-2">
         <button
           @click="toggleDarkMode"
           data-tooltip-target="tooltip-toggle-dark-mode"
@@ -78,102 +73,340 @@
 <!-- End Navbar -->
 
 <!-- Hero Section -->
-<section class="bg-bg-panel fade-in translate-y-6 opacity-0 transition duration-700">
-  <div class="mx-auto flex max-w-screen-xl flex-col items-center justify-center px-4 py-16 text-center">
-    <h1 class="text-text mb-4 text-4xl font-extrabold leading-tight tracking-tight md:text-5xl xl:text-6xl">
-      The Ultimate Discord Bot Platform
+<section
+  class="from-bg-panel to-bg-page bg-gradient-to-br py-20 md:py-32"
+  x-data="{ animateIn: false }"
+  x-init="setTimeout(() => animateIn = true, 100)">
+  <div class="mx-auto max-w-screen-xl px-4 text-center">
+    <h1
+      class="text-text mb-6 text-4xl font-extrabold leading-tight tracking-tight transition-all duration-1000 md:text-6xl xl:text-7xl"
+      :class="animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+      The Ultimate Discord Bot
     </h1>
-    <p class="text-text-muted mb-8 max-w-2xl font-light md:text-lg lg:text-xl">
+    <p
+      class="text-text-muted mx-auto mb-8 max-w-2xl text-lg font-light transition-all delay-150 duration-1000 md:text-xl"
+      :class="animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
       Build the perfect Discord experience for your community.<br />
-      <span class="text-primary-light font-semibold">Strange Bot</span> is fully open source, developer-friendly, and
+      <span class="text-primary-light font-semibold">Nexcord</span> is fully open source, developer-friendly, and
       powered by a flexible plugin system.
     </p>
-    <div class="flex flex-col justify-center gap-3 sm:flex-row">
+    <div
+      class="flex flex-col justify-center gap-4 transition-all delay-300 duration-1000 sm:flex-row"
+      :class="animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
       <a
-        href="/dashboard"
-        class="bg-primary hover:bg-primary-dark focus:ring-primary-light inline-flex animate-bounce items-center justify-center rounded-lg px-6 py-3 text-base font-medium text-white transition-all duration-300 focus:ring-4">
-        Try the Dashboard
-        <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
+        href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot"
+        target="_blank"
+        class="bg-primary hover:bg-primary-dark focus:ring-primary-light inline-flex items-center justify-center rounded-lg px-8 py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus:ring-4">
+        <i class="fab fa-discord mr-2 text-2xl"></i>
+        Add to Discord
       </a>
       <a
         href="https://github.com/strange-bot/strange-bot"
         target="_blank"
-        class="border-border text-text hover:bg-bg-panel focus:ring-bg-interactive hover:border-primary inline-flex items-center justify-center rounded-lg border px-6 py-3 text-base font-medium transition-all duration-300 focus:ring-4">
-        <svg class="mr-2 h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.16-.01-2.11-3.2.69-3.88-1.39-3.88-1.39-.53-1.34-1.3-1.7-1.3-1.7-1.06-.73.08-.72.08-.72 1.17.08 1.79 1.2 1.79 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.75-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.45.11-3.02 0 0 .97-.31 3.18 1.18a11.1 11.1 0 012.9-.39c.98.01 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.57.23 2.73.11 3.02.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.41-5.27 5.7.42.37.8 1.1.8 2.22 0 1.6-.01 2.89-.01 3.28 0 .31.2.68.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z" />
-        </svg>
+        class="focus:ring-primary-light inline-flex items-center justify-center rounded-lg bg-gray-800 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-900 hover:shadow-xl focus:ring-4 dark:bg-gray-700 dark:hover:bg-gray-600">
+        <i class="fab fa-github mr-2 text-xl"></i>
         View on GitHub
       </a>
     </div>
   </div>
 </section>
-<!-- End Hero -->
+<!-- End Hero Section -->
 
-<!-- Features Section -->
-<section id="features" class="fade-in mx-auto max-w-5xl translate-y-6 px-4 py-12 opacity-0 transition duration-700">
-  <h2 class="text-text mb-10 text-center text-3xl font-bold md:text-4xl">
-    Why Developers & Communities Choose Strange Bot
-  </h2>
-  <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-    <div
-      class="border-border bg-bg-panel rounded-lg border p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-400">Powerful Plugin System</h5>
-      <p class="text-text-muted font-normal">
-        Add, remove, or update plugins with a click. Choose from a growing library or build your own—no limits.
+<!-- Stats Section -->
+<section class="fade-section from-primary-light/5 via-bg-panel to-bg-page relative bg-gradient-to-br py-16 md:py-24">
+  <div class="mx-auto mb-12 flex max-w-6xl flex-col items-center gap-12 px-4 md:flex-row md:items-stretch">
+    <div class="flex flex-1 flex-col justify-center text-center md:items-start md:justify-start md:text-left">
+      <h2
+        class="mb-3 inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent drop-shadow-lg md:text-5xl">
+        <span class="inline-flex items-center gap-2">
+          <i class="fas fa-chart-bar text-indigo-400"></i>
+          Stats
+        </span>
+      </h2>
+      <p class="text-text-muted max-w-lg text-lg font-light md:text-xl">
+        Trusted by communities, powering thousands of servers and users with a growing plugin ecosystem.
       </p>
     </div>
-    <div
-      class="border-border bg-bg-panel rounded-lg border p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-purple-400">Open Source & Extensible</h5>
-      <p class="text-text-muted font-normal">
-        100% open source. Fork, contribute, or extend the bot with your own custom plugins and integrations.
-      </p>
-    </div>
-    <div
-      class="border-border bg-bg-panel rounded-lg border p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-pink-400">
-        Developer Friendly<span class="ml-1 align-super text-xs text-yellow-400">*</span>
-      </h5>
-      <p class="text-text-muted font-normal">
-        Clean APIs, plugin SDK, and a welcoming community. Make your Discord bot do exactly what you want.
-      </p>
-    </div>
-    <div
-      class="border-border bg-bg-panel rounded-lg border p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-cyan-400">Modern Dashboard</h5>
-      <p class="text-text-muted font-normal">
-        Manage everything from an intuitive, responsive dashboard. No command line required.
-      </p>
-    </div>
-    <div
-      class="border-border bg-bg-panel rounded-lg border p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-green-400">Scalable & Reliable</h5>
-      <p class="text-text-muted font-normal">
-        Built for high-traffic servers. Sharding and clustering support included.
-      </p>
-    </div>
-    <div
-      class="border-border bg-bg-panel rounded-lg border p-6 shadow transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">Customizable for Any Community</h5>
-      <p class="text-text-muted font-normal">
-        Personalize every aspect of your bot and dashboard. Make it truly yours!
-      </p>
+    <div class="grid flex-1 gap-8 sm:grid-cols-3">
+      <!-- Servers Stat -->
+      <div
+        class="fade-item border-border flex flex-col items-center rounded-xl border bg-white/70 p-6 shadow-lg backdrop-blur-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl dark:bg-gray-900/70"
+        x-data="{ target: parseInt('<%= stats.servers.replace(/[^0-9]/g, '') %>'), display: 0, animate() { let step = Math.ceil(this.target / 60); let interval = setInterval(() => { if (this.display < this.target) { this.display += step; if (this.display > this.target) this.display = this.target; } else { clearInterval(interval); } }, 20); } }"
+        x-init="animate()">
+        <div class="mb-3 flex items-center justify-center">
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-400 via-indigo-500 to-indigo-600 text-white shadow">
+            <i class="fas fa-server text-xl"></i>
+          </span>
+        </div>
+        <h3 class="mb-1 flex items-end text-3xl font-extrabold text-indigo-600 drop-shadow">
+          <span x-text="display.toLocaleString()"></span><span class="ml-1">+</span>
+        </h3>
+        <div class="text-sm font-semibold uppercase tracking-wide text-indigo-500">Servers</div>
+      </div>
+      <!-- Users Stat -->
+      <div
+        class="fade-item border-border flex flex-col items-center rounded-xl border bg-white/70 p-6 shadow-lg backdrop-blur-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl dark:bg-gray-900/70"
+        x-data="{ target: parseInt('<%= stats.users.replace(/[^0-9]/g, '') %>'), display: 0, animate() { let step = Math.ceil(this.target / 60); let interval = setInterval(() => { if (this.display < this.target) { this.display += step; if (this.display > this.target) this.display = this.target; } else { clearInterval(interval); } }, 20); } }"
+        x-init="animate()">
+        <div class="mb-3 flex items-center justify-center">
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 text-white shadow">
+            <i class="fas fa-users text-xl"></i>
+          </span>
+        </div>
+        <h3 class="mb-1 flex items-end text-3xl font-extrabold text-purple-600 drop-shadow">
+          <span x-text="display.toLocaleString()"></span><span class="ml-1">+</span>
+        </h3>
+        <div class="text-sm font-semibold uppercase tracking-wide text-purple-500">Users</div>
+      </div>
+      <!-- Plugins Stat -->
+      <div
+        class="fade-item border-border flex flex-col items-center rounded-xl border bg-white/70 p-6 shadow-lg backdrop-blur-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl dark:bg-gray-900/70"
+        x-data="{ target: parseInt('<%= stats.plugins.replace(/[^0-9]/g, '') %>'), display: 0, animate() { let step = Math.ceil(this.target / 60); let interval = setInterval(() => { if (this.display < this.target) { this.display += step; if (this.display > this.target) this.display = this.target; } else { clearInterval(interval); } }, 20); } }"
+        x-init="animate()">
+        <div class="mb-3 flex items-center justify-center">
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pink-400 via-pink-500 to-pink-600 text-white shadow">
+            <i class="fas fa-puzzle-piece text-xl"></i>
+          </span>
+        </div>
+        <h3 class="mb-1 flex items-end text-3xl font-extrabold text-pink-600 drop-shadow">
+          <span x-text="display.toLocaleString()"></span><span class="ml-1">+</span>
+        </h3>
+        <div class="text-sm font-semibold uppercase tracking-wide text-pink-500">Plugins</div>
+      </div>
     </div>
   </div>
-  <div class="mt-6 text-center text-xs text-yellow-400"><span class="font-semibold">*</span> Planned features</div>
 </section>
-<!-- End Features -->
+<!-- End Stats Section -->
 
-<!-- Add hover animation styles -->
+<!-- Features Section -->
+<section id="features" class="fade-section py-16 md:py-24">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="text-text fade-item mb-12 text-center text-4xl font-bold md:text-5xl">Why Choose Nexcord?</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div
+        class="border-border bg-bg-panel fade-item rounded-lg border p-8 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <h5 class="mb-3 text-2xl font-bold text-indigo-400"><i class="fas fa-puzzle-piece mr-2"></i> Plugin System</h5>
+        <p class="text-text-muted font-normal">
+          Add, remove, or update plugins with a click. Choose from a growing library or build your own.
+        </p>
+      </div>
+      <div
+        class="border-border bg-bg-panel fade-item rounded-lg border p-8 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <h5 class="mb-3 text-2xl font-bold text-purple-400"><i class="fas fa-code-branch mr-2"></i> Open Source</h5>
+        <p class="text-text-muted font-normal">
+          100% open source. Fork, contribute, or extend Nexcord with your own custom plugins.
+        </p>
+      </div>
+      <div
+        class="border-border bg-bg-panel fade-item rounded-lg border p-8 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <h5 class="mb-3 text-2xl font-bold text-pink-400"><i class="fas fa-rocket mr-2"></i> Invite & Use</h5>
+        <p class="text-text-muted font-normal">
+          Invite Nexcord to your server and start using powerful features instantly. No setup required.
+        </p>
+      </div>
+      <div
+        class="border-border bg-bg-panel fade-item rounded-lg border p-8 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <h5 class="mb-3 text-2xl font-bold text-green-400"><i class="fas fa-users mr-2"></i> Community Support</h5>
+        <p class="text-text-muted font-normal">
+          Get help, share ideas, and collaborate with a vibrant Discord community.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Features Section -->
+
+<!-- Plans Section -->
+<section id="plans" class="bg-bg-panel fade-section py-16 md:py-24">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="text-text fade-item mb-12 text-center text-4xl font-bold md:text-5xl">Choose Your Plan</h2>
+    <div class="grid gap-8 sm:grid-cols-2">
+      <!-- Community Plan -->
+      <div
+        class="border-primary bg-bg-page fade-item rounded-lg border-2 p-8 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <h3 class="text-primary mb-2 text-3xl font-bold">Community</h3>
+        <p class="text-text-muted mb-6 text-lg">
+          Access all plugins, join the Nexcord community, and use the bot for free.
+        </p>
+        <ul class="text-text mb-8 space-y-3">
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>All public plugins included</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>Community support via Discord</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>Invite & use instantly</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>100% open source</span>
+          </li>
+        </ul>
+        <a
+          href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot"
+          target="_blank"
+          class="bg-primary hover:bg-primary-dark inline-flex w-full items-center justify-center rounded-lg py-3 font-bold text-white transition-all duration-300 hover:scale-105">
+          <i class="fab fa-discord mr-2"></i> Add to Discord
+        </a>
+      </div>
+      <!-- Custom Plan -->
+      <div
+        class="bg-bg-page fade-item relative rounded-lg border-2 border-pink-400 p-8 shadow-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <div class="absolute -top-4 right-6 rounded-full bg-pink-400 px-4 py-1 text-sm font-bold text-white">
+          Popular
+        </div>
+        <h3 class="mb-2 text-3xl font-bold text-pink-400">Custom</h3>
+        <p class="text-text-muted mb-6 text-lg">
+          Your own bot with your name, admin panel, dedicated support & custom plugin development.
+        </p>
+        <ul class="text-text mb-8 space-y-3">
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>Your branding & bot name</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>Admin panel to control settings</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>Dedicated support team</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-check mr-3 mt-1 text-green-400"></i>
+            <span>Custom plugins development</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-clock mr-3 mt-1 text-yellow-400"></i>
+            <span class="text-yellow-400">Custom hosting (coming soon)</span>
+          </li>
+        </ul>
+        <button
+          class="w-full rounded-lg bg-gradient-to-r from-pink-400 to-pink-500 py-3 font-bold text-white transition-all duration-300 hover:scale-105 hover:from-pink-500 hover:to-pink-600">
+          Contact Us
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Plans Section -->
+
+<!-- CTA Section -->
+<section class="fade-section py-16 md:py-24">
+  <div class="mx-auto max-w-2xl px-4 text-center">
+    <h2 class="text-text fade-item mb-4 text-3xl font-bold md:text-4xl">Ready to Transform Your Discord Server?</h2>
+    <p class="text-text-muted fade-item mb-8 text-lg">
+      Join thousands of communities already using Nexcord. Start for free today!
+    </p>
+    <div class="fade-item flex flex-col justify-center gap-4 sm:flex-row">
+      <a
+        href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot"
+        target="_blank"
+        class="bg-primary hover:bg-primary-dark inline-flex items-center justify-center rounded-lg px-8 py-3 font-bold text-white transition-all duration-300 hover:scale-105">
+        <i class="fab fa-discord mr-2 text-xl"></i> Add to Discord
+      </a>
+      <a
+        href="https://discord.gg/your-invite-link"
+        target="_blank"
+        class="border-primary text-primary hover:bg-primary inline-flex items-center justify-center rounded-lg border-2 px-8 py-3 font-bold transition-all duration-300 hover:scale-105 hover:text-white">
+        <i class="fab fa-discord mr-2 text-xl"></i> Join Discord
+      </a>
+    </div>
+  </div>
+</section>
+<!-- End CTA Section -->
+
+<!-- Footer -->
+<footer class="bg-bg-page border-border border-t py-8">
+  <div class="mx-auto max-w-screen-xl px-4 text-center">
+    <p class="text-text-muted">
+      &copy; 2024 Nexcord. All rights reserved. |
+      <a href="https://github.com/strange-bot/strange-bot" target="_blank" class="text-primary hover:text-primary-dark"
+        >GitHub</a
+      >
+      |
+      <a href="https://discord.gg/your-invite-link" target="_blank" class="text-primary hover:text-primary-dark"
+        >Discord</a
+      >
+    </p>
+  </div>
+</footer>
+<!-- End Footer -->
+
 <style>
-  .hover\:border-primary:hover {
-    border-color: var(--primary);
-    transition: border-color 0.3s ease-in-out;
+  /* Fade-in animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-section {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .fade-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-item {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .fade-section.visible .fade-item {
+    opacity: 1;
+    transform: translateY(0);
+    animation-play-state: running;
+  }
+  .fade-section.visible .fade-item:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .fade-section.visible .fade-item:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .fade-section.visible .fade-item:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .fade-section.visible .fade-item:nth-child(4) {
+    animation-delay: 0.4s;
   }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll(".fade-section");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
+  });
+</script>

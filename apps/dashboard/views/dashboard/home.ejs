@@ -134,7 +134,7 @@
           <% if(enabledPlugins.some(p => p.name === plugin.name)) { %>
           <a
             href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
-            class="border-primary bg-primary hover:bg-primary-dark focus:ring-primary inline-flex w-full items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium text-white transition-colors duration-200 hover:text-white focus:outline-none focus:ring-4">
+            class="border-primary bg-primary hover:bg-primary-dark inline-flex w-full items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium text-white transition-colors duration-200 hover:text-white">
             <i class="fa-regular fa-circle-check me-1.5 h-4 w-4"></i>
             <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
           </a>
@@ -142,7 +142,7 @@
           <button
             data-modal-target="modal-<%= plugin.name %>"
             data-modal-toggle="modal-<%= plugin.name %>"
-            class="border-success text-success hover:bg-success-dark focus:ring-success inline-flex w-full items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium hover:text-white focus:outline-none focus:ring-4">
+            class="border-success text-success hover:bg-success-dark inline-flex w-full items-center justify-center rounded-lg border px-3 py-1.5 text-sm font-medium hover:text-white">
             <i class="fa-solid fa-plus me-1.5 h-4 w-4"></i>
             <%= tr('HOME.BTN_PLUGIN_ENABLE') %>
           </button>
@@ -205,7 +205,7 @@
             <% if(enabledPlugins.some(p => p.name === plugin.name)) { %>
             <a
               href="/dashboard/<%= guild.id %>/<%= plugin.name %>"
-              class="border-primary bg-primary hover:bg-primary-dark focus:ring-primary inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium text-white transition-colors duration-200 hover:text-white focus:outline-none focus:ring-4">
+              class="border-primary bg-primary hover:bg-primary-dark inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium text-white transition-colors duration-200 hover:text-white">
               <i class="fa-regular fa-circle-check me-1.5 h-3 w-3"></i>
               <%= tr('HOME.BTN_PLUGIN_ACTIVE') %>
             </a>
@@ -213,7 +213,7 @@
             <button
               data-modal-target="modal-<%= plugin.name %>"
               data-modal-toggle="modal-<%= plugin.name %>"
-              class="border-success text-success hover:bg-success-dark focus:ring-success inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white focus:outline-none focus:ring-4">
+              class="border-success text-success hover:bg-success-dark inline-flex items-center rounded-lg border px-3 py-1 text-xs font-medium hover:text-white">
               <i class="fa-solid fa-plus me-1.5 h-3 w-3"></i>
               <%= tr('HOME.BTN_PLUGIN_ENABLE') %>
             </button>

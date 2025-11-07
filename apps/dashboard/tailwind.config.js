@@ -46,6 +46,7 @@ module.exports = {
                 bg: {
                     page: "var(--c-bg)", // Page background
                     panel: "var(--c-bg-alt)", // Cards, panels, sidebar
+                    active: "var(--c-bg-active)", // Active states like hover
                     interactive: "var(--c-bg-active)", // Active sidebar, inputs, textareas
                     surface: "var(--c-surface)", // Overlays like dropdowns, tooltips
                 },

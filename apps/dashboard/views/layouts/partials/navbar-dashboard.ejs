@@ -1,19 +1,19 @@
 <nav class="border-border bg-bg-panel fixed z-30 w-full border-b">
   <div class="px-3 py-3 lg:px-5 lg:pl-3">
     <div class="flex items-center justify-between">
-      <div class="flex items-center justify-start">
+      <div class="flex items-center justify-start px-2">
         <button
           id="toggleSidebarMobile"
           aria-expanded="true"
           aria-controls="sidebar"
-          class="text-text-muted hover:bg-bg-surface hover:text-text focus:bg-bg-surface focus:ring-surface cursor-pointer rounded p-2 focus:ring-2 lg:hidden">
+          class="text-text-muted hover:bg-bg-surface hover:text-text cursor-pointer rounded p-2 lg:hidden">
           <i id="toggleSidebarMobileHamburger" class="fas fa-bars h-6 w-6"></i>
           <i id="toggleSidebarMobileClose" class="fas fa-times hidden h-6 w-6"></i>
         </button>
         <a href="/dashboard" class="flex items-center space-x-3">
           <img
             src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>"
-            class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
+            class="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10"
             alt="Strange Logo" />
           <span class="text-text self-center whitespace-nowrap text-lg font-semibold sm:text-xl md:text-2xl">
             <%= coreConfig['DASHBOARD']['LOGO_NAME'] %>
@@ -36,7 +36,7 @@
           <button
             @click="toggleDarkMode"
             data-tooltip-target="tooltip-toggle-dark-mode"
-            class="text-text-muted hover:bg-bg-surface focus:ring-surface rounded-lg p-2.5 text-sm focus:outline-none focus:ring-4">
+            class="text-text-muted hover:bg-bg-surface rounded-lg p-2.5 text-sm focus:outline-none">
             <i x-show="!darkMode" x-cloak class="fas fa-moon h-5 w-5"></i>
             <i x-show="darkMode" x-cloak class="fas fa-sun h-5 w-5"></i>
           </button>

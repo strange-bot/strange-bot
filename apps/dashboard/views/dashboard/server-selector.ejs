@@ -2,7 +2,7 @@
   <!-- With admin rights -->
   <% guilds.filter(g => g.admin && !g.settingsUrl.includes('discord.com')).forEach(guild => { %>
   <div
-    class="border-border bg-bg-panel hover:bg-bg-interactive relative flex w-full min-w-[220px] max-w-[24rem] flex-col rounded-2xl border shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl">
+    class="border-border bg-bg-panel hover:border-primary relative flex w-full min-w-[220px] max-w-[24rem] flex-col rounded-2xl border shadow transition duration-200 hover:scale-[1.01] hover:transform hover:shadow-xl">
     <img
       class="border-border mx-auto mb-2 mt-4 h-20 w-20 rounded-full border-4 object-cover shadow-sm"
       src="<%= guild.iconURL %>"
@@ -11,7 +11,7 @@
       <h4 class="text-text mb-2 flex-1 text-center text-lg font-semibold tracking-tight"><%= guild.name %></h4>
       <a
         href="<%= guild.settingsUrl %>"
-        class="bg-success hover:bg-success-dark focus:ring-success-light flex w-full items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-1">
+        class="bg-success-dark hover:bg-success flex w-full items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none">
         <i class="fa-solid fa-gear mr-2 h-4 w-4"></i>
         <%= tr('SELECTOR.BTN_MANAGE') %>
       </a>
@@ -22,7 +22,7 @@
   <!-- Without admin rights -->
   <% guilds.filter(g => g.admin && g.settingsUrl.includes('discord.com')).forEach(guild => { %>
   <div
-    class="border-border bg-bg-panel hover:bg-bg-interactive relative flex w-full min-w-[220px] max-w-[24rem] flex-col rounded-2xl border shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl">
+    class="border-border bg-bg-panel hover:border-primary relative flex w-full min-w-[220px] max-w-[24rem] flex-col rounded-2xl border shadow transition duration-200 hover:scale-[1.01] hover:transform hover:shadow-xl">
     <img
       class="border-border mx-auto mb-2 mt-4 h-20 w-20 rounded-full border-4 object-cover shadow-sm"
       src="<%= guild.iconURL %>"
@@ -31,7 +31,7 @@
       <h4 class="text-text mb-2 flex-1 text-center text-lg font-semibold tracking-tight"><%= guild.name %></h4>
       <a
         href="<%= guild.settingsUrl %>"
-        class="bg-primary hover:bg-primary-dark focus:ring-primary-light flex w-full items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none focus:ring-1">
+        class="bg-primary-dark hover:bg-primary flex w-full items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-white focus:outline-none">
         <i class="fa-solid fa-paper-plane mr-2 h-4 w-4"></i>
         <%= tr('SELECTOR.BTN_INVITE') %>
       </a>
