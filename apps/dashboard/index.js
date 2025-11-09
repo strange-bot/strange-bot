@@ -13,7 +13,7 @@ Logger.init(path.join(logsDir, logsFile));
 const { DBClient } = require("strange-db-client");
 const db = require("./db.service");
 const App = require("./app");
-const IPCServer = require("./helpers/IPCServer");
+const IPCClient = require("./helpers/IPCClient");
 
 (async () => {
     // Initialize Database connection
@@ -31,12 +31,12 @@ const IPCServer = require("./helpers/IPCServer");
     dbClient.registerSchema("configs", require("./schemas/Config"));
     await db.init(dbClient);
 
-    // Initialize IPC Server
-    const ipcServer = new IPCServer();
-    await ipcServer.initialize();
+    // Initialize IPC Client
+    const ipcClient = new IPCClient();
+    ipcClient.initialize();
 
     // Initialize the Express App
-    const app = new App(ipcServer);
+    const app = new App(ipcClient);
     app.loadTranslations();
     app.loadPlugins();
     app.listen(process.env.DASHBOARD_PORT);

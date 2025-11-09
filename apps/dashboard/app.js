@@ -20,11 +20,11 @@ const adminRouter = require("./routes/admin.router");
 const apiRouter = require("./routes/api.router");
 
 module.exports = class App {
-    constructor(ipcServer) {
+    constructor(ipcClient) {
         this.app = express();
 
         // Set app properties
-        this.app.ipcServer = ipcServer;
+        this.app.ipcClient = ipcClient;
         this.app.logger = Logger;
 
         this.app.pluginManager = new PluginManager(

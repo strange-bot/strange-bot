@@ -6,7 +6,9 @@ const db = require("../db.service");
  * @param {import('express').Response} res
  */
 module.exports.getBotLocales = async function (req, res) {
-    const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_LOCALE_BUNDLE");
+    const ipcResp = await req.app.ipcClient.broadcastOne("dashboard:GET_LOCALE_BUNDLE", null, {
+        any: true,
+    });
     if (!ipcResp?.success) return res.sendStatus(500);
 
     return res.json(ipcResp.data);
@@ -21,7 +23,7 @@ module.exports.updateBotLocales = async function (req, res) {
 
     // TODO: Add validations
 
-    const response = await req.app.ipcServer.broadcast("dashboard:SET_LOCALE_BUNDLE", {
+    const response = await req.app.ipcClient.broadcast("dashboard:SET_LOCALE_BUNDLE", {
         plugin,
         language,
         keys,

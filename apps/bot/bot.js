@@ -7,15 +7,13 @@ require("dotenv").config();
 const path = require("node:path");
 const { Logger } = require("strange-sdk/utils");
 const BotClient = require("./extenders/BotClient");
-const IPCClient = require("./helpers/IPCClient");
 const { DBClient } = require("strange-db-client");
 
 // Setup Directories
 const logsDir = path.join(__dirname, "..", "..", "logs");
 
-// Create a Discord & IPC Client
+// Create a Discord Client
 const client = new BotClient();
-const ipcClient = new IPCClient(client);
 
 // Initialize the logger
 const today = new Date();
@@ -44,13 +42,12 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
     // Initialize plugins
     await client.pluginManager.init();
 
+    // IpC Handlers for core bot events
+    client.ipcHandlers = require("./helpers/ipHandlers");
+
     // Load all plugin events
     client.pluginManager.listeningEvents.forEach((event) => {
         client.on(event, (...args) => {
-            if (event === "ready") {
-                ipcClient.initialize(client);
-            }
-
             client.pluginManager.emit(event, ...args);
         });
     });

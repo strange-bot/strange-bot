@@ -22,23 +22,32 @@ module.exports.dashboard = async (req, res, next) => {
                 const shouldEnable = Boolean(req.body.plugin_toggle);
                 if (shouldEnable) {
                     await req.app.pluginManager.enableInGuild(pluginName, guildId);
-                    const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
-                        pluginName: plugin.name,
-                        action: "guildEnable",
-                        guildId: guildId,
-                    });
-                    if (ipcResp.find((r) => !r.success)) {
+
+                    const ipcResp = await req.app.ipcClient.broadcastOne(
+                        "dashboard:UPDATE_PLUGIN",
+                        {
+                            pluginName: plugin.name,
+                            action: "guildEnable",
+                        },
+                        { guildId },
+                    );
+
+                    if (ipcResp?.success === false) {
                         await req.app.pluginManager.disableInGuild(pluginName);
                         throw new Error("Failed to enable plugin on other instances");
                     }
                 } else {
                     await req.app.pluginManager.disableInGuild(pluginName, guildId);
-                    const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
-                        pluginName: plugin.name,
-                        action: "guildDisable",
-                        guildId: guildId,
-                    });
-                    if (ipcResp.find((r) => !r.success)) {
+                    const ipcResp = await req.app.ipcClient.broadcastOne(
+                        "dashboard:UPDATE_PLUGIN",
+                        {
+                            pluginName: plugin.name,
+                            action: "guildDisable",
+                            guildId: guildId,
+                        },
+                        { guildId },
+                    );
+                    if (ipcResp?.success === false) {
                         await req.app.pluginManager.enableInGuild(pluginName);
                         throw new Error("Failed to disable plugin on other instances");
                     }
@@ -59,11 +68,16 @@ module.exports.dashboard = async (req, res, next) => {
                     .filter((key) => key !== "prefix_commands_toggle" && req.body[key] === "on")
                     .map((key) => key.split("prefix_")[1]);
 
-                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_PLUGIN_CMDS", {
-                    guildId,
-                    pluginName,
-                    type: "prefix",
-                });
+                const ipcResp = await req.app.ipcClient.broadcastOne(
+                    "dashboard:GET_PLUGIN_CMDS",
+                    {
+                        pluginName,
+                        type: "prefix",
+                    },
+                    {
+                        guildId,
+                    },
+                );
                 const pluginCmds = ipcResp.success ? ipcResp.data : { prefix: [], slash: [] };
 
                 const disabled = new Set();
@@ -96,11 +110,16 @@ module.exports.dashboard = async (req, res, next) => {
                     .filter((key) => key !== "slash_commands_toggle" && req.body[key] === "on")
                     .map((key) => key.split("slash_")[1]);
 
-                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_PLUGIN_CMDS", {
-                    guildId,
-                    pluginName,
-                    type: "slash",
-                });
+                const ipcResp = await req.app.ipcClient.broadcastOne(
+                    "dashboard:GET_PLUGIN_CMDS",
+                    {
+                        pluginName,
+                        type: "slash",
+                    },
+                    {
+                        guildId,
+                    },
+                );
                 const pluginCmds = ipcResp.success ? ipcResp.data : { prefix: [], slash: [] };
 
                 const disabled = new Set();
@@ -127,7 +146,7 @@ module.exports.dashboard = async (req, res, next) => {
     // Broadcast
     req.broadcast = function (eventName, data) {
         const event = `${plugin.name}:${eventName}`;
-        return req.app.ipcServer.broadcast(event, data);
+        return req.app.ipcClient.broadcast(event, data);
     };
 
     const [coreSettings, config] = await Promise.all([
@@ -135,10 +154,15 @@ module.exports.dashboard = async (req, res, next) => {
         plugin.getConfig(),
     ]);
 
-    const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:GET_PLUGIN_CMDS", {
-        guildId,
-        pluginName,
-    });
+    const ipcResp = await req.app.ipcClient.broadcastOne(
+        "dashboard:GET_PLUGIN_CMDS",
+        {
+            pluginName,
+        },
+        {
+            guildId,
+        },
+    );
     const pluginCmds = ipcResp.success ? ipcResp.data : { prefix: [], slash: [] };
 
     const title =
@@ -190,7 +214,12 @@ module.exports.admin = async (req, res, next) => {
 
     req.broadcast = function (eventName, data) {
         const event = `${plugin.name}:${eventName}`;
-        return req.app.ipcServer.broadcast(event, data);
+        return req.app.ipcClient.broadcast(event, data);
+    };
+
+    req.boardcastOne = function (eventName, data, targetOptions) {
+        const event = `${plugin.name}:${eventName}`;
+        return req.app.ipcClient.broadcastOne(event, data, targetOptions);
     };
 
     res.locals.tr = req.translate;

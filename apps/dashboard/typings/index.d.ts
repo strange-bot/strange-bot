@@ -7,7 +7,7 @@ import { SaveableConfig } from "strange-sdk";
 declare global {
     namespace Express {
         interface Application {
-            ipcServer: import("../helpers/IPCServer");
+            ipcClient: import("../helpers/IPCClient");
             pluginManager: import("../helpers/PluginManager");
             i18n: import("strange-core").I18nManager;
             logger: typeof import("strange-sdk/utils").Logger;

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { ShardingManager } = require("discord.js");
+const IPCServer = require("./helpers/IPCServer");
 const { Logger } = require("strange-sdk/utils");
 const path = require("node:path");
 
@@ -21,3 +22,6 @@ manager.on("shardCreate", (shard) => {
 manager.spawn().catch((err) => {
     Logger.error("shardSpawn Error", err);
 });
+
+const ipcServer = new IPCServer(manager);
+ipcServer.initialize();

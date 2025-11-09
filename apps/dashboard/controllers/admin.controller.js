@@ -43,7 +43,7 @@ module.exports.updatePlugins = async function (req, res) {
         switch (action) {
             case "enable": {
                 await req.app.pluginManager.enablePlugin(pluginName);
-                const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
                     pluginName,
                     action,
                 });
@@ -56,7 +56,7 @@ module.exports.updatePlugins = async function (req, res) {
 
             case "disable": {
                 await req.app.pluginManager.disablePlugin(pluginName);
-                const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
                     pluginName,
                     action,
                 });
@@ -68,10 +68,14 @@ module.exports.updatePlugins = async function (req, res) {
             }
 
             case "install": {
-                const botResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
-                    pluginName,
-                    action: "install",
-                });
+                const botResp = await req.app.ipcClient.broadcastOne(
+                    "dashboard:UPDATE_PLUGIN",
+                    {
+                        pluginName,
+                        action: "install",
+                    },
+                    { any: true },
+                );
                 if (!botResp?.success) {
                     throw new Error("Failed to install plugin on bot instance");
                 }
@@ -80,10 +84,14 @@ module.exports.updatePlugins = async function (req, res) {
             }
 
             case "uninstall": {
-                const ipcResp = await req.app.ipcServer.broadcastOne("dashboard:UPDATE_PLUGIN", {
-                    pluginName,
-                    action,
-                });
+                const ipcResp = await req.app.ipcClient.broadcastOne(
+                    "dashboard:UPDATE_PLUGIN",
+                    {
+                        pluginName,
+                        action,
+                    },
+                    { any: true },
+                );
                 if (!ipcResp?.success) {
                     throw new Error("Failed to uninstall plugin on other instances");
                 }
@@ -94,7 +102,7 @@ module.exports.updatePlugins = async function (req, res) {
             case "update": {
                 if (req.app.pluginManager.isPluginEnabled(pluginName)) {
                     await req.app.pluginManager.disablePlugin(pluginName);
-                    const ipcResp = await req.app.ipcServer.broadcast("dashboard:UPDATE_PLUGIN", {
+                    const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
                         pluginName,
                         action: "disable",
                     });

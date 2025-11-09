@@ -9,11 +9,10 @@ module.exports = async (req, res, next) => {
         return next();
     }
 
-    const responses = await req.app.ipcServer.broadcast(
-        "dashboard:VALIDATE_GUILD",
-        req.params.guildId,
-    );
-    const hasGuild = responses.some((r) => r.success && r.data === true);
+    const response = await req.app.ipcClient.broadcastOne("dashboard:VALIDATE_GUILD", null, {
+        guildId: req.params.guildId,
+    });
+    const hasGuild = response.success && response.data === true;
     if (!hasGuild) {
         return res.status(404).send("Guild not found");
     }
