@@ -1,16 +1,16 @@
 <aside
   id="sidebar"
-  class="transition-width fixed left-0 top-0 z-20 flex hidden h-full w-80 flex-shrink-0 flex-col overflow-y-auto pt-16 font-normal duration-75 lg:flex"
+  class="transition-width fixed left-0 top-0 z-20 flex hidden h-full w-72 flex-shrink-0 flex-col overflow-y-auto pt-16 font-normal duration-75 lg:flex"
   aria-label="Sidebar">
   <div class="border-border bg-bg-panel relative flex min-h-0 flex-1 flex-col border-r pt-0">
-    <div class="mb-[50px] flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
+    <div class="mb-[50px] flex flex-1 flex-col overflow-y-auto py-5">
       <!-- Group 1 -->
-      <div class="mb-6 px-4">
+      <div class="my-2 px-4">
         <% if (!locals.guild) { %>
         <a
           href="/dashboard"
           class="<%= slug === 'selector' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 text-base font-medium transition">
-          <i class="fa-solid fa-server text-text-muted group-hover:text-text text-xl"></i>
+          <i class="fa-solid fa-server text-text-muted group-hover:text-text text-lg"></i>
           <span class="ml-3" sidebar-toggle-item><%= tr('SIDEBAR.SERVERS') %></span>
         </a>
         <% } else { %>
@@ -18,7 +18,7 @@
           id="dropdownGuildButton"
           data-dropdown-toggle="dropdownGuild"
           data-dropdown-placement="bottom"
-          class="text-text hover:bg-bg-surface border-border group flex w-full items-center rounded-lg border p-3 text-base font-medium transition"
+          class="text-text hover:bg-bg-surface border-primary group flex w-full items-center rounded-lg border p-3 text-base font-medium transition"
           type="button">
           <img class="h-7 w-7 rounded-full" src="<%= guild.iconURL %>" alt="<%= guild.name %> icon" />
           <span class="ml-3 flex-1 whitespace-nowrap text-left" sidebar-toggle-item><%= guild.name %></span>
@@ -27,7 +27,7 @@
         <!-- Dropdown menu -->
         <div
           id="dropdownGuild"
-          class="bg-bg-panel border-border z-50 hidden w-[18rem] overflow-hidden rounded-lg border shadow-lg">
+          class="bg-bg-panel border-border z-50 hidden w-[16rem] overflow-hidden rounded-lg border shadow-lg">
           <ul class="max-h-60 overflow-y-auto py-2" aria-labelledby="dropdownGuildButton">
             <% guilds.filter(g => g.admin && !g.settingsUrl.includes('discord.com')).forEach(function(g) { %>
             <li class="mb-1 px-2">
@@ -53,7 +53,7 @@
               <a
                 href="/dashboard/"
                 class="hover:bg-bg-interactive text-text flex items-center rounded-lg p-3 font-medium transition">
-                <i class="fa-solid fa-circle-plus text-text-muted mr-3 text-xl"></i>
+                <i class="fa-solid fa-circle-plus text-text-muted mr-3 text-lg"></i>
                 <span class="truncate">Add new server</span>
               </a>
             </li>
@@ -62,26 +62,30 @@
         <% } %>
       </div>
 
-      <!-- Group 2 -->
-      <div class="mb-6 px-4">
+      <!-- Group 2: Server Management -->
+      <% if (locals.guild) { %>
+      <div class="my-2 px-4">
+        <div class="mb-1 px-2">
+          <span class="text-text text-xs font-bold uppercase tracking-widest">Server Management</span>
+        </div>
         <ul>
-          <% if (locals.guild) { %>
           <li class="mb-1">
             <a
               href="/dashboard/<%=guild.id%>"
-              class="<%= slug === 'home' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 text-base font-medium transition">
-              <i class="fa-solid fa-house-chimney-window text-text-muted mr-3 text-xl"></i>
-              <span>Dashboard</span>
+              class="<%= slug === 'home' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+              <i class="fa-solid fa-house-chimney-window text-text-muted mr-3 text-lg"></i>
+              <span>Home</span>
             </a>
           </li>
-          <% } %>
         </ul>
       </div>
+      <% } %>
 
       <!-- Group 3 -->
+      <% if (locals.guild && locals.enabledPlugins) { %>
+
       <div class="px-4">
         <ul class="space-y-2 pb-2">
-          <% if (locals.guild && locals.enabledPlugins) { %>
           <!-- Section Header as Collapse Toggle -->
           <li class="mb-1 mt-3 px-2">
             <button
@@ -89,7 +93,7 @@
               class="text-text flex w-full items-center text-xs font-bold uppercase tracking-widest focus:outline-none"
               aria-controls="dropdown-plugins"
               data-collapse-toggle="dropdown-plugins">
-              <span class="flex-1 text-left">Plugins</span>
+              <span class="flex-1 text-left"><%= tr('SIDEBAR.PLUGINS') %></span>
               <i class="fa-solid fa-angle-down ml-2"></i>
             </button>
           </li>
@@ -104,15 +108,15 @@
                 <a
                   id="aside-active-item"
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="text-text bg-bg-interactive border-primary group flex items-center rounded-lg border-l-4 p-3 pl-10 text-base font-medium transition">
-                  <i class="<%= plugin.icon %> text-text-muted mr-3 text-xl"></i>
+                  class="text-text bg-bg-interactive border-primary group flex items-center rounded-lg border-l-4 p-3 pl-5 text-base font-medium transition">
+                  <i class="<%= plugin.icon %> text-text-muted mr-3 text-lg"></i>
                   <%=name%>
                 </a>
                 <% } else { %>
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-10 text-base font-medium transition">
-                  <i class="<%= plugin.icon %> text-text-muted mr-3 text-xl"></i>
+                  class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+                  <i class="<%= plugin.icon %> text-text-muted mr-3 text-lg"></i>
                   <%=name%>
                 </a>
                 <% } %>
@@ -120,9 +124,9 @@
               <% }); %>
             </ul>
           </li>
-          <% } %>
         </ul>
       </div>
+      <% } %>
     </div>
     <%- include('./sidebar-bottom.ejs') %>
   </div>

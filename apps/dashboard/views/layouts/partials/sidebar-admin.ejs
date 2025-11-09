@@ -1,37 +1,40 @@
 <aside
   id="sidebar"
-  class="transition-width fixed left-0 top-0 z-20 flex hidden h-full w-80 flex-shrink-0 flex-col overflow-y-auto pt-16 font-normal duration-75 lg:flex"
+  class="transition-width fixed left-0 top-0 z-20 flex hidden h-full w-72 flex-shrink-0 flex-col overflow-y-auto pt-16 font-normal duration-75 lg:flex"
   aria-label="Sidebar">
   <div class="border-border bg-bg-panel relative flex min-h-0 flex-1 flex-col border-r pt-0">
     <div class="flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
       <!-- Group 1 -->
-      <div class="mb-6 px-4">
+      <div class="my-2 px-4">
         <a
           href="/dashboard"
-          class="text-text hover:bg-bg-surface border-border group flex items-center rounded-lg border p-3 text-base font-medium transition">
-          <i class="fa-solid fa-arrow-left text-text-muted group-hover:text-text text-xl"></i>
+          class="text-text hover:bg-bg-surface border-primary group flex items-center rounded-lg border p-3 text-base font-medium transition">
+          <i class="fa-solid fa-arrow-left text-text-muted group-hover:text-text text-lg"></i>
           <span class="ml-3 flex-1 whitespace-nowrap text-left" sidebar-toggle-item
             ><%= tr('SIDEBAR.BACK_TO_DASH') %></span
           >
         </a>
       </div>
 
-      <!-- Group 2 -->
-      <div class="mb-6 px-4">
+      <!-- Group 2: Configuration -->
+      <div class="my-2 px-4">
+        <div class="mb-1 px-2">
+          <span class="text-text text-xs font-bold uppercase tracking-widest">Configuration</span>
+        </div>
         <ul>
           <li class="mb-1">
             <a
               href="/admin"
-              class="<%= slug === 'admin' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 text-base font-medium transition">
-              <i class="fa-solid fa-gears text-text-muted group-hover:text-text mr-3 text-xl"></i>
+              class="<%= slug === 'admin' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+              <i class="fa-solid fa-gears text-text-muted group-hover:text-text mr-3 text-lg"></i>
               <span sidebar-toggle-item><%= tr('SIDEBAR.PLUGIN_MANAGEMENT') %></span>
             </a>
           </li>
           <li>
             <a
               href="/admin/locales"
-              class="<%= slug === 'locales' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 text-base font-medium transition">
-              <i class="fa-solid fa-language text-text-muted group-hover:text-text mr-3 text-xl"></i>
+              class="<%= slug === 'locales' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+              <i class="fa-solid fa-language text-text-muted group-hover:text-text mr-3 text-lg"></i>
               <span sidebar-toggle-item><%= tr('SIDEBAR.LOCALES') %></span>
             </a>
           </li>
@@ -43,19 +46,19 @@
         <% if (locals.plugins) { %> <% const adminPlugins = plugins.filter(plugin => plugin.adminRouter != null); %> <%
         if (adminPlugins.length > 0) { %>
         <!-- Plugins Section Header as Collapse Toggle -->
-        <ul>
-          <li class="mb-1 px-2">
+        <ul class="space-y-2 pb-2">
+          <li class="mb-1 mt-3 px-2">
             <button
               type="button"
               class="text-text flex w-full items-center text-xs font-bold uppercase tracking-widest focus:outline-none"
               aria-controls="dropdown-plugins"
               data-collapse-toggle="dropdown-plugins">
               <span class="flex-1 text-left"><%= tr('SIDEBAR.PLUGINS') %></span>
-              <i class="fa-solid fa-angle-down ml-2 text-xl"></i>
+              <i class="fa-solid fa-angle-down ml-2"></i>
             </button>
           </li>
           <li>
-            <ul id="dropdown-plugins" class="<% if (!slug.includes('plugins')) { %>hidden<% }%> space-y-1 py-1">
+            <ul id="dropdown-plugins" class="<%= slug.includes('plugins') ? '' : 'hidden' %> space-y-1 py-1">
               <% for (let i = 0; i < adminPlugins.length; i++) { let urlName = adminPlugins[i].name; let name =
               adminPlugins[i].name.charAt(0).toUpperCase() + adminPlugins[i].name.slice(1).toLowerCase(); let isActive =
               slug.includes(adminPlugins[i].name); %>
@@ -64,15 +67,15 @@
                 <a
                   id="aside-active-item"
                   href="/admin/<%=urlName%>"
-                  class="text-text bg-bg-interactive border-primary group flex items-center rounded-lg border-l-4 p-3 pl-10 text-base font-medium transition">
-                  <i class="<%= adminPlugins[i].icon || 'fas fa-puzzle-piece' %> text-text-muted mr-3 text-xl"></i>
+                  class="text-text bg-bg-interactive border-primary group flex items-center rounded-lg border-l-4 p-3 pl-5 text-base font-medium transition">
+                  <i class="<%= adminPlugins[i].icon || 'fas fa-puzzle-piece' %> text-text-muted mr-3 text-lg"></i>
                   <%=name%>
                 </a>
                 <% } else { %>
                 <a
                   href="/admin/<%=urlName%>"
-                  class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-10 text-base font-medium transition">
-                  <i class="<%= adminPlugins[i].icon || 'fas fa-puzzle-piece' %> text-text-muted mr-3 text-xl"></i>
+                  class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+                  <i class="<%= adminPlugins[i].icon || 'fas fa-puzzle-piece' %> text-text-muted mr-3 text-lg"></i>
                   <%=name%>
                 </a>
                 <% } %>
