@@ -62,7 +62,7 @@ class BasePluginManager {
 
         if (!corePlugin.installed) {
             try {
-                await this.installPlugin(corePlugin, true);
+                await this.installPlugin("core", true);
             } catch (err) {
                 Logger.error("Failed to install core plugin. Aborting initialization.", err);
                 process.exit(1);
