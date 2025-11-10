@@ -24,7 +24,7 @@ module.exports.dashboard = async (req, res, next) => {
                     await req.app.pluginManager.enableInGuild(pluginName, guildId);
 
                     const ipcResp = await req.app.ipcClient.broadcastOne(
-                        "dashboard:UPDATE_PLUGIN",
+                        "updatePlugin",
                         {
                             pluginName: plugin.name,
                             action: "guildEnable",
@@ -39,7 +39,7 @@ module.exports.dashboard = async (req, res, next) => {
                 } else {
                     await req.app.pluginManager.disableInGuild(pluginName, guildId);
                     const ipcResp = await req.app.ipcClient.broadcastOne(
-                        "dashboard:UPDATE_PLUGIN",
+                        "updatePlugin",
                         {
                             pluginName: plugin.name,
                             action: "guildDisable",
@@ -69,7 +69,7 @@ module.exports.dashboard = async (req, res, next) => {
                     .map((key) => key.split("prefix_")[1]);
 
                 const ipcResp = await req.app.ipcClient.broadcastOne(
-                    "dashboard:GET_PLUGIN_CMDS",
+                    "getPluginCmds",
                     {
                         pluginName,
                         type: "prefix",
@@ -111,7 +111,7 @@ module.exports.dashboard = async (req, res, next) => {
                     .map((key) => key.split("slash_")[1]);
 
                 const ipcResp = await req.app.ipcClient.broadcastOne(
-                    "dashboard:GET_PLUGIN_CMDS",
+                    "getPluginCmds",
                     {
                         pluginName,
                         type: "slash",
@@ -155,7 +155,7 @@ module.exports.dashboard = async (req, res, next) => {
     ]);
 
     const ipcResp = await req.app.ipcClient.broadcastOne(
-        "dashboard:GET_PLUGIN_CMDS",
+        "getPluginCmds",
         {
             pluginName,
         },

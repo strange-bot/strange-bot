@@ -47,7 +47,7 @@ class IPCClient {
      * @returns
      */
     async broadcast(eventName, data, options = {}) {
-        return await this._send(
+        const response = await this._send(
             {
                 event: eventName,
                 targetOptions: { all: true },
@@ -55,6 +55,17 @@ class IPCClient {
             },
             options,
         );
+
+        if (Array.isArray(response)) {
+            return response;
+        }
+
+        return [
+            {
+                success: false,
+                data: null,
+            },
+        ];
     }
 
     /**

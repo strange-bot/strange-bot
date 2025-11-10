@@ -9,7 +9,7 @@ module.exports.serverSelector = async function (req, res) {
 
     // Populate user guild data
     const guilds = req.session.user.guilds;
-    const responses = await req.app.ipcClient.broadcast("dashboard:GET_BOT_GUILDS");
+    const responses = await req.app.ipcClient.broadcast("getBotGuilds");
     const botGuildIds = responses.filter((r) => r.success).flatMap((r) => r.data || []);
 
     guilds.forEach((guild) => {
@@ -60,10 +60,10 @@ module.exports.homePage = async function (req, res) {
     const guild = req.session.user.guilds.find((g) => g.id === req.params.guildId);
 
     const [statsResp, pluginCmdsResp] = await Promise.all([
-        req.app.ipcClient.broadcastOne("dashboard:GET_GUILD_STATS", req.params.guildId, {
+        req.app.ipcClient.broadcastOne("getGuildStats", req.params.guildId, {
             guildId: req.params.guildId,
         }),
-        req.app.ipcClient.broadcastOne("dashboard:GET_CMDS_SUMMARY", null, {
+        req.app.ipcClient.broadcastOne("getCmdsSummary", null, {
             guildId: req.params.guildId,
         }),
     ]);
@@ -101,7 +101,7 @@ exports.postPlugins = async function (req, res) {
         if (!plugin) return res.status(404).send("Plugin not found");
         try {
             await req.app.pluginManager.enableInGuild(plugin.name, guild.id);
-            const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
+            const ipcResp = await req.app.ipcClient.broadcast("updatePlugin", {
                 pluginName: plugin.name,
                 action: "guildEnable",
                 guildId: guild.id,

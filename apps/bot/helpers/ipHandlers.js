@@ -2,15 +2,15 @@ const { ChannelType } = require("discord.js");
 const { languagesMeta } = require("strange-core");
 
 module.exports = {
-    VALIDATE_GUILD: (_client) => {
+    validateGuild: (_client) => {
         return true;
     },
 
-    GET_BOT_GUILDS: (client) => {
+    getBotGuilds: (client) => {
         return [...client.guilds.cache.keys()];
     },
 
-    GET_GUILD_STATS: (client, payload) => {
+    getGuildStats: (client, payload) => {
         const guild = client.guilds.cache.get(payload);
         return guild
             ? {
@@ -26,7 +26,7 @@ module.exports = {
             : null;
     },
 
-    GET_CMDS_SUMMARY: (client) => {
+    getCmdsSummary: (client) => {
         const data = {};
         client.pluginManager.plugins.forEach((plugin) => {
             data[plugin.name] = {
@@ -38,7 +38,7 @@ module.exports = {
         return data;
     },
 
-    GET_PLUGIN_CMDS: (client, payload) => {
+    getPluginCmds: (client, payload) => {
         const { pluginName, type } = payload;
 
         const data = {};
@@ -84,7 +84,7 @@ module.exports = {
         return data;
     },
 
-    GET_LOCALE_BUNDLE: (client, _payload) => {
+    getLocaleBundle: (client, _payload) => {
         const resourceBundle = {};
         const availableLanguages = languagesMeta.map((l) => l.name);
         for (const plugin of client.pluginManager.plugins) {
@@ -99,14 +99,14 @@ module.exports = {
         return resourceBundle;
     },
 
-    SET_LOCALE_BUNDLE: async (client, payload) => {
+    setLocaleBundle: async (client, payload) => {
         const { plugin, language, keys } = payload;
         await client.i18n.updateResourceBundle(plugin, language, keys);
 
         return true;
     },
 
-    UPDATE_PLUGIN: async (client, payload) => {
+    updatePlugin: async (client, payload) => {
         const { pluginName, action, guildId } = payload;
 
         switch (action) {

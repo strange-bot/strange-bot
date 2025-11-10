@@ -36,9 +36,18 @@ class IPCServer {
             return firstShard ? firstShard.id : null;
         }
 
-        // Default: first shard
-        const firstShard = this.shardManager.shards.values().next().value;
-        return firstShard ? firstShard.id : null;
+        return null;
+    }
+
+    isShardAvailable(shardId) {
+        if (shardId === null) {
+            for (const shard of this.shardManager.shards.values()) {
+                if (!shard.ready) return false;
+            }
+            return true;
+        }
+        const shard = this.shardManager.shards.get(shardId);
+        return shard && shard.ready;
     }
 
     /**
@@ -51,10 +60,27 @@ class IPCServer {
         if (!message?.data?.event) return;
 
         const { event, payload, targetOptions = {} } = message.data;
-        const [pluginName, eventName] = event.split(":");
-        let response;
 
-        if (pluginName === "dashboard") {
+        let pluginName;
+        let eventName;
+        const idx = event.indexOf(":");
+        if (idx === -1) {
+            eventName = event;
+        } else {
+            pluginName = event.slice(0, idx).trim() || undefined;
+            eventName = event.slice(idx + 1).trim();
+        }
+
+        const shardId = this.getShard(targetOptions);
+        if (!this.isShardAvailable(shardId)) {
+            return message.reply({
+                success: false,
+                error: "SHARD_UNAVAILABLE",
+            });
+        }
+
+        let response;
+        if (!pluginName) {
             response = await this.shardManager.broadcastEval(
                 async (c, args) => {
                     try {
@@ -110,6 +136,38 @@ class IPCServer {
     }
 
     async initialize() {
+        this.shardManager.shards.forEach((shard) => {
+            shard.on("ready", () => {
+                Logger.info(`Shard ${shard.id} is ready`);
+            });
+
+            shard.on("death", (process) => {
+                Logger.warn(`Shard ${shard.id} has died. PID: ${process.pid}`);
+            });
+
+            shard.on("disconnect", (event) => {
+                Logger.warn(
+                    `Shard ${shard.id} disconnected. Code: ${event.code}, Reason: ${event.reason}`,
+                );
+            });
+
+            shard.on("reconnecting", () => {
+                Logger.warn(`Shard ${shard.id} is reconnecting`);
+            });
+
+            shard.on("error", (error) => {
+                Logger.error(`Shard ${shard.id} encountered an error:`, error);
+            });
+
+            shard.on("spawn", (process) => {
+                Logger.info(`Shard ${shard.id} spawned. PID: ${process.pid}`);
+            });
+
+            shard.on("resume", () => {
+                Logger.info(`Shard ${shard.id} resumed.`);
+            });
+        });
+
         this.server.on("connect", (client) => {
             Logger.success(`[IPC] Client connected: ${client.name}`);
         });

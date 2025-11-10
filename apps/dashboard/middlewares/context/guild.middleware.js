@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
         return next();
     }
 
-    const response = await req.app.ipcClient.broadcastOne("dashboard:VALIDATE_GUILD", null, {
+    const response = await req.app.ipcClient.broadcastOne("validateGuild", null, {
         guildId: req.params.guildId,
     });
     const hasGuild = response.success && response.data === true;

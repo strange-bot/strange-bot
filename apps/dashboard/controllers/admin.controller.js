@@ -43,7 +43,7 @@ module.exports.updatePlugins = async function (req, res) {
         switch (action) {
             case "enable": {
                 await req.app.pluginManager.enablePlugin(pluginName);
-                const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
+                const ipcResp = await req.app.ipcClient.broadcast("updatePlugin", {
                     pluginName,
                     action,
                 });
@@ -56,7 +56,7 @@ module.exports.updatePlugins = async function (req, res) {
 
             case "disable": {
                 await req.app.pluginManager.disablePlugin(pluginName);
-                const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
+                const ipcResp = await req.app.ipcClient.broadcast("updatePlugin", {
                     pluginName,
                     action,
                 });
@@ -69,7 +69,7 @@ module.exports.updatePlugins = async function (req, res) {
 
             case "install": {
                 const botResp = await req.app.ipcClient.broadcastOne(
-                    "dashboard:UPDATE_PLUGIN",
+                    "updatePlugin",
                     {
                         pluginName,
                         action: "install",
@@ -85,7 +85,7 @@ module.exports.updatePlugins = async function (req, res) {
 
             case "uninstall": {
                 const ipcResp = await req.app.ipcClient.broadcastOne(
-                    "dashboard:UPDATE_PLUGIN",
+                    "updatePlugin",
                     {
                         pluginName,
                         action,
@@ -102,7 +102,7 @@ module.exports.updatePlugins = async function (req, res) {
             case "update": {
                 if (req.app.pluginManager.isPluginEnabled(pluginName)) {
                     await req.app.pluginManager.disablePlugin(pluginName);
-                    const ipcResp = await req.app.ipcClient.broadcast("dashboard:UPDATE_PLUGIN", {
+                    const ipcResp = await req.app.ipcClient.broadcast("updatePlugin", {
                         pluginName,
                         action: "disable",
                     });
