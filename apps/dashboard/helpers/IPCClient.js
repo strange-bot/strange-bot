@@ -50,7 +50,7 @@ class IPCClient {
         const response = await this._send(
             {
                 event: eventName,
-                targetOptions: { all: true },
+                options: { all: true, ...options },
                 payload: data,
             },
             options,
@@ -72,20 +72,19 @@ class IPCClient {
      * Broadcast to one shard
      * @param {string} event
      * @param {*} data
-     * @param {object} targetOptions - e.g. { guildId, shardId }
      * @param {object} options
      * @returns
      */
-    async broadcastOne(event, data, targetOptions = {}, options = {}) {
-        if (!targetOptions.guildId && !targetOptions.shardId && !targetOptions.any) {
+    async broadcastOne(event, data, options = {}) {
+        if (!options.guildId && !options.shardId && !options.any) {
             throw new Error(
-                "broadcastOne: Either guildId, shardId, or any=true must be provided in targetOptions",
+                "broadcastOne: Either guildId, shardId, or any=true must be provided in options",
             );
         }
         return await this._send(
             {
                 event,
-                targetOptions,
+                options,
                 payload: data,
             },
             options,

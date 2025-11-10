@@ -19,19 +19,19 @@ class IPCServer {
      * Helper to get shard processes based on targetOptions
      * @returns {number}
      */
-    getShard(targetOptions = {}) {
-        if (targetOptions.all) {
+    getShard(options = {}) {
+        if (options.all) {
             return null;
         }
-        if (targetOptions.guildId) {
+        if (options.guildId) {
             const shardCount = this.shardManager.totalShards;
-            const shardId = ShardClientUtil.shardIdForGuildId(targetOptions.guildId, shardCount);
+            const shardId = ShardClientUtil.shardIdForGuildId(options.guildId, shardCount);
             return shardId;
         }
-        if (targetOptions.shardId !== undefined) {
-            return targetOptions.shardId;
+        if (options.shardId !== undefined) {
+            return options.shardId;
         }
-        if (targetOptions.any) {
+        if (options.any) {
             const firstShard = this.shardManager.shards.values().next().value;
             return firstShard ? firstShard.id : null;
         }
@@ -59,7 +59,7 @@ class IPCServer {
         Logger.debug("[IPC] Received message:", message?.data);
         if (!message?.data?.event) return;
 
-        const { event, payload, targetOptions = {} } = message.data;
+        const { event, payload, options = {} } = message.data;
 
         let pluginName;
         let eventName;
@@ -71,7 +71,7 @@ class IPCServer {
             eventName = event.slice(idx + 1).trim();
         }
 
-        const shardId = this.getShard(targetOptions);
+        const shardId = this.getShard(options);
         if (!this.isShardAvailable(shardId)) {
             return message.reply({
                 success: false,
@@ -100,7 +100,7 @@ class IPCServer {
                         eventName,
                         payload,
                     },
-                    shard: this.getShard(targetOptions),
+                    shard: shardId,
                 },
             );
         } else {
@@ -127,7 +127,7 @@ class IPCServer {
                         eventName,
                         payload,
                     },
-                    shard: this.getShard(targetOptions),
+                    shard: shardId,
                 },
             );
         }

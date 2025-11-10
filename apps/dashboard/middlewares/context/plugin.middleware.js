@@ -144,9 +144,14 @@ module.exports.dashboard = async (req, res, next) => {
     }
 
     // Broadcast
-    req.broadcast = function (eventName, data) {
+    req.broadcast = function (eventName, data, options) {
         const event = `${plugin.name}:${eventName}`;
-        return req.app.ipcClient.broadcast(event, data);
+        return req.app.ipcClient.broadcast(event, data, options);
+    };
+
+    req.broadcastOne = function (eventName, data, options) {
+        const event = `${plugin.name}:${eventName}`;
+        return req.app.ipcClient.broadcastOne(event, data, options);
     };
 
     const [coreSettings, config] = await Promise.all([
