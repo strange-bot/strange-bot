@@ -2,6 +2,14 @@ const { ChannelType } = require("discord.js");
 const { languagesMeta } = require("strange-core");
 
 module.exports = {
+    getStats: (client) => {
+        return {
+            servers: client.guilds.cache.size,
+            users: client.users.cache.size,
+            plugins: client.pluginManager.plugins.length,
+        };
+    },
+
     validateGuild: (_client) => {
         return true;
     },

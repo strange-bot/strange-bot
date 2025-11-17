@@ -1,8 +1,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="<%= locals.description || 'A feature rich multipurpose discord bot' %>" />
-<meta name="author" content="Strange Bot" />
-<meta name="generator" content="Strange Bot Dashboard" />
+<meta name="author" content="<%= coreConfig['DASHBOARD']['LOGO_NAME'] %>" />
+<meta name="generator" content="<%= coreConfig['DASHBOARD']['LOGO_NAME'] %>" />
+<meta http-equiv="Content-Language" content="en" />
 
 <% if (locals.title) { %>
 <title><%= locals.title %></title>
@@ -10,6 +11,6 @@
 <title>Dashboard</title>
 <% } %>
 
-<link rel="canonical" href="{{ .Permalink }}" />
+<link rel="canonical" href="<%= locals.permalink || '' %>" />
 
 <%- include('stylesheet.ejs') %> <%- include('favicons.ejs') %> <%- include('analytics.ejs') %>

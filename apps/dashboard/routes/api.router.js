@@ -5,8 +5,7 @@ const router = express.Router();
 const apiController = require("../controllers/api.controller");
 
 // Routes
-router.get("/locales", apiController.getBotLocales);
-router.put("/locales", apiController.updateBotLocales);
-router.put("/language", apiController.updateDashboardLanguage);
+router.get("/health", apiController.getHealth);
+router.get("/stats", apiController.getStats);
 
 module.exports = router;

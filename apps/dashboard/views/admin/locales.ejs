@@ -19,7 +19,7 @@
 
     async init() {
       try {
-        const response = await fetch('/api/locales');
+        const response = await fetch('/admin/api/locales');
         if (!response.ok) throw new Error('Failed to fetch locales');
         
         this.localizationKeys = await response.json();
@@ -50,7 +50,7 @@
       });
 
       try {
-        const response = await fetch('/api/locales', {
+        const response = await fetch('/admin/api/locales', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

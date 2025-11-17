@@ -56,7 +56,8 @@ declare global {
 declare module "express" {
     export interface Request {
         translate: import("i18next").TFunction;
-        broadcast: (event: string, data: any) => Promise<any[]>;
+        broadcast: (event: string, data: any, options: object) => Promise<any[]>;
+        broadcastOne: (event: string, data: any, options: object) => Promise<any>;
     }
 }
 

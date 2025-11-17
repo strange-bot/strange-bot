@@ -13,7 +13,6 @@ const { CheckAuth, CheckAdmin } = require("./middlewares/auth.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
 
 // Routers
-const landingRouter = require("./routes/landing.router");
 const authRouter = require("./routes/auth.router");
 const dashboardRouter = require("./routes/dashboard.router");
 const adminRouter = require("./routes/admin.router");
@@ -76,11 +75,10 @@ module.exports = class App {
     }
 
     #initializeRoutes() {
-        this.app.get("/", landingRouter);
+        this.app.get("/", CheckAuth, dashboardRouter);
         this.app.use("/auth", authRouter);
-        this.app.use("/dashboard", CheckAuth, dashboardRouter);
         this.app.use("/admin", CheckAdmin, adminRouter);
-        this.app.use("/api", CheckAuth, apiRouter);
+        this.app.use("/api", apiRouter);
     }
 
     #initializeViewEngine() {

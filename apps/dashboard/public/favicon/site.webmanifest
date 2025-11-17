@@ -1,6 +1,6 @@
 {
-  "name": "Strange Bot",
-  "short_name": "Strange",
+  "name": "Nexcord",
+  "short_name": "Nexcord",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#068ADD",
-  "background_color": "#ffffff",
+  "theme_color": "#111827",
+  "background_color": "#111827",
   "display": "standalone"
 }

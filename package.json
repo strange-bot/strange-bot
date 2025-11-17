@@ -1,7 +1,7 @@
 {
-    "name": "strange-bot",
+    "name": "nexcord",
     "version": "0.1.0-beta",
-    "description": "Premium version of Discord JS Bot",
+    "description": "Extensible plugin based discord bot",
     "author": "Sai Teja M",
     "license": "AGPL-3.0-only",
     "engines": {

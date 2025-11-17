@@ -13,8 +13,12 @@
         <a href="/dashboard" class="flex items-center space-x-3">
           <img
             src="<%= coreConfig['DASHBOARD']['LOGO_URL'] %>"
-            class="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10"
-            alt="Strange Logo" />
+            alt="<%= coreConfig['DASHBOARD']['LOGO_NAME'] %>"
+            width="32"
+            height="32"
+            loading="lazy"
+            decoding="async"
+            class="h-6 w-6 object-contain sm:h-7 sm:w-7 md:h-8 md:w-8" />
           <span class="text-text self-center whitespace-nowrap text-lg font-semibold sm:text-xl md:text-2xl">
             <%= coreConfig['DASHBOARD']['LOGO_NAME'] %>
           </span>

@@ -72,9 +72,9 @@
           <li class="mb-1">
             <a
               href="/dashboard/<%=guild.id%>"
-              class="<%= slug === 'home' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
-              <i class="fa-solid fa-house-chimney-window text-text-muted mr-3 text-lg"></i>
-              <span>Home</span>
+              class="<%= slug === 'home' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+              <i class="fa-solid fa-house-chimney-window text-text-muted group-hover:text-text text-lg"></i>
+              <span class="ml-3">Home</span>
             </a>
           </li>
         </ul>
@@ -108,16 +108,16 @@
                 <a
                   id="aside-active-item"
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="text-text bg-bg-interactive border-primary group flex items-center rounded-lg border-l-4 p-3 pl-5 text-base font-medium transition">
-                  <i class="<%= plugin.icon %> text-text-muted mr-3 text-lg"></i>
-                  <%=name%>
+                  class="bg-bg-interactive text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+                  <i class="<%= plugin.icon %> text-text-muted group-hover:text-text text-lg"></i>
+                  <span class="ml-3"><%=name%></span>
                 </a>
                 <% } else { %>
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
                   class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
-                  <i class="<%= plugin.icon %> text-text-muted mr-3 text-lg"></i>
-                  <%=name%>
+                  <i class="<%= plugin.icon %> text-text-muted group-hover:text-text text-lg"></i>
+                  <span class="ml-3"><%=name%></span>
                 </a>
                 <% } %>
               </li>

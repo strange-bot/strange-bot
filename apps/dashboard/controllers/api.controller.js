@@ -1,62 +1,40 @@
-const { languagesMeta } = require("strange-core");
-const db = require("../db.service");
-
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-module.exports.getBotLocales = async function (req, res) {
-    const ipcResp = await req.app.ipcClient.broadcastOne("getLocaleBundle", null, {
-        any: true,
+module.exports.getHealth = function (req, res) {
+    const ipcConnected = !!req.app.ipcClient;
+    res.json({
+        success: true,
+        data: {
+            app: "dashboard",
+            uptime: process.uptime(),
+            ipcConnected,
+            time: new Date().toISOString(),
+        },
     });
-    if (!ipcResp?.success) return res.sendStatus(500);
-
-    return res.json(ipcResp.data);
 };
 
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-module.exports.updateBotLocales = async function (req, res) {
-    const { plugin, language, keys } = req.body;
+module.exports.getStats = async function (req, res) {
+    try {
+        const ipcResp = await req.app.ipcClient.broadcast("getStats");
+        console.log(ipcResp);
+        let stats = { servers: 100, users: 10000, plugins: 20 };
 
-    // TODO: Add validations
-
-    const response = await req.app.ipcClient.broadcast("setLocaleBundle", {
-        plugin,
-        language,
-        keys,
-    });
-
-    if (response.some((r) => !r.success)) return res.sendStatus(500);
-    return res.sendStatus(200);
-};
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-module.exports.updateDashboardLanguage = async function (req, res) {
-    const lang = req.body.language_code;
-
-    // check if language is valid
-    if (!languagesMeta.find((l) => l.name === lang)) {
-        return res.sendStatus(400);
-    }
-
-    if (!req.session.locale === lang) {
-        return res.sendStatus(200);
-    }
-
-    await db.setLocale(req.session.user.info.id, lang);
-    req.session.locale = lang;
-    req.session.save(async (err) => {
-        if (err) {
-            req.client.logger.error("Failed to save session: " + err);
-            return res.sendStatus(500);
+        if (!ipcResp.find((r) => !r.success)) {
+            stats = ipcResp.reduce(
+                (acc, resp) => {
+                    acc.servers += resp.data.servers;
+                    acc.users += resp.data.users;
+                    acc.plugins = resp.data.plugins;
+                    return acc;
+                },
+                { servers: 0, users: 0, plugins: 0 },
+            );
         }
 
-        res.sendStatus(200);
-    });
+        res.json({ success: true, data: stats });
+    } catch (err) {
+        res.status(500).json({ success: false, error: "failed to fetch stats" });
+    }
 };

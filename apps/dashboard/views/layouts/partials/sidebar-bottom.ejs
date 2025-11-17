@@ -48,7 +48,7 @@
     x-data="{
         async changeLanguage(languageCode) {
           try {
-            const response = await fetch('/api/language', {
+            const response = await fetch('/admin/api/language', {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ language_code: languageCode })
