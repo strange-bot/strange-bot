@@ -21,6 +21,7 @@
         "BACK_TO_DASH": "Back to Dashboard",
         "PLUGIN_MANAGEMENT": "Plugin Management",
         "LOCALES": "Localization",
+        "LANDING": "Landing Page",
         "HOME": "Home",
         "PLUGINS": "Plugins",
         "PLUGIN_CONFIGS": "Plugin Config",
@@ -118,5 +119,14 @@
         "PREVIEW_PLACEHOLDER": "Embed preview will be shown here"
     },
 
-    "NO_SETTINGS": "This plugin does not have any settings."
+    "NO_SETTINGS": "This plugin does not have any settings.",
+
+    "LANDING_CONFIG": {
+        "TITLE": "Landing Page Configuration",
+        "DESCRIPTION": "Edit the HTML and JS for your landing page.",
+        "TAB_HTML": "HTML",
+        "TAB_JS": "JS",
+        "SAVE_SUCCESS": "Landing page updated!",
+        "SAVE_ERROR": "Failed to update landing page"
+    }
 }

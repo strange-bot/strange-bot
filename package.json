@@ -9,10 +9,12 @@
     },
     "private": true,
     "scripts": {
+        "build:landing": "pnpm --filter landing build",
         "start": "pnpm --parallel run start",
         "start:bot": "pnpm --filter bot start",
         "start:dashboard": "pnpm --filter dashboard start",
         "dev": "pnpm --parallel run dev",
+        "dev:landing": "pnpm --filter landing dev",
         "dev:bot": "pnpm --filter bot dev",
         "dev:dashboard": "pnpm --filter dashboard dev",
         "format": "prettier --write 'apps/**/*.{js,json,ejs}' 'plugins/**/*.{js,json,ejs}' 'packages/**/*.{js,json}'",
@@ -43,9 +45,8 @@
     },
     "pnpm": {
         "overrides": {
-                "discord.js": "14.19.3"
-            }
-        ,
+            "discord.js": "14.19.3"
+        },
         "onlyBuiltDependencies": [
             "bufferutil",
             "erlpack",

@@ -1,10 +1,15 @@
+const isLanding = process.env.LANDING_PAGE === "1";
+console.log("Tailwind Config - isLanding:", isLanding);
+
 module.exports = {
-    content: [
-        "./src/*.js",
-        "./views/**/*.ejs",
-        "../../plugins/**/*.ejs",
-        "./node_modules/flowbite/**/*.js",
-    ],
+    content: isLanding
+        ? ["./public/**/*.{html,js}"]
+        : [
+              "./src/*.js",
+              "./views/**/*.ejs",
+              "../../plugins/**/*.ejs",
+              "./node_modules/flowbite/**/*.js",
+          ],
     safelist: [
         "w-64",
         "w-1/2",

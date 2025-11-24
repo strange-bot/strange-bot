@@ -21,6 +21,7 @@
         "BACK_TO_DASH": "Retour au tableau de bord",
         "PLUGIN_MANAGEMENT": "Gestion des plugins",
         "LOCALES": "Localisation",
+        "LANDING": "Page d'accueil",
         "HOME": "Maison",
         "PLUGINS": "Plugins",
         "PLUGIN_CONFIGS": "Configuration du plugin",
@@ -118,5 +119,14 @@
         "PREVIEW_PLACEHOLDER": "L'aperçu de l'embed sera affiché ici"
     },
 
-    "NO_SETTINGS": "Ce plugin n'a aucun paramètre."
+    "NO_SETTINGS": "Ce plugin n'a aucun paramètre.",
+
+    "LANDING_CONFIG": {
+        "TITLE": "Configuration de la page d'accueil",
+        "DESCRIPTION": "Modifiez le HTML et le JS de votre page d'accueil.",
+        "TAB_HTML": "HTML",
+        "TAB_JS": "JS",
+        "SAVE_SUCCESS": "Page d'accueil mise à jour !",
+        "SAVE_ERROR": "Échec de la mise à jour de la page d'accueil"
+    }
 }

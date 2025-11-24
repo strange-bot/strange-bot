@@ -75,7 +75,7 @@ module.exports = class App {
     }
 
     #initializeRoutes() {
-        this.app.get("/", CheckAuth, dashboardRouter);
+        this.app.use("/dashboard", CheckAuth, dashboardRouter);
         this.app.use("/auth", authRouter);
         this.app.use("/admin", CheckAdmin, adminRouter);
         this.app.use("/api", apiRouter);

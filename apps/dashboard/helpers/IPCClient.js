@@ -92,6 +92,10 @@ class IPCClient {
     }
 
     async _send(data, options = {}) {
+        if (!this.firstConnect) {
+            Logger.warn("[IPC] Not connected to BotShardManager");
+            return { success: false, data: null };
+        }
         Logger.debug(`[IPC] Sending event '${data.event}'`);
         const receptive = options.receptive ?? true;
         const startTime = Date.now();

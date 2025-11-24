@@ -30,12 +30,20 @@
               <span sidebar-toggle-item><%= tr('SIDEBAR.PLUGIN_MANAGEMENT') %></span>
             </a>
           </li>
-          <li>
+          <li class="mb-1">
             <a
               href="/admin/locales"
               class="<%= slug === 'locales' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
               <i class="fa-solid fa-language text-text-muted group-hover:text-text mr-3 text-lg"></i>
               <span sidebar-toggle-item><%= tr('SIDEBAR.LOCALES') %></span>
+            </a>
+          </li>
+          <li class="mb-1">
+            <a
+              href="/admin/landing"
+              class="<%= slug === 'landing' ? 'bg-bg-interactive' : 'hover:bg-bg-surface' %> text-text group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
+              <i class="fa-solid fa-rocket text-text-muted group-hover:text-text mr-3 text-lg"></i>
+              <span sidebar-toggle-item><%= tr('SIDEBAR.LANDING') %></span>
             </a>
           </li>
         </ul>

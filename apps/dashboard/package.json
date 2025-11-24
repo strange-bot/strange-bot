@@ -10,7 +10,8 @@
         "dev": "pnpm --parallel run /^dev:.*/",
         "dev:server": "nodemon index.js",
         "dev:webpack": "webpack --mode=development --watch",
-        "build": "webpack --mode=production"
+        "dev:landing": "LANDING_PAGE=1 tailwindcss -i src/style.css -o public/css/landing.css --watch",
+        "build": "webpack --mode=production && LANDING_PAGE=1 tailwindcss -i src/style.css -o public/css/landing.css --minify"
     },
     "dependencies": {
         "connect-mongo": "^5.1.0",

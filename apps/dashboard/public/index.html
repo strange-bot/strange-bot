@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" class="dark" style="scroll-behavior: smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Nexcord" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <title>Nexcord - The Ultimate Discord Bot</title>
+
+    <!-- App -->
+    <script src="/js/landing.js" defer></script>
+    <link href="/css/landing.css" rel="stylesheet" />
+
+    <!-- Other Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+  </head>
+  <body class="bg-bg-page text-text font-sans">
+    <!-- Navbar -->
+    <nav class="border-border bg-bg-page sticky top-0 z-50 border-b shadow-md">
+      <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
+        <a href="/" class="flex items-center space-x-3">
+          <img src="/images/logo.png" class="h-8 w-8" alt="Nexcord Logo" />
+          <span class="text-text self-center whitespace-nowrap text-2xl font-bold"> Nexcord </span>
+        </a>
+        <button
+          type="button"
+          class="text-text-muted hover:bg-bg-panel focus:ring-bg-interactive inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm focus:outline-none focus:ring-2 md:hidden"
+          aria-controls="navbar-default"
+          aria-expanded="false"
+          onclick="document.getElementById('navbar-default').classList.toggle('hidden')">
+          <span class="sr-only">Open main menu</span>
+          <svg class="h-5 w-5" aria-hidden="true" fill="none" viewBox="0 0 17 14">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+        <div class="hidden w-full items-center md:flex md:w-auto" id="navbar-default">
+          <ul
+            class="border-border bg-bg-page md:bg-bg-page mt-4 flex flex-col rounded-lg border p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0">
+            <li>
+              <a
+                href="#features"
+                class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
+                >Features</a
+              >
+            </li>
+            <li>
+              <a
+                href="#get-started"
+                class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
+                >Get Started</a
+              >
+            </li>
+            <li>
+              <a
+                href="/dashboard"
+                class="text-text-muted after:bg-primary-light relative block rounded px-3 py-2 text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:after:w-full md:bg-transparent md:p-0"
+                >Dashboard</a
+              >
+            </li>
+          </ul>
+          <!-- Dark Mode Toggle -->
+          <div
+            x-data="{ darkMode: localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches), toggleDarkMode() { this.darkMode = !this.darkMode; localStorage.setItem('color-theme', this.darkMode ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', this.darkMode); } }"
+            x-init="document.documentElement.classList.toggle('dark', darkMode)"
+            class="ml-4 flex items-center gap-2">
+            <button
+              @click="toggleDarkMode"
+              data-tooltip-target="tooltip-toggle-dark-mode"
+              class="text-text-muted hover:bg-bg-surface rounded-lg p-2.5 text-sm">
+              <i x-show="!darkMode" x-cloak class="fas fa-moon h-5 w-5"></i>
+              <i x-show="darkMode" x-cloak class="fas fa-sun h-5 w-5"></i>
+            </button>
+            <div
+              id="tooltip-toggle-dark-mode"
+              role="tooltip"
+              class="tooltip bg-bg-surface text-text invisible absolute z-10 inline-block rounded-lg px-3 py-2 text-sm font-medium opacity-0 shadow-sm transition-opacity duration-300">
+              <span x-text="darkMode ? 'Toggle Light Mode' : 'Toggle Dark Mode'"></span>
+              <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Hero Section -->
+    <section
+      class="from-bg-panel to-bg-page bg-gradient-to-br py-20 md:py-32"
+      x-data="{ animateIn: false }"
+      x-init="setTimeout(() => animateIn = true, 100)">
+      <div class="mx-auto max-w-screen-xl px-4 text-center">
+        <h1
+          class="text-text mb-6 text-4xl font-extrabold leading-tight tracking-tight transition-all duration-1000 md:text-6xl xl:text-7xl"
+          :class="animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+          The Ultimate Discord Bot
+        </h1>
+        <p
+          class="text-text-muted mx-auto mb-8 max-w-2xl text-lg font-light transition-all delay-150 duration-1000 md:text-xl"
+          :class="animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+          Build the perfect Discord experience for your community.<br />
+          <span class="text-primary-light font-semibold">Nexcord</span> is fully open source, developer-friendly, and
+          powered by a flexible plugin system.
+        </p>
+        <div
+          class="flex flex-col justify-center gap-4 transition-all delay-300 duration-1000 sm:flex-row"
+          :class="animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
+          <a
+            href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot"
+            target="_blank"
+            class="bg-primary hover:bg-primary-dark focus:ring-primary-light inline-flex items-center justify-center rounded-lg px-8 py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus:ring-4">
+            <i class="fas fa-paper-plane mr-2 text-xl"></i>
+            Invite Bot
+          </a>
+          <a
+            href="https://github.com/your-repo-link"
+            target="_blank"
+            class="focus:ring-primary-light inline-flex items-center justify-center rounded-lg bg-gray-800 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-900 hover:shadow-xl focus:ring-4 dark:bg-gray-700 dark:hover:bg-gray-600">
+            <i class="fab fa-github mr-2 text-xl"></i>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- End Hero Section -->
+
+    <!-- Stats Section -->
+    <section
+      class="fade-section from-primary-light/5 via-bg-panel to-bg-page relative bg-gradient-to-br py-16 md:py-24">
+      <div
+        class="mx-auto mb-12 flex max-w-6xl flex-col items-center gap-12 px-4 md:flex-row md:items-stretch"
+        x-data="{
+          stats: { servers: null, users: null, plugins: null },
+          loaded: false,
+          async fetchStats() {
+            try {
+              const response = await fetch(`/api/stats`);
+              const result = await response.json();
+              if (result.success) {
+                this.stats = result.data;
+                this.loaded = true;
+              }
+            } catch (e) { }
+          }
+        }"
+        x-init="fetchStats()">
+        <div class="flex flex-1 flex-col justify-center text-center md:items-start md:justify-start md:text-left">
+          <h2
+            class="mb-3 inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent drop-shadow-lg md:text-5xl">
+            <span class="inline-flex items-center gap-2">
+              <i class="fas fa-chart-bar text-indigo-400"></i>
+              Stats
+            </span>
+          </h2>
+          <p class="text-text-muted max-w-lg text-lg font-light md:text-xl">
+            Trusted by communities, powering thousands of servers and users with a growing plugin ecosystem.
+          </p>
+        </div>
+        <div class="grid flex-1 gap-8 sm:grid-cols-3">
+          <!-- Servers Stat -->
+          <div
+            class="fade-item border-border flex flex-col items-center rounded-xl border bg-white/70 p-6 shadow-lg backdrop-blur-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl dark:bg-gray-900/70">
+            <div class="mb-3 flex items-center justify-center">
+              <span
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-400 via-indigo-500 to-indigo-600 text-white shadow">
+                <i class="fas fa-server text-xl"></i>
+              </span>
+            </div>
+            <h3 class="mb-1 flex items-end text-3xl font-extrabold text-indigo-600 drop-shadow">
+              <span x-text="stats.servers !== null ? stats.servers.toLocaleString() + '+' : '...'"></span>
+            </h3>
+            <div class="text-sm font-semibold uppercase tracking-wide text-indigo-500">Servers</div>
+          </div>
+          <!-- Users Stat -->
+          <div
+            class="fade-item border-border flex flex-col items-center rounded-xl border bg-white/70 p-6 shadow-lg backdrop-blur-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl dark:bg-gray-900/70">
+            <div class="mb-3 flex items-center justify-center">
+              <span
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 text-white shadow">
+                <i class="fas fa-users text-xl"></i>
+              </span>
+            </div>
+            <h3 class="mb-1 flex items-end text-3xl font-extrabold text-purple-600 drop-shadow">
+              <span x-text="stats.users !== null ? stats.users.toLocaleString() + '+' : '...'"></span>
+            </h3>
+            <div class="text-sm font-semibold uppercase tracking-wide text-purple-500">Users</div>
+          </div>
+          <!-- Plugins Stat -->
+          <div
+            class="fade-item border-border flex flex-col items-center rounded-xl border bg-white/70 p-6 shadow-lg backdrop-blur-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl dark:bg-gray-900/70">
+            <div class="mb-3 flex items-center justify-center">
+              <span
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pink-400 via-pink-500 to-pink-600 text-white shadow">
+                <i class="fas fa-puzzle-piece text-xl"></i>
+              </span>
+            </div>
+            <h3 class="mb-1 flex items-end text-3xl font-extrabold text-pink-600 drop-shadow">
+              <span x-text="stats.plugins !== null ? stats.plugins.toLocaleString() + '+' : '...'"></span>
+            </h3>
+            <div class="text-sm font-semibold uppercase tracking-wide text-pink-500">Plugins</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Stats Section -->
+
+    <!-- Separator between Stats and Features -->
+    <div class="my-8 flex justify-center">
+      <hr class="border-border w-32 border-t-2" />
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="fade-section py-16 md:py-24">
+      <div class="mx-auto max-w-5xl px-4">
+        <h2 class="text-text fade-item mb-12 text-center text-4xl font-bold md:text-5xl">Why Choose Nexcord?</h2>
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <!-- Plugin System Card -->
+          <div
+            class="fade-item to-bg-panel border-border flex flex-col items-center rounded-xl border bg-gradient-to-br from-indigo-500/10 p-8 text-center shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <div
+              class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-400 via-indigo-500 to-indigo-600 shadow-lg">
+              <i class="fas fa-puzzle-piece text-2xl text-white"></i>
+            </div>
+            <h5 class="mb-2 text-xl font-bold text-indigo-500">Plugin System</h5>
+            <p class="text-text-muted font-normal">
+              Add, remove, or update plugins with a click. Choose from a growing library or build your own.
+            </p>
+          </div>
+          <!-- Open Source Card -->
+          <div
+            class="fade-item to-bg-panel border-border flex flex-col items-center rounded-xl border bg-gradient-to-br from-purple-500/10 p-8 text-center shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <div
+              class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 shadow-lg">
+              <i class="fas fa-code-branch text-2xl text-white"></i>
+            </div>
+            <h5 class="mb-2 text-xl font-bold text-purple-500">Open Source</h5>
+            <p class="text-text-muted font-normal">
+              100% open source. Fork, contribute, or extend Nexcord with your own custom plugins.
+            </p>
+          </div>
+          <!-- Invite & Use Card -->
+          <div
+            class="fade-item to-bg-panel border-border flex flex-col items-center rounded-xl border bg-gradient-to-br from-pink-500/10 p-8 text-center shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <div
+              class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-400 via-pink-500 to-pink-600 shadow-lg">
+              <i class="fas fa-rocket text-2xl text-white"></i>
+            </div>
+            <h5 class="mb-2 text-xl font-bold text-pink-500">Invite & Use</h5>
+            <p class="text-text-muted font-normal">
+              Invite Nexcord to your server and start using powerful features instantly. No setup required.
+            </p>
+          </div>
+          <!-- Community Support Card -->
+          <div
+            class="fade-item to-bg-panel border-border flex flex-col items-center rounded-xl border bg-gradient-to-br from-green-500/10 p-8 text-center shadow-xl transition-all duration-300 hover:scale-50 hover:shadow-2xl">
+            <div
+              class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-green-400 via-green-500 to-green-600 shadow-lg">
+              <i class="fas fa-users text-2xl text-white"></i>
+            </div>
+            <h5 class="mb-2 text-xl font-bold text-green-500">Community Support</h5>
+            <p class="text-text-muted font-normal">
+              Get help, share ideas, and collaborate with a vibrant Discord community.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Features Section -->
+
+    <!-- Separator between Features and Plans -->
+    <div class="my-8 flex justify-center">
+      <hr class="border-border w-32 border-t-2" />
+    </div>
+
+    <!-- Get Started Section -->
+    <section id="get-started" class="bg-bg-panel fade-section py-16 md:py-24">
+      <div class="mx-auto max-w-5xl px-4">
+        <h2 class="text-text fade-item mb-12 text-center text-4xl font-bold md:text-5xl">Get Started</h2>
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
+          <!-- Community Plan -->
+          <div
+            class="fade-item border-primary bg-bg-page relative flex flex-col items-center rounded-2xl border-2 p-10 shadow-xl transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+            <div
+              class="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-400 via-indigo-500 to-indigo-600 shadow-lg">
+              <i class="fas fa-users text-2xl text-white"></i>
+            </div>
+            <h3 class="text-primary mb-2 text-3xl font-bold">Community</h3>
+            <p class="text-text-muted mb-6 text-center text-lg">
+              Free access to all plugins, join the Nexcord community, and use the bot instantly.
+            </p>
+            <ul class="text-text mx-auto mb-8 w-full max-w-xs space-y-3 text-left">
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>All public included</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>Community support via Discord</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>Invite & use instantly</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>100% open source</span>
+              </li>
+            </ul>
+            <a
+              href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot"
+              target="_blank"
+              class="bg-primary hover:bg-primary-dark mt-auto inline-flex w-full items-center justify-center rounded-lg py-3 font-bold text-white transition-all duration-300 hover:scale-105">
+              <i class="fas fa-paper-plane mr-2 text-xl"></i>
+              Invite Bot
+            </a>
+          </div>
+          <!-- Custom Plan -->
+          <div
+            class="fade-item bg-bg-page relative flex cursor-not-allowed flex-col items-center rounded-2xl border-2 border-pink-400 p-10 opacity-60 shadow-xl">
+            <span
+              class="absolute right-6 top-6 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-white shadow"
+              >Coming Soon</span
+            >
+            <div
+              class="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-400 via-pink-500 to-pink-600 shadow-lg">
+              <i class="fas fa-crown text-2xl text-white"></i>
+            </div>
+            <h3 class="mb-2 text-3xl font-bold text-pink-400">Custom</h3>
+            <p class="text-text-muted mb-6 text-center text-lg">
+              Your own bot with your branding, admin panel, dedicated support & custom plugin development.
+            </p>
+            <ul class="text-text mx-auto mb-8 w-full max-w-xs space-y-3 text-left">
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>Your branding & bot name</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>Admin panel to control settings</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>Dedicated support team</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check text-success"></i>
+                <span>Custom plugins development</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-clock text-yellow-400"></i>
+                <span class="text-yellow-400">Custom hosting (coming soon)</span>
+              </li>
+            </ul>
+            <button
+              class="mt-auto w-full cursor-not-allowed rounded-lg bg-gradient-to-r from-pink-400 to-pink-500 py-3 font-bold text-white opacity-80 transition-all duration-300"
+              disabled>
+              Coming Soon
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Get Started Section -->
+
+    <!-- CTA Section -->
+    <section class="fade-section py-16 md:py-24">
+      <div class="mx-auto max-w-2xl px-4 text-center">
+        <h2 class="text-text fade-item mb-4 text-3xl font-bold md:text-4xl">Ready to Transform Your Discord Server?</h2>
+        <p class="text-text-muted fade-item mb-8 text-lg">
+          Join thousands of communities already using Nexcord. Start for free today!
+        </p>
+        <div class="fade-item flex flex-col justify-center gap-4 sm:flex-row">
+          <a
+            href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot"
+            target="_blank"
+            class="bg-primary hover:bg-primary-dark inline-flex items-center justify-center rounded-lg px-8 py-3 font-bold text-white transition-all duration-300 hover:scale-105">
+            <i class="fas fa-paper-plane mr-2 text-xl"></i>
+            Invite Bot
+          </a>
+          <a
+            href="https://discord.gg/your-invite-link"
+            target="_blank"
+            class="inline-flex items-center justify-center rounded-lg px-8 py-3 font-bold text-white transition-all duration-300 hover:scale-105"
+            style="background-color: #5865f2">
+            <i class="fab fa-discord mr-2 text-xl"></i> Join Discord
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- End CTA Section -->
+
+    <!-- Footer -->
+    <footer class="bg-bg-page border-border border-t py-8">
+      <div class="mx-auto max-w-screen-xl px-4 text-center">
+        <p class="text-text-muted">
+          &copy; 2025 Nexcord. All rights reserved. |
+          <a href="https://github.com/your-repo-link" target="_blank" class="text-primary hover:text-primary-dark"
+            >GitHub</a
+          >
+          |
+          <a href="https://discord.gg/your-invite-link" target="_blank" class="text-primary hover:text-primary-dark"
+            >Discord</a
+          >
+        </p>
+      </div>
+    </footer>
+    <!-- End Footer -->
+  </body>
+</html>

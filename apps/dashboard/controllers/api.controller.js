@@ -18,7 +18,6 @@ module.exports.getHealth = function (req, res) {
 module.exports.getStats = async function (req, res) {
     try {
         const ipcResp = await req.app.ipcClient.broadcast("getStats");
-        console.log(ipcResp);
         let stats = { servers: 100, users: 10000, plugins: 20 };
 
         if (!ipcResp.find((r) => !r.success)) {

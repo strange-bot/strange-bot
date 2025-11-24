@@ -1,0 +1,181 @@
+<section class="mb-6">
+  <div class="border-border bg-bg-panel flex items-center justify-between rounded-lg border p-4 shadow-sm">
+    <div>
+      <h2 class="text-text text-lg font-semibold"><%= tr("LANDING_CONFIG.TITLE") %></h2>
+      <p class="text-text-muted text-sm"><%= tr("LANDING_CONFIG.DESCRIPTION") %></p>
+    </div>
+  </div>
+</section>
+
+<section class="mb-6" x-data="landingConfig()" x-init="$nextTick(() => init())">
+  <div class="border-border bg-bg-panel flex flex-col items-center justify-between rounded-lg border p-4 shadow-sm">
+    <form class="w-full" @submit.prevent="saveLanding">
+      <div class="mb-4">
+        <template x-if="loadError">
+          <div class="mb-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <span x-text="loadError"></span>
+          </div>
+        </template>
+
+        <!-- Tabs -->
+        <div class="mb-3 flex items-center">
+          <div class="border-border mb-0 flex-1 overflow-x-auto overflow-y-hidden border-b">
+            <ul class="-mb-px flex whitespace-nowrap text-center text-sm font-medium" role="tablist">
+              <li class="me-2" role="presentation">
+                <button
+                  id="html-tab"
+                  type="button"
+                  @click="setTab('html')"
+                  :class="activeTab === 'html'
+                      ? 'text-text inline-block rounded-t-lg border-b-2 border-primary p-4'
+                      : 'text-text-muted hover:text-text inline-block rounded-t-lg border-b-2 border-transparent p-4'">
+                  <%= tr("LANDING_CONFIG.TAB_HTML") %>
+                </button>
+              </li>
+              <li class="me-2" role="presentation">
+                <button
+                  id="js-tab"
+                  type="button"
+                  @click="setTab('js')"
+                  :class="activeTab === 'js'
+                      ? 'text-text inline-block rounded-t-lg border-b-2 border-primary p-4'
+                      : 'text-text-muted hover:text-text inline-block rounded-t-lg border-b-2 border-transparent p-4'">
+                  <%= tr("LANDING_CONFIG.TAB_JS") %>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- HTML Editor -->
+        <div
+          id="editor-html-panel"
+          x-show="activeTab === 'html'"
+          x-cloak
+          :style="activeTab === 'html' ? 'display:block;' : 'display:none;'">
+          <div class="h-[720px] w-full overflow-hidden">
+            <div id="editorHtml" class="h-full w-full rounded-lg border border-[#232a3a] bg-[#181f2a] shadow-sm"></div>
+          </div>
+        </div>
+
+        <!-- JS Editor -->
+        <div
+          id="editor-js-panel"
+          x-show="activeTab === 'js'"
+          x-cloak
+          :style="activeTab === 'js' ? 'display:block;' : 'display:none;'">
+          <div class="h-[720px] w-full overflow-hidden">
+            <div id="editorJs" class="h-full w-full rounded-lg border border-[#232a3a] bg-[#181f2a] shadow-sm"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-border mt-4 flex w-full items-center justify-end border-t pt-3">
+        <button
+          type="submit"
+          :disabled="saving || isLoading"
+          :class="{'opacity-50 cursor-not-allowed': saving || isLoading}"
+          class="bg-primary inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-white">
+          <span x-show="!saving"><%= tr('BTN_SAVE') %></span>
+          <span x-show="saving"><%= tr('BTN_SAVING') %></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+<script>
+  let htmlEditor, jsEditor;
+
+  function landingConfig() {
+    return {
+      saving: false,
+      isLoading: true,
+      loadError: "",
+      initialHtml: "",
+      initialJs: "",
+      activeTab: "html",
+
+      async init() {
+        try {
+          const resp = await fetch("/admin/landing/content");
+          const data = await resp.json();
+          this.initialHtml = data.html || "";
+          this.initialJs = data.js || "";
+        } catch {
+          this.loadError = "Failed to load landing page content.";
+        }
+
+        // Monaco loader
+        require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs" } });
+        require(["vs/editor/editor.main"], () => {
+          if (!htmlEditor) {
+            htmlEditor = monaco.editor.create(document.getElementById("editorHtml"), {
+              value: this.initialHtml,
+              language: "html",
+              theme: "vs-dark",
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              scrollbar: { vertical: "hidden", horizontal: "auto" },
+              lineNumbers: "on",
+            });
+          }
+          if (!jsEditor) {
+            jsEditor = monaco.editor.create(document.getElementById("editorJs"), {
+              value: this.initialJs,
+              language: "javascript",
+              theme: "vs-dark",
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              scrollbar: { vertical: "hidden", horizontal: "auto" },
+              lineNumbers: "on",
+            });
+          }
+          document.getElementById("editor-js-panel").style.display = "none";
+        });
+
+        this.isLoading = false;
+      },
+
+      setTab(tab) {
+        this.activeTab = tab;
+        // Show/hide editors
+        document.getElementById("editor-html-panel").style.display = tab === "html" ? "block" : "none";
+        document.getElementById("editor-js-panel").style.display = tab === "js" ? "block" : "none";
+        // Refresh layout
+        setTimeout(() => {
+          if (tab === "html" && htmlEditor) htmlEditor.layout();
+          if (tab === "js" && jsEditor) jsEditor.layout();
+        }, 10);
+      },
+
+      async saveLanding() {
+        this.saving = true;
+
+        const payload = {
+          html: htmlEditor ? htmlEditor.getValue() : "",
+          js: jsEditor ? jsEditor.getValue() : "",
+        };
+
+        try {
+          const resp = await fetch("/admin/landing", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!resp.ok) {
+            throw new Error("Save failed");
+          }
+
+          Alpine.store("toast").show("<%= tr('LANDING_CONFIG.SAVE_SUCCESS') %>", "success");
+        } catch {
+          Alpine.store("toast").show("<%= tr('LANDING_CONFIG.SAVE_ERROR') %>", "error");
+        }
+
+        this.saving = false;
+      },
+    };
+  }
+</script>

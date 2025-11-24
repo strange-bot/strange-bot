@@ -18,6 +18,11 @@ router.put("/api/language", adminController.updateDashboardLanguage);
 router.get("/plugins", adminController.getPlugins);
 router.put("/plugins", adminController.updatePlugins);
 
+// Landing config routes
+router.get("/landing", adminController.getLandingConfig);
+router.get("/landing/content", adminController.getLandingContent);
+router.post("/landing", adminController.updateLandingConfig);
+
 router.use("/:pluginName", pluginMiddleware.admin, (req, res, next) => {
     const plugin = res.locals.plugin;
     if (!plugin.adminRouter) {
