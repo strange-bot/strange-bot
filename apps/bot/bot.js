@@ -55,10 +55,17 @@ Logger.init(path.join(logsDir, logsFile), { shard: client.shard.ids[0] });
     await client.login(process.env.BOT_TOKEN);
 })();
 
+// console.error here so a broken logger/worker can't cause recursive crashes
 process.on("unhandledRejection", (err) => {
-    Logger.error("Unhandled Rejection:", err);
+    console.error("Unhandled Rejection:", err);
+    Logger.captureException(err, {
+        tags: { handler: "unhandledRejection" },
+    });
 });
 
 process.on("uncaughtException", (err) => {
-    Logger.error("Uncaught Exception:", err);
+    console.error("Uncaught Exception:", err);
+    Logger.captureException(err, {
+        tags: { handler: "uncaughtException" },
+    });
 });
