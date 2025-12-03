@@ -19,11 +19,12 @@ const adminRouter = require("./routes/admin.router");
 const apiRouter = require("./routes/api.router");
 
 module.exports = class App {
-    constructor(ipcClient) {
+    constructor(ipcClient, dbClient) {
         this.app = express();
 
         // Set app properties
         this.app.ipcClient = ipcClient;
+        this.app.dbClient = dbClient;
         this.app.logger = Logger;
 
         this.app.pluginManager = new PluginManager(

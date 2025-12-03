@@ -1,131 +1,137 @@
-<div
-  x-data="{
-  plugins: [],
-  loading: true,
-  installingPlugin: null,
-  unInstallingPlugin: null,
-  togglingPlugins: new Set(),
-  updatingPlugins: new Set(),
+<script>
+  function initPluginsView() {
+    return {
+      plugins: [],
+      loading: true,
+      installingPlugin: null,
+      unInstallingPlugin: null,
+      togglingPlugins: new Set(),
+      updatingPlugins: new Set(),
 
-  isToggling(pluginName) {
-    return this.togglingPlugins.has(pluginName);
-  },
-  isUpdating(pluginName) {
-    return this.updatingPlugins.has(pluginName);
-  },
-  async init() {
-    try {
-      const response = await fetch('/admin/plugins');
-      this.plugins = await response.json();
-    } catch (error) {
-      console.error('Failed to load plugins:', error);
-    } finally {
-      this.loading = false;
-    }
-  },
-  async togglePlugin(plugin) {
-    if (this.isToggling(plugin.name)) return;
-    this.togglingPlugins.add(plugin.name);
-    try {
-      const action = plugin.enabled ? 'disable' : 'enable';
-      const response = await fetch('/admin/plugins', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pluginName: plugin.name, action: action })
-      });
-      if (response.ok) {
-        plugin.enabled = !plugin.enabled;
-        Alpine.store('toast').show(`Plugin ${plugin.name} ${action}d successfully`, 'success');
-      } else {
-        throw new Error(`Failed to ${action} plugin`);
-      }
-    } catch (error) {
-      Alpine.store('toast').show(`Failed to ${plugin.enabled ? 'disable' : 'enable'} plugin`, 'error');
-    } finally {
-      this.togglingPlugins.delete(plugin.name);
-    }
-  },
-  async installPlugin(plugin) {
-    if (this.installingPlugin) return;
-    this.installingPlugin = plugin.name;
-    try {
-      const response = await fetch('/admin/plugins', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pluginName: plugin.name, action: 'install' })
-      });
-      if (response.ok) {
-        plugin.installed = true;
-        Alpine.store('toast').show(`Plugin ${plugin.name} installed successfully`, 'success');
-      }
-    } catch (error) {
-      Alpine.store('toast').show('Failed to install plugin', 'error');
-    } finally {
-      this.installingPlugin = null;
-    }
-  },
-  async uninstallPlugin(plugin) {
-    if (this.unInstallingPlugin) return;
-    this.unInstallingPlugin = plugin.name;
-    try {
-      const response = await fetch('/admin/plugins', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pluginName: plugin.name, action: 'uninstall' })
-      });
-      if (response.ok) {
-        plugin.installed = false;
-        plugin.enabled = false;
-        Alpine.store('toast').show(`Plugin ${plugin.name} uninstalled successfully`, 'success');
-      }
-    } catch (error) {
-      Alpine.store('toast').show('Failed to uninstall plugin', 'error');
-    } finally {
-      this.unInstallingPlugin = null;
-    }
-  },
-  async updatePlugin(plugin) {
-    if (this.isUpdating(plugin.name)) return;
-    this.updatingPlugins.add(plugin.name);
-    try {
-      const response = await fetch('/admin/plugins', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pluginName: plugin.name, action: 'update' })
-      });
-      if (response.ok) {
-        plugin.currentVersion = plugin.version;
-        plugin.hasUpdate = false;
-        Alpine.store('toast').show(`Plugin ${plugin.name} updated successfully`, 'success');
-      }
-    } catch (error) {
-      Alpine.store('toast').show('Failed to update plugin', 'error');
-    } finally {
-      this.updatingPlugins.delete(plugin.name);
-    }
-  },
-  searchTerm: '',
-  get filteredPlugins() {
-    if (!this.searchTerm) return this.plugins;
-    const term = this.searchTerm.toLowerCase();
-    return this.plugins.filter(plugin => 
-      plugin.name.toLowerCase().includes(term) || 
-      (plugin.description && plugin.description.toLowerCase().includes(term)) ||
-      (plugin.author && plugin.author.toLowerCase().includes(term))
-    );
-  },
-  get installedPluginsCount() {
-    return this.plugins.filter(p => p.installed).length;
+      isToggling(pluginName) {
+        return this.togglingPlugins.has(pluginName);
+      },
+      isUpdating(pluginName) {
+        return this.updatingPlugins.has(pluginName);
+      },
+      async init() {
+        try {
+          const response = await fetch("/admin/plugins");
+          this.plugins = await response.json();
+        } catch (error) {
+          console.error("Failed to load plugins:", error);
+        } finally {
+          this.loading = false;
+        }
+      },
+      async togglePlugin(plugin) {
+        if (this.isToggling(plugin.name)) return;
+        this.togglingPlugins.add(plugin.name);
+        try {
+          const action = plugin.enabled ? "disable" : "enable";
+          const response = await fetch("/admin/plugins", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ pluginName: plugin.name, action: action }),
+          });
+          if (response.ok) {
+            plugin.enabled = !plugin.enabled;
+            Alpine.store("toast").show(`Plugin ${plugin.name} ${action}d successfully`, "success");
+          } else {
+            throw new Error(`Failed to ${action} plugin`);
+          }
+        } catch (error) {
+          Alpine.store("toast").show(`Failed to ${plugin.enabled ? "disable" : "enable"} plugin`, "error");
+        } finally {
+          this.togglingPlugins.delete(plugin.name);
+        }
+      },
+      async installPlugin(plugin) {
+        if (this.installingPlugin) return;
+        this.installingPlugin = plugin.name;
+        try {
+          const response = await fetch("/admin/plugins", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ pluginName: plugin.name, action: "install" }),
+          });
+          if (response.ok) {
+            plugin.installed = true;
+            Alpine.store("toast").show(`Plugin ${plugin.name} installed successfully`, "success");
+          }
+        } catch (error) {
+          Alpine.store("toast").show("Failed to install plugin", "error");
+        } finally {
+          this.installingPlugin = null;
+        }
+      },
+      async uninstallPlugin(plugin) {
+        if (this.unInstallingPlugin) return;
+        this.unInstallingPlugin = plugin.name;
+        try {
+          const response = await fetch("/admin/plugins", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ pluginName: plugin.name, action: "uninstall" }),
+          });
+          if (response.ok) {
+            plugin.installed = false;
+            plugin.enabled = false;
+            Alpine.store("toast").show(`Plugin ${plugin.name} uninstalled successfully`, "success");
+          }
+        } catch (error) {
+          Alpine.store("toast").show("Failed to uninstall plugin", "error");
+        } finally {
+          this.unInstallingPlugin = null;
+        }
+      },
+      async updatePlugin(plugin) {
+        if (this.isUpdating(plugin.name)) return;
+        this.updatingPlugins.add(plugin.name);
+        try {
+          const response = await fetch("/admin/plugins", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ pluginName: plugin.name, action: "update" }),
+          });
+          if (response.ok) {
+            plugin.currentVersion = plugin.version;
+            plugin.hasUpdate = false;
+            Alpine.store("toast").show(`Plugin ${plugin.name} updated successfully`, "success");
+          }
+        } catch (error) {
+          Alpine.store("toast").show("Failed to update plugin", "error");
+        } finally {
+          this.updatingPlugins.delete(plugin.name);
+        }
+      },
+      searchTerm: "",
+      get filteredPlugins() {
+        if (!this.searchTerm) return this.plugins;
+        const term = this.searchTerm.toLowerCase();
+        return this.plugins.filter(
+          (plugin) =>
+            plugin.name.toLowerCase().includes(term) ||
+            (plugin.description && plugin.description.toLowerCase().includes(term)) ||
+            (plugin.author && plugin.author.toLowerCase().includes(term)),
+        );
+      },
+      get installedPluginsCount() {
+        return this.plugins.filter((p) => p.installed).length;
+      },
+    };
   }
-}">
+</script>
+
+<div x-data="initPluginsView()">
   <section class="mb-6">
     <div class="border-border bg-bg-panel flex items-center justify-between rounded-lg border p-4 shadow-sm">
       <div>
@@ -163,7 +169,7 @@
   <!-- Loading State -->
   <div x-show="loading" class="py-8 text-center">
     <div class="border-primary inline-block h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"></div>
-    <p class="text-text-muted mt-2"><%=tr("ADMIN_PAGE.LOADING")%></p>
+    <p class="text-text-muted mt-2 animate-pulse"><%=tr("ADMIN_PAGE.LOADING")%></p>
   </div>
 
   <!-- Plugins Grid -->
@@ -175,7 +181,6 @@
           <div class="mb-2 flex items-start justify-between">
             <h3 class="text-text flex items-center text-lg font-bold tracking-tight">
               <i class="fas fa-puzzle-piece text-text-muted mr-2"></i>
-              <!-- Added Font Awesome icon -->
               <span x-text="plugin.name"></span>
             </h3>
             <span
@@ -230,7 +235,7 @@
   </div>
 
   <!-- Empty State -->
-  <div x-show="!loading && filteredPlugins.length === 0" class="py-8 text-center">
+  <div x-show="!loading && filteredPlugins.length === 0" x-cloak class="py-8 text-center">
     <p class="text-text-muted"><%=tr("ADMIN_PAGE.NO_MATCH")%></p>
   </div>
 </div>

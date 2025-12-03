@@ -36,7 +36,7 @@ const IPCClient = require("./helpers/IPCClient");
     ipcClient.initialize();
 
     // Initialize the Express App
-    const app = new App(ipcClient);
+    const app = new App(ipcClient, dbClient);
     app.loadTranslations();
     app.loadPlugins();
     app.listen(process.env.DASHBOARD_PORT);

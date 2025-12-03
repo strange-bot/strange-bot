@@ -46,7 +46,9 @@ class PluginManager extends BasePluginManager {
         }
     }
 
-    async preUninstall(_pluginName) {}
+    async preUninstall(pluginName) {
+        this.app.dbClient.flushKeys(`${pluginName}:*`);
+    }
 
     async enablePlugin(pluginName) {
         if (this.isPluginEnabled(pluginName)) {

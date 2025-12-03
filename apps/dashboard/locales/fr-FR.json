@@ -87,6 +87,7 @@
     "LOCALES_PAGE": {
         "TITLE": "Localisations",
         "DESCRIPTION": "Gérer les clés de localisation pour différents plugins et langues.",
+        "LOADING": "Chargement des données de localisation...",
         "APP_SELECT": "Sélectionnez l'application",
         "PLUGIN_SELECT": "Sélectionner un plugin",
         "LOCALE_SELECT": "Sélectionner une langue",

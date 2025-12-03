@@ -32,7 +32,11 @@ class DatabaseClient {
 
     async connect() {
         await mongoose.connect(this.options.mongoUri);
-        this.redis = new Redis(`${this.options.redisUri}?keyPrefix=strange:`);
+
+        const prefix = this.options.redisKeyPrefix
+            ? `?keyPrefix=${this.options.redisKeyPrefix}`
+            : "";
+        this.redis = new Redis(`${this.options.redisUri}${prefix}`);
 
         await new Promise((resolve, reject) => {
             this.redis.once("ready", resolve);
@@ -102,6 +106,15 @@ class DatabaseClient {
 
     async deleteFromCache(key) {
         await this.redis.del(key);
+    }
+
+    async flushKeys(pattern) {
+        const keyPrefix = this.options.redisKeyPrefix ? `${this.options.redisKeyPrefix}:` : "";
+        const keys = await this.redis.keys(`${keyPrefix}${pattern}`);
+        if (keys.length > 0) {
+            await this.redis.del(keys);
+        }
+        return keys.length;
     }
 
     async disconnect() {

@@ -12,7 +12,6 @@ router.get("/", adminController.getHome);
 router.get("/locales", adminController.getLocales);
 router.get("/api/locales", adminController.getBotLocales);
 router.put("/api/locales", adminController.updateBotLocales);
-router.put("/api/language", adminController.updateDashboardLanguage);
 
 // Plugin management routes
 router.get("/plugins", adminController.getPlugins);

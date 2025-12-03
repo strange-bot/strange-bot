@@ -9,6 +9,7 @@ const guildMiddlware = require("../middlewares/context/guild.middleware");
 const pluginMiddleware = require("../middlewares/context/plugin.middleware");
 
 router.get("/", dashboardController.serverSelector);
+router.put("/api/language", dashboardController.updateDashboardLanguage);
 router.get("/:guildId", guildMiddlware, dashboardController.homePage);
 router.post("/:guildId", guildMiddlware, dashboardController.postPlugins);
 

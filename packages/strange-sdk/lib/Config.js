@@ -52,11 +52,9 @@ class Config {
     }
 
     async get() {
-        if (!this.dbClient && !fs.existsSync(this.configPath)) {
-            return {};
-        }
-
         let currentConfig = {};
+
+        // 1. Try cache / DB
         if (this.dbClient) {
             try {
                 const cachedConfig = await this.dbClient.getFromCache(this.cacheKey);
@@ -73,20 +71,38 @@ class Config {
             } catch (error) {
                 Logger.error(`Failed to get config from database: ${error.message}`);
             }
-        } else if (fs.existsSync(this.configPath)) {
+        }
+
+        // 2. Fallback to file if we still have no config
+        if (
+            (!currentConfig || Object.keys(currentConfig).length === 0) &&
+            fs.existsSync(this.configPath)
+        ) {
             try {
-                currentConfig = JSON.parse(fs.readFileSync(this.configPath, "utf8"));
+                const fileContent = fs.readFileSync(this.configPath, "utf8");
+                currentConfig = JSON.parse(fileContent);
             } catch (error) {
                 Logger.warn(`Failed to parse config file: ${error.message}`);
             }
         }
 
+        // 3. Ensure we at least have an object
+        if (!currentConfig || typeof currentConfig !== "object") {
+            currentConfig = {};
+        }
+
+        // 4. Return a proxy to handle get/set and saving
+        const self = this;
         return new Proxy(currentConfig, {
-            get: (target, prop) => {
+            get(target, prop, receiver) {
                 if (prop === "save") {
-                    return () => this.save(target);
+                    return () => self.save(target);
                 }
-                return target[prop];
+                return Reflect.get(target, prop, receiver);
+            },
+
+            set(target, prop, value, receiver) {
+                return Reflect.set(target, prop, value, receiver);
             },
         });
     }

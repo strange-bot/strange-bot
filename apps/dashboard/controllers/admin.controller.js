@@ -188,34 +188,6 @@ module.exports.updateBotLocales = async function (req, res) {
 };
 
 /**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
-module.exports.updateDashboardLanguage = async function (req, res) {
-    const lang = req.body.language_code;
-
-    // check if language is valid
-    if (!languagesMeta.find((l) => l.name === lang)) {
-        return res.sendStatus(400);
-    }
-
-    if (!req.session.locale === lang) {
-        return res.sendStatus(200);
-    }
-
-    await db.setLocale(req.session.user.info.id, lang);
-    req.session.locale = lang;
-    req.session.save(async (err) => {
-        if (err) {
-            req.client.logger.error("Failed to save session: " + err);
-            return res.sendStatus(500);
-        }
-
-        res.sendStatus(200);
-    });
-};
-
-/**
  * Serve landing page configuration UI
  * @param {import('express').Request} req
  * @param {import('express').Response} res

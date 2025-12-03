@@ -5,6 +5,7 @@ interface DatabaseOptions {
     mongoUri: string;
     redisUri: string;
     emitRedisErrors?: boolean; // Optional property added to match implementation
+    redisKeyPrefix?: string; // Optional property for Redis key prefix
 }
 
 declare class DatabaseClient {
@@ -98,6 +99,12 @@ declare class DatabaseClient {
      * @param {string} key The key to remove the value from.
      */
     deleteFromCache(key: string): Promise<void>;
+
+    /**
+     * Flushes keys from the cache matching the given pattern.
+     * @param {string} pattern The pattern to match keys.
+     */
+    flushKeys(pattern: string): Promise<void>;
 
     /**
      * Disconnects from MongoDB and Redis.
