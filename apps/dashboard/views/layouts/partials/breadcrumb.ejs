@@ -5,7 +5,19 @@
         <a
           href="/dashboard"
           class="hover:text-primary-600 text-text-muted hover:text-text inline-flex items-center text-sm font-medium">
-          <i class="fas fa-home me-2.5 h-3 w-3" aria-hidden="true"></i>
+          <svg
+            class="me-2.5 h-4 w-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              fill-rule="evenodd"
+              d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z"
+              clip-rule="evenodd" />
+          </svg>
           <%= tr('SIDEBAR.SERVERS') %>
         </a>
       </li>
@@ -13,7 +25,22 @@
       <% if (locals.guild) { %>
       <li aria-current="page">
         <div class="flex items-center">
-          <i class="fas fa-chevron-right text-text-muted mx-1 h-3 w-3" aria-hidden="true"></i>
+          <svg
+            class="text-text-muted h-4 w-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m9 5 7 7-7 7" />
+          </svg>
+
           <a
             href="/dashboard/<%=guild.id%>"
             class="hover:text-primary-600 text-text-muted hover:text-text ms-1 text-sm font-medium md:ms-2"
@@ -24,7 +51,22 @@
       <% } %> <% if (locals.plugin) { %>
       <li aria-current="page">
         <div class="flex items-center">
-          <i class="fas fa-chevron-right text-text-muted mx-1 h-3 w-3" aria-hidden="true"></i>
+          <svg
+            class="text-text-muted h-4 w-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m9 5 7 7-7 7" />
+          </svg>
+
           <% const name = plugin.name.charAt(0).toUpperCase() + plugin.name.slice(1); %>
           <span class="text-text-muted ms-1 text-sm font-medium md:ms-2"><%=name%></span>
         </div>

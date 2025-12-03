@@ -9,8 +9,10 @@
         <% if (!locals.guild) { %>
         <a
           href="/dashboard"
-          class="<%= slug === 'selector' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 text-base font-medium transition">
-          <i class="fa-solid fa-server text-text-muted group-hover:text-text text-lg"></i>
+          class="<%= slug === 'selector' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex h-10 items-center rounded-lg p-3 text-sm font-medium transition">
+          <span class="inline-flex w-6 items-center justify-center">
+            <i class="fa-solid fa-server text-text-muted group-hover:text-text text-base"></i>
+          </span>
           <span class="ml-3" sidebar-toggle-item><%= tr('SIDEBAR.SERVERS') %></span>
         </a>
         <% } else { %>
@@ -18,11 +20,13 @@
           id="dropdownGuildButton"
           data-dropdown-toggle="dropdownGuild"
           data-dropdown-placement="bottom"
-          class="text-text hover:bg-bg-surface border-primary group flex w-full items-center rounded-lg border p-3 text-base font-medium transition"
+          class="text-text hover:bg-bg-surface border-primary group flex h-10 w-full items-center rounded-lg border p-3 text-sm font-medium transition"
           type="button">
           <img class="h-7 w-7 rounded-full" src="<%= guild.iconURL %>" alt="<%= guild.name %> icon" />
           <span class="ml-3 flex-1 whitespace-nowrap text-left" sidebar-toggle-item><%= guild.name %></span>
-          <i class="fa-solid fa-angle-down"></i>
+          <span class="ml-2 inline-flex w-4 items-center justify-center">
+            <i class="fa-solid fa-angle-down text-base"></i>
+          </span>
         </button>
         <!-- Dropdown menu -->
         <div
@@ -33,10 +37,10 @@
             <li class="mb-1 px-2">
               <a
                 href="<%= g.settingsUrl %>"
-                class="<%= guild && g.id === guild.id ? 'bg-bg-interactive' : 'hover:bg-bg-interactive' %> text-text flex items-center rounded-lg p-3 font-medium transition">
+                class="<%= guild && g.id === guild.id ? 'bg-bg-interactive' : 'hover:bg-bg-interactive' %> text-text flex h-10 items-center rounded-lg p-3 text-sm font-medium transition">
                 <div class="ring-primary-light relative me-3 rounded-full ring-2">
                   <img
-                    class="border-border h-7 w-7 rounded-full border shadow-sm"
+                    class="border-border h-6 w-6 rounded-full border shadow-sm"
                     src="<%= g.iconURL %>"
                     alt="<%= g.name %> icon" />
                 </div>
@@ -52,8 +56,10 @@
             <li class="px-2">
               <a
                 href="/dashboard/"
-                class="hover:bg-bg-interactive text-text flex items-center rounded-lg p-3 font-medium transition">
-                <i class="fa-solid fa-circle-plus text-text-muted mr-3 text-lg"></i>
+                class="hover:bg-bg-interactive text-text flex h-10 items-center rounded-lg p-3 text-sm font-medium transition">
+                <span class="mr-3 inline-flex w-6 items-center justify-center">
+                  <i class="fa-solid fa-circle-plus text-text-muted text-base"></i>
+                </span>
                 <span class="truncate">Add new server</span>
               </a>
             </li>
@@ -72,8 +78,10 @@
           <li class="mb-1">
             <a
               href="/dashboard/<%=guild.id%>"
-              class="<%= slug === 'home' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
-              <i class="fa-solid fa-house-chimney-window text-text-muted group-hover:text-text text-lg"></i>
+              class="<%= slug === 'home' ? 'bg-bg-interactive' : '' %> text-text hover:bg-bg-surface group flex h-10 items-center rounded-lg p-3 pl-5 text-sm font-medium transition">
+              <span class="inline-flex w-6 items-center justify-center">
+                <i class="fa-solid fa-house-chimney-window text-text-muted group-hover:text-text text-base"></i>
+              </span>
               <span class="ml-3">Home</span>
             </a>
           </li>
@@ -94,7 +102,9 @@
               aria-controls="dropdown-plugins"
               data-collapse-toggle="dropdown-plugins">
               <span class="flex-1 text-left"><%= tr('SIDEBAR.PLUGINS') %></span>
-              <i class="fa-solid fa-angle-down ml-2"></i>
+              <span class="ml-2 inline-flex w-4 items-center justify-center">
+                <i class="fa-solid fa-angle-down"></i>
+              </span>
             </button>
           </li>
           <li>
@@ -108,15 +118,19 @@
                 <a
                   id="aside-active-item"
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="bg-bg-interactive text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
-                  <i class="<%= plugin.icon %> text-text-muted group-hover:text-text text-lg"></i>
+                  class="bg-bg-interactive text-text hover:bg-bg-surface group flex h-10 items-center rounded-lg p-3 pl-5 text-sm font-medium transition">
+                  <span class="inline-flex w-6 items-center justify-center">
+                    <i class="<%= plugin.icon %> text-text-muted group-hover:text-text text-base"></i>
+                  </span>
                   <span class="ml-3"><%=name%></span>
                 </a>
                 <% } else { %>
                 <a
                   href="/dashboard/<%=guild.id%>/<%=urlName%>"
-                  class="text-text hover:bg-bg-surface group flex items-center rounded-lg p-3 pl-5 text-base font-medium transition">
-                  <i class="<%= plugin.icon %> text-text-muted group-hover:text-text text-lg"></i>
+                  class="text-text hover:bg-bg-surface group flex h-10 items-center rounded-lg p-3 pl-5 text-sm font-medium transition">
+                  <span class="inline-flex w-6 items-center justify-center">
+                    <i class="<%= plugin.icon %> text-text-muted group-hover:text-text text-base"></i>
+                  </span>
                   <span class="ml-3"><%=name%></span>
                 </a>
                 <% } %>
