@@ -6,6 +6,7 @@ const { Logger } = require("nexord-sdk/utils");
 
 class PluginManager extends BasePluginManager {
     #listeningEvents = new Set();
+    #debug = process.env.DEBUG_PLUGIN_LISTENERS === "true";
 
     /**
      * @param {import('discord.js').Client} client
@@ -21,9 +22,32 @@ class PluginManager extends BasePluginManager {
         return this.#listeningEvents;
     }
 
+    /**
+     * Get current Discord.js listener counts for specific events
+     * Only monitors events that the given plugin registered handlers for
+     * @param {BotPlugin} plugin - Plugin to check listeners for
+     * @returns {Object} Map of event names to listener counts
+     */
+    #getListenerCountsForPlugin(plugin) {
+        const counts = {};
+        // Only check events that THIS plugin registered handlers for
+        for (const event of plugin.eventHandlers.keys()) {
+            counts[event] = this.client.listenerCount(event);
+        }
+        return counts;
+    }
+
     async postInstall(_pluginName, _targetPath, _meta) {}
 
-    async preUninstall(_pluginName) {}
+    async preUninstall(pluginName) {
+        // Flush all cached data related to this plugin from Redis
+        try {
+            await DBClient.getInstance().flushKeys(`${pluginName}:*`);
+            Logger.debug(`Flushed cache keys for plugin ${pluginName}`);
+        } catch (error) {
+            Logger.warn(`Failed to flush cache for plugin ${pluginName}:`, error.message);
+        }
+    }
 
     async enablePlugin(pluginName) {
         if (this.isPluginEnabled(pluginName)) {
@@ -88,6 +112,12 @@ class PluginManager extends BasePluginManager {
         // other checks & config update is handled in dashboard PluginManager
 
         const plugin = this.getPlugin(pluginName);
+        const pluginDir = path.join(this.pluginsDir, pluginName);
+        const entry = path.join(pluginDir, "bot");
+
+        // Track listener counts ONLY for events this plugin registered handlers for
+        const listenersBefore = this.#getListenerCountsForPlugin(plugin);
+        const eventsThisPluginListensTo = Array.from(plugin.eventHandlers.keys());
 
         // Update event handlers
         plugin.eventHandlers.forEach((_, event) => {
@@ -113,6 +143,64 @@ class PluginManager extends BasePluginManager {
 
         await this.client.commandManager.updatePluginStatus(pluginName, false);
         await plugin.disable(this.client);
+
+        // Track listener counts after disable for the same events
+        const listenersAfter = this.#getListenerCountsForPlugin(plugin);
+
+        // Check for listener leaks - only on events this plugin used
+        // Decrease or same = OK (plugin cleaned up or other plugins also listen)
+        // Increase = SUSPICIOUS (shouldn't add listeners during disable)
+        let leaksDetected = false;
+        const leakDetails = {};
+        for (const event of eventsThisPluginListensTo) {
+            const countBefore = listenersBefore[event] || 0;
+            const countAfter = listenersAfter[event] || 0;
+
+            // Count should not increase after disabling
+            if (countAfter > countBefore) {
+                leaksDetected = true;
+                leakDetails[event] = {
+                    before: countBefore,
+                    after: countAfter,
+                    increase: countAfter - countBefore,
+                    note: "Expected count to stay same or decrease",
+                };
+            } else if (this.#debug && countAfter !== countBefore) {
+                // Log successful cleanup
+                Logger.debug(`Plugin ${pluginName} listener cleanup for '${event}':`, {
+                    before: countBefore,
+                    after: countAfter,
+                    decrease: countBefore - countAfter,
+                    note: "Other plugins still listening",
+                });
+            }
+        }
+
+        if (leaksDetected) {
+            Logger.warn(
+                `⚠️  Discord.js listener leak detected in plugin ${pluginName}:`,
+                leakDetails,
+            );
+        } else if (this.#debug && Object.keys(listenersBefore).length > 0) {
+            Logger.debug(`No listener leaks detected for plugin ${pluginName}`, {
+                eventsMonitored: eventsThisPluginListensTo,
+                listenersSnapshot: { before: listenersBefore, after: listenersAfter },
+            });
+        }
+
+        // Clear require cache to prevent memory leaks and stale code references
+        try {
+            delete require.cache[require.resolve(entry)];
+            // Also clear any child modules loaded by this plugin
+            Object.keys(require.cache).forEach((key) => {
+                if (key.includes(pluginDir)) {
+                    delete require.cache[key];
+                }
+            });
+            Logger.debug(`Cleared require cache for plugin ${pluginName}`);
+        } catch (error) {
+            Logger.warn(`Failed to clear require cache for ${pluginName}:`, error.message);
+        }
 
         this.removePlugin(pluginName);
         Logger.success(`Disabled plugin: ${pluginName}`);
