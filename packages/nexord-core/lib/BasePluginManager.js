@@ -54,18 +54,18 @@ class BasePluginManager {
     // ==============================
 
     async _registerCorePackages() {
-        const sdkPath = path.resolve(__dirname, '../../nexord-sdk');
-        const corePath = path.resolve(__dirname, '..');
-        
+        const sdkPath = path.resolve(__dirname, "../../nexord-sdk");
+        const corePath = path.resolve(__dirname, "..");
+
         try {
             Logger.info("Registering core packages with yarn...");
-            
+
             await execa("yarn", ["link"], {
                 cwd: sdkPath,
                 stdio: "pipe",
             });
             Logger.debug("Registered nexord-sdk");
-            
+
             await execa("yarn", ["link"], {
                 cwd: corePath,
                 stdio: "pipe",
@@ -80,10 +80,10 @@ class BasePluginManager {
     async init() {
         // Register core packages before installing plugins
         await this._registerCorePackages();
-        
+
         // Clean up old repository caches to prevent unbounded growth
         await this.cleanRepoCache(10);
-        
+
         const plugins = await this.getPluginsMeta();
         const corePlugin = plugins.find((p) => p.name === "core");
         if (!corePlugin) {

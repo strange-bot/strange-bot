@@ -23,19 +23,15 @@ class PluginManager extends BasePluginManager {
     }
 
     /**
-     * Get current Discord.js listener counts for all events
-     * Used to detect listener leaks
+     * Get current Discord.js listener counts for specific events
+     * Only monitors events that the given plugin registered handlers for
+     * @param {BotPlugin} plugin - Plugin to check listeners for
+     * @returns {Object} Map of event names to listener counts
      */
-    #getListenerCounts() {
-        const events = [
-            'ready', 'messageCreate', 'interactionCreate', 'guildMemberAdd',
-            'guildMemberRemove', 'guildCreate', 'guildDelete', 'guildUpdate',
-            'roleCreate', 'roleDelete', 'roleUpdate', 'channelCreate',
-            'channelDelete', 'channelUpdate', 'inviteCreate', 'inviteDelete'
-        ];
-
+    #getListenerCountsForPlugin(plugin) {
         const counts = {};
-        for (const event of events) {
+        // Only check events that THIS plugin registered handlers for
+        for (const event of plugin.eventHandlers.keys()) {
             counts[event] = this.client.listenerCount(event);
         }
         return counts;
@@ -119,8 +115,9 @@ class PluginManager extends BasePluginManager {
         const pluginDir = path.join(this.pluginsDir, pluginName);
         const entry = path.join(pluginDir, "bot");
 
-        // Track listener counts before disable (for leak detection)
-        const listenersBefore = this.#getListenerCounts();
+        // Track listener counts ONLY for events this plugin registered handlers for
+        const listenersBefore = this.#getListenerCountsForPlugin(plugin);
+        const eventsThisPluginListensTo = Array.from(plugin.eventHandlers.keys());
 
         // Update event handlers
         plugin.eventHandlers.forEach((_, event) => {
@@ -147,29 +144,47 @@ class PluginManager extends BasePluginManager {
         await this.client.commandManager.updatePluginStatus(pluginName, false);
         await plugin.disable(this.client);
 
-        // Track listener counts after disable (for leak detection)
-        const listenersAfter = this.#getListenerCounts();
+        // Track listener counts after disable for the same events
+        const listenersAfter = this.#getListenerCountsForPlugin(plugin);
 
-        // Check for listener leaks
+        // Check for listener leaks - only on events this plugin used
+        // Decrease or same = OK (plugin cleaned up or other plugins also listen)
+        // Increase = SUSPICIOUS (shouldn't add listeners during disable)
         let leaksDetected = false;
         const leakDetails = {};
-        for (const [event, countAfter] of Object.entries(listenersAfter)) {
-            const countBefore = listenersBefore[event];
+        for (const event of eventsThisPluginListensTo) {
+            const countBefore = listenersBefore[event] || 0;
+            const countAfter = listenersAfter[event] || 0;
+
+            // Count should not increase after disabling
             if (countAfter > countBefore) {
                 leaksDetected = true;
-                leakDetails[event] = { before: countBefore, after: countAfter, diff: countAfter - countBefore };
+                leakDetails[event] = {
+                    before: countBefore,
+                    after: countAfter,
+                    increase: countAfter - countBefore,
+                    note: "Expected count to stay same or decrease",
+                };
+            } else if (this.#debug && countAfter !== countBefore) {
+                // Log successful cleanup
+                Logger.debug(`Plugin ${pluginName} listener cleanup for '${event}':`, {
+                    before: countBefore,
+                    after: countAfter,
+                    decrease: countBefore - countAfter,
+                    note: "Other plugins still listening",
+                });
             }
         }
 
         if (leaksDetected) {
             Logger.warn(
                 `⚠️  Discord.js listener leak detected in plugin ${pluginName}:`,
-                leakDetails
+                leakDetails,
             );
-        } else if (this.#debug) {
+        } else if (this.#debug && Object.keys(listenersBefore).length > 0) {
             Logger.debug(`No listener leaks detected for plugin ${pluginName}`, {
-                before: listenersBefore,
-                after: listenersAfter
+                eventsMonitored: eventsThisPluginListensTo,
+                listenersSnapshot: { before: listenersBefore, after: listenersAfter },
             });
         }
 
@@ -177,7 +192,7 @@ class PluginManager extends BasePluginManager {
         try {
             delete require.cache[require.resolve(entry)];
             // Also clear any child modules loaded by this plugin
-            Object.keys(require.cache).forEach(key => {
+            Object.keys(require.cache).forEach((key) => {
                 if (key.includes(pluginDir)) {
                     delete require.cache[key];
                 }

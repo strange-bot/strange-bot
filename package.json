@@ -28,7 +28,8 @@
         "pnpm": "^10.2.0",
         "prettier": "^3.5.3",
         "prettier-plugin-ejs": "^1.0.3",
-        "prettier-plugin-tailwindcss": "^0.6.11"
+        "prettier-plugin-tailwindcss": "^0.6.11",
+        "yarn": "^1.22.22"
     },
     "keywords": [
         "discord",
@@ -51,5 +52,9 @@
             "utf-8-validate",
             "zlib-sync"
         ]
+    },
+    "dependencies": {
+        "nexord-core": "link:../../../../Library/pnpm/global/5/node_modules/nexord-core",
+        "nexord-sdk": "link:../../../../Library/pnpm/global/5/node_modules/nexord-sdk"
     }
 }

@@ -30,10 +30,15 @@ router.get("/login", async function (req, res) {
 
 // Callback
 router.get("/callback", async (req, res) => {
-    if (!req.query.code) return res.redirect(BASE_URL);
+    if (!req.query.code) {
+        req.app.logger.warn("OAuth callback: no code provided");
+        return res.redirect(BASE_URL);
+    }
+
     const cached = await db.getState(req.query.state);
     const redirectURL = cached || "/dashboard";
 
+    const redirectUri = new URL("/auth/callback", BASE_URL).toString();
     const tokens = await oauth
         .tokenRequest({
             clientId: CLIENT_ID,
@@ -41,14 +46,17 @@ router.get("/callback", async (req, res) => {
             code: req.query.code,
             scope: "identify guilds email",
             grantType: "authorization_code",
-            redirectUri: new URL("/auth/callback", BASE_URL).toString(),
+            redirectUri: redirectUri,
         })
         .catch((e) => {
             req.app.logger.error("Failed to get tokens", e);
             return res.redirect(`/auth/login?state=${req.query.state}`);
         });
 
-    if (!tokens) return;
+    if (!tokens) {
+        req.app.logger.warn("No tokens returned from OAuth");
+        return;
+    }
 
     const userData = {
         info: null,
@@ -69,8 +77,17 @@ router.get("/callback", async (req, res) => {
     const dbLocale = await db.getLocale(req.session.user.info.id);
     req.session.locale = dbLocale || coreConfig["LOCALE"]["DEFAULT"] || "en-US";
 
-    req.session.save((err) => {
-        if (err) req.app.logger.error("Failed to save session", err);
+    // Save session and wait for completion
+    await new Promise((resolve, reject) => {
+        req.session.save((err) => {
+            if (err) {
+                req.app.logger.error("Failed to save session", err);
+                reject(err);
+            } else {
+                req.app.logger.debug("Session saved successfully");
+                resolve();
+            }
+        });
     });
 
     // Update DB Login

@@ -131,7 +131,7 @@ class PluginManager extends BasePluginManager {
         try {
             delete require.cache[require.resolve(entry)];
             // Also clear any child modules loaded by this plugin
-            Object.keys(require.cache).forEach(key => {
+            Object.keys(require.cache).forEach((key) => {
                 if (key.includes(pluginDir)) {
                     delete require.cache[key];
                 }
