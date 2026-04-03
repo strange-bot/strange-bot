@@ -119,7 +119,27 @@ class PluginManager extends BasePluginManager {
         }
 
         const plugin = this.getPlugin(pluginName);
+        const pluginDir = path.join(this.pluginsDir, pluginName);
+        const entry = path.join(pluginDir, "dashboard");
+
         await plugin.disable();
+
+        // Remove plugin translations
+        await this.app.i18n.removePluginTranslations(pluginName);
+
+        // Clear require cache to prevent memory leaks and stale code references
+        try {
+            delete require.cache[require.resolve(entry)];
+            // Also clear any child modules loaded by this plugin
+            Object.keys(require.cache).forEach(key => {
+                if (key.includes(pluginDir)) {
+                    delete require.cache[key];
+                }
+            });
+            Logger.debug(`Cleared require cache for plugin ${pluginName}`);
+        } catch (error) {
+            Logger.warn(`Failed to clear require cache for ${pluginName}:`, error.message);
+        }
 
         // Update the core config
         const corePlugin = this.getPlugin("core");

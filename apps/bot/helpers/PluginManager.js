@@ -6,6 +6,7 @@ const { Logger } = require("nexord-sdk/utils");
 
 class PluginManager extends BasePluginManager {
     #listeningEvents = new Set();
+    #debug = process.env.DEBUG_PLUGIN_LISTENERS === "true";
 
     /**
      * @param {import('discord.js').Client} client
@@ -21,9 +22,36 @@ class PluginManager extends BasePluginManager {
         return this.#listeningEvents;
     }
 
+    /**
+     * Get current Discord.js listener counts for all events
+     * Used to detect listener leaks
+     */
+    #getListenerCounts() {
+        const events = [
+            'ready', 'messageCreate', 'interactionCreate', 'guildMemberAdd',
+            'guildMemberRemove', 'guildCreate', 'guildDelete', 'guildUpdate',
+            'roleCreate', 'roleDelete', 'roleUpdate', 'channelCreate',
+            'channelDelete', 'channelUpdate', 'inviteCreate', 'inviteDelete'
+        ];
+
+        const counts = {};
+        for (const event of events) {
+            counts[event] = this.client.listenerCount(event);
+        }
+        return counts;
+    }
+
     async postInstall(_pluginName, _targetPath, _meta) {}
 
-    async preUninstall(_pluginName) {}
+    async preUninstall(pluginName) {
+        // Flush all cached data related to this plugin from Redis
+        try {
+            await DBClient.getInstance().flushKeys(`${pluginName}:*`);
+            Logger.debug(`Flushed cache keys for plugin ${pluginName}`);
+        } catch (error) {
+            Logger.warn(`Failed to flush cache for plugin ${pluginName}:`, error.message);
+        }
+    }
 
     async enablePlugin(pluginName) {
         if (this.isPluginEnabled(pluginName)) {
@@ -88,6 +116,11 @@ class PluginManager extends BasePluginManager {
         // other checks & config update is handled in dashboard PluginManager
 
         const plugin = this.getPlugin(pluginName);
+        const pluginDir = path.join(this.pluginsDir, pluginName);
+        const entry = path.join(pluginDir, "bot");
+
+        // Track listener counts before disable (for leak detection)
+        const listenersBefore = this.#getListenerCounts();
 
         // Update event handlers
         plugin.eventHandlers.forEach((_, event) => {
@@ -113,6 +146,46 @@ class PluginManager extends BasePluginManager {
 
         await this.client.commandManager.updatePluginStatus(pluginName, false);
         await plugin.disable(this.client);
+
+        // Track listener counts after disable (for leak detection)
+        const listenersAfter = this.#getListenerCounts();
+
+        // Check for listener leaks
+        let leaksDetected = false;
+        const leakDetails = {};
+        for (const [event, countAfter] of Object.entries(listenersAfter)) {
+            const countBefore = listenersBefore[event];
+            if (countAfter > countBefore) {
+                leaksDetected = true;
+                leakDetails[event] = { before: countBefore, after: countAfter, diff: countAfter - countBefore };
+            }
+        }
+
+        if (leaksDetected) {
+            Logger.warn(
+                `⚠️  Discord.js listener leak detected in plugin ${pluginName}:`,
+                leakDetails
+            );
+        } else if (this.#debug) {
+            Logger.debug(`No listener leaks detected for plugin ${pluginName}`, {
+                before: listenersBefore,
+                after: listenersAfter
+            });
+        }
+
+        // Clear require cache to prevent memory leaks and stale code references
+        try {
+            delete require.cache[require.resolve(entry)];
+            // Also clear any child modules loaded by this plugin
+            Object.keys(require.cache).forEach(key => {
+                if (key.includes(pluginDir)) {
+                    delete require.cache[key];
+                }
+            });
+            Logger.debug(`Cleared require cache for plugin ${pluginName}`);
+        } catch (error) {
+            Logger.warn(`Failed to clear require cache for ${pluginName}:`, error.message);
+        }
 
         this.removePlugin(pluginName);
         Logger.success(`Disabled plugin: ${pluginName}`);

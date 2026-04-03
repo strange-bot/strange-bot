@@ -53,7 +53,37 @@ class BasePluginManager {
     // Plugin Lifecycle Management
     // ==============================
 
+    async _registerCorePackages() {
+        const sdkPath = path.resolve(__dirname, '../../nexord-sdk');
+        const corePath = path.resolve(__dirname, '..');
+        
+        try {
+            Logger.info("Registering core packages with yarn...");
+            
+            await execa("yarn", ["link"], {
+                cwd: sdkPath,
+                stdio: "pipe",
+            });
+            Logger.debug("Registered nexord-sdk");
+            
+            await execa("yarn", ["link"], {
+                cwd: corePath,
+                stdio: "pipe",
+            });
+            Logger.debug("Registered nexord-core");
+        } catch (err) {
+            Logger.warn("Failed to register core packages:", err.message);
+            // Don't throw - this might fail if packages are already registered
+        }
+    }
+
     async init() {
+        // Register core packages before installing plugins
+        await this._registerCorePackages();
+        
+        // Clean up old repository caches to prevent unbounded growth
+        await this.cleanRepoCache(10);
+        
         const plugins = await this.getPluginsMeta();
         const corePlugin = plugins.find((p) => p.name === "core");
         if (!corePlugin) {
@@ -331,12 +361,14 @@ class BasePluginManager {
         await this.preUninstall(pluginName);
 
         const pluginDir = path.join(this.pluginsDir, pluginName);
+        const lockPath = pluginDir + ".lock";
+
         // Create an empty file for locking if it doesn't exist
-        await fsp.writeFile(pluginDir + ".lock", "", { flag: "a" });
+        await fsp.writeFile(lockPath, "", { flag: "a" }).catch(() => {});
 
         let release;
         try {
-            release = await lockfile.lock(pluginDir + ".lock", {
+            release = await lockfile.lock(lockPath, {
                 retries: {
                     retries: 60,
                     factor: 1,
@@ -345,10 +377,26 @@ class BasePluginManager {
                 },
             });
 
-            await fsp.rm(pluginDir, { recursive: true, force: true });
-            await fsp.unlink(pluginDir + ".lock").catch(() => {});
+            // Remove plugin directory
+            await fsp.rm(pluginDir, { recursive: true, force: true }).catch(() => {});
         } finally {
-            if (release) await release();
+            if (release) {
+                try {
+                    await release();
+                } catch (error) {
+                    Logger.debug(`Failed to release lock for ${pluginName}:`, error.message);
+                }
+            }
+
+            // Clean up lock file after release
+            try {
+                await fsp.unlink(lockPath);
+            } catch (error) {
+                // Ignore if file doesn't exist
+                if (error.code !== "ENOENT") {
+                    Logger.debug(`Failed to remove lock file for ${pluginName}:`, error.message);
+                }
+            }
         }
 
         Logger.success(`Uninstalled plugin: ${pluginName}`);
@@ -480,6 +528,8 @@ class BasePluginManager {
             const git = simpleGit();
             if (fs.existsSync(repoDir)) {
                 await git.cwd(repoDir).pull("origin", "main");
+                // Update access time for cache LRU management
+                await fsp.utimes(repoDir, Date.now() / 1000, Date.now() / 1000).catch(() => {});
             } else {
                 await git.clone(repository, repoDir, ["--depth", "1", "--branch", "main"]);
             }
@@ -492,6 +542,67 @@ class BasePluginManager {
 
     _createRepoHash(repository) {
         return crypto.createHash("md5").update(repository).digest("hex");
+    }
+
+    /**
+     * Clean old repository caches, keeping only the most recent ones.
+     * Implements LRU (Least Recently Used) eviction strategy.
+     * @param {number} maxRepos - Maximum number of repositories to keep (default: 10)
+     */
+    async cleanRepoCache(maxRepos = 10) {
+        try {
+            if (!fs.existsSync(this.repoCacheDir)) {
+                return;
+            }
+
+            const entries = await fsp.readdir(this.repoCacheDir, { withFileTypes: true });
+            const repoDirs = entries
+                .filter((entry) => entry.isDirectory())
+                .map((entry) => ({
+                    name: entry.name,
+                    path: path.join(this.repoCacheDir, entry.name),
+                }));
+
+            if (repoDirs.length <= maxRepos) {
+                return;
+            }
+
+            // Get access time for each repo
+            const reposWithTime = await Promise.all(
+                repoDirs.map(async (repo) => {
+                    try {
+                        const stats = await fsp.stat(repo.path);
+                        return {
+                            ...repo,
+                            atime: stats.atimeMs,
+                        };
+                    } catch (error) {
+                        Logger.warn(`Failed to stat repo ${repo.name}:`, error);
+                        return { ...repo, atime: 0 };
+                    }
+                }),
+            );
+
+            // Sort by access time (ascending) - oldest first
+            reposWithTime.sort((a, b) => a.atime - b.atime);
+
+            // Remove oldest repos until we're at maxRepos
+            const toRemove = reposWithTime.slice(0, reposWithTime.length - maxRepos);
+            for (const repo of toRemove) {
+                try {
+                    await fsp.rm(repo.path, { recursive: true, force: true });
+                    // Also try to remove associated lock file
+                    await fsp.unlink(repo.path + ".lock").catch(() => {});
+                    Logger.debug(`Cleaned up old repository cache: ${repo.name}`);
+                } catch (error) {
+                    Logger.warn(`Failed to clean repo cache ${repo.name}:`, error);
+                }
+            }
+
+            Logger.info(`Repository cache cleanup: removed ${toRemove.length} old repos`);
+        } catch (error) {
+            Logger.warn("Repository cache cleanup failed:", error);
+        }
     }
 
     _isUrl(str) {
