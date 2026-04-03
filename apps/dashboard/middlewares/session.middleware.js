@@ -1,6 +1,6 @@
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const { DBClient } = require("strange-db-client");
+const { DBClient } = require("nexord-db-client");
 
 module.exports = () => {
     return session({

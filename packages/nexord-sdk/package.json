@@ -1,7 +1,7 @@
 {
-    "name": "strange-sdk",
+    "name": "nexord-sdk",
     "version": "0.1.0-beta",
-    "description": "A plugin SDK for the strange discord bot",
+    "description": "A plugin SDK for the nexord discord bot",
     "main": "index.js",
     "types": "typings/index.d.ts",
     "scripts": {},
@@ -24,6 +24,6 @@
     "peerDependencies": {
         "discord.js": "^14.18.0",
         "express": "^4.0.0",
-        "strange-db-client": "workspace:*"
+        "nexord-db-client": "workspace:*"
     }
 }

@@ -1,8 +1,8 @@
-const { BasePluginManager } = require("strange-core");
+const { BasePluginManager } = require("nexord-core");
 const path = require("node:path");
-const { DBClient } = require("strange-db-client");
-const { BotPlugin } = require("strange-sdk");
-const { Logger } = require("strange-sdk/utils");
+const { DBClient } = require("nexord-db-client");
+const { BotPlugin } = require("nexord-sdk");
+const { Logger } = require("nexord-sdk/utils");
 
 class PluginManager extends BasePluginManager {
     #listeningEvents = new Set();

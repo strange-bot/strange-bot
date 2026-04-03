@@ -1,4 +1,4 @@
-import { DBClient, Model } from "strange-db-client";
+import { DBClient, Model } from "nexord-db-client";
 
 export interface ConfigData {
     [key: string]: any;

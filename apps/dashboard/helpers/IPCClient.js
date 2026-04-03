@@ -1,5 +1,5 @@
 const veza = require("veza");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 
 class IPCClient {
     constructor() {

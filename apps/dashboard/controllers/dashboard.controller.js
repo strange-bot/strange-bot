@@ -1,5 +1,5 @@
 const { PermissionsBitField } = require("discord.js");
-const { languagesMeta } = require("strange-core");
+const { languagesMeta } = require("nexord-core");
 const db = require("../db.service");
 
 /**

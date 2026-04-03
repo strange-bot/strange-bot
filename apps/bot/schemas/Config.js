@@ -1,4 +1,4 @@
-const { Schema } = require("strange-db-client");
+const { Schema } = require("nexord-db-client");
 
 const ConfigSchema = new Schema(
     {

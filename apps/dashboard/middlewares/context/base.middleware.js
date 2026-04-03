@@ -1,5 +1,5 @@
-const { Logger } = require("strange-sdk/utils");
-const { languagesMeta } = require("strange-core");
+const { Logger } = require("nexord-sdk/utils");
+const { languagesMeta } = require("nexord-core");
 const db = require("../../db.service");
 
 const OWNER_IDS = process.env.OWNER_IDS.split(",");

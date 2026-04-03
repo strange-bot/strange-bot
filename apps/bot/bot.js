@@ -5,9 +5,9 @@ require("./extenders/Message");
 
 require("dotenv").config();
 const path = require("node:path");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 const BotClient = require("./extenders/BotClient");
-const { DBClient } = require("strange-db-client");
+const { DBClient } = require("nexord-db-client");
 
 // Setup Directories
 const logsDir = path.join(__dirname, "..", "..", "logs");

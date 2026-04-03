@@ -1,5 +1,5 @@
 const { ChannelType } = require("discord.js");
-const { languagesMeta } = require("strange-core");
+const { languagesMeta } = require("nexord-core");
 
 module.exports = {
     getStats: (client) => {

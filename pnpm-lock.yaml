@@ -41,15 +41,15 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.6.1
-      strange-core:
+      nexord-core:
         specifier: workspace:*
-        version: link:../../packages/strange-core
-      strange-db-client:
+        version: link:../../packages/nexord-core
+      nexord-db-client:
         specifier: workspace:*
-        version: link:../../packages/strange-db-client
-      strange-sdk:
+        version: link:../../packages/nexord-db-client
+      nexord-sdk:
         specifier: workspace:*
-        version: link:../../packages/strange-sdk
+        version: link:../../packages/nexord-sdk
       veza:
         specifier: ^1.2.0
         version: 1.2.0
@@ -106,15 +106,15 @@ importers:
       i18next:
         specifier: ^24.2.2
         version: 24.2.3(typescript@5.9.3)
-      strange-core:
+      nexord-core:
         specifier: workspace:*
-        version: link:../../packages/strange-core
-      strange-db-client:
+        version: link:../../packages/nexord-core
+      nexord-db-client:
         specifier: workspace:*
-        version: link:../../packages/strange-db-client
-      strange-sdk:
+        version: link:../../packages/nexord-db-client
+      nexord-sdk:
         specifier: workspace:*
-        version: link:../../packages/strange-sdk
+        version: link:../../packages/nexord-sdk
       veza:
         specifier: ^1.2.0
         version: 1.2.0
@@ -156,7 +156,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.102.1)
 
-  packages/strange-core:
+  packages/nexord-core:
     dependencies:
       deepmerge:
         specifier: ^4.3.1
@@ -182,14 +182,14 @@ importers:
       simple-git:
         specifier: ^3.27.0
         version: 3.28.0
-      strange-db-client:
+      nexord-db-client:
         specifier: workspace:*
-        version: link:../strange-db-client
-      strange-sdk:
+        version: link:../nexord-db-client
+      nexord-sdk:
         specifier: workspace:*
-        version: link:../strange-sdk
+        version: link:../nexord-sdk
 
-  packages/strange-db-client:
+  packages/nexord-db-client:
     dependencies:
       ioredis:
         specifier: ^5.6.0
@@ -201,7 +201,7 @@ importers:
         specifier: ^2.2.1
         version: 2.3.1(mongoose@8.19.2)
 
-  packages/strange-sdk:
+  packages/nexord-sdk:
     dependencies:
       '@sentry/node':
         specifier: ^9.0.0
@@ -224,9 +224,9 @@ importers:
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.1
-      strange-db-client:
+      nexord-db-client:
         specifier: workspace:*
-        version: link:../strange-db-client
+        version: link:../nexord-db-client
     devDependencies:
       '@types/express':
         specifier: ^4.0.0

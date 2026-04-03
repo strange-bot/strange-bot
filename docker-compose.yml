@@ -11,7 +11,7 @@ services:
     env_file:
       - ./.env.docker
     networks:
-      - strange-network
+      - nexord-network
 
   dashboard:
     build:
@@ -26,7 +26,7 @@ services:
     ports:
       - "${DASHBOARD_PORT}:${DASHBOARD_PORT}"
     networks:
-      - strange-network
+      - nexord-network
 
   mongodb:
     image: mongo:latest
@@ -38,7 +38,7 @@ services:
     expose:
       - "27017"
     networks:
-      - strange-network
+      - nexord-network
 
   redis:
     image: redis:alpine
@@ -48,10 +48,10 @@ services:
     expose:
       - "6379"
     networks:
-      - strange-network
+      - nexord-network
 
 networks:
-  strange-network:
+  nexord-network:
     driver: bridge
 
 volumes:

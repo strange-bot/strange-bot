@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Guild } from "discord.js";
-import { DBClient } from "strange-db-client";
+import { DBClient } from "nexord-db-client";
 import { SaveableConfig } from "./Config";
 import { DBService } from "./DBService";
 

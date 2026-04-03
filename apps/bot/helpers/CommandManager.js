@@ -1,5 +1,5 @@
 const { Collection, ApplicationCommandType } = require("discord.js");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 
 class CommandManager {
     constructor(client) {
@@ -14,7 +14,7 @@ class CommandManager {
 
     /**
      * Register commands and contexts from a plugin
-     * @param {import("strange-sdk").BotPlugin} plugin - The plugin to register commands from
+     * @param {import("nexord-sdk").BotPlugin} plugin - The plugin to register commands from
      */
     registerPlugin(plugin) {
         Logger.debug(`Registering commands from ${plugin.name}...`);
@@ -81,7 +81,7 @@ class CommandManager {
 
     /**
      * Unregister commands and contexts from a plugin
-     * @param {import("strange-sdk").BotPlugin} plugin - The plugin to unregister commands from
+     * @param {import("nexord-sdk").BotPlugin} plugin - The plugin to unregister commands from
      */
     unregisterPlugin(plugin) {
         // Unregister prefix commands and their aliases
@@ -112,7 +112,7 @@ class CommandManager {
     /**
      * Find a prefix command by name or alias
      * @param {string} commandName - The command name or alias
-     * @returns {import("strange-sdk").CommandType|undefined}
+     * @returns {import("nexord-sdk").CommandType|undefined}
      */
     findPrefixCommand(commandName) {
         return this.prefixCommands.get(commandName.toLowerCase());
@@ -121,7 +121,7 @@ class CommandManager {
     /**
      * Find a slash command by name
      * @param {string} commandName - The command name
-     * @returns {import("strange-sdk").CommandType|undefined}
+     * @returns {import("nexord-sdk").CommandType|undefined}
      */
     findSlashCommand(commandName) {
         return this.slashCommands.get(commandName);
@@ -130,7 +130,7 @@ class CommandManager {
     /**
      * Find a context menu by name
      * @param {string} contextName - The context menu name
-     * @returns {import("strange-sdk").ContextType|undefined}
+     * @returns {import("nexord-sdk").ContextType|undefined}
      */
     findContextMenu(contextName) {
         return this.contextMenus.get(contextName);

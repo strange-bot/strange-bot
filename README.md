@@ -1,4 +1,4 @@
-# Strange Bot
+# Nexord
 
 A premium Discord bot with a plugin-based architecture that allows for easy extensibility and customization.
 
@@ -18,9 +18,9 @@ A premium Discord bot with a plugin-based architecture that allows for easy exte
 │   ├── bot/               # Discord bot application
 │   └── dashboard/         # Web dashboard
 ├── packages/              # Core libraries
-│   ├── strange-core/      # Core functionality
-│   ├── strange-db-client/ # Database client
-│   └── strange-sdk/       # Plugin SDK
+│   ├── nexord-core/      # Core functionality
+│   ├── nexord-db-client/ # Database client
+│   └── nexord-sdk/       # Plugin SDK
 └── plugins/               # Bot plugins
 ```
 
@@ -38,8 +38,8 @@ A premium Discord bot with a plugin-based architecture that allows for easy exte
 1. Clone the repository
 
 ```bash
-git clone https://github.com/strange-bot/strange-bot.git
-cd strange-bot
+git clone https://github.com/nexordhq/nexord.git
+cd nexord
 ```
 
 2. Install dependencies
@@ -79,8 +79,8 @@ pnpm start:dashboard
 1. Clone the repository
 
 ```bash
-git clone https://github.com/strange-bot/strange-bot.git
-cd strange-bot
+git clone https://github.com/nexordhq/nexord.git
+cd nexord
 ```
 
 2. Copy the example environment file
@@ -153,7 +153,7 @@ pnpm dev:dashboard
 
 ## Plugin System
 
-Strange Bot uses a modular plugin system that allows for easy extension of functionality. Plugins are automatically loaded from the plugins directory.
+Nexord uses a modular plugin system that allows for easy extension of functionality. Plugins are automatically loaded from the plugins directory.
 
 ### Creating a Plugin
 

@@ -1,6 +1,6 @@
 require("dotenv").config();
 const path = require("node:path");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 
 // Setup Directories
 const logsDir = path.join(__dirname, "..", "..", "logs");
@@ -10,7 +10,7 @@ const today = new Date();
 const logsFile = `dashboard-${today.getFullYear()}.${today.getMonth() + 1}.${today.getDate()}.log`;
 Logger.init(path.join(logsDir, logsFile));
 
-const { DBClient } = require("strange-db-client");
+const { DBClient } = require("nexord-db-client");
 const db = require("./db.service");
 const App = require("./app");
 const IPCClient = require("./helpers/IPCClient");

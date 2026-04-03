@@ -1,7 +1,7 @@
 {
-    "name": "strange-core",
+    "name": "nexord-core",
     "version": "0.1.0-beta",
-    "description": "Core package for strange bot",
+    "description": "Core package for nexord bot",
     "files": [
         "lib",
         "types",
@@ -17,8 +17,8 @@
         "proper-lockfile": "^4.1.2",
         "semver": "^7.7.0",
         "simple-git": "^3.27.0",
-        "strange-db-client": "workspace:*",
-        "strange-sdk": "workspace:*"
+        "nexord-db-client": "workspace:*",
+        "nexord-sdk": "workspace:*"
     },
     "types": "types/index.d.ts"
 }

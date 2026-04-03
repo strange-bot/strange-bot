@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { ShardingManager } = require("discord.js");
 const IPCServer = require("./helpers/IPCServer");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 const path = require("node:path");
 
 const today = new Date();

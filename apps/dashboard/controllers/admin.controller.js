@@ -1,4 +1,4 @@
-const { languagesMeta } = require("strange-core");
+const { languagesMeta } = require("nexord-core");
 const db = require("../db.service");
 const fs = require("node:fs");
 const path = require("node:path");

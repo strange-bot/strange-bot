@@ -1,5 +1,5 @@
 const { Server, ServerStatus } = require("veza");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 const { ShardClientUtil } = require("discord.js");
 
 class IPCServer {

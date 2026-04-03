@@ -5,7 +5,7 @@ import HttpUtils from "../lib/utils/HttpUtils";
 import Logger from "../lib/utils/Logger";
 import MiscUtils from "../lib/utils/MiscUtils";
 import permissions from "../lib/utils/permissions";
-import { Schema, SchemaTypes } from "strange-db-client";
+import { Schema, SchemaTypes } from "nexord-db-client";
 
 export interface Utils {
     BotUtils: typeof BotUtils;

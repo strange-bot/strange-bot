@@ -1,7 +1,7 @@
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const { DBClient } = require("strange-db-client");
-const { Logger } = require("strange-sdk/utils");
+const { DBClient } = require("nexord-db-client");
+const { Logger } = require("nexord-sdk/utils");
 
 class HybridSessionStore extends session.Store {
     constructor(options = {}) {

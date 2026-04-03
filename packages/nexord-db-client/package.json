@@ -1,7 +1,7 @@
 {
-    "name": "strange-db-client",
+    "name": "nexord-db-client",
     "version": "0.1.0-beta",
-    "description": "Database client for the strange discord bot",
+    "description": "Database client for the nexord discord bot",
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {},

@@ -1,16 +1,16 @@
 import "express";
 import "express-session";
 import "discord-oauth2";
-import { Document } from "strange-db-client";
-import { SaveableConfig } from "strange-sdk";
+import { Document } from "nexord-db-client";
+import { SaveableConfig } from "nexord-sdk";
 
 declare global {
     namespace Express {
         interface Application {
             ipcClient: import("../helpers/IPCClient");
             pluginManager: import("../helpers/PluginManager");
-            i18n: import("strange-core").I18nManager;
-            logger: typeof import("strange-sdk/utils").Logger;
+            i18n: import("nexord-core").I18nManager;
+            logger: typeof import("nexord-sdk/utils").Logger;
             translations: Map<string, import("i18next").TFunction>;
         }
 
@@ -18,7 +18,7 @@ declare global {
             [key: string]: any;
 
             // Base Context
-            coreConfig: import("strange-sdk").SaveableConfig | undefined;
+            coreConfig: import("nexord-sdk").SaveableConfig | undefined;
             languages:
                 | Array<{
                       name: string;
@@ -39,12 +39,12 @@ declare global {
             tr: import("i18next").TFunction;
             coreSettings: Document | null;
             user: SessionUser;
-            plugins: import("strange-sdk").DashboardPlugin[];
-            plugin: import("strange-sdk").DashboardPlugin;
-            pluginCmds: import("strange-sdk").DashboardCommand[];
+            plugins: import("nexord-sdk").DashboardPlugin[];
+            plugin: import("nexord-sdk").DashboardPlugin;
+            pluginCmds: import("nexord-sdk").DashboardCommand[];
             pluginCmds: any;
             config: SaveableConfig;
-            settings: import("strange-db-client").Document | null;
+            settings: import("nexord-db-client").Document | null;
             title: string;
             slug: string;
             layout: string;

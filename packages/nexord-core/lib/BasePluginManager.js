@@ -4,7 +4,7 @@ const path = require("node:path");
 const simpleGit = require("simple-git");
 const crypto = require("crypto");
 const lockfile = require("proper-lockfile");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 const execa = require("execa");
 const fetch = require("node-fetch");
 const semver = require("semver");
@@ -281,13 +281,13 @@ class BasePluginManager {
                 await fsp.cp(sourcePath, targetPath, { recursive: true });
 
                 try {
-                    // TODO: Temporary: link strange-sdk and strange-core for local dev
-                    await execa("yarn", ["link", "strange-sdk"], {
+                    // TODO: Temporary: link nexord-sdk and nexord-core for local dev
+                    await execa("yarn", ["link", "nexord-sdk"], {
                         cwd: targetPath,
                         stdio: "pipe",
                         env: { ...process.env },
                     });
-                    await execa("yarn", ["link", "strange-core"], {
+                    await execa("yarn", ["link", "nexord-core"], {
                         cwd: targetPath,
                         stdio: "pipe",
                         env: { ...process.env },

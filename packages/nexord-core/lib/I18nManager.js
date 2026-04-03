@@ -3,7 +3,7 @@ const { join, resolve } = require("node:path");
 const i18next = require("i18next");
 const deepmerge = require("deepmerge");
 const flat = require("flat");
-const { DBClient } = require("strange-db-client");
+const { DBClient } = require("nexord-db-client");
 const localizationSchema = require("./schemas/i18n");
 
 class I18nManager {

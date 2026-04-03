@@ -1,7 +1,7 @@
 {
     "name": "dashboard",
     "version": "0.1.0-beta",
-    "description": "Dashboard for strange discord bot",
+    "description": "Dashboard for nexord discord bot",
     "main": "index.js",
     "author": "Sai Teja M",
     "license": "AGPL-3.0-only",
@@ -24,9 +24,9 @@
         "express": "^4.21.2",
         "express-ejs-layouts": "^2.5.1",
         "express-session": "^1.18.1",
-        "strange-core": "workspace:*",
-        "strange-db-client": "workspace:*",
-        "strange-sdk": "workspace:*",
+        "nexord-core": "workspace:*",
+        "nexord-db-client": "workspace:*",
+        "nexord-sdk": "workspace:*",
         "veza": "^1.2.0"
     },
     "peerDependencies": {

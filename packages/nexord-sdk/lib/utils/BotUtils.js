@@ -13,7 +13,7 @@ class BotUtils {
     static async checkForUpdates() {
         const response = await HttpUtils.getJson(
             process.env.UPDATE_CHECK_URL ||
-                "https://api.github.com/repos/strange-bot/strange-bot/releases/latest",
+                "https://api.github.com/repos/nexordhq/nexord/releases/latest",
         );
         if (!response.success) {
             Logger.error("VersionCheck: Failed to check for bot updates");
@@ -26,7 +26,7 @@ class BotUtils {
                 Logger.success("VersionCheck: Your discord bot is up to date");
             } else {
                 Logger.warn(`VersionCheck: ${latestVersion} update is available`);
-                Logger.warn("download: https://github.com/strange-bot/strange-bot/releases/latest");
+                Logger.warn("download: https://github.com/nexordhq/nexord/releases/latest");
             }
             return true;
         }

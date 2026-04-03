@@ -3,10 +3,10 @@ declare global {
         interface Client {
             commandManager: import("apps/bot/helpers/CommandManager");
 
-            logger: typeof import("strange-sdk/utils").Logger;
+            logger: typeof import("nexord-sdk/utils").Logger;
             pluginManager: import("apps/bot/helpers/PluginManager");
 
-            i18n: import("strange-core").I18nManager;
+            i18n: import("nexord-core").I18nManager;
             translations: Map<string, import("i18next").TFunction>;
 
             wait: (ms: number) => Promise<void>;
@@ -23,7 +23,7 @@ declare global {
         interface Guild {
             locale: string | undefined;
             getT(key: string, args?: Object): string;
-            getSettings(pluginName: string): Promise<import("strange-db-client").Model | object>;
+            getSettings(pluginName: string): Promise<import("nexord-db-client").Model | object>;
             canSendEmbeds(channel: import("discord.js").GuildChannel): boolean;
             findMatchingChannels(
                 query: string,

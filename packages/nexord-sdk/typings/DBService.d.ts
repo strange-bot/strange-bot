@@ -1,4 +1,4 @@
-import { Schema, Model, DBClient } from "strange-db-client";
+import { Schema, Model, DBClient } from "nexord-db-client";
 import { Config } from "./Config";
 import { Guild } from "discord.js";
 

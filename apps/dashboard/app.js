@@ -1,9 +1,9 @@
 const express = require("express");
 const fs = require("node:fs");
 const path = require("node:path");
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 const PluginManager = require("./helpers/PluginManager");
-const { I18nManager } = require("strange-core");
+const { I18nManager } = require("nexord-core");
 
 // Middlewares
 const expressLayouts = require("express-ejs-layouts");

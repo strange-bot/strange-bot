@@ -1,4 +1,4 @@
-import { BotPlugin, DashboardPlugin } from "strange-sdk";
+import { BotPlugin, DashboardPlugin } from "nexord-sdk";
 
 /** Base class for plugin management */
 declare class BasePluginManager {

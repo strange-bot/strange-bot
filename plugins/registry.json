@@ -3,7 +3,7 @@
         "name": "core",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "core",
         "dependencies": []
     },
@@ -11,7 +11,7 @@
         "name": "anime",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "anime",
         "dependencies": []
     },
@@ -19,7 +19,7 @@
         "name": "automod",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "automod",
         "dependencies": []
     },
@@ -27,7 +27,7 @@
         "name": "economy",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "economy",
         "dependencies": []
     },
@@ -35,7 +35,7 @@
         "name": "fun",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "fun",
         "dependencies": []
     },
@@ -43,7 +43,7 @@
         "name": "giveaways",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "giveaways",
         "dependencies": []
     },
@@ -51,15 +51,23 @@
         "name": "greeting",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "greeting",
+        "dependencies": []
+    },
+    {
+        "name": "guild-logger",
+        "version": "0.1.0-beta",
+        "author": "Sai Teja Madha",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
+        "repositoryPath": "guild-logger",
         "dependencies": []
     },
     {
         "name": "image",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "image",
         "dependencies": []
     },
@@ -67,7 +75,7 @@
         "name": "information",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "information",
         "dependencies": []
     },
@@ -75,7 +83,7 @@
         "name": "moderation",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "moderation",
         "dependencies": []
     },
@@ -83,7 +91,7 @@
         "name": "presence",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "presence",
         "dependencies": []
     },
@@ -91,7 +99,7 @@
         "name": "social",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "social",
         "dependencies": []
     },
@@ -99,7 +107,7 @@
         "name": "stats",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "stats",
         "dependencies": []
     },
@@ -107,7 +115,7 @@
         "name": "suggestion",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "suggestion",
         "dependencies": []
     },
@@ -115,7 +123,7 @@
         "name": "ticket",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "ticket",
         "dependencies": []
     },
@@ -123,7 +131,7 @@
         "name": "translation",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "translation",
         "dependencies": []
     },
@@ -131,7 +139,7 @@
         "name": "utility",
         "version": "0.1.0-beta",
         "author": "Sai Teja Madha",
-        "repository": "https://github.com/strange-bot/strange-plugins",
+        "repository": "https://github.com/nexordhq/nexord-plugins",
         "repositoryPath": "utility",
         "dependencies": []
     }

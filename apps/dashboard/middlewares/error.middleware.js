@@ -1,4 +1,4 @@
-const { Logger } = require("strange-sdk/utils");
+const { Logger } = require("nexord-sdk/utils");
 
 /**
  * Middleware for handling server errors

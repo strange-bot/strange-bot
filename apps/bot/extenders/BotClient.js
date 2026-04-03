@@ -1,8 +1,8 @@
 const { Client, GatewayIntentBits, Partials } = require("discord.js");
 const PluginManager = require("../helpers/PluginManager");
 const CommandManager = require("../helpers/CommandManager");
-const { I18nManager } = require("strange-core");
-const { Logger } = require("strange-sdk/utils");
+const { I18nManager } = require("nexord-core");
+const { Logger } = require("nexord-sdk/utils");
 const path = require("node:path");
 
 class BotClient extends Client {

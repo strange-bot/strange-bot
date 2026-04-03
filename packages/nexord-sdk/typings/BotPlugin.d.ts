@@ -9,7 +9,7 @@ import {
     ApplicationCommandOptionData,
     ContextMenuCommandInteraction,
 } from "discord.js";
-import { DBClient, Model, Schema, Document } from "strange-db-client";
+import { DBClient, Model, Schema, Document } from "nexord-db-client";
 import { Config, SaveableConfig } from "./Config";
 import { DBService } from "./DBService";
 

@@ -1,8 +1,8 @@
 const path = require("node:path");
-const { BasePluginManager } = require("strange-core");
-const { DBClient } = require("strange-db-client");
-const { DashboardPlugin } = require("strange-sdk");
-const { Logger } = require("strange-sdk/utils");
+const { BasePluginManager } = require("nexord-core");
+const { DBClient } = require("nexord-db-client");
+const { DashboardPlugin } = require("nexord-sdk");
+const { Logger } = require("nexord-sdk/utils");
 const execa = require("execa");
 
 class PluginManager extends BasePluginManager {
