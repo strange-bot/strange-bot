@@ -18,7 +18,44 @@ class DashboardPlugin {
         this.icon = data.icon || "fa-solid fa-puzzle-piece";
         this.dashboardRouter = data.dashboardRouter || null;
         this.adminRouter = data.adminRouter || null;
-        this.dbService = data.dbService || null;
+        this.dbService = null;
+
+        // If a db.service.js exists next to config.json (pluginDir), load it automatically
+        try {
+            if (!this.dbService) {
+                const dbServicePath = path.join(this.pluginDir, "db.service.js");
+                if (fs.existsSync(dbServicePath)) {
+                    const raw = require(dbServicePath);
+                    const PluginExport = raw && raw.default ? raw.default : raw;
+
+                    // If it's a class whose prototype extends DBService, instantiate it
+                    if (
+                        PluginExport &&
+                        PluginExport.prototype &&
+                        PluginExport.prototype instanceof DBService
+                    ) {
+                        this.dbService = new PluginExport(this.pluginDir);
+                    } else if (
+                        PluginExport &&
+                        typeof PluginExport === "object" &&
+                        PluginExport instanceof DBService
+                    ) {
+                        // Already an instance
+                        this.dbService = PluginExport;
+                    } else {
+                        throw new Error(
+                            "db.service.js must export a class extending DBService or an instance of DBService",
+                        );
+                    }
+                }
+            }
+        } catch (error) {
+            Logger.error(
+                `Failed to load db.service for plugin ${this.name}: ${error.message}`,
+                error,
+            );
+            throw error;
+        }
 
         this.onEnable = data.onEnable || null;
         this.onDisable = data.onDisable || null;
@@ -101,10 +138,6 @@ class DashboardPlugin {
         }
         if (data.adminRouter && !data.adminRouter.stack) {
             throw new Error("DashboardPlugin adminRouter must be an instance of express.Router");
-        }
-
-        if (data.dbService && !(data.dbService instanceof DBService)) {
-            throw new Error("DashboardPlugin dbService must be an instance of DBService");
         }
     }
 }

@@ -17,7 +17,44 @@ class BotPlugin {
         this.baseDir = data.baseDir;
         this.ownerOnly = data.ownerOnly || false;
         this.dependencies = data.dependencies || [];
-        this.dbService = data.dbService || null;
+        this.dbService = null;
+
+        // If a db.service.js exists next to config.json (pluginDir), load it automatically
+        try {
+            if (!this.dbService) {
+                const dbServicePath = path.join(this.pluginDir, "db.service.js");
+                if (fs.existsSync(dbServicePath)) {
+                    const raw = require(dbServicePath);
+                    const PluginExport = raw && raw.default ? raw.default : raw;
+
+                    // If it's a class whose prototype extends DBService, instantiate it
+                    if (
+                        PluginExport &&
+                        PluginExport.prototype &&
+                        PluginExport.prototype instanceof DBService
+                    ) {
+                        this.dbService = new PluginExport(this.pluginDir);
+                    } else if (
+                        PluginExport &&
+                        typeof PluginExport === "object" &&
+                        PluginExport instanceof DBService
+                    ) {
+                        // Already an instance
+                        this.dbService = PluginExport;
+                    } else {
+                        throw new Error(
+                            "db.service.js must export a class extending DBService or an instance of DBService",
+                        );
+                    }
+                }
+            }
+        } catch (error) {
+            Logger.error(
+                `Failed to load db.service for plugin ${this.name}: ${error.message}`,
+                error,
+            );
+            throw error;
+        }
 
         this.onEnable = data.onEnable || null;
         this.onDisable = data.onDisable || null;
@@ -213,10 +250,6 @@ class BotPlugin {
 
         if (data.onGuildDisable && typeof data.onGuildDisable !== "function") {
             throw new Error("BotPlugin onGuildDisable must be a function");
-        }
-
-        if (data.dbService && !(data.dbService instanceof DBService)) {
-            throw new Error("BotPlugin dbService must be an instance of DBService");
         }
     }
 
